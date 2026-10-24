@@ -1,5 +1,7 @@
 # Auto Gauge
 
+Repository privato: [Ale1x/auto-gauge](https://github.com/Ale1x/auto-gauge).
+
 Gauge OBD-II con display AMOLED, app iPhone in italiano e firmware ESP32-S3. Hardware e software sono in sviluppo: lo schema A0 contiene blocchi aperti; app, diagnostica e protocolli avanzano con simulazione e test host.
 
 | Area | Punto di ingresso |
@@ -22,8 +24,14 @@ python3 scripts/check_software.py
 
 Il comando verifica casi condivisi e test Python, confronta i codec C/Python con sanitizzatori, compila e testa il nucleo C diagnostico, esegue i test Swift e compila l'app per il simulatore iOS senza firma. Usa directory temporanee. `--skip-ios-build` omette soltanto la build dell'app e richiede comunque Swift per il package dei modelli.
 
-Queste prove non comprendono ESP-IDF sul device, BLE reale, cloud, consumo standby o test automotive. App e firmware dichiarano le proprie parti simulate o non implementate nei rispettivi README. Non collegare al veicolo uno schema incompleto.
+Queste prove non comprendono esecuzione sul device, BLE reale, cloud live, consumo standby o test automotive. La build ESP-IDF ESP32-S3 è verificata separatamente in `firmware/DEVICE_BUILD.md`. App e firmware dichiarano le proprie parti simulate o non implementate nei rispettivi README. Non collegare al veicolo uno schema incompleto.
 
 Risultati del secondo incremento: [shared/VERIFICATION_V0.2.md](shared/VERIFICATION_V0.2.md). Policy approvata sui client e reset separato: [shared/CONNECTION_POLICY_V0.1.md](shared/CONNECTION_POLICY_V0.1.md), secondo DEC-011.
 
 Il terzo incremento integra storici locali nell'app, gestione logica di una connessione con più client sequenziali e studio KiCad separato del preregolatore USB. Verifiche: [shared/VERIFICATION_V0.3.md](shared/VERIFICATION_V0.3.md).
+
+Il quarto incremento collega configurazione e storici allo stesso endpoint simulato, applica SwiftUI Pro, aggiunge paginazione interoperabile e persistenza configurazione con power-loss simulato. La build target ESP32-S3 riesce; resta uno skeleton inerte. Dettagli e limiti: [shared/VERIFICATION_V0.4.md](shared/VERIFICATION_V0.4.md).
+
+Per i controlli portabili Python/C: `python3 scripts/check_host.py`. GitHub Actions li esegue su push/PR; la build mobile su runner macOS è avviabile manualmente. Configurazione Apple approvata e stato del provisioning: [shared/APPLE_CONFIGURATION.md](shared/APPLE_CONFIGURATION.md).
+
+CloudKit: adapter nativo e upload idempotente predisposti, testati con database finto. Il team gratuito non abilita CloudKit; servono membership Developer e provisioning prima delle prove live. Download/restore cloud, BLE reale, OTA e qualificazione hardware restano aperti. Nessuna iscrizione o spesa attivata.

@@ -1,0 +1,22 @@
+name: Host contracts and firmware core
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  host:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CC: clang
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Shared contracts, reference endpoints and sanitized C core
+        run: python3 scripts/check_host.py
+      - name: Traceability and saved evidence consistency
+        run: python3 scripts/check_k0.py

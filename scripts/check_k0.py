@@ -21,8 +21,10 @@ assert round(46.35-44.45,2) == 1.90
 assert round(48.96 + 2*(1.0+0.3), 2) == 51.56
 assert round((52-48.96)/2-1.0-0.3, 2) == 0.22
 assert 'DEC-002' in trace
-assert 'v0.2.6' in trace
+assert 'v0.2.8' in trace
 assert 'DEC-011' in trace and 'una sola connessione attiva' in trace
+assert 'DEC-012' in trace and 'CloudKit' in trace
+assert 'DEC-014' in trace and 'codice' in trace
 assert 'DEC-008' in trace
 assert 'DEC-003' in trace and 'DEC-004' in trace and 'DEC-005' in trace
 assert 'DEC-006' in trace and 'DEC-007' in trace

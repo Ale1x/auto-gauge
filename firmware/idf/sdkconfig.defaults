@@ -1,3 +1,4 @@
 # Development skeleton only. No eFuse/security provisioning, OTA partition
 # table, Wi-Fi/BLE service or board GPIO configuration is supplied here.
 CONFIG_IDF_TARGET="esp32s3"
+CONFIG_BT_ENABLED=n

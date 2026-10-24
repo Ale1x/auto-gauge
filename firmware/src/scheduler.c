@@ -112,7 +112,8 @@ bool ag_scheduler_dispatch(ag_scheduler_t *scheduler, const ag_can_policy_t *pol
     ag_pid_mask_set(&supported, job->config.pid);
     if (!ag_obd_make_read_request(policy, &supported, AG_READ_MEASUREMENT, job->config.pid, &dispatch->request))
         return false;
-    if (!ag_isotp_init(&scheduler->rx, &job->config.profile, job->config.response_timeout_ms)) {
+    if (!ag_isotp_init(&scheduler->rx, &job->config.profile, job->config.response_timeout_ms)
+        || !ag_isotp_enable_flow_control(&scheduler->rx, 8, 0)) {
         memset(dispatch, 0, sizeof(*dispatch));
         cancel_transaction(scheduler); return false;
     }
@@ -132,7 +133,8 @@ ag_scheduler_rx_result_t ag_scheduler_receive(ag_scheduler_t *scheduler,
     if (scheduler->active_index >= scheduler->count) return AG_SCHED_RX_IGNORED;
     const ag_isotp_result_t result = ag_isotp_feed(&scheduler->rx, frame, now_ms);
     if (result == AG_ISOTP_IGNORED) return AG_SCHED_RX_IGNORED;
-    if (result == AG_ISOTP_WAITING || result == AG_ISOTP_IDLE) return AG_SCHED_RX_WAITING;
+    if (result == AG_ISOTP_WAITING || result == AG_ISOTP_IDLE || result == AG_ISOTP_FLOW_CONTROL_REQUIRED
+        || (result == AG_ISOTP_OVERFLOW && scheduler->rx.fc_pending)) return AG_SCHED_RX_WAITING;
     if (result != AG_ISOTP_COMPLETE) {
         finish(scheduler, result == AG_ISOTP_TIMEOUT ? AG_SAMPLE_TIMEOUT : AG_SAMPLE_ERROR, now_ms);
         return AG_SCHED_RX_ERROR;
@@ -158,4 +160,21 @@ ag_scheduler_rx_result_t ag_scheduler_receive(ag_scheduler_t *scheduler,
     job->sample = sample;
     finish(scheduler, AG_SAMPLE_VALID, now_ms);
     return AG_SCHED_RX_ACCEPTED;
+}
+
+bool ag_scheduler_fc_prepare(ag_scheduler_t *scheduler, const ag_can_policy_t *policy, uint64_t now_ms) {
+    if (!ag_scheduler_tick(scheduler, policy, now_ms) || !ag_can_tx_allowed(policy)
+        || scheduler->active_index >= scheduler->count) return false;
+    return ag_isotp_fc_prepare(&scheduler->rx, policy, now_ms);
+}
+bool ag_scheduler_fc_dispatch(ag_scheduler_t *scheduler, const ag_can_policy_t *policy,
+                              uint64_t now_ms, ag_can_frame_t *output) {
+    if (output == NULL) return false;
+    memset(output, 0, sizeof(*output));
+    if (!ag_scheduler_tick(scheduler, policy, now_ms) || !ag_can_tx_allowed(policy)
+        || scheduler->active_index >= scheduler->count) return false;
+    const bool overflow = scheduler->rx.fc_overflow;
+    if (!ag_isotp_fc_dispatch(&scheduler->rx, policy, now_ms, output)) return false;
+    if (overflow) finish(scheduler, AG_SAMPLE_ERROR, now_ms);
+    return true;
 }

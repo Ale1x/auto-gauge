@@ -6,19 +6,21 @@ Nucleo C11 compilabile su host e skeleton ESP-IDF per il candidato ESP32-S3. Si 
 
 | Modulo | Implementato su host | Limite attuale |
 |---|---|---|
-| Configurazione | Schema 1, revisione 1–INT32_MAX, 1–3 dashboard, 1–5 widget, ID unici, rettangoli interi normalizzati 0–10000, luminosità manuale/auto, verifica capability PID | Nessun parser JSON device, persistenza, CRC, migrazione o conferma remota di applicazione |
+| Configurazione | Schema 1, revisione 1–INT32_MAX, 1–3 dashboard, 1–5 widget, ID unici, rettangoli interi normalizzati 0–10000, luminosità manuale/auto, verifica capability PID | Nessun parser JSON device, migrazione o conferma remota di applicazione |
+| Persistenza configurazione | Due slot simulati, formato binario esplicito, CRC e commit marker ultimo, expected revision, recovery da power loss | Nessun backend flash reale, partizione definitiva o provisioning iniziale |
 | Applicazione configurazione | Valida prima di sostituire la configurazione RAM; errore conserva la precedente | Singolo task proprietario; non è commit atomico flash né autorizzazione BLE |
 | Guardia CAN | TX bloccato al boot, USB sola, alimentazione ignota, IGN ignoto/OFF, standby richiesto, bus-off, rail non validi o hardware non qualificato | Il produttore reale dell'ingresso `AG_IGN_QUALIFIED_ON` non esiste ancora; traffico CAN e tensione non lo impostano |
 | Richieste diagnostiche | Service 01 fisso, allowlist, decoder iniziali e bitmap capability per ECU; profili 11/29 bit e 250/500 kbit/s come dati | Nessun driver TWAI, auto-detection, discovery su veicolo o catalogo completo |
-| Trasporto diagnostico | Reassembly ISO-TP RX bounded su frame simulati SF/FF/CF, timeout e sequenza | Solo CAN classico/normal addressing, nessun Flow Control o TX; non è uno stack ISO-TP completo |
+| Trasporto diagnostico | Reassembly ISO-TP RX bounded su frame simulati SF/FF/CF, timeout e sequenza | Solo CAN classico/normal addressing, FC host CTS/overflow; nessun TX fisico o stack ISO-TP completo |
 | Scheduler | Round-robin host con una transazione attiva, timeout, stato iniziale unavailable/stale distinti, guardia rivalutata al dispatch | Nessuna trasmissione fisica, rilevazione IGN o garanzia 5 Hz |
 | Log | Coda RAM fissa, massimo 1 Hz per coppia sorgente ECU/PID, overflow con sequenze perse, stop immediato di nuove append | Nessuna scrittura flash, chunk BLE, deduplica import, resume o power-loss recovery |
+| Sorgente storico | Ring C separato dalla coda, snapshot copiati, pagine JSON bounded, cursori indipendenti e ACK senza consumo | Backend persistente/flash e trasporto reale non implementati |
 | Tempo | Session ID di boot fornito dal chiamante, tempo monotono relativo, regressioni bloccate | Nessun RTC o data assoluta inventata |
 | HAL | Interfacce per power/display/log/BLE/OTA | Restituiscono `NOT_IMPLEMENTED` o `BLOCKED`, mai un falso successo |
 | Connessione | Uno slot attivo, client utilizzabili in sequenza, lease di sessione e verifica esterna separata | Nessuno stack BLE/bonding o autenticazione reale, nessun owner unico |
 | Factory reset locale | Macchina a stati e journal simulato prima delle cancellazioni, recupero bloccato per stato incompleto | Nessuna cancellazione flash o credenziale reale; atomicità hardware non dimostrata |
 
-Le scelte di strutture e capacità sono ipotesi di sviluppo, non nuovi requisiti approvati. Restano normative SPEC_V0.2.md e DECISIONS.md, in particolare DEC-003–008. Il contratto comune è [shared/PROTOCOL_V0.1.md](../shared/PROTOCOL_V0.1.md).
+Le scelte di strutture e capacità sono ipotesi di sviluppo, non nuovi requisiti approvati. Restano normative SPEC_V0.2.md e DECISIONS.md, inclusa DEC-011. Il contratto comune è [shared/PROTOCOL_V0.1.md](../shared/PROTOCOL_V0.1.md).
 
 ## Compilazione e test host
 
@@ -31,11 +33,14 @@ ctest --test-dir firmware/build-host --output-on-failure
 firmware/build-host/gauge_core_tests
 firmware/build-host/gauge_diagnostics_tests
 firmware/build-host/gauge_connection_tests
+firmware/build-host/gauge_history_tests
+firmware/build-host/gauge_history_fixture_cli
+python3 firmware/tools/check_history_interop.py --executable firmware/build-host/gauge_history_fixture_cli
 ```
 
 Da una directory già interna a `firmware/`, usare `-S . -B build-host`.
 
-La suite CTest contiene tre eseguibili. `gauge_core_tests` copre otto gruppi: fixture condivise, configurazione/rollback RAM, guardia CAN, Service 01, rate/stati indisponibili, overflow/limiti coda, clock/sessione e HAL bloccato. `gauge_diagnostics_tests` copre dieci gruppi: 13 vettori decoder, risposte malformate, bitmap/sorgenti ECU, profili e SF, FF/CF e wrap sequenza, errori e timeout, 10000 ingressi casuali bounded, scheduling/timeout, round-robin/clock e revoca di ogni guardia tra prepare e dispatch. `gauge_connection_tests` copre otto gruppi: A→busy B→B→A senza cancellazione, auth mancante, lease/boot/counter, qualificazione fisica, 18 punti di interruzione prima/dopo I/O, restore corrotto/mancante/ripetuto, USB persa/intent non confermato e journal/counter estremi.
+La suite CTest contiene cinque test. `gauge_core_tests` copre otto gruppi: fixture condivise, configurazione/rollback RAM, guardia CAN, Service 01, rate/stati indisponibili, overflow/limiti coda, clock/sessione e HAL bloccato. `gauge_diagnostics_tests` copre dieci gruppi: 13 vettori decoder, risposte malformate, bitmap/sorgenti ECU, profili e SF, FF/CF e wrap sequenza, errori e timeout, 10000 ingressi casuali bounded, scheduling/timeout, round-robin/clock e revoca di ogni guardia tra prepare e dispatch. `gauge_connection_tests` copre otto gruppi: A→busy B→B→A senza cancellazione, auth mancante, lease/boot/counter, qualificazione fisica, 18 punti di interruzione prima/dopo I/O, restore corrotto/mancante/ripetuto, USB persa/intent non confermato e journal/counter estremi. `gauge_history_tests` copre cinque gruppi e 12 pagine golden; `gauge_history_interop` confronta quelle pagine con Python e due archivi SQLite distinti.
 
 Il generatore `tools/generate_fixture.py` legge direttamente i JSON in `../shared/fixtures/` e genera un header solo nella directory di build. Al momento 19 dei 22 casi comuni sono rappresentabili in strutture C tipizzate; i 3 casi con booleani/frazioni richiedono il futuro parser JSON e **non sono dichiarati testati sul device**. I test effettuano anche controllo capability, limite 3×5, rifiuto di coordinate estreme, conservazione configurazione invalida e verifica delle richieste per tutti i 256 valori PID.
 
@@ -73,9 +78,9 @@ I decoder ricevono l'application payload ISO-TP già privato del padding CAN. Ri
 
 `ag_obd_capabilities_apply` valida `41 page A B C D`, allinea le pagine a multipli di 0x20 e aggiorna solo i relativi bit della stessa sorgente ECU. Il bit più significativo di A corrisponde a page+1, l'ultimo di D a page+32. L'ultimo bit della pagina E0 supera lo spazio PID a 8 bit ed è ignorato senza wrap su zero. `ag_obd_usable_pids` interseca il bitmap pubblicizzato con i sette decoder implementati. Il builder discovery e il parser bitmap esistono, ma non è ancora presente un orchestratore di discovery su bus: la suite fornisce capability simulate per ECU.
 
-Reassembly: una sola risposta per contesto, **256 byte massimi**, frame CAN classici di 1–8 byte, normal addressing. CAN ID standard 11 bit ed extended 29 bit sono supportati come dati di profilo; **29-bit CAN ID non significa supporto dell'extended/mixed ISO-TP addressing**, che è assente. Il timeout tra frame è un parametro obbligatorio, non un valore normativo inventato. Sono verificati dimensione annunciata, SF/FF/CF, sequenza a 4 bit con wrap, CF troppo corte, source ID/format e regressione temporale. Frame di altre ECU non concatenano dati né prolungano il timeout. CAN FD, RTR, frame Flow Control in ingresso e FF a lunghezza estesa 32 bit non sono supportati. Il padding finale viene ignorato; valore del padding e separazione STmin non sono validati.
+Reassembly: una sola risposta per contesto, **256 byte massimi**, frame CAN classici di 1–8 byte, normal addressing. CAN ID standard 11 bit ed extended 29 bit sono supportati come dati di profilo; **29-bit CAN ID non significa supporto dell'extended/mixed ISO-TP addressing**, che è assente. Il timeout tra frame è un parametro obbligatorio, non un valore normativo inventato. Sono verificati dimensione annunciata, SF/FF/CF, sequenza a 4 bit con wrap, CF troppo corte, source ID/format e regressione temporale. Frame di altre ECU non concatenano dati né prolungano il timeout. CAN FD, RTR, frame Flow Control in ingresso e FF a lunghezza estesa 32 bit non sono supportati. Il padding finale viene ignorato; valore del padding non validato. STmin viene verificato soltanto nella modalità Flow Control FW-06.
 
-**Non è emesso Flow Control.** Un vero mittente ISO-TP normalmente attende FC dopo FF: i test iniettano CF da un peer simulato. Questo componente non è utilizzabile come ricevitore multiframe completo su vettura finché manca FC, con relativo gating TX e timing. Non dichiara conformità ISO 15765-2/4 o compatibilità Polo.
+La modalità RX passiva originaria non emette Flow Control; FW-06 aggiunge una modalità opzionale e handoff host di FC con guardia TX. Anche con tale modalità, hardware, trasmissione e conferma TX reali restano assenti: non è dimostrata conformità ISO 15765-2/4 o compatibilità Polo.
 
 Lo scheduler usa massimo 15 job univoci ECU/PID e al più una transazione complessiva, preparata oppure attiva. Tutti i job appartengono a un solo bitrate/formato per istanza: cambiare variante richiede nuova inizializzazione. Periodo, timeout risposta e soglia stale sono parametri positivi del chiamante; i valori 200/100/50 ms nelle fixture sono numeri di test, non requisiti di prodotto. Dopo completamento o timeout attende almeno un periodo prima di riprovare quel job; round-robin favorisce i job pronti senza promettere 5 Hz.
 
@@ -91,17 +96,15 @@ Un secondo subagente ha letto i quattro moduli C e l'header, senza modifiche: no
 
 ## Skeleton ESP-IDF
 
-Directory `idf/`, target di sviluppo ESP32-S3, baseline documentale ESP-IDF release 5.3. La release SDK di prodotto rimane da fissare. Lo skeleton non è stato compilato per il target: `idf.py` e la relativa toolchain non erano disponibili durante questa iterazione. La build host non verifica gli header/ABI ESP-IDF.
+Directory `idf/`, target di sviluppo ESP32-S3. Lo skeleton è ora cross-compilato con **ESP-IDF ufficiale v6.1/GCC15.2.0**, SDK/toolchain in cache esterna e nessun flash. App `.bin`170624byte, immagine170512byte prima del padding. Versioni, hash, memoria e confini sono in [DEVICE_BUILD.md](DEVICE_BUILD.md) e `device-build-report.json`. Questa build verifica compilazione/link del target; non esegue l'applicazione sul dispositivo né congela la release SDK di produzione.
 
-Con un SDK qualificato attivo, il futuro controllo di sola build è:
+Con la cache dedicata descritta nel report, il comando di sola build è:
 
 ```sh
-cd firmware/idf
-idf.py set-target esp32s3
-idf.py build
+sh firmware/tools/build_esp32s3.sh
 ```
 
-Questi comandi non sono stati eseguiti qui. Non effettuare flash o collegamento alla vettura da questo scaffold. `app_main` genera un identificatore di sessione, inizializza il clock e legge l'HAL, che restituisce potenza/IGN ignoti e non permette TX. Poi resta in un loop di sviluppo; non configura GPIO né chiama driver bus/radio, non scrive flash, non tocca eFuse o chiavi.
+Il comando è stato eseguito con successo. Non effettuare flash o collegamento alla vettura da questo scaffold. `app_main` genera un identificatore di sessione, inizializza il clock e legge l'HAL, che restituisce potenza/IGN ignoti e non permette TX. Poi resta in un loop di sviluppo; non configura GPIO né chiama driver bus/radio, non scrive flash, non tocca eFuse o chiavi. Il linker rimuove buona parte del core inutilizzato: questo binario piccolo non prova il dimensionamento di firmware completo, asset, OTA o buffer flash.
 
 `esp_fill_random` viene usata soltanto per un identificatore di boot, non come chiave o token di autenticazione. Un ID nullo blocca l'inizializzazione; l'unicità e l'entropia richieste per il protocollo persistente devono essere verificate nella futura implementazione. Il tempo monotono da `esp_timer_get_time` riparte dopo deep sleep: ogni nuovo boot necessita una sessione distinta.
 
@@ -142,11 +145,85 @@ Il callback di persistenza può rispondere successo solo quando il record è dur
 
 Non è definito un layout flash, doppio journal, protezione da rollback o prova di atomicità sul componente reale. `app_main` resta inerte; i nuovi HAL verify/erase/journal rispondono rifiuto o `NOT_IMPLEMENTED`. Nessun dato esistente, bond reale, eFuse o chiave è cancellato. Il reset non autorizza CAN e non dimostra standby o recupero elettrico.
 
+## FW-04 — produttore pagine storico C
+
+`include/ag_history.h` e `src/history.c` aggiungono una sorgente di storico fixed-capacity, distinta da `ag_log_queue_t`: leggere o confermare una pagina **non chiama `ag_log_queue_pop` e non consuma lo storico**. Il modello tiene fino a 64 record, una sola sessione/boot e nessuna tabella dei client. La capacità 1–64 è un'ipotesi di test, non la dimensione finale della partizione. Ogni client passa il proprio cursore; ACK di A non elimina i record disponibili per B. La sovrascrittura riguarda soltanto i record più vecchi del ring, secondo DEC-006.
+
+`ag_history_export` produce una copia cronologica senza puntatori al ring. Modificare la copia o il JSON restituito non modifica la sorgente. `ag_history_restore` verifica capacità, stati/raw, ordinamento e contiguità sequenze, monotonia dei timestamp e coerenza del contatore terminale; uno snapshot non valido disabilita la destinazione invece di servire una precedente sessione. Queste sono verifiche strutturali: checksum, journal flash e provenienza dei metadati persistenti restano responsabilità del futuro backend.
+
+`first_sequence` consente recovery/test da metadati fidati, anche oltre 2^53; non è un parametro da accettare dal telefono. La sequenza UINT64_MAX può essere registrata una volta; un flag esplicito `exhausted` impedisce il wrap successivo, mantenendo comunque leggibili e confermabili gli ultimi record. I timestamp sono uint64 monotoni, mai date assolute o double. Un nuovo boot usa una sessione distinta; il cursore richiesto deve riferirsi espressamente a quella sessione. L'eventuale selezione di sessioni storiche su una flash reale non è implementata da questa singola istanza RAM.
+
+`ag_history_make_page` serializza JSON deterministico con `session_id`, `records`, `lost`; sequenza e tempo sono stringhe decimali canoniche, status esplicito e raw esadecimale minuscolo. Il modello di storico ammette fino a 64 byte raw come il contratto condiviso, mentre il logger RAM originario resta limitato a 8: non sono ampliate implicitamente le capability del decoder o del logger device. Ogni pagina ha fino a 16 record e al massimo 4096 byte **escluso il terminatore NUL**. Il buffer consigliato è quindi 4097 byte.
+
+L'intervallo di perdita viene calcolato dalla prima sequenza ancora conservata e ritagliato al cursore della richiesta: non viene copiato l'inviluppo globale delle perdite RAM. Per il ring contiguo modellato esiste al massimo un intervallo perso iniziale; buchi interni allo snapshot vengono rifiutati, non colmati con perdite inventate. La futura pipeline dovrà modellare separatamente eventuali campioni persi prima di arrivare allo storico.
+
+La serializzazione avviene in staging locale; un buffer di destinazione troppo corto produce `OUTPUT_SHORT`, output vuoto se scrivibile e metadati azzerati, senza pagina parziale o avanzamento di cursore. `info.written` esclude NUL e `info.through_sequence` descrive solo la copertura della pagina: **non è un ACK di import**. Il client può confermare l'import soltanto dopo il proprio commit. `ag_history_acknowledge` è const/stateless e controlla sessione e limite superiore; non elimina record, non modifica il ring e non conserva cursori di N telefoni.
+
+Source e snapshot occupano rispettivamente 6208 e 6200 byte sull'host; `make_page` usa inoltre staging da 4097 byte e piccoli buffer di record/suffisso. Il dimensionamento del task e lo stack reale ESP32-S3 devono essere verificati prima dell'integrazione. Export/append/restore richiedono un task proprietario o un lock; la trasmissione può lavorare sulla copia, ma il futuro adapter deve verificare il lease BLE corrente e invalidare pagine pendenti al reset. Nessuna operazione di questo modulo autorizza radio o autenticazione.
+
+Il generatore `tools/generate_history_fixture.py` legge `../shared/fixtures/pagination.cases.json` e produce un header solo nella build directory. Le sei fixture condivise coprono ring sovrascritto, raw massimo, timeout, precisione oltre 2^53, sequenza terminale uint64 e sorgente vuota. `gauge_history_tests` verifica 12 pagine JSON esatte, ACK senza mutazioni, snapshot indipendenti, restore invalido, budget, output corto, sessione e overflow. Il caso con raw64 e sequenza/timestamp a20cifre riduce la prima pagina a15record/4046byte, lasciando i cinque successivi alla richiesta seguente.
+
+Harness host per l'integrazione:
+
+```sh
+firmware/build-host/gauge_history_fixture_cli [case_name]
+python3 firmware/tools/check_history_interop.py --executable firmware/build-host/gauge_history_fixture_cli
+```
+
+Senza argomento il CLI emette una riga JSON per ogni lettura delle sei fixture: `{"case":"overwritten_ring","read_index":0,"page":{...}}`. Un nome caso sconosciuto termina con codice2. I record vengono costruiti dal C con le fixture, poi serializzati dal produttore: il CLI non ristampa il JSON golden e non contiene un parser JSON device. Il wrapper confronta C/golden/Python, controlla riproducibilità e budget, importa le pagine in due archivi SQLite indipendenti e verifica che l'ACK di A preservi la stessa disponibilità per B.
+
+Tutto questo resta un modello host con snapshot che rappresentano record già conservati. Non esistono driver flash, partizione2MiB, erase di produzione, recovery fisica o BLE reale; `app_main` non usa il produttore e resta inerte. Le scelte di struttura non anticipano il sizing degli slot OTA né una promessa di retention dopo un reset elettrico.
+
+## FW-05 — persistenza configurazione simulata
+
+`ag_config_store.h/config_store.c` separano il protocollo di commit da `ag_flash_sim.h/flash_sim.c`, backend RAM con fault injection. I callback read/program/erase operano su offset e lunghezze bounded; una lettura o programmazione incompleta restituisce il numero effettivo di byte, erase restituisce un esito. Non ci sono heap, puntatori persistenti, serializzazione di struct o parser JSON. Il modello usa **due settori da 4096 byte**: è un formato di sviluppo, non una partizione scelta per il gauge. `app_main` non lo richiama e nessun adapter flash reale è implementato.
+
+Tutti gli interi persistenti sono little endian espliciti. Header di 32 byte:
+
+| Offset | Campo |
+|---|---|
+| 0–3 | Magic ASCII `AGCF` |
+| 4–5 | Versione formato uint16 = 1 |
+| 6–7 | Lunghezza payload uint16, massimo 167 |
+| 8–15 | Generazione uint64 positiva, mai wrap |
+| 16–19 | Schema configurazione uint32 = 1 |
+| 20–23 | Revisione uint32, 1…INT32_MAX |
+| 24–27 | CRC32 ISO-HDLC |
+| 28–31 | Riservato, zero |
+
+Il CRC copre header 0…23, header 28…31 e payload; non include il campo CRC. Il payload contiene schema/revisione uint32, brightness mode/manual percent/dashboard count uint8; ogni dashboard contiene ID/count uint8 e ogni widget ID/PID uint8 più x/y/width/height uint16. Ordine dashboard/widget preservato, nessun padding. Il record è lungo al massimo 199 byte; tutti i byte successivi devono essere `0xff` fino al marker ASCII `COM1` ai byte 4092…4095. Il marker viene programmato **per ultimo**, dopo verifica del corpo completo.
+
+`open/restore` leggono e controllano interamente entrambi i settori: marker, magic, formato, lunghezze, CRC, riservati/padding e validazione strutturale della configurazione. Scelgono la generazione integra più recente; una copia corrotta o incompleta consente fallback alla precedente integra. Generazioni uguali con contenuto diverso, oppure generazione maggiore con revisione non crescente, producono `CONFLICT` e nessuna configurazione applicabile. Copie identiche sono ammesse. Entrambi gli slot invalidi producono `NO_VALID_CONFIG`: nessun default, bootstrap o overwrite automatico. Il seed iniziale nei test è esplicito e non è un endpoint di provisioning device.
+
+La selezione per integrità è indipendente dalle capability del veicolo corrente. Lo snapshot integro più recente resta selezionato anche se usa un PID non disponibile: `CAPABILITY_MISMATCH`, `ready=true`, `compatible=false`, revisione e generazione conservate. `get` restituisce una **copia diagnostica** per interfaccia/riparazione; il chiamante deve controllare `compatible` prima di applicarla al veicolo. Non si torna silenziosamente a una configurazione più vecchia. Un aggiornamento correttivo deve usare la nuova revisione attesa e capability attuali; la policy completa di cambio veicolo resta aperta. Se un settore ha un errore I/O, l'altro integro è disponibile come `READ_ONLY`, con flag `compatible` separato e commit vietati fino a letture sane: la revisione non letta potrebbe essere più recente. In questo stato `get` è esclusivamente diagnostico e può esporre una revisione più vecchia; prima di qualsiasi uso operativo occorre verificare esito di restore, `writable` e `compatible`.
+
+`commit(expected_revision,candidate)` rilegge entrambi gli slot prima di scrivere, richiede revisione attesa esatta e nuova revisione +1 senza overflow, poi valida la candidata sulle capability attuali. Cancella solo lo slot inattivo, verifica tutti i byte cancellati, programma e rilegge corpo/padding, programma marker, rilegge e verifica il record committato. Lo slot attivo precedente non viene cancellato durante questa transazione. La perdita di alimentazione dopo il marker durevole ma prima dell'ACK può rendere visibile al reboot la nuova revisione benché il chiamante abbia ricevuto errore: prima di ritentare deve leggere lo stato e usare expected revision, senza ripetere ciecamente una mutazione.
+
+Il simulatore applica la regola program 1→0 e permette taglio dopo ogni byte di ciascuna operazione; reboot elimina il guasto mantenendo i byte. I test coprono **24653 tagli a confini di byte in otto fasi**, bitflip in ciascuno dei 4096 byte dello slot nuovo, letture corte, erase fallito o adapter che mente sull'erase, corruzione in programmazione, overflow, conflitti, output corto, capability cambiate e aggiornamento correttivo. Un golden binario generato indipendentemente con Python `struct`/`binascii.crc32` deriva dalla fixture JSON condivisa; i 19 casi rappresentabili in C sono verificati anche in encode/restore. Bool/frazioni restano test del futuro parser JSON.
+
+Sull’host lo store occupa 520 byte e il simulatore completo 8480 byte (include gli 8192 byte dei settori e la strumentazione di test). Il codice usa buffer locali da 4096 byte per la lettura e staging massimo 199 byte, più due descrittori di slot e copie configurazione: `restore` conserva inoltre `slot_info[2]` e `commit` mantiene record e copie della configurazione durante le chiamate annidate. Prima dell’uso runtime serve un task con stack esplicitamente dimensionato e misurato sul target; lo stack predefinito di `app_main` non è qualificato per queste operazioni. Tutti gli accessi richiedono un unico task o lock e callback non rientranti; i test host non dimostrano concorrenza. CRC non autentica né impedisce rollback deliberati. Il modello non dimostra erase/program atomicity del componente reale, wear leveling, cifratura, migrazioni, provisioning iniziale o recupero di schema futuro. Il reset-config erase hook non è collegato a questo simulatore e resta inerte sul device.
+
+## FW-06 — Flow Control host per risposte Service 01
+
+Il reassembly classico offre `ag_isotp_enable_flow_control(BS,STmin)` da stato idle. Lo scheduler la abilita con BS8/STmin0 come **parametri di simulazione**, non taratura della vettura. Dopo una FF valida il ricevitore richiede CTS; dopo ogni blocco BS di CF ne richiede un altro, salvo messaggio completato. BS0 autorizza tutte le CF residue. Una FF con lunghezza oltre 256 byte prepara soltanto overflow (`0x32`), mai CTS o accumulo parziale. Non sono implementati WAIT, trasmissione di PDU multi-frame o richieste con servizi arbitrari: le richieste applicative continuano a essere esclusivamente Service01 e single frame.
+
+`ag_isotp_fc_prepare/dispatch` e i wrapper scheduler separano preparazione e handoff. Entrambi verificano `ag_can_tx_allowed`; il dispatch ricontrolla IGN qualificato, alimentazione OBD, rail/hardware, standby, sessione e bus-off. Se la guardia cambia, cancellano lo stato e restituiscono frame vuoto, senza possibilità di riprendere la vecchia preparazione dopo riabilitazione. Il frame FC usa l’ID fisico request del profilo e formato11/29bit, DLC8, PCI0x30/0x32, BS/STmin e padding zero. Gli indirizzi funzionali OBD noti 0x7DF/0x18DB33F1 vengono rifiutati: il chiamante deve fornire la coppia fisica verificata, che il codice non deduce dalla risposta. Restano possibili configurazioni sbagliate ma numericamente valide: nessuna compatibilità veicolo è inferita dal solo ID.
+
+In modalità FC una FF deve iniziare con risposta Service01 positiva0x41 oppure negativa7F01. Ciò non sostituisce il parser PID: un payload lungo non previsto dai sette decoder rimane errore, anche se ricomposto correttamente. Una CF prima del CTS, oltre il confine BS o con sequenza errata interrompe il messaggio. Frame di altre ECU vengono ignorati e non prolungano i timer. Il contatore di sequenza CF fa wrap4bit; i timer uint64 usano differenze senza scadenze sommate e una regressione del clock invalida la transazione.
+
+STmin pubblicizzato/verificato è **0…127ms**; il clock pubblico è in millisecondi. Le codifiche microsecondi 0xF1…0xF9 e quelle riservate vengono rifiutate esplicitamente. Il limite si verifica tra due CF, anche attraverso confini di blocco, non tra FC e prima CF. Una CF troppo ravvicinata interrompe il reassembly: è una policy rigorosa del modello, non una dichiarazione di comportamento identico agli stack vendor. Attesa del dispatch FC e attesa CF hanno timeout parametrico; il timeout complessivo dello scheduler continua ad applicarsi dal dispatch della richiesta, senza essere rinnovato dai frame.
+
+Il dispatch è solo un **handoff simulato riuscito**, non una conferma di invio CAN. L’adapter futuro dovrà serializzare gli eventi, ricontrollare la guardia immediatamente prima del driver, notificare/gestire fallimento o ritardo dell’invio e qualificare i timer sul completamento effettivo. Nessun callback attiva TWAI, transceiver o radio; `app_main` resta inerte. Non sono supportati extended/mixed addressing, CANFD, lunghezza FF32bit, RX di FC per un sender multiframe o conformità certificata.
+
+`gauge_flow_control_tests` verifica messaggi 256 byte a 11/29 bit su BS0…3/255, STmin e confini BS, wrap sequenze, overflow 257 byte, CTS/overflow con cambio di tutte le nove guardie, preparazioni invalidate, ECU diversa, FF/CF malformate, richiesta di servizio errato, timeout e clock al limite uint64. Verifica inoltre i wrapper scheduler, il rifiuto di un valore PID da un payload ricomposto ma invalido e nessuna trasmissione dopo reset o blocco.
+
+Fonti primarie consultate il 24/10/2026: [documentazione ISO-TP del kernel Linux](https://docs.kernel.org/networking/iso15765-2.html), [manuale API ISO-TP PEAK-System](https://www.peak-system.com/produktcd/Pdf/English/PCAN-ISO-TP-API_UserMan_eng.pdf), [documentazione TWAI Espressif](https://github.com/espressif/esp-idf/blob/v6.1/docs/en/api-reference/peripherals/twai.rst). Queste fonti motivano le opzioni e i limiti; non sostituiscono accesso e verifica del testo normativo ISO15765-2/4 per la release finale.
+
 ## Prossimi incrementi
 
-1. Congelare policy di ownership/auth e framing BLE, quindi parser con limiti e test sulle fixture JSON di tipo.
-2. Aggiungere adapter di simulazione app–core con ACK di ricezione separato da commit; persistenza atomica e schema di migrazione.
-3. Completare discovery, catalogo decoder, Flow Control e driver CAN/ISO-TP con TX subordinato a hardware/IGN qualificati, budget bus e test di simulatore.
+1. Integrare DEC-011 (N client sequenziali, una connessione) con autenticazione e framing BLE, quindi parser con limiti e test sulle fixture JSON di tipo.
+2. Aggiungere adapter di simulazione app–core con ACK di ricezione separato da commit; adapter flash reale e schema di migrazione, partendo dal modello FW-05.
+3. Completare discovery, catalogo decoder e adapter CAN/ISO-TP per Flow Control con TX subordinato a hardware/IGN qualificati, budget bus e test di simulatore.
 4. Dimensionare immagine/asset/slot OTA prima di abilitare il buffer flash e recupero da interruzione.
 5. Chiudere hardware e HAL power/display/ALS, poi prove di banco senza vettura.
 

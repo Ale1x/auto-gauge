@@ -15,7 +15,7 @@ Gli agenti lavorano contemporaneamente in directory distinte nello stesso reposi
 
 App e firmware condividono `shared/PROTOCOL_V0.1.md` e la fixture di configurazione. Possono progredire con simulatori e HAL finché pinout pannello, wake/IGN e protezioni non sono chiusi. La revisione hardware alimenta la prossima iterazione dello schema, non una dichiarazione di costruibilità.
 
-Backend account/cloud, trasferimento BLE autenticato e OTA sicura restano da progettare. DEC-011 fissa invece la policy client: più dispositivi in sequenza, una sola connessione attiva; nessuna esclusività persistente a un telefono. Il primo incremento non deve simulare i servizi mancanti come se fossero operativi. Prima della connessione reale: fissare trasporto/sicurezza, testare interoperabilità, compilare SDK device e provare su banco.
+DEC-012 sceglie iCloud/CloudKit; configurazione operativa e sync live restano da verificare. Trasferimento BLE autenticato e OTA sicura restano da implementare. DEC-011 fissa invece la policy client: più dispositivi in sequenza, una sola connessione attiva; nessuna esclusività persistente a un telefono. Il primo incremento non deve simulare i servizi mancanti come se fossero operativi. Prima della connessione reale: fissare trasporto/sicurezza, testare interoperabilità, compilare SDK device e provare su banco.
 
 ## Primo incremento completato
 
@@ -73,3 +73,22 @@ Verifica integrata e limiti in `shared/VERIFICATION_V0.2.md`. Hardware: `hardwar
 | Coordinatore | DEC-011 e tracciabilitàv0.2.6, policy sessioni/reset,8fixture log, sorgente volatile con cursori client indipendenti | 30 test Python e verifica integrata. ACKdiA non rimuove dati perB; nessun limite Ndi prodotto introdotto |
 
 Risultati e limiti in `shared/VERIFICATION_V0.3.md`; studio hardware in `hardware/usb_power/design_v01/DESIGN_REVIEW.md`. La proposta storica owner-unico non è più applicabile. Per la policy BLE non resta da chiedere una decisione: è già fissata da DEC-011.
+
+## Quarto incremento e dipendenze attuali
+
+| Filone | Risultato verificabile | Limite |
+|---|---|---|
+| APP-04 | Endpoint e transport framed condivisi fra config/storici, lease A/B/A, ricevuto/applicato distinti, perdita ACK e rilettura; refactor SwiftUI Pro e rendering reali | 42 test Swift prima di CloudKit, build simulatore; nessun BLE reale |
+| FW-04 | Pagine storici bounded fino a16 record,64 record volatile H, raw fino a64byte, ACK non distruttivo | 6 fixture /12 pagine C/Python, due client SQLite; nessuna partizione log flash |
+| FW-05 | Due settori4KiB simulati, CRC/marker finale, restore/revisioni/capability separati | 6 suite CTest con ASan/UBSan;24.653 interruzioni simulate, nessun driver flash reale |
+| Target ESP32-S3 | ESP-IDFv6.1:11 sorgenti core compilati, binario170624byte | Skeleton inerte, linker scarta core non invocato; niente sizing finale OTA/PSRAM |
+| HW-04 | Studio KiCad separato presence sensing,35 pin verificati, ERC0 | Leakage/soglie/temp/standby non qualificati; A0 invariato |
+| Integrazione |35 test Python,10 scambi RPC comuni,6 fixture di paginazione, controlli host CI | Non certifica hardware o sicurezza radio |
+
+DEC-013 approva Team ZDQFU74347, bundle `it.ale1x.autogauge` e container `iCloud.it.ale1x.autogauge`. Il tentativo automatico di provisioning Development fallisce per account team non disponibile in Xcode; il proprietario ha chiarito di non avere una membership Developer attiva, richiesta da Apple per CloudKit anche in sviluppo. Nessun abbonamento attivato. Lo sviluppo del codice CloudKit prosegue senza dichiarare una sync reale riuscita. Nessuna pubblicazione App Store.
+
+La review indipendente [FW05_REVIEW.md](reviews/FW05_REVIEW.md) non ha trovato nuovi P0/P1 riproducibili nella persistenza; esplicita letture degradate, stack e limiti del simulatore. [READINESS_AUDIT.md](reviews/READINESS_AUDIT.md) resta uno snapshot storico, da leggere insieme alle verifiche successive: non sostituisce i gate elettrici, meccanici e su veicolo.
+
+APP-05 conclude adapter CloudKit nativo/upload immutabile e outbox locale: suite totale53testSwift,11cloud con fakeDB. La review separata ha portato alla correzione del callback account obsoleto; nessuna fixture caricata. Membership/profilo mancanti bloccano live; download/restore remoto non implementati.
+
+FW-06 aggiunge FlowControl CTS/overflow host per risposte Service01 con le stesse guardieTX e relativi test: suite totale7/7CTest, build target aggiornata riuscita. Non è un driver o una prova di trasmissione reale. DEC-014 approva la UX nuovi telefoni/codice locale, da implementare in sicurezza senza owner unico o dipendenza cloud. Base corrente v0.2.8.

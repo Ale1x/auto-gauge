@@ -100,9 +100,10 @@ public struct HistoricalLogRecord: Codable, Equatable, Identifiable, Sendable {
     public var relativeTimeIT: String { "+\(monotonicMS.value / 1000) s · \(monotonicMS.value % 1000) ms dall’avvio" }
 }
 
-public struct LogLossInterval: Codable, Equatable, Sendable {
+public struct LogLossInterval: Codable, Equatable, Identifiable, Sendable {
     public let first: LogUInt64
     public let last: LogUInt64
+    public var id: String { "\(first.decimal)-\(last.decimal)" }
     public init(first: UInt64, last: UInt64) throws {
         guard first > 0, last >= first else { throw LogImportError.invalidPage }
         self.first = .init(first); self.last = .init(last)

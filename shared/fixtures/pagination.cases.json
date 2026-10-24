@@ -1,0 +1,850 @@
+[
+  {
+    "name": "overwritten_ring",
+    "session_id": "05050505050505050505050505050505",
+    "capacity": 4,
+    "first_sequence": "1",
+    "records": [
+      {
+        "sequence": "1",
+        "monotonic_ms": "0",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "0001"
+      },
+      {
+        "sequence": "2",
+        "monotonic_ms": "1000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "0001"
+      },
+      {
+        "sequence": "3",
+        "monotonic_ms": "2000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "0001"
+      },
+      {
+        "sequence": "4",
+        "monotonic_ms": "3000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "0001"
+      },
+      {
+        "sequence": "5",
+        "monotonic_ms": "4000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "0001"
+      },
+      {
+        "sequence": "6",
+        "monotonic_ms": "5000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "0001"
+      }
+    ],
+    "reads": [
+      {
+        "after_sequence": "0",
+        "limit": 2,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [
+            {
+              "sequence": "3",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "0001"
+            },
+            {
+              "sequence": "4",
+              "monotonic_ms": "3000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "0001"
+            }
+          ],
+          "lost": [
+            {
+              "first": "1",
+              "last": "2"
+            }
+          ]
+        }
+      },
+      {
+        "after_sequence": "4",
+        "limit": 16,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [
+            {
+              "sequence": "5",
+              "monotonic_ms": "4000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "0001"
+            },
+            {
+              "sequence": "6",
+              "monotonic_ms": "5000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "0001"
+            }
+          ],
+          "lost": []
+        }
+      },
+      {
+        "after_sequence": "6",
+        "limit": 16,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [],
+          "lost": []
+        }
+      },
+      {
+        "after_sequence": "0",
+        "limit": 2,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [
+            {
+              "sequence": "3",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "0001"
+            },
+            {
+              "sequence": "4",
+              "monotonic_ms": "3000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "0001"
+            }
+          ],
+          "lost": [
+            {
+              "first": "1",
+              "last": "2"
+            }
+          ]
+        }
+      }
+    ],
+    "acknowledgements": [
+      {
+        "through": "0",
+        "record_count": 4
+      },
+      {
+        "through": "4",
+        "record_count": 4
+      },
+      {
+        "through": "6",
+        "record_count": 4
+      },
+      {
+        "through": "0",
+        "record_count": 4
+      }
+    ]
+  },
+  {
+    "name": "maximum_raw_page",
+    "session_id": "05050505050505050505050505050505",
+    "capacity": 64,
+    "first_sequence": "1",
+    "records": [
+      {
+        "sequence": "1",
+        "monotonic_ms": "0",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "2",
+        "monotonic_ms": "1000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "3",
+        "monotonic_ms": "2000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "4",
+        "monotonic_ms": "3000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "5",
+        "monotonic_ms": "4000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "6",
+        "monotonic_ms": "5000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "7",
+        "monotonic_ms": "6000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "8",
+        "monotonic_ms": "7000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "9",
+        "monotonic_ms": "8000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "10",
+        "monotonic_ms": "9000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "11",
+        "monotonic_ms": "10000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "12",
+        "monotonic_ms": "11000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "13",
+        "monotonic_ms": "12000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "14",
+        "monotonic_ms": "13000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "15",
+        "monotonic_ms": "14000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "16",
+        "monotonic_ms": "15000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "17",
+        "monotonic_ms": "16000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "18",
+        "monotonic_ms": "17000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "19",
+        "monotonic_ms": "18000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      },
+      {
+        "sequence": "20",
+        "monotonic_ms": "19000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+      }
+    ],
+    "reads": [
+      {
+        "after_sequence": "0",
+        "limit": 16,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [
+            {
+              "sequence": "1",
+              "monotonic_ms": "0",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "2",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "3",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "4",
+              "monotonic_ms": "3000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "5",
+              "monotonic_ms": "4000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "6",
+              "monotonic_ms": "5000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "7",
+              "monotonic_ms": "6000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "8",
+              "monotonic_ms": "7000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "9",
+              "monotonic_ms": "8000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "10",
+              "monotonic_ms": "9000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "11",
+              "monotonic_ms": "10000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "12",
+              "monotonic_ms": "11000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "13",
+              "monotonic_ms": "12000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "14",
+              "monotonic_ms": "13000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "15",
+              "monotonic_ms": "14000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "16",
+              "monotonic_ms": "15000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            }
+          ],
+          "lost": []
+        }
+      },
+      {
+        "after_sequence": "10",
+        "limit": 16,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [
+            {
+              "sequence": "11",
+              "monotonic_ms": "10000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "12",
+              "monotonic_ms": "11000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "13",
+              "monotonic_ms": "12000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "14",
+              "monotonic_ms": "13000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "15",
+              "monotonic_ms": "14000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "16",
+              "monotonic_ms": "15000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "17",
+              "monotonic_ms": "16000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "18",
+              "monotonic_ms": "17000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "19",
+              "monotonic_ms": "18000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            },
+            {
+              "sequence": "20",
+              "monotonic_ms": "19000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+            }
+          ],
+          "lost": []
+        }
+      }
+    ],
+    "acknowledgements": [
+      {
+        "through": "0",
+        "record_count": 20
+      },
+      {
+        "through": "10",
+        "record_count": 20
+      }
+    ]
+  },
+  {
+    "name": "timeout_samples",
+    "session_id": "05050505050505050505050505050505",
+    "capacity": 4,
+    "first_sequence": "1",
+    "records": [
+      {
+        "sequence": "1",
+        "monotonic_ms": "0",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "timeout",
+        "raw_hex": ""
+      },
+      {
+        "sequence": "2",
+        "monotonic_ms": "1000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "timeout",
+        "raw_hex": ""
+      }
+    ],
+    "reads": [
+      {
+        "after_sequence": "0",
+        "limit": 16,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [
+            {
+              "sequence": "1",
+              "monotonic_ms": "0",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "timeout",
+              "raw_hex": ""
+            },
+            {
+              "sequence": "2",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "timeout",
+              "raw_hex": ""
+            }
+          ],
+          "lost": []
+        }
+      }
+    ],
+    "acknowledgements": [
+      {
+        "through": "0",
+        "record_count": 2
+      }
+    ]
+  },
+  {
+    "name": "beyond_double_precision",
+    "session_id": "05050505050505050505050505050505",
+    "capacity": 3,
+    "first_sequence": "9007199254740993",
+    "records": [
+      {
+        "sequence": "9007199254740993",
+        "monotonic_ms": "0",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "00"
+      },
+      {
+        "sequence": "9007199254740994",
+        "monotonic_ms": "1000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "00"
+      },
+      {
+        "sequence": "9007199254740995",
+        "monotonic_ms": "2000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "00"
+      }
+    ],
+    "reads": [
+      {
+        "after_sequence": "0",
+        "limit": 2,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [
+            {
+              "sequence": "9007199254740993",
+              "monotonic_ms": "0",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "00"
+            },
+            {
+              "sequence": "9007199254740994",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "00"
+            }
+          ],
+          "lost": [
+            {
+              "first": "1",
+              "last": "9007199254740992"
+            }
+          ]
+        }
+      },
+      {
+        "after_sequence": "9007199254740994",
+        "limit": 16,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [
+            {
+              "sequence": "9007199254740995",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "00"
+            }
+          ],
+          "lost": []
+        }
+      }
+    ],
+    "acknowledgements": [
+      {
+        "through": "0",
+        "record_count": 3
+      },
+      {
+        "through": "9007199254740994",
+        "record_count": 3
+      }
+    ]
+  },
+  {
+    "name": "uint64_terminal",
+    "session_id": "05050505050505050505050505050505",
+    "capacity": 3,
+    "first_sequence": "18446744073709551613",
+    "records": [
+      {
+        "sequence": "18446744073709551613",
+        "monotonic_ms": "0",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "00"
+      },
+      {
+        "sequence": "18446744073709551614",
+        "monotonic_ms": "1000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "00"
+      },
+      {
+        "sequence": "18446744073709551615",
+        "monotonic_ms": "2000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "00"
+      }
+    ],
+    "reads": [
+      {
+        "after_sequence": "0",
+        "limit": 16,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [
+            {
+              "sequence": "18446744073709551613",
+              "monotonic_ms": "0",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "00"
+            },
+            {
+              "sequence": "18446744073709551614",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "00"
+            },
+            {
+              "sequence": "18446744073709551615",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "00"
+            }
+          ],
+          "lost": [
+            {
+              "first": "1",
+              "last": "18446744073709551612"
+            }
+          ]
+        }
+      },
+      {
+        "after_sequence": "18446744073709551615",
+        "limit": 16,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [],
+          "lost": []
+        }
+      }
+    ],
+    "acknowledgements": [
+      {
+        "through": "0",
+        "record_count": 3
+      },
+      {
+        "through": "18446744073709551615",
+        "record_count": 3
+      }
+    ]
+  },
+  {
+    "name": "empty_source",
+    "session_id": "05050505050505050505050505050505",
+    "capacity": 4,
+    "first_sequence": "1",
+    "records": [],
+    "reads": [
+      {
+        "after_sequence": "0",
+        "limit": 16,
+        "page": {
+          "session_id": "05050505050505050505050505050505",
+          "records": [],
+          "lost": []
+        }
+      }
+    ],
+    "acknowledgements": [
+      {
+        "through": "0",
+        "record_count": 0
+      }
+    ]
+  }
+]

@@ -46,12 +46,13 @@ final class ConfigurationTests: XCTestCase {
     }
     func testInvalidSimulatedUploadPreservesPreviousConfig() async throws {
         let transport = SimulatedGaugeTransport()
-        let before = await transport.configuration()
+        try await transport.connect()
+        let before = try await transport.configuration()
         var invalid = before
         invalid.dashboards = []
         do { try await transport.apply(invalid); XCTFail("La configurazione non valida è stata accettata") }
         catch { }
-        let after = await transport.configuration()
+        let after = try await transport.configuration()
         XCTAssertEqual(before, after)
     }
     func testQuantizationCannotCreateInvalidRectangle() {

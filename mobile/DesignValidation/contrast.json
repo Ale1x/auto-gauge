@@ -1,0 +1,10 @@
+{
+  "light:GaugeAccent/GaugePanel": 7.8,
+  "light:GaugeAccent/GaugeCanvas": 8.33,
+  "light:GaugeWarning/GaugePanel": 7.82,
+  "light:GaugeWarning/GaugeCanvas": 8.35,
+  "dark:GaugeAccent/GaugePanel": 11.63,
+  "dark:GaugeAccent/GaugeCanvas": 13.01,
+  "dark:GaugeWarning/GaugePanel": 10.71,
+  "dark:GaugeWarning/GaugeCanvas": 11.97
+}

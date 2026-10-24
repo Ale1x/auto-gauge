@@ -5,7 +5,8 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
 add_library(gauge_core STATIC src/config.c src/can_policy.c src/log_queue.c src/session_clock.c
-  src/obd_decode.c src/isotp_rx.c src/scheduler.c src/connection.c)
+  src/obd_decode.c src/isotp_rx.c src/scheduler.c src/connection.c src/history.c
+  src/config_store.c src/flash_sim.c)
 target_include_directories(gauge_core PUBLIC include)
 target_compile_options(gauge_core PRIVATE -Wall -Wextra -Wpedantic -Werror)
 option(AG_SANITIZERS "Address/undefined-behavior sanitizer for host tests" ON)
@@ -36,3 +37,34 @@ add_executable(gauge_connection_tests tests/test_connection.c idf/main/hal_unimp
 target_link_libraries(gauge_connection_tests PRIVATE gauge_core)
 target_compile_options(gauge_connection_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
 add_test(NAME gauge_connection_tests COMMAND gauge_connection_tests)
+add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/history_fixture.h"
+  COMMAND ${Python3_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/tools/generate_history_fixture.py"
+    "${AG_SHARED}/pagination.cases.json" "${CMAKE_CURRENT_BINARY_DIR}/history_fixture.h"
+  DEPENDS tools/generate_history_fixture.py "${AG_SHARED}/pagination.cases.json"
+  VERBATIM)
+add_custom_target(ag_history_fixtures DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/history_fixture.h")
+foreach(history_target gauge_history_tests gauge_history_fixture_cli)
+  if(history_target STREQUAL "gauge_history_tests")
+    add_executable(${history_target} tests/test_history.c)
+  else()
+    add_executable(${history_target} tools/history_fixture_cli.c)
+  endif()
+  add_dependencies(${history_target} ag_history_fixtures)
+  target_include_directories(${history_target} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+  target_link_libraries(${history_target} PRIVATE gauge_core)
+  target_compile_options(${history_target} PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+endforeach()
+add_test(NAME gauge_history_tests COMMAND gauge_history_tests)
+add_test(NAME gauge_history_interop COMMAND ${Python3_EXECUTABLE}
+  "${CMAKE_CURRENT_SOURCE_DIR}/tools/check_history_interop.py"
+  --executable $<TARGET_FILE:gauge_history_fixture_cli>)
+set_tests_properties(gauge_history_interop PROPERTIES ENVIRONMENT "PYTHONDONTWRITEBYTECODE=1")
+add_executable(gauge_config_store_tests tests/test_config_store.c "${CMAKE_CURRENT_BINARY_DIR}/shared_fixture.h")
+target_include_directories(gauge_config_store_tests PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_libraries(gauge_config_store_tests PRIVATE gauge_core)
+target_compile_options(gauge_config_store_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_test(NAME gauge_config_store_tests COMMAND gauge_config_store_tests)
+add_executable(gauge_flow_control_tests tests/test_flow_control.c)
+target_link_libraries(gauge_flow_control_tests PRIVATE gauge_core)
+target_compile_options(gauge_flow_control_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_test(NAME gauge_flow_control_tests COMMAND gauge_flow_control_tests)

@@ -1,0 +1,21 @@
+name: Mobile build (manual)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mobile:
+    runs-on: macos-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+      - name: Generate native project and sample resources
+        run: python3 mobile/scripts/generate_project.py
+      - name: Swift model and transport tests
+        run: swift test --package-path mobile
+      - name: Unsigned simulator build
+        run: xcodebuild -quiet -project mobile/AutoGauge.xcodeproj -scheme AutoGauge -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build

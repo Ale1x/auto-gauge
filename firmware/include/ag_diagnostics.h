@@ -22,7 +22,8 @@ typedef enum {
     AG_ISOTP_IDLE = 0, AG_ISOTP_IGNORED, AG_ISOTP_WAITING, AG_ISOTP_COMPLETE,
     AG_ISOTP_MALFORMED, AG_ISOTP_SEQUENCE_ERROR, AG_ISOTP_OVERFLOW,
     AG_ISOTP_TIMEOUT, AG_ISOTP_CLOCK_REGRESSION, AG_ISOTP_UNSUPPORTED,
-    AG_ISOTP_BUSY, AG_ISOTP_NOT_INITIALIZED
+    AG_ISOTP_BUSY, AG_ISOTP_NOT_INITIALIZED, AG_ISOTP_FLOW_CONTROL_REQUIRED,
+    AG_ISOTP_SEPARATION_ERROR
 } ag_isotp_result_t;
 typedef struct {
     ag_can_profile_t profile;
@@ -30,15 +31,27 @@ typedef struct {
     uint64_t last_observed_ms, last_frame_ms;
     size_t expected_length, received_length;
     uint8_t next_sequence;
+    uint8_t fc_block_size, fc_stmin_ms, fc_count;
+    uint64_t fc_requested_ms, last_cf_ms;
     uint8_t payload[AG_ISOTP_CAPACITY];
     bool initialized, has_time, active, complete;
+    bool fc_enabled, fc_pending, fc_prepared, fc_overflow, has_cf;
 } ag_isotp_rx_t;
-/* Classic CAN + normal ISO-TP addressing only. Never sends FlowControl. */
+/* Classic CAN + normal ISO-TP addressing only. Default passive RX for tests.
+ * Optional FC mode below models Service01 response reception only. */
 bool ag_isotp_init(ag_isotp_rx_t *rx, const ag_can_profile_t *profile, uint32_t timeout_ms);
 void ag_isotp_reset(ag_isotp_rx_t *rx);
 ag_isotp_result_t ag_isotp_poll(ag_isotp_rx_t *rx, uint64_t now_ms);
 ag_isotp_result_t ag_isotp_feed(ag_isotp_rx_t *rx, const ag_can_frame_t *frame, uint64_t now_ms);
 bool ag_isotp_take(ag_isotp_rx_t *rx, uint8_t *payload, size_t capacity, size_t *length);
+/* Millisecond STmin 0..127 only; submillisecond/reserved encodings rejected.
+ * Configure while idle. BS=0 authorizes all remaining CFs in one block. */
+bool ag_isotp_enable_flow_control(ag_isotp_rx_t *, uint8_t block_size, uint8_t stmin_ms);
+bool ag_isotp_fc_prepare(ag_isotp_rx_t *, const ag_can_policy_t *, uint64_t now_ms);
+/* Rechecks live policy/time. Host handoff ONLY, never physical CAN transmission.
+ * A real adapter must confirm actual TX completion or reset RX on TX failure. */
+bool ag_isotp_fc_dispatch(ag_isotp_rx_t *, const ag_can_policy_t *, uint64_t now_ms,
+                          ag_can_frame_t *output);
 
 typedef enum { AG_UNIT_UNKNOWN = 0, AG_UNIT_PERCENT, AG_UNIT_CELSIUS,
                AG_UNIT_RPM, AG_UNIT_KM_PER_HOUR, AG_UNIT_GRAMS_PER_SECOND } ag_unit_t;
@@ -103,5 +116,8 @@ bool ag_scheduler_dispatch(ag_scheduler_t *scheduler, const ag_can_policy_t *pol
 ag_scheduler_rx_result_t ag_scheduler_receive(ag_scheduler_t *scheduler,
                                               const ag_can_policy_t *policy,
                                               const ag_can_frame_t *frame, uint64_t now_ms);
+bool ag_scheduler_fc_prepare(ag_scheduler_t *, const ag_can_policy_t *, uint64_t now_ms);
+bool ag_scheduler_fc_dispatch(ag_scheduler_t *, const ag_can_policy_t *, uint64_t now_ms,
+                              ag_can_frame_t *output);
 
 #endif

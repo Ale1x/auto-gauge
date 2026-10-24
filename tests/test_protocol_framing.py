@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -66,7 +67,7 @@ class FramingTests(unittest.TestCase):
 class CInteropTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cc=shutil.which('cc')
+        cc=shutil.which(os.environ.get('CC','cc'))
         if cc is None: raise unittest.SkipTest('C compiler unavailable; C interop not verified')
         cls.temp=tempfile.TemporaryDirectory(prefix='ag-frame-test-')
         cls.binary=Path(cls.temp.name)/'frame_codec'

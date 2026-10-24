@@ -14,3 +14,8 @@ output = ROOT/'mobile/Sources/GaugeCore/Resources/log-demo-pages.json'
 output.parent.mkdir(parents=True, exist_ok=True)
 output.write_text(json.dumps(dict(device_id='SIMULATO-001',pages=[loss_page,second_session,timeout_page]),indent=2)+'\n')
 print(output)
+
+rpc = json.loads((ROOT/'shared/fixtures/rpc.exchanges.json').read_text())
+rpc_output = output.parent/'rpc-demo-fixture.json'
+rpc_output.write_text(json.dumps({key:rpc[key] for key in ('initial_configuration','history_source')},indent=2)+'\n')
+print(rpc_output)

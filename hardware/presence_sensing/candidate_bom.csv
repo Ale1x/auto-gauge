@@ -1,0 +1,16 @@
+sheet,reference,value,MPN,footprint,datasheet,status,dnp,on_board,in_bom
+PRESENCE_SENSING_STUDY,R1,5.1M 1% 100ppm H,RC0603FR-075M1L,Resistor_SMD:R_0603_1608Metric,https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-075M1L,H / LEAKAGE MAX AND ENVIRONMENT OPEN,False,True,True
+PRESENCE_SENSING_STUDY,R2,1M 1% H,RC0603FR-071ML,Resistor_SMD:R_0603_1608Metric,https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-071ML,H / LEAKAGE MAX AND ENVIRONMENT OPEN,False,True,True
+PRESENCE_SENSING_STUDY,R3,6.8M 1% H,RC0603FR-076M8L,Resistor_SMD:R_0603_1608Metric,https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-076M8L,H / LEAKAGE MAX AND ENVIRONMENT OPEN,False,True,True
+PRESENCE_SENSING_STUDY,R4,6.8M 1% H,RC0603FR-076M8L,Resistor_SMD:R_0603_1608Metric,https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-076M8L,H / LEAKAGE MAX AND ENVIRONMENT OPEN,False,True,True
+PRESENCE_SENSING_STUDY,R5,1M 1% H,RC0603FR-071ML,Resistor_SMD:R_0603_1608Metric,https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-071ML,H / LEAKAGE MAX AND ENVIRONMENT OPEN,False,True,True
+PRESENCE_SENSING_STUDY,R6,5.1M 1% H,RC0603FR-075M1L,Resistor_SMD:R_0603_1608Metric,https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-075M1L,H / LEAKAGE MAX AND ENVIRONMENT OPEN,False,True,True
+PRESENCE_SENSING_STUDY,R7,1M 1% H,RC0603FR-071ML,Resistor_SMD:R_0603_1608Metric,https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-071ML,H / LEAKAGE MAX AND ENVIRONMENT OPEN,False,True,True
+PRESENCE_SENSING_STUDY,U1,TLV7042QDGKRQ1 / H,TLV7042QDGKRQ1,Package_SO:VSSOP-8_3x3mm_P0.65mm,https://www.ti.com/lit/ds/symlink/tlv7031-q1.pdf,H / UNBOUNDED LEAKAGE / NOT QUALIFIED,False,True,True
+PRESENCE_SENSING_STUDY,R8,10k OUTPUT PULLUP H,RC0603FR-0710KL,Resistor_SMD:R_0603_1608Metric,https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-0710KL,H / LEAKAGE MAX AND ENVIRONMENT OPEN,False,True,True
+PRESENCE_SENSING_STUDY,R9,10k OUTPUT PULLUP H,RC0603FR-0710KL,Resistor_SMD:R_0603_1608Metric,https://yageogroup.com/component-documentation/download/specsheet/RC0603FR-0710KL,H / LEAKAGE MAX AND ENVIRONMENT OPEN,False,True,True
+PRESENCE_SENSING_STUDY,C1,100nF 16V X7R H,GRM188R71C104KA01D,Capacitor_SMD:C_0603_1608Metric,https://ds.murata.co.jp/simsurfing/ceramic_capacitor.html,H / LOCAL VCC DECOUPLING,False,True,True
+PRESENCE_SENSING_STUDY,J1,BENCH INPUTS ONLY,TBD,,,CANDIDATE,False,False,False
+PRESENCE_SENSING_STUDY,J2,3V3 GPIO TEST ONLY,TBD,,,CANDIDATE,False,False,False
+PRESENCE_SENSING_STUDY,#FLG1,EXTERNAL BENCH SOURCE,TBD,,,CANDIDATE,False,False,False
+PRESENCE_SENSING_STUDY,#FLG2,EXTERNAL BENCH SOURCE,TBD,,,CANDIDATE,False,False,False

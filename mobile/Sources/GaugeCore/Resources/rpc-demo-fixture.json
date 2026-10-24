@@ -1,0 +1,76 @@
+{
+  "initial_configuration": {
+    "schema_version": 1,
+    "revision": 1,
+    "brightness": {
+      "mode": "manual",
+      "manual_percent": 50
+    },
+    "dashboards": [
+      {
+        "id": 1,
+        "widgets": [
+          {
+            "id": 1,
+            "pid": 12,
+            "rect": {
+              "x": 2500,
+              "y": 1500,
+              "width": 5000,
+              "height": 3000
+            }
+          },
+          {
+            "id": 2,
+            "pid": 5,
+            "rect": {
+              "x": 2500,
+              "y": 5500,
+              "width": 5000,
+              "height": 2500
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "history_source": {
+    "session_id": "05050505050505050505050505050505",
+    "capacity": 4,
+    "records": [
+      {
+        "sequence": "3",
+        "monotonic_ms": "2000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "1a10"
+      },
+      {
+        "sequence": "4",
+        "monotonic_ms": "3000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "1a10"
+      },
+      {
+        "sequence": "5",
+        "monotonic_ms": "4000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "1a10"
+      },
+      {
+        "sequence": "6",
+        "monotonic_ms": "5000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "1a10"
+      }
+    ],
+    "first_sequence": "3"
+  }
+}

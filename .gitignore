@@ -12,3 +12,9 @@ firmware/build-host/
 firmware/idf/build/
 firmware/idf/sdkconfig
 firmware/idf/sdkconfig.old
+.env
+.env.*
+!.env.example
+*.p8
+*.p12
+*.mobileprovision

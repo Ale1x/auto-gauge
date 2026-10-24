@@ -1,0 +1,1 @@
+(sym_lib_table (version 7) (lib (name "PresenceStudy") (type "KiCad") (uri "${KIPRJMOD}/PresenceStudy.kicad_sym") (options "") (descr "Isolated HW04 study cache")))

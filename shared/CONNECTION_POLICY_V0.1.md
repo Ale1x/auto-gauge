@@ -34,3 +34,7 @@ Tempi, gesto, debounce, anti-reset accidentale, protezione della memoria e atomi
 5. USB sola, evento remoto o conferma fisica non qualificata non avviano reset.
 6. Ogni fase di reset interrotta conserva lo stato bloccato al reboot; nessuna sessione precedente torna valida.
 7. Reset completo cancella solo stato locale secondo il contratto di manutenzione; il core non contiene API per eliminare il cloud.
+
+## Addendum DEC-014
+
+Per un nuovo telefono, la persona avvia «Associa telefono» sul gauge e inserisce su iPhone il codice casuale mostrato dal gauge. I telefoni già riconosciuti si riconnettono senza ripetere questo flusso; non serve reset né account cloud. La [proposta tecnica](BLE_ADMISSION_PROPOSAL.md) registra limiti di cache e verifiche ancora necessarie. Non è una prova di sicurezza BLE già operativa.

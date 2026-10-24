@@ -1,0 +1,167 @@
+{
+  "generated_utc": "2026-10-24T12:31:57.819375+00:00",
+  "status": "ESP32S3_BUILD_SUCCESS_NO_DEVICE_RUN",
+  "target": "esp32s3",
+  "sdk_tag": "v6.1",
+  "sdk_commit": "fff9895c82d744c7237be8847347bdd1b07c6643",
+  "compiler": "xtensa-esp-elf-gcc (crosstool-NG esp-15.2.0_20251204) 15.2.0",
+  "python": "Python 3.14.9",
+  "configuration": {
+    "CONFIG_IDF_TARGET": "esp32s3",
+    "CONFIG_ESPTOOLPY_FLASHSIZE": "2MB",
+    "CONFIG_PARTITION_TABLE_FILENAME": "partitions_singleapp.csv",
+    "CONFIG_PARTITION_TABLE_SINGLE_APP": "y",
+    "CONFIG_PARTITION_TABLE_TWO_OTA": "n",
+    "CONFIG_SPIRAM": "n",
+    "CONFIG_BT_ENABLED": "n",
+    "CONFIG_ESP_WIFI_ENABLED": "y",
+    "CONFIG_SECURE_BOOT": "n",
+    "CONFIG_FLASH_ENCRYPTION_ENABLED": "n"
+  },
+  "artifacts": {
+    "auto_gauge_safe_skeleton.bin": {
+      "bytes": 170624,
+      "sha256": "67b97b8185620e5b38378ced5da270d1f7c6c950926077da08e8e0bc54cc3dc4"
+    },
+    "auto_gauge_safe_skeleton.elf": {
+      "bytes": 3783936,
+      "sha256": "512f78ade3d6d0b1078e50342430f7aa847df6dc09c20c88dd16f561b1eedbf9"
+    },
+    "bootloader/bootloader.bin": {
+      "bytes": 21120,
+      "sha256": "62aa914e2d24be9d2a458ecff1809830cfc98ef52e8b8ba6b5b2164a3e13697a"
+    },
+    "partition_table/partition-table.bin": {
+      "bytes": 3072,
+      "sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820"
+    }
+  },
+  "memory": {
+    "version": "1.2",
+    "total_size": 170512,
+    "layout": [
+      {
+        "name": "Flash Code",
+        "total": 0,
+        "used": 69458,
+        "free": 0,
+        "parts": {
+          ".text": {
+            "size": 69458
+          }
+        }
+      },
+      {
+        "name": "DIRAM",
+        "total": 341760,
+        "used": 48402,
+        "free": 293358,
+        "parts": {
+          ".text": {
+            "size": 33079
+          },
+          ".data": {
+            "size": 12699
+          },
+          ".bss": {
+            "size": 2624
+          }
+        }
+      },
+      {
+        "name": "Flash Data",
+        "total": 0,
+        "used": 38856,
+        "free": 0,
+        "parts": {
+          ".rodata": {
+            "size": 38584
+          },
+          ".appdesc": {
+            "size": 256
+          },
+          ".tdata": {
+            "size": 16
+          }
+        }
+      },
+      {
+        "name": "IRAM",
+        "total": 16384,
+        "used": 16384,
+        "free": 0,
+        "parts": {
+          ".text": {
+            "size": 15356
+          },
+          ".vectors": {
+            "size": 1028
+          }
+        }
+      },
+      {
+        "name": "RTC SLOW",
+        "total": 8192,
+        "used": 36,
+        "free": 8156,
+        "parts": {
+          ".force_slow": {
+            "size": 36
+          }
+        }
+      },
+      {
+        "name": "RTC FAST",
+        "total": 8192,
+        "used": 24,
+        "free": 8168,
+        "parts": {
+          ".rtc_reserved": {
+            "size": 24
+          }
+        }
+      }
+    ]
+  },
+  "compiled_core_sources": [
+    "firmware/src/can_policy.c",
+    "firmware/src/config.c",
+    "firmware/src/config_store.c",
+    "firmware/src/connection.c",
+    "firmware/src/flash_sim.c",
+    "firmware/src/history.c",
+    "firmware/src/isotp_rx.c",
+    "firmware/src/log_queue.c",
+    "firmware/src/obd_decode.c",
+    "firmware/src/scheduler.c",
+    "firmware/src/session_clock.c"
+  ],
+  "linked_ag_symbols": [
+    "ag_can_policy_init",
+    "ag_can_tx_allowed",
+    "ag_hal_read_power",
+    "ag_session_clock_init"
+  ],
+  "radio_init_symbols_present": {
+    "esp_wifi_init": false,
+    "esp_bt_controller_init": false,
+    "nimble_port_init": false
+  },
+  "main_sha256": "c6403b15e74a49a651c39ddf4c55063d2d1e5c277a1f8b95edeb70c077258e23",
+  "hal_sha256": "cfccabdb003a68407bac9c0528fc6922b049a2152ef01d3fc830bb07bba69de7",
+  "actions": {
+    "build": "EXECUTED",
+    "size": "EXECUTED",
+    "flash": "NOT_EXECUTED",
+    "efuse": "NOT_EXECUTED",
+    "radio_or_hardware_test": "NOT_EXECUTED"
+  },
+  "limitations": [
+    "Inert skeleton; many compiled core functions discarded by linker GC",
+    "No panel driver/assets, operational BLE/TWAI, persistent logging or OTA image",
+    "Factory single-app 2MB development configuration; not the candidate N16R8 memory map",
+    "Secure boot/encryption not provisioned; binary is not a production/recovery release",
+    "SDK Wi-Fi capability flag is not proof of runtime radio initialization",
+    "No OTA/PSRAM sizing or hardware compatibility proven"
+  ]
+}

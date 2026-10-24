@@ -17,18 +17,6 @@ public protocol GaugeTransport: Sendable {
     func apply(_ configuration: GaugeConfiguration) async throws
 }
 
-/// This local actor does not instantiate CoreBluetooth or perform network I/O.
-public actor SimulatedGaugeTransport: GaugeTransport {
-    private var current = DemoData.configuration
-    public init() {}
-    public func supportedPIDs() -> [PIDDescriptor] { DemoData.catalog }
-    public func configuration() -> GaugeConfiguration { current }
-    public func apply(_ configuration: GaugeConfiguration) throws {
-        try ConfigurationValidator.validate(configuration, catalog: DemoData.catalog)
-        current = configuration
-    }
-}
-
 /// Real transport deliberately refuses access until the security protocol is implemented.
 public struct UnconfiguredGaugeTransport: GaugeTransport {
     public init() {}

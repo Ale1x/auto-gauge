@@ -1,8 +1,8 @@
-# Gate K0 — revisione 0.13, 2026-10-24
+# Gate K0 — revisione 0.14, 2026-10-24
 
 **Esito: NON SUPERATO / BLOCCATO.** Questo è il primo rapporto di fattibilità, non un design freeze. DEC-009 autorizza ad avanzare allo schema di revisione con blocker aperti: hardware/auto_gauge.kicad_sch, revisioneA0. K0 non viene dichiarato superato. Nessuno schematico definitivo, PCB, routing o ordine avviato.
 
-Base requisiti: SPEC_V0.2.md + DECISIONS.md fino a DEC-011 (v0.2.6). Il proprietario autorizza un piccolo aumento del diametro esterno oltre 44,45 mm. Ø52 mm è ipotesi di studio; massimo finale, tolleranze e inviluppo del plug restano aperti. PR-009 è invariato. DEC-011 consente N client Bluetooth in momenti diversi con una sola connessione attiva; nessun reset per cambiare telefono.
+Base requisiti: SPEC_V0.2.md + DECISIONS.md fino a DEC-014 (v0.2.8). Il proprietario autorizza un piccolo aumento del diametro esterno oltre 44,45 mm. Ø52 mm è ipotesi di studio; massimo finale, tolleranze e inviluppo del plug restano aperti. PR-009 è invariato. DEC-011 consente N client Bluetooth in momenti diversi con una sola connessione attiva; nessun reset per cambiare telefono. DEC-012 sceglie iCloud/CloudKit senza account email separato; DEC-013 approva team e identificatori Apple per lo sviluppo, senza pubblicazione App Store. DEC-014 approva consenso locale/codice per i telefoni nuovi e riconnessione di quelli riconosciuti.
 
 ## Esito degli otto task correnti
 

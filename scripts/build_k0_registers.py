@@ -31,7 +31,7 @@ pr = {
 18: ('T-013', 'firmware autonomo / storage', 'DA IMPLEMENTARE', 'O-14 influenza storage, non autonomia UI'),
 19: ('T-015', 'BLE / bootloader / flash', 'CANDIDATO', 'E02/E08; BLE transport e rollback non implementati'),
 20: ('T-014 + test connessioni sequenziali/concorrenza', 'BLE sessioni / app', 'VINCOLO APPROVATO; IMPLEMENTAZIONE APERTA', 'DEC-011: N client in sequenza, 1 connessione attiva; nessun reset per cambiare telefono'),
-21: ('test app/account/offline', 'app Swift / backend', 'APP SIMULATA; CLOUD APERTO', 'mobile/README.md; build iOS/testcore; O-13/O-23 ancora aperte'),
+21: ('test app/account/offline', 'app Swift / CloudKit', 'PROVIDER APPROVATO; INTEGRAZIONE APERTA', 'DEC-012:iCloud+CloudKit senza account email separato; configurazione Apple/prove live ancora aperte'),
 22: ('T-016', 'storage / BLE log / app', 'PARZIALMENTE DEFINITO', 'DEC-004:buffer locale limitato; LOGGING_K0.md, retention aperta'),
 23: ('T-011 + editor', 'schema config / UI / app', 'EDITOR PROVVISORIO IMPLEMENTATO', 'mobile/Sources/GaugeCore/Editing.swift; grigliaH, O-10 non congelata, nessuna UI live'),
 24: ('T-009', 'scheduler / CAN', 'PARZIALE SU HOST; PRESTAZIONI APERTE', 'firmware/src/scheduler.c; una transazione, timeout/round-robin; nessuna garanzia5Hz'),
@@ -51,7 +51,7 @@ opened = {
 10: ('decisione owner + T-011', 'layout editor / schema', 'APERTA P1', 'Nessun modello approvato'),
 11: ('decisione owner + test cambio auto', 'catalogo / UI', 'APERTA P2', 'PR-025 resta obbligatorio per dato indisponibile'),
 12: ('decisione owner + T-012', 'ALS / brightness', 'APERTA P2', 'Curva, priorità e limiti da fissare'),
-13: ('requisiti backend/app', 'cloud / account', 'APERTA P1', 'Nessuna scelta provider'),
+13: ('test CloudKit/account/offline', 'CloudKit / account iCloud', 'PROVIDER APPROVATO; POLICY/PROVE APERTE', 'DEC-012:account iCloud senza account email separato; container/team e policy dati da completare'),
 14: ('limiti buffer + T-016', 'storage / memoria / log', 'POLICY APPROVATA; SIZING/PROVA APERTI', 'DEC-004 + DEC-006; CAPACITY_K0.md: sensibilità OTA/record, build e prove mancanti'),
 15: ('decisione owner + T-015', 'bootloader / distribuzione firmware', 'APERTA P2', 'E08 solo capacità piattaforma'),
 16: ('datasheet corretto + campione + offerta', '05_AMOLED_TOUCH / meccanica', 'APERTA P0', 'PANEL_SOURCING_K0.md: tre candidati, nessuno congelabile'),
@@ -68,8 +68,8 @@ opened = {
 def esc(s):
     return s.replace('|', '\\|').replace('\n', ' ')
 
-lines = ['# Tracciabilità K0 — revisione 0.6', '',
-         'Data 2026-10-24. Fonte normativa SPEC_V0.2.md + DECISIONS.md (requisiti risultanti v0.2.6).',
+lines = ['# Tracciabilità K0 — revisione 0.7', '',
+         'Data 2026-10-24. Fonte normativa SPEC_V0.2.md + DECISIONS.md (requisiti risultanti v0.2.8).',
          'Generato da scripts/build_k0_registers.py. Sheet implementati nella revisione A0 in hardware/ (DEC-009); progetto non definitivo, blocker aperti.',
          '«CANDIDATO» non significa selezionato o validato. Nessun test T è stato eseguito.', '',
          '| ID | Requisito / decisione | Origine | Verifica prevista | Componente / sheet correlato | Stato | Prova disponibile / mancante |',
@@ -90,14 +90,18 @@ for key, description in reqs:
     if key == 'PR-013':
         description += ' Addendum DEC-002: piccolo aumento del diametro esterno autorizzato; massimo finale da definire.'
     if key == 'PR-020':
-        description = 'DEC-011 sostituisce la formulazione originaria: N client Bluetooth utilizzabili in momenti diversi, una sola connessione attiva; nessun reset richiesto per cambiare telefono.'
+        description = 'DEC-011 sostituisce la formulazione originaria: N client Bluetooth utilizzabili in momenti diversi, una sola connessione attiva; nessun reset richiesto per cambiare telefono. DEC-014: consenso locale e codice solo per telefoni nuovi, riconnessione dei riconosciuti.'
+    if key == 'PR-021':
+        description += ' Addendum DEC-012: account iCloud del telefono e CloudKit, senza account email separato.'
     test, area, state, proof = pr[int(key[3:])]
-    lines.append('| ' + ' | '.join(map(esc, [key, description, 'SPEC §1.2 + DECISIONS.md' if key in ('PR-003','PR-006','PR-007','PR-008','PR-013','PR-020','PR-022') else 'SPEC §1.2', test, area, state, proof])) + ' |')
+    lines.append('| ' + ' | '.join(map(esc, [key, description, 'SPEC §1.2 + DECISIONS.md' if key in ('PR-003','PR-006','PR-007','PR-008','PR-013','PR-020','PR-021','PR-022') else 'SPEC §1.2', test, area, state, proof])) + ' |')
 questions = re.findall(r'^\| (O-\d{2}) \| (P[012]) \| (.*?) \|$', spec, re.M)
 assert len(questions) == 24
 for key, priority, description in questions:
     if key == 'O-08':
-        description = 'DEC-011: più client BLE in sequenza, una connessione attiva; reset locale di manutenzione separato. Autenticazione e prove da completare.'
+        description = 'DEC-011/014: più client BLE in sequenza, una connessione attiva; codice locale per nuovi telefoni e riconnessione dei riconosciuti. Reset manutenzione separato; implementazione e prove da completare.'
+    if key == 'O-13':
+        description = 'DEC-012: account iCloud e CloudKit scelti; container/firma, offline, retention e gestione dati da completare.'
     test, area, state, proof = opened[int(key[2:])]
     lines.append('| ' + ' | '.join(map(esc, [key, description, f'SPEC §11 ({priority})', test, area, state, proof])) + ' |')
 lines.append('| O-25 | Supporto nominale 24 V escluso V1 | SPEC cronologia v0.2 e §11 | Revisione requisiti e BOM | power / scope | CHIUSA DAL PROPRIETARIO | SPEC v0.2; transitori >24 V restano da proteggere |')

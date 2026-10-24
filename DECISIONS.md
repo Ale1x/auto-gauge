@@ -74,3 +74,27 @@ La precisazione supera la formulazione originaria di PR-020 e le proposte tecnic
 Decisione precedente mantenuta nel suo ambito corretto: il proprietario ha scelto «Reset fisico via USB/pulsanti, senza autorizzazione cloud» alla domanda che specificava la cancellazione di credenziali, configurazione e log locali del gauge, senza cancellare gli storici cloud. Tale reset rimane una **procedura di manutenzione/factory reset separata**, non il meccanismo necessario per cambiare telefono. La scelta non esegue alcuna cancellazione adesso e non definisce tempi/gesto, circuiti o provisioning.
 
 O-08 è risolta per il vincolo di connessione e la natura locale del reset; implementazione, autenticazione e prove restano aperte. Requisiti risultanti v0.2.6; SPEC_V0.2.md è conservata invariata come fonte originaria. Nessuna approvazione hardware, produzione o attivazione di un trasporto reale.
+
+## DEC-012 — 2026-10-24 — account iCloud e CloudKit
+
+Origine: alla domanda sul modello di account/cloud il proprietario sceglie «Account iCloud del telefono + CloudKit, senza account email separato».
+
+PR-021 usa l'account iCloud dell'iPhone e CloudKit per la sincronizzazione; non si crea un account email/password distinto né un backend Supabase. Il gauge resta autonomo senza telefono/cloud. DEC-011 resta invariata: più client utilizzabili in sequenza e una sola connessione BLE attiva, senza owner unico del gauge imposto dall'account cloud.
+
+O-13 è risolta per provider e identità account. Container, team/firma Apple e ambiente devono essere configurati prima delle prove live; retention, cancellazione/esportazione, offline e protezione dati vanno ancora definite/verificate. La scelta non autorizza costi, pubblicazione dell'app, provisioning irreversibile o upload di fixture nel database reale. Requisiti risultanti v0.2.7; SPEC originaria conservata invariata.
+
+## DEC-013 — 2026-10-24 — identificatori Apple di sviluppo
+
+Origine: il proprietario conferma «Usa il team ZDQFU74347 e i nuovi identificatori proposti» alla domanda che indicava Team, Bundle ID e container e specificava l'assenza di pubblicazione App Store.
+
+Configurazione di sviluppo autorizzata: team `ZDQFU74347`, Bundle ID `it.ale1x.autogauge`, container `iCloud.it.ale1x.autogauge`, ambiente iniziale Development e database privato dell'account iCloud. È autorizzata la creazione/configurazione delle risorse Apple relative a questi identificatori tramite l'account già disponibile, se accessibile; nessuna pubblicazione App Store, nuovo contratto, costo o cambio di abbonamento. Credenziali e chiavi non vengono inserite nel repository. Un'eventuale richiesta Apple di login/consenso non disponibile richiede l'intervento del proprietario.
+
+Questa è un'autorizzazione operativa, non un'esecuzione già avvenuta o un esito di sync live. Requisiti funzionali invariati v0.2.7.
+
+## DEC-014 — 2026-10-24 — autorizzazione locale dei nuovi telefoni
+
+Origine: il proprietario approva «codice solo per nuovi telefoni» alla proposta di aprire «Associa telefono» sul display del gauge, mostrare un codice casuale e inserirlo su iPhone.
+
+Il nuovo telefono richiede questo consenso locale e codice; i telefoni già riconosciuti si riconnettono senza ripeterlo. DEC-011 resta invariata: più telefoni sequenziali, una connessione attiva, nessun owner unico o reset per cambiare telefono. Il pairing non richiede iCloud o autorizzazione cloud. Il reset fisico USB/pulsanti resta manutenzione separata.
+
+Il flusso UX è fissato; tecnologia LE Secure Connections/passkey, cache dei bond, durata della finestra, rate limit, gesto menu e revoca sono dettagli da implementare/verificare in `shared/BLE_ADMISSION_PROPOSAL.md`. Non si attivano radio, chiavi o accesso alla vettura per effetto della decisione. Requisiti risultanti v0.2.8; SPEC originaria conservata invariata.

@@ -1,0 +1,469 @@
+{
+  "initial_configuration": {
+    "schema_version": 1,
+    "revision": 1,
+    "brightness": {
+      "mode": "manual",
+      "manual_percent": 50
+    },
+    "dashboards": [
+      {
+        "id": 1,
+        "widgets": [
+          {
+            "id": 1,
+            "pid": 12,
+            "rect": {
+              "x": 2500,
+              "y": 1500,
+              "width": 5000,
+              "height": 3000
+            }
+          },
+          {
+            "id": 2,
+            "pid": 5,
+            "rect": {
+              "x": 2500,
+              "y": 5500,
+              "width": 5000,
+              "height": 2500
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "history_source": {
+    "session_id": "05050505050505050505050505050505",
+    "capacity": 4,
+    "records": [
+      {
+        "sequence": "3",
+        "monotonic_ms": "2000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "1a10"
+      },
+      {
+        "sequence": "4",
+        "monotonic_ms": "3000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "1a10"
+      },
+      {
+        "sequence": "5",
+        "monotonic_ms": "4000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "1a10"
+      },
+      {
+        "sequence": "6",
+        "monotonic_ms": "5000",
+        "pid": 12,
+        "ecu_source": 2024,
+        "status": "valid",
+        "raw_hex": "1a10"
+      }
+    ],
+    "first_sequence": "3"
+  },
+  "exchanges": [
+    {
+      "request_id": 1,
+      "request": {
+        "op": "hello"
+      },
+      "responses": [
+        {
+          "simulation": true,
+          "op": "hello",
+          "device_id": "SIMULATO-001",
+          "protocol_version": 1,
+          "supported_service01_pids": [
+            4,
+            5,
+            12,
+            13,
+            15,
+            16,
+            17
+          ],
+          "authenticated": false
+        }
+      ]
+    },
+    {
+      "request_id": 2,
+      "request": {
+        "op": "config.get"
+      },
+      "responses": [
+        {
+          "simulation": true,
+          "phase": "current",
+          "configuration": {
+            "schema_version": 1,
+            "revision": 1,
+            "brightness": {
+              "mode": "manual",
+              "manual_percent": 50
+            },
+            "dashboards": [
+              {
+                "id": 1,
+                "widgets": [
+                  {
+                    "id": 1,
+                    "pid": 12,
+                    "rect": {
+                      "x": 2500,
+                      "y": 1500,
+                      "width": 5000,
+                      "height": 3000
+                    }
+                  },
+                  {
+                    "id": 2,
+                    "pid": 5,
+                    "rect": {
+                      "x": 2500,
+                      "y": 5500,
+                      "width": 5000,
+                      "height": 2500
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "persistence": "volatile"
+        }
+      ]
+    },
+    {
+      "request_id": 3,
+      "request": {
+        "op": "config.validate",
+        "configuration": {
+          "schema_version": 1,
+          "revision": 1,
+          "brightness": {
+            "mode": "manual",
+            "manual_percent": 50
+          },
+          "dashboards": [
+            {
+              "id": 1,
+              "widgets": [
+                {
+                  "id": 1,
+                  "pid": 12,
+                  "rect": {
+                    "x": 2500,
+                    "y": 1500,
+                    "width": 5000,
+                    "height": 3000
+                  }
+                },
+                {
+                  "id": 2,
+                  "pid": 5,
+                  "rect": {
+                    "x": 2500,
+                    "y": 5500,
+                    "width": 5000,
+                    "height": 2500
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "responses": [
+        {
+          "simulation": true,
+          "phase": "validated"
+        }
+      ]
+    },
+    {
+      "request_id": 4,
+      "request": {
+        "op": "config.apply",
+        "configuration": {
+          "schema_version": 1,
+          "revision": 2,
+          "brightness": {
+            "mode": "manual",
+            "manual_percent": 50
+          },
+          "dashboards": [
+            {
+              "id": 1,
+              "widgets": [
+                {
+                  "id": 1,
+                  "pid": 12,
+                  "rect": {
+                    "x": 2500,
+                    "y": 1500,
+                    "width": 5000,
+                    "height": 3000
+                  }
+                },
+                {
+                  "id": 2,
+                  "pid": 5,
+                  "rect": {
+                    "x": 2500,
+                    "y": 5500,
+                    "width": 5000,
+                    "height": 2500
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "expected_revision": 1
+      },
+      "responses": [
+        {
+          "simulation": true,
+          "phase": "received"
+        },
+        {
+          "simulation": true,
+          "phase": "applied",
+          "applied_revision": 2,
+          "persistence": "volatile"
+        }
+      ]
+    },
+    {
+      "request_id": 5,
+      "request": {
+        "op": "config.get"
+      },
+      "responses": [
+        {
+          "simulation": true,
+          "phase": "current",
+          "configuration": {
+            "schema_version": 1,
+            "revision": 2,
+            "brightness": {
+              "mode": "manual",
+              "manual_percent": 50
+            },
+            "dashboards": [
+              {
+                "id": 1,
+                "widgets": [
+                  {
+                    "id": 1,
+                    "pid": 12,
+                    "rect": {
+                      "x": 2500,
+                      "y": 1500,
+                      "width": 5000,
+                      "height": 3000
+                    }
+                  },
+                  {
+                    "id": 2,
+                    "pid": 5,
+                    "rect": {
+                      "x": 2500,
+                      "y": 5500,
+                      "width": 5000,
+                      "height": 2500
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "persistence": "volatile"
+        }
+      ]
+    },
+    {
+      "request_id": 6,
+      "request": {
+        "op": "config.apply",
+        "configuration": {
+          "schema_version": 1,
+          "revision": 2,
+          "brightness": {
+            "mode": "manual",
+            "manual_percent": 50
+          },
+          "dashboards": [
+            {
+              "id": 1,
+              "widgets": [
+                {
+                  "id": 1,
+                  "pid": 12,
+                  "rect": {
+                    "x": 2500,
+                    "y": 1500,
+                    "width": 5000,
+                    "height": 3000
+                  }
+                },
+                {
+                  "id": 2,
+                  "pid": 5,
+                  "rect": {
+                    "x": 2500,
+                    "y": 5500,
+                    "width": 5000,
+                    "height": 2500
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "expected_revision": 1
+      },
+      "responses": [
+        {
+          "simulation": true,
+          "phase": "received"
+        },
+        {
+          "simulation": true,
+          "phase": "rejected",
+          "error": "revision_conflict"
+        }
+      ]
+    },
+    {
+      "request_id": 7,
+      "request": {
+        "op": "logs.read",
+        "session_id": "05050505050505050505050505050505",
+        "after_sequence": "0",
+        "limit": 2
+      },
+      "responses": [
+        {
+          "simulation": true,
+          "op": "logs.read",
+          "page": {
+            "session_id": "05050505050505050505050505050505",
+            "records": [
+              {
+                "sequence": "3",
+                "monotonic_ms": "2000",
+                "pid": 12,
+                "ecu_source": 2024,
+                "status": "valid",
+                "raw_hex": "1a10"
+              },
+              {
+                "sequence": "4",
+                "monotonic_ms": "3000",
+                "pid": 12,
+                "ecu_source": 2024,
+                "status": "valid",
+                "raw_hex": "1a10"
+              }
+            ],
+            "lost": [
+              {
+                "first": "1",
+                "last": "2"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "request_id": 8,
+      "request": {
+        "op": "logs.ack",
+        "session_id": "05050505050505050505050505050505",
+        "acknowledged_through": "4"
+      },
+      "responses": [
+        {
+          "simulation": true,
+          "op": "logs.ack",
+          "session_id": "05050505050505050505050505050505",
+          "acknowledged_through": "4",
+          "source_records_deleted": false
+        }
+      ]
+    },
+    {
+      "request_id": 9,
+      "request": {
+        "op": "logs.read",
+        "session_id": "05050505050505050505050505050505",
+        "after_sequence": "0",
+        "limit": 2
+      },
+      "responses": [
+        {
+          "simulation": true,
+          "op": "logs.read",
+          "page": {
+            "session_id": "05050505050505050505050505050505",
+            "records": [
+              {
+                "sequence": "3",
+                "monotonic_ms": "2000",
+                "pid": 12,
+                "ecu_source": 2024,
+                "status": "valid",
+                "raw_hex": "1a10"
+              },
+              {
+                "sequence": "4",
+                "monotonic_ms": "3000",
+                "pid": 12,
+                "ecu_source": 2024,
+                "status": "valid",
+                "raw_hex": "1a10"
+              }
+            ],
+            "lost": [
+              {
+                "first": "1",
+                "last": "2"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "request_id": 10,
+      "request": {
+        "op": "logs.read",
+        "session_id": "06060606060606060606060606060606",
+        "after_sequence": "0",
+        "limit": 16
+      },
+      "responses": [
+        {
+          "simulation": true,
+          "phase": "rejected",
+          "error": "session_mismatch"
+        }
+      ]
+    }
+  ]
+}

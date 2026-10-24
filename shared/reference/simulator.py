@@ -6,6 +6,7 @@ import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'scripts'))
 from check_shared_contract import validate
 from framing import Frame, decode, encode
+from log_source import LogPageSource
 
 
 def reject_duplicate_keys(pairs):
@@ -27,10 +28,12 @@ def normalized_configuration(config):
 
 class DeviceSimulator:
     """Config changes affect only this explicitly simulated in-memory object."""
-    def __init__(self,configuration):
+    def __init__(self,configuration,log_source=None):
         if not validate(configuration):raise ValueError('Invalid initial configuration')
         self.configuration=normalized_configuration(configuration)
         self.supported={4,5,12,13,15,16,17}
+        if log_source is not None and not isinstance(log_source,LogPageSource):raise ValueError('Invalid history source')
+        self.log_source=log_source
 
     def handle(self,packet):
         frame=decode(packet)
@@ -50,6 +53,19 @@ class DeviceSimulator:
                                supported_service01_pids=sorted(self.supported),authenticated=False))]
         if operation=='config.get':
             return [reply(dict(phase='current',configuration=self.configuration,persistence='volatile'))]
+        if operation in ('logs.read','logs.ack'):
+            if self.log_source is None:return [reply(dict(phase='rejected',error='history_unavailable'))]
+            if obj.get('session_id')!=self.log_source.session_id:
+                return [reply(dict(phase='rejected',error='session_mismatch'))]
+            try:
+                if operation=='logs.read':
+                    # Reserve the exact envelope length in the framing budget.
+                    overhead=len(json.dumps(dict(simulation=True,op='logs.read',page={}),separators=(',',':')).encode())-2
+                    page=self.log_source.read_page(obj.get('after_sequence'),obj.get('limit',16),4096-overhead)
+                    return [reply(dict(op='logs.read',page=page))]
+                through=self.log_source.acknowledge(obj['session_id'],obj.get('acknowledged_through'))
+                return [reply(dict(op='logs.ack',session_id=obj['session_id'],acknowledged_through=str(through),source_records_deleted=False))]
+            except ValueError:return [reply(dict(phase='rejected',error='invalid_history_request'))]
         if operation in ('config.validate','config.apply'):
             responses=[]
             if operation=='config.apply':responses.append(reply(dict(phase='received')))

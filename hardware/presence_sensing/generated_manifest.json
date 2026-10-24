@@ -1,0 +1,16 @@
+{
+  "scripts/design_presence_sensing.py": "46daf780a9c8e0f4ec774943aca56729d730be7b1ab05b0fb25cb7951191b41f",
+  "scripts/generate_review_schematic.py": "ee5b048025e92c5edd51ce361f1659a39f84c8196cd599234c9b7faad4ff05a6",
+  "hardware/presence_sensing/candidate_bom.csv": "3359cc3b027a8bdc158274ef2c582922926b5b414f4969b0ee8d0bdc2acb0e94",
+  "hardware/presence_sensing/study_pin_matrix.csv": "6e37efdbf652605450de458f8bacd128b777aeb063ff5804de2ff2faf666d6ce",
+  "hardware/presence_sensing/threshold_sensitivity.csv": "f5fd954c31f63060d17950fe3e45c1c9ba028d80ef3d04197931ba79c334e4de",
+  "hardware/presence_sensing/presence_sensing_study.kicad_sch": "c751768252af119d6fb9ca7be6185893219b481163121ef86c36c62c3b004916",
+  "hardware/presence_sensing/study.net.xml": "4b5c660e1b8ce40deeb025bd3d3b1e945eed67a5e3427ae59b9f052f831cd62e",
+  "hardware/presence_sensing/erc.json": "dca99c05d7d16adbe96476836852ed31ef02a0e3fd8bafad2c27fba7f4ca74dd",
+  "hardware/presence_sensing/sources/RC0603FR-075M1L.pdf": "7f84cee251eb5f7c02a713cf3040ebc0655cc2a82e011b71f6f2c1e7d7dc40c5",
+  "hardware/presence_sensing/sources/tps3700-q1.pdf": "26a516f57787fbc1ac88e57f3f29347566047f6675b5a1d704d7d527101d943d",
+  "hardware/presence_sensing/sources/RC0603FR-076M8L.pdf": "9360f10a3ba7201e619541412f8073ae3b5a49bad1448387d61c22a420b94f83",
+  "hardware/presence_sensing/sources/RC0603FR-071ML.pdf": "df6b1d1d9ce771f48bbd7fe65e8edf0510bc813a7869a181ace840cbd26abd69",
+  "hardware/presence_sensing/sources/RC0603FR-0710KL.pdf": "df1a20b94bb7563eeb8c6820a8c21e1abf0207f25068e0dc484a3ff2ec37a3a9",
+  "hardware/presence_sensing/sources/tlv7031-q1.pdf": "28f4ea36bb9f32b444b7713d2cf605868dae6b726c5b681abfdcedf12df0d6cf"
+}

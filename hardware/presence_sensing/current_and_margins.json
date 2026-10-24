@@ -1,0 +1,32 @@
+{
+  "resistor_tolerance_H": 0.02,
+  "temperature_H_C": [
+    -40,
+    125
+  ],
+  "rail_H_V": [
+    3.0,
+    3.6
+  ],
+  "obd_divider_12V_nom_A": 8.219178082191781e-07,
+  "obd_divider_12V_max_resistor_only_A": 8.386916410399776e-07,
+  "usb_divider_5p5_max_resistor_only_A": 9.200401472064235e-07,
+  "ref_3p6_max_resistor_only_A": 6.022080963532954e-07,
+  "both_outputs_low_3p6_pullup_max_A": 0.0007346938775510205,
+  "comparator_ICC_per_channel_max_at_VS1p8_only_A": 7.5e-07,
+  "comparator_ICC_max_at_3p3_or_VCC0_A": null,
+  "input_leak_max_full_temperature_A": null,
+  "output_leak_max_full_temperature_A": null,
+  "additional_12V_standby_max_A": null,
+  "note": "0.839uA divider bound is not a complete circuit maximum; leakage has no specified max",
+  "common_mode_margin_at_VCC3p0_no_IB_V": 0.2563981042654029,
+  "output_leak_allowed_H_at_VCC3p0_VIH0p75_Igpio50nA_A": 7.347941176470587e-05,
+  "resistor_max_obd_upper_each_voltage_H_V": 18.68031241583625,
+  "zero_IB_reference_tau_no_extra_cap_s": null,
+  "missing": [
+    "IB/ILKG and VCC0 supply current maximum over temperature",
+    "VOL max at 3.0V and GPIO leakage over full temperature",
+    "Actual AON_PROTECTED positive/negative/transient envelope",
+    "Defined validity settling time, board contamination leakage and startup qualification"
+  ]
+}
