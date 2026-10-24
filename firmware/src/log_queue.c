@@ -29,7 +29,7 @@ ag_log_result_t ag_log_queue_append(ag_log_queue_t *queue, uint8_t pid,
                                    const uint8_t *raw, size_t raw_length) {
     if (queue == NULL || raw_length > AG_RAW_CAPACITY
         || (raw_length > 0 && raw == NULL)
-        || status < AG_SAMPLE_VALID || status > AG_SAMPLE_ERROR
+        || status < AG_SAMPLE_VALID || status > AG_SAMPLE_UNAVAILABLE
         || (status != AG_SAMPLE_VALID && raw_length != 0)
         || (status == AG_SAMPLE_VALID && raw_length == 0)) return AG_LOG_INVALID;
     if (!queue->enabled) return AG_LOG_DISABLED;

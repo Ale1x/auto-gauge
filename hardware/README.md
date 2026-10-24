@@ -51,3 +51,7 @@ Prima di una revisione costruibile servono datasheet pannello corretto, chiusura
 ## Approfondimento del buck 5 V
 
 `../BUCK5_FEEDBACK_REVIEW.md` e `../evidence/models/buck5_ripple_screen.*` confrontano due reti di feedback su 16 punti e 64 combinazioni di tolleranze per punto. La rete studiata per 12 V perde margine sul ripple verso 6 V; quella a ripple maggiore richiede di valutare l’errore DC. I passivi di feedback restano TBD. Il foglio 02 riporta ora questi limiti. L’archivio di revisione include analisi e relativo script; non contiene nuovi componenti approvati.
+
+## Studio USB e wake HW-02
+
+`usb_power/HW02_REVIEW.md` contiene il confronto di due protezioni USB, l'alternativa con preregolatore e tre possibili architetture di recupero dal fault SLEEP. I calcoli sono riproducibili con `python3 scripts/analyze_usb_power.py` dalla radice; CSV, PDF originali e relativi hash sono nella directory di studio. Lo studio respinge l'OVP diretta come soluzione completa e non modifica lo schema A0. HR-01/HR-02 restano aperti. La directory di studio è versionata separatamente; l'archivio A0 continua a contenere lo schema e la sua review, non un nuovo circuito USB.

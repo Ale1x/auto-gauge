@@ -42,6 +42,8 @@ Validare prima in una configurazione candidata separata. Un errore conserva quel
 
 Non pubblicizzare un GATT utilizzabile senza implementazione. UUID, framing, limiti MTU, messaggi d'errore wire e protocollo di autenticazione non sono congelati. Il contratto transport Swift e l'HAL firmware possono esistere senza un collegamento BLE reale. La sola connessione BLE non attribuisce proprietà e non autorizza configurazione/OTA.
 
+Il secondo incremento aggiunge una proposta di framing implementata nei codec di test: `FRAMING_V0.1.md`, con vettori comuni Python/C/Swift, e un riferimento locale di sync in `LOG_SYNC_V0.1.md`. Questi componenti non congelano GATT o sicurezza e non attivano trasporti reali. La decisione sul recupero dell'ownership è proposta separatamente in `OWNERSHIP_PROPOSAL.md`, ancora da approvare.
+
 ## Log e tempo
 
 Buffer flash fino a 2 MiB condizionato al sizing OTA; nessuna allocazione che sottragga spazio alla recovery. Campionamento del logger fino a 1 Hz per sorgente/PID, separato dal polling/UI. La coda RAM ha capacità fissa e segnala perdite; il prototipo RAM non equivale alla persistenza flash richiesta. A pieno la futura partizione sovrascrive il dato più vecchio, con contatore e intervallo perso.

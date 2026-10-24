@@ -74,6 +74,7 @@ typedef enum { AG_READ_MEASUREMENT = 0, AG_READ_DISCOVERY = 1 } ag_read_kind_t;
 typedef struct { uint8_t bytes[2]; size_t length; } ag_obd_request_t;
 void ag_can_policy_init(ag_can_policy_t *policy);
 bool ag_can_tx_allowed(const ag_can_policy_t *policy);
+bool ag_obd_pid_implemented(uint8_t pid);
 /* The only request builder fixes service=01. No arbitrary service/raw CAN API. */
 bool ag_obd_make_read_request(const ag_can_policy_t *policy,
                               const ag_pid_mask_t *supported,
@@ -81,7 +82,7 @@ bool ag_obd_make_read_request(const ag_can_policy_t *policy,
                               ag_obd_request_t *request);
 
 typedef enum { AG_SAMPLE_VALID = 0, AG_SAMPLE_UNSUPPORTED, AG_SAMPLE_STALE,
-               AG_SAMPLE_TIMEOUT, AG_SAMPLE_ERROR } ag_sample_status_t;
+               AG_SAMPLE_TIMEOUT, AG_SAMPLE_ERROR, AG_SAMPLE_UNAVAILABLE } ag_sample_status_t;
 typedef struct {
     uint8_t session_id[AG_SESSION_ID_BYTES];
     uint64_t sequence;

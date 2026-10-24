@@ -1,0 +1,1806 @@
+                                       Product         Order           Technical             Tools &           Support &
+                                       Folder          Now             Documents             Software          Community
+
+
+
+                                                                                                                 TPS62160-Q1, TPS62162-Q1
+                                                                                                        SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+                    TPS6216x-Q1 3-V to 17-V 1-A Step-Down Converter with DCS-Control™
+1 Features                                                                      3 Description
+•
+1      DCS-Control™ topology                                                    The TPS6216x-Q1 are easy to use synchronous step
+                                                                                down DC-DC converters optimized for applications
+•      Qualified for automotive applications                                    with high power density. A high switching frequency
+•      AEC-Q100 qualified with the following results:                           of typically 2.25 MHz allows the use of small
+       – Device temperature grade: –40°C to 125°C                               inductors and provides fast transient response as well
+          operating junction temperature range                                  as high output voltage accuracy by using the DCS-
+                                                                                Control™ topology.
+       – Device HBM ESD classification level H2
+       – Device CDM ESD classification level C4B                                With their wide operating input voltage range of 3 V
+                                                                                to 17 V, the devices are ideally suited for systems
+•      Functional Safety-Capable                                                powered from either a Li-Ion or other battery as well
+       – Documentation available to aid functional                              as from 12-V intermediate power rails. It supports up
+          safety system design                                                  to 1-A continuous output current at output voltages
+•      Input voltage range: 3 V to 17 V                                         between 0.9 V and 6 V (with 100% duty cycle mode).
+•      Up to 1-A output current                                                 Power sequencing is also possible by configuring the
+•      Adjustable output voltage from 0.9 V to 6 V                              Enable and open-drain Power Good pins.
+•      Fixed output voltage versions                                            In Power Save Mode, the devices draw quiescent
+•      Seamless power save mode transition                                      current of about 17 μA from VIN. Power Save Mode,
+                                                                                entered automatically and seamlessly if load is small,
+•      Typically 17-µA quiescent current                                        maintains high efficiency over the entire load range.
+•      Power-good output                                                        In Shutdown Mode, the device is turned off and
+•      100% Duty cycle mode                                                     shutdown current consumption is less than 2 μA.
+•      Short circuit protection                                                 The devices are available in adjustable and fixed
+•      Overtemperature protection                                               output voltage versions and are packaged in an 8-pin
+                                                                                WSON package measuring 2 × 2 mm (DSG).
+•      Pin-to-pin compatible with TPS62170-Q1
+•      Available in a 2-mm × 2-mm WSON-8 package                                                         Device Information(1)
+                                                                                   PART NUMBER                PACKAGE           BODY SIZE (NOM)
+2 Applications                                                                     TPS62160-Q1           WSON (8)              2.00 mm × 2.00 mm
+•      ADAS camera                                                                 TPS62162-Q1           WSON (8)              2.00 mm × 2.00 mm
+•      Infotainment telematics                                                     (1) For all available packages, see the orderable addendum at
+•      Body control module and gateway                                                 the end of the datasheet.
+
+•      Powertrain systems
+                                                               Simplified Schematic
+
+
+
+
+VIN                                                 2.2µH                            3.3V / 1A
+                            VIN               SW
+
+                            EN                VOS               100k     470k
+      10uF                      TPS62160-Q1                                         22uF
+                            AGND              PG
+                                                                         150k
+                            PGND               FB
+
+
+
+
+1
+
+
+
+
+             An IMPORTANT NOTICE at the end of this data sheet addresses availability, warranty, changes, use in safety-critical applications,
+             intellectual property matters and other important disclaimers. PRODUCTION DATA.
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                                                                               www.ti.com
+
+
+                                                                              Table of Contents
+    1   Features .................................................................. 1                  9.1 Application Information............................................ 11
+    2   Applications ........................................................... 1                     9.2 Typical TPS62160-Q1 Application ......................... 11
+    3   Description ............................................................. 1                    9.3 System Examples ................................................... 19
+    4   Revision History..................................................... 2                  10 Power Supply Recommendations ..................... 21
+    5   Device Comparison Table..................................... 3                           11 Layout................................................................... 22
+                                                                                                       11.1 Layout Guidelines ................................................. 22
+    6   Pin Configuration and Functions ......................... 3
+                                                                                                       11.2 Layout Example .................................................... 22
+    7   Specifications......................................................... 4
+                                                                                                       11.3 Thermal Considerations ........................................ 23
+         7.1    Absolute Maximum Ratings ...................................... 4
+         7.2    ESD Ratings.............................................................. 4      12 Device and Documentation Support ................. 24
+                                                                                                       12.1     Device Support .................................................... 24
+         7.3    Recommended Operating Conditions....................... 4
+                                                                                                       12.2     Documentation Support ....................................... 24
+         7.4    Thermal Information .................................................. 4
+                                                                                                       12.3     Related Links ........................................................ 24
+         7.5    Electrical Characteristics........................................... 5
+                                                                                                       12.4     Receiving Notification of Documentation Updates 24
+         7.6    Typical Characteristics .............................................. 6
+                                                                                                       12.5     Support Resources ............................................... 24
+    8   Detailed Description .............................................. 7
+                                                                                                       12.6     Trademarks ........................................................... 24
+         8.1    Overview ................................................................... 7
+                                                                                                       12.7     Electrostatic Discharge Caution ............................ 24
+         8.2    Functional Block Diagram ......................................... 7
+                                                                                                       12.8     Glossary ................................................................ 25
+         8.3    Feature Description................................................... 8
+         8.4    Device Functional Modes.......................................... 9              13 Mechanical, Packaging, and Orderable
+                                                                                                    Information ........................................................... 25
+    9   Application and Implementation ........................ 11
+
+
+
+4 Revision History
+NOTE: Page numbers for previous revisions may differ from page numbers in the current version.
+
+Changes from Revision A (November 2016) to Revision B                                                                                                                              Page
+
+•   Added functional safety bullet in the Features ...................................................................................................................... 1
+
+
+Changes from Original (December 2014) to Revision A                                                                                                                                Page
+
+•   Added device TPS62162-Q1 ................................................................................................................................................. 1
+•   Added the Device Comparison Table .................................................................................................................................... 3
+•   Changed the Thermal Information table ................................................................................................................................. 4
+•   Added Warranty disclaimer NOTE: at Application and Implementation section. ................................................................. 11
+•   Added Related Links section ................................................................................................................................................ 24
+•   Added Receiving Notification of Documentation Updates and Support Resources sections............................................... 24
+
+
+
+
+2        Submit Documentation Feedback                                                                             Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                                             Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                                TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                                           SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+5 Device Comparison Table
+
+                                     PART NUMBER (1)                                         OUTPUT VOLTAGE
+                                          TPS62160-Q1                                            Adjustable
+                                          TPS62162-Q1                                               3.3 V
+
+                     (1)    For detailed ordering information please, check the Mechanical, Packaging, and Orderable Information
+                            section at the end of this datasheet.
+
+6 Pin Configuration and Functions
+
+                                                                      8-Pin WSON
+                                                                      DSG Package
+                                                                       (Top View)
+
+
+                                                    PGND       1                             8     PG
+
+
+                                                       VIN     2         Exposed             7     SW
+                                                                         Thermal
+                                                                           Pad
+                                                        EN     3                             6     VOS
+
+
+                                                   AGND        4                             5     FB
+
+
+
+                                                                    Pin Functions
+                   (1)
+             PIN
+                                     I/O                                                 DESCRIPTION
+      NAME                 NO.
+PGND                        1                Power ground
+VIN                         2         I      Supply voltage
+EN                          3         I      Enable input (High = enabled, Low = disabled)
+AGND                        4                Analog Ground
+FB                          5         I      Voltage feedback of adjustable version. Connect resistive voltage divider to this pin. It is
+                                             recommended to connect FB to AGND on fixed output voltage versions for improved thermal
+                                             performance.
+VOS                         6         I      Output voltage sense pin and connection for the control loop circuitry
+                                             Switch node, which is connected to the internal MOSFET switches. Connect inductor between SW and
+SW                          7        O
+                                             output capacitor.
+PG                          8        O       Output power good (High = VOUT ready, low = VOUT below nominal regulation); open drain (requires
+                                             pullup resistor; goes high impedance, when device is switched off)
+Exposed                                      Must be connected to AGND. Must be soldered to achieve appropriate power dissipation and
+Thermal Pad                                  mechanical reliability.
+
+(1)   For more information about connecting pins, see Detailed Description and Application Information sections.
+
+
+
+
+Copyright © 2014–2020, Texas Instruments Incorporated                                                       Submit Documentation Feedback       3
+                                                   Product Folder Links: TPS62160-Q1 TPS62162-Q1
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                                            www.ti.com
+
+
+7 Specifications
+7.1 Absolute Maximum Ratings
+over operating junction temperature range (unless otherwise noted) (1)
+                                                                                                                  MIN                MAX    UNIT
+                                                 VIN                                                              –0.3                20      V
+                    (2)
+Pin voltage range                                EN, SW                                                           –0.3         VIN+0.3        V
+                                                 FB, PG, VOS                                                      –0.3                 7      V
+Power Good sink current                          PG                                                                                   10     mA
+Operating junction temperature range, TJ                                                                           –40               150     °C
+Storage temperature range, Tstg                                                                                    –65               150     °C
+
+(1)   Stresses beyond those listed under absolute maximum ratings may cause permanent damage to the device. These are stress ratings
+      only, and functional operation of the device at these or any other conditions beyond those indicated under recommended operating
+      conditions is not implied. Exposure to absolute-maximum-rated conditions for extended periods my affect device reliability.
+(2)   All voltages are with respect to network ground terminal.
+
+7.2 ESD Ratings
+                                                                                                                         VALUE              UNIT
+                                             Human body model (HBM), per AEC Q100-002 (1)                                    ±2000
+V(ESD)      Electrostatic discharge                                                                                                          V
+                                             Charged device model (CDM), per AEC Q100-011                                    ±500
+
+(1)   AEC Q100-002 indicates HBM stressing is done in accordance with the ANSI/ESDA/JEDEC JS-001 specification.
+
+7.3 Recommended Operating Conditions
+over operating junction temperature range (unless otherwise noted)
+                                                                                                               MIN      TYP          MAX    UNIT
+VIN             Supply voltage                                                                                    3                   17      V
+VOUT            Output voltage range                                                                            0.9                    6      V
+TJ              Operating junction temperature                                                                 –40                   125     °C
+
+
+7.4 Thermal Information
+                                                                                                              TPS6216x-Q1
+                                           THERMAL METRIC (1)                                                                              UNIT
+                                                                                                              DSG (8 PINS)
+RθJA            Junction-to-ambient thermal resistance                                                                65.5                 °C/W
+RθJC(top)       Junction-to-case (top) thermal resistance                                                             66.4                 °C/W
+RθJB            Junction-to-board thermal resistance                                                                  35.5                 °C/W
+ψJT             Junction-to-top characterization parameter                                                            1.7                  °C/W
+ψJB             Junction-to-board characterization parameter                                                          35.8                 °C/W
+RθJC(bot)       Junction-to-case (bottom) thermal resistance                                                          8.4                  °C/W
+
+(1)   For more information about traditional and new thermal metrics, see the IC Package Thermal Metrics application report.
+
+
+
+
+4        Submit Documentation Feedback                                                     Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                             Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                             TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                                        SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+7.5 Electrical Characteristics
+Over junction temperature range (TJ = –40°C to +125°C), typical values at VIN = 12 V and TJ = 25°C (unless otherwise noted)
+                     PARAMETER                                          TEST CONDITIONS                          MIN      TYP     MAX       UNIT
+SUPPLY
+VIN        Input voltage range (1)                                                                                  3                17      V
+IQ         Operating quiescent current                   EN = High, IOUT = 0 mA, Device not switching                       17       30      µA
+ISD        Shutdown current (2)                          EN = Low                                                          1.8       25      µA
+                                                         Falling input voltage                                    2.6      2.7     2.82      V
+VUVLO      Undervoltage lockout threshold
+                                                         Hysteresis                                                        180              mV
+           Thermal shutdown temperature                                                                                    160
+TSD                                                                                                                                          °C
+           Thermal shutdown hysteresis                                                                                      20
+CONTROL (EN, PG)
+VEN_H      High level input threshold voltage (EN)                                                                0.9                        V
+VEN_L      Low level input threshold voltage (EN)                                                                                   0.3      V
+ILKG_EN    Input leakage current (EN)                    EN = VIN or GND                                                  0.01        1      µA
+                                                         Rising (%VOUT)                                          92%      95%      98%
+VTH_PG     Power Good threshold voltage
+                                                         Falling (%VOUT)                                         87%      90%      93%
+VOL_PG     Power Good output low                         IPG = –2 mA                                                      0.07      0.3      V
+ILKG_PG    Input leakage current (PG)                    VPG = 1.8 V                                                         1      400      nA
+POWER SWITCH
+                                                         VIN ≥ 6 V                                                         300      600
+           High-side MOSFET ON-resistance                                                                                                   mΩ
+                                                         VIN = 3 V                                                         430
+RDS(ON)
+                                                         VIN ≥ 6 V                                                         120      200
+           Low-side MOSFET ON-resistance                                                                                                    mΩ
+                                                         VIN = 3 V                                                         165
+           High-side MOSFET forward current              VIN = 12 V, TA = 25°C
+ILIMF                                                                                                            1.45     1.95     2.45      A
+           limit (3)
+OUTPUT
+VREF       Internal reference voltage                                                                                      0.8               V
+ILKG_FB    Pin leakage current (FB)                      VFB = 1.2 V                                                         5      400      nA
+           Output voltage range (TPS62160-Q1)            VIN ≥ VOUT                                               0.9               6.0      V
+                                                         PWM Mode operation, VIN ≥ VOUT + 1 V                    –3%                3%
+           Feedback voltage accuracy (4)
+                                                         Power Save Mode operation, COUT = 2x22 µF (5)           –3%                4%
+VOUT
+           DC output voltage load regulation (6)         VIN = 12 V, VOUT = 3.3 V, PWM Mode operation                     0.05             %/A
+           DC output voltage line regulation (6)         3 V ≤ VIN ≤ 17 V, VOUT = 3.3 V, IOUT = 0.5 A,
+                                                                                                                          0.02             %/V
+                                                         PWM Mode operation
+
+(1)   The device is still functional down to Under Voltage Lockout (see parameter VUVLO).
+(2)   Current into VIN pin.
+(3)   This is the static current limit. It can be temporarily higher in applications due to internal propagation delay (see Current Limit and Short
+      Circuit Protection).
+(4)   For fixed voltage versions, the (internal) resistive feedback divider is included.
+(5)   The output voltage accuracy in Power Save Mode can be improved by increasing the COUT value, reducing the output voltage ripple.
+(6)   Line and load regulation are depending on external component selection and layout (see Figure 16 and Figure 17).
+
+
+
+
+Copyright © 2014–2020, Texas Instruments Incorporated                                                    Submit Documentation Feedback                5
+                                               Product Folder Links: TPS62160-Q1 TPS62162-Q1
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                              www.ti.com
+
+
+7.6 Typical Characteristics
+At VIN = 12 V, VOUT = 3.3 V and TJ = 25°C (unless otherwise noted)
+
+
+
+
+                     Figure 1. Quiescent Current                                   Figure 2. Shutdown Current
+
+
+
+
+      Figure 3. High-Side Static Drain-Source-Resistance (RDSon)     Figure 4. Low-Side Static Drain-Source-Resistance (RDSon)
+
+
+
+
+6      Submit Documentation Feedback                                             Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                        Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                                          TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                                                  SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+8 Detailed Description
+
+8.1 Overview
+The TPS6216x-Q1 synchronous switched mode power converter is based on DCS-Control (Direct Control with
+Seamless transition into power save mode), an advanced regulation topology, that combines the advantages of
+hysteretic, voltage mode and current mode control including an AC loop directly associated to the output voltage.
+This control loop takes information about output voltage changes and feeds it directly to a fast comparator stage.
+It sets the switching frequency, which is constant for steady state operating conditions, and provides immediate
+response to dynamic load changes. To get accurate DC load regulation, a voltage feedback loop is used. The
+internally compensated regulation network achieves fast and stable operation with small external components
+and low ESR capacitors.
+The DCS-Control topology supports PWM (Pulse Width Modulation) mode for medium and heavy load conditions
+and a Power Save Mode at light loads. During PWM, it operates at its nominal switching frequency in continuous
+conduction mode. This frequency is typically about 2.25 MHz with a controlled frequency variation depending on
+the input voltage. If the load current decreases, the converter enters Power Save Mode to sustain high efficiency
+down to very light loads. In Power Save Mode, the switching frequency decreases linearly with the load current.
+Since DCS-Control supports both operation modes within one single building block, the transition from PWM to
+Power Save Mode is seamless without affecting the output voltage.
+
+8.2 Functional Block Diagram
+
+                                                                                         PG                                VIN
+
+
+
+                              Soft       Thermal
+                                                            UVLO          PG control
+                              start      Shtdwn
+                                                                                                                 HS lim
+
+                                                                                                         comp
+
+
+
+
+                                                                             power                  gate
+                                control logic                                                                                                        SW
+         EN*                                                                 control                drive
+
+
+
+
+                                                                                                         comp
+
+                                                                                                                 LS lim
+
+
+        VOS                                     direct control
+                                                      &            ramp
+                                                compensation
+
+
+                                                _
+          FB                                                        comparator               timer tON
+                                                     error
+                                                    amplifier
+                                                +
+                                                                           DCS - ControlTM
+
+
+
+
+                  *
+                      This pin is connected to a pull down resistor internally                           AGND             PGND
+                                (see Detailed Description section).
+                                                                                                          Copyright ã 2016, Texas Instruments Incorporated
+
+                                        Figure 5. TPS62160-Q1 (Adjustable Output Voltage)
+
+Copyright © 2014–2020, Texas Instruments Incorporated                                                              Submit Documentation Feedback             7
+                                                    Product Folder Links: TPS62160-Q1 TPS62162-Q1
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                                                       www.ti.com
+
+
+Functional Block Diagram (continued)
+
+                                                                                      PG                                VIN
+
+
+
+                           Soft       Thermal
+                                                         UVLO          PG control
+                           start      Shtdwn
+                                                                                                              HS lim
+
+                                                                                                      comp
+
+
+
+
+                                                                          power                  gate
+                             control logic                                                                                                        SW
+       EN*                                                                control                drive
+
+
+
+
+                                                                                                      comp
+
+                                                                                                              LS lim
+
+
+       VOS                                   direct control
+                                                   &            ramp
+                                             compensation
+
+
+                                             _
+        FB*                                                      comparator               timer tON
+                                                  error
+                                                 amplifier
+                                             +
+                                                                        DCS - ControlTM
+
+
+
+
+               *
+                   This pin is connected to a pull down resistor internally                           AGND             PGND
+                             (see Detailed Description section).
+                                                                                                       Copyright ã 2016, Texas Instruments Incorporated
+
+                                         Figure 6. TPS62162-Q1 (Fixed Output Voltage)
+
+
+8.3 Feature Description
+8.3.1 Enable / Shutdown (EN)
+When Enable (EN) is set High, the device starts operation.
+Shutdown is forced if EN is pulled Low with a shutdown current of typically 1.8 µA. During shutdown, the internal
+power MOSFETs as well as the entire control circuitry are turned off. The internal resistive divider pulls down the
+output voltage smoothly. If the EN pin is Low, an internal pulldown resistor of about 400 kΩ is connected and
+keeps it Low in case of a floating pin.
+Connecting the EN pin to an appropriate output signal of another power rail provides sequencing of multiple
+power rails.
+
+8.3.2 Soft Start
+The internal soft-start circuitry controls the output voltage slope during start-up. This avoids excessive inrush
+current and ensures a controlled output voltage rise time. It also prevents unwanted voltage drops from high-
+impedance power sources or batteries. When EN is set to start device operation, the device starts switching after
+a delay of about 50 µs and VOUT rises with a slope of about 25 mV/µs. See Figure 28 and Figure 29 for typical
+start-up operation.
+8      Submit Documentation Feedback                                                                   Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                                 Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                   TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                               SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+Feature Description (continued)
+space
+The TPS6216x-Q1 can start into a pre-biased output. During monotonic pre-biased start-up, the low-side
+MOSFET is not allowed to turn on until the internal ramp of the device sets an output voltage above the pre-bias
+voltage.
+
+8.3.3 Power Good (PG)
+The TPS6216x-Q1 has a built-in power good (PG) function to indicate whether the output voltage has reached its
+appropriate level or not. The PG signal can be used for start-up sequencing of multiple rails. The PG pin is an
+open-drain output that requires a pullup resistor (to any voltage below 7 V). It can sink 2 mA of current and
+maintain its specified logic low level. It is high impedance when the device is turned off due to EN, UVLO, or
+thermal shutdown.
+
+8.3.4 Undervoltage Lockout (UVLO)
+If the input voltage drops, the undervoltage lockout prevents misoperation of the device by switching off both the
+power FETs. The undervoltage lockout threshold is set typically to 2.7 V. The device is fully operational for
+voltages above the UVLO threshold and turns off if the input voltage trips the threshold. The converter starts
+operation again once the input voltage exceeds the threshold by a hysteresis of typically 180 mV.
+
+8.3.5 Thermal Shutdown
+The junction temperature (TJ) of the device is monitored by an internal temperature sensor. If TJ exceeds 160°C
+(typ), the device goes into thermal shut down. Both the high-side and low-side power FETs are turned off and PG
+goes high impedance. When TJ decreases below the hysteresis amount, the converter resumes normal
+operation, beginning with soft start. To avoid unstable conditions, a hysteresis of typically 20°C is implemented
+on the thermal shut down temperature.
+
+8.4 Device Functional Modes
+8.4.1 Pulse Width Modulation (PWM) Operation
+The TPS6216x-Q1 operates with pulse width modulation in continuous conduction mode (CCM) with a nominal
+switching frequency of about 2.25 MHz. The frequency variation in PWM is controlled and depends on VIN, VOUT,
+and the inductance. The device operates in PWM mode as long the output current is higher than half the ripple
+current of the inductor. To maintain high efficiency at light loads, the device enters Power Save Mode at the
+boundary to discontinuous conduction mode (DCM). This happens if the output current becomes smaller than
+half of the ripple current of the inductor.
+
+8.4.2 Power Save Operation
+The built-in Power Save Mode of the TPS6216x-Q1 is entered seamlessly, if the load current decreases. This
+secures a high efficiency in light load operation. The device remains in Power Save Mode as long as the inductor
+current is discontinuous.
+In Power Save Mode, the switching frequency decreases linearly with the load current maintaining high
+efficiency. The transition in and out of Power Save Mode happens within the entire regulation scheme and is
+seamless in both directions.
+The TPS6216x-Q1 includes a fixed on-time circuitry. This on-time, in steady-state operation, can be estimated
+as:
+          V
+    t ON = OUT ´ 420ns
+           VIN                                                                                             (1)
+For very small output voltages, the on-time increases beyond the result of Equation 1 to stay above an absolute
+minimum on-time, tON(min), which is around 80 ns to limit switching losses.
+The peak inductor current in PSM can be approximated by:
+                        (VIN - VOUT )
+      ILPSM(peak) =                      ´ t ON
+                               L                                                                                                 (2)
+Copyright © 2014–2020, Texas Instruments Incorporated                                          Submit Documentation Feedback      9
+                                               Product Folder Links: TPS62160-Q1 TPS62162-Q1
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                                      www.ti.com
+
+
+Device Functional Modes (continued)
+When VIN decreases to typically 15% above VOUT, the TPS6216x-Q1 does not enter Power Save Mode,
+regardless of the load current. The device maintains output regulation in PWM mode.
+
+8.4.3 100% Duty-Cycle Operation
+The duty cycle of the buck converter is given by D = Vout / Vin and increases as the input voltage comes close
+to the output voltage. In this case, the device starts 100% duty cycle operation turning on the high-side switch
+100% of the time. The high-side switch stays turned on as long as the output voltage is below the internal set
+point. This allows the conversion of small input to output voltage differences (for example, for longest operation
+time of battery-powered applications). In 100% duty cycle mode, the low-side FET is switched off.
+The minimum input voltage to maintain output voltage regulation, depending on the load current and the output
+voltage level, can be calculated as:
+                                     (
+      VIN(min) = VOUT(min) + IOUT RDS(on) + RL       )
+      where
+           •   IOUT is the output current
+           •   RDS(on) is the RDS(on) of the high-side FET
+           •   RL is the DC resistance of the inductor used                                                                               (3)
+
+8.4.4 Current Limit and Short Circuit Protection
+The TPS6216x-Q1 is protected against heavy load and short circuit events. At heavy loads, the current limit
+determines the maximum output current. If the current limit is reached, the high-side FET is turned off. Avoiding
+shoot through current, the low-side FET is then switched on to allow the inductor current to decrease. The high-
+side FET turns on again, only if the current in the low-side FET has decreased below the low side current limit
+threshold.
+The output current of the device is limited by the current limit (see the Electrical Characteristics). Due to internal
+propagation delay, the actual current can exceed the static current limit during that time.
+The dynamic current limit can be calculated as follows:
+                         V
+     Ipeak(typ) = ILIMF + L ´ tPD
+                          L
+      where
+           •   ILIMF is the static current limit, specified in the electrical characteristic table
+           •   L is the inductor value
+           •   VL is the voltage across the inductor
+           •   tPD is the internal propagation delay                                                                                      (4)
+The dynamic high-side switch peak current can be calculated as follows:
+                                 (VIN - VOUT )
+     Ipeak(typ) = ILIMF _ HS +                   ´ 30ns
+                                         L                                                                                                (5)
+Care on the current limit has to be taken if the input voltage is high and very small inductances are used.
+
+8.4.5 Operation Above TJ = 125°C
+The operating junction temperature of the device is specified up to 125°C. In power supply circuits, the self
+heating effect causes the junction temperature, TJ, to be even higher than the ambient temperature TA.
+Depending on TA and the load current, the maximum operating temperature TJ can be exceeded. However, the
+electrical characteristics are specified up to a TJ of 125°C only. The device operates as long as thermal
+shutdown threshold is not triggered.
+
+
+
+
+10     Submit Documentation Feedback                                                     Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                             Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                         TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                                     SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+9 Application and Implementation
+
+                                                           NOTE
+               Information in the following applications sections is not part of the TI component
+               specification, and TI does not warrant its accuracy or completeness. TI’s customers are
+               responsible for determining suitability of components for their purposes. Customers should
+               validate and test their design implementation to confirm system functionality.
+
+
+9.1 Application Information
+The TPS6216x-Q1 is a synchronous switched mode step-down converter, able to convert a 3 V to 17 V input
+voltage into a lower, 0.9 V to 6 V, output voltage, providing up to 1-A load current. The following section gives
+guidance on the external component selection to operate the device within the recommended operating
+conditions.
+
+9.2 Typical TPS62160-Q1 Application
+                           VIN                                                  2.2µH                       3.3V / 1A
+                                                        VIN               SW
+                                                                                                  R1
+                                                        EN                VOS           100k
+                               C1                                                                470k       C2
+                                                            TPS62160-Q1
+                              10uF                                                                         22uF
+                                                        AGND              PG                      R2
+                                                                                                 150k
+                                                        PGND               FB
+
+
+
+                                                  Figure 7. 3.3-V / 1-A Power Supply
+
+9.2.1 Design Requirements
+The step-down converter design can be adapted to different output voltage and load current needs by choosing
+external components appropriate. The following design procedure is adequate for whole VIN, VOUT, and load
+current range of the TPS6216x-Q1. Using Table 2, the design procedure needs minimum effort.
+
+                                     Table 1. Components Used for Application Characteristics
+        REFERENCE                                         DESCRIPTION                                     MANUFACTURER (1)
+             IC                  17-V, 1-A step-down converter, WSON                               TPS62160QDSG, Texas Instruments
+             L1                  2.2-µH, 1.4-A, 3 x 2.8 x 1.2 mm                                        VLF3012ST-2R2M1R4, TDK
+             C1                  10-µF, 25-V, ceramic, 0805                                                       Standard
+             C2                  22-µF, 6.3-V, ceramic, 0805                                                      Standard
+             R1                  Depending on Vout
+             R2                  Depending on Vout
+             R3                  100-kΩ, chip, 0603, 1/16-W, 1%                                                   Standard
+
+(1)   See Third-Party Products Disclaimer.
+
+9.2.2 Detailed Design Procedure
+
+9.2.2.1 Programming the Output Voltage
+While the output voltage of the TPS62160-Q1 is adjustable, the TPS62162-Q1 is programmed to a fixed output
+voltage of 3.3 V. For the fixed output voltage version, the FB pin is pulled down internally and can be left floating.
+It is recommended to connect it to AGND to improve thermal resistance. The adjustable version can be
+programmed for output voltages from 0.9 V to 6 V by using a resistive divider from VOUT to AGND. The voltage
+at the FB pin is regulated to 800 mV. The value of the output voltage is set by the selection of the resistive
+divider from Equation 6. It is recommended to choose resistor values which allow a current of at least 2 µA,
+meaning the value of R2 must not exceed 400 kΩ. Lower resistor values are recommended for highest accuracy
+and most robust design. For applications requiring lowest current consumption, the use of fixed output voltage
+versions is recommended.
+
+Copyright © 2014–2020, Texas Instruments Incorporated                                               Submit Documentation Feedback      11
+                                                Product Folder Links: TPS62160-Q1 TPS62162-Q1
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                                          www.ti.com
+
+
+                æV       ö
+        R1 = R2 ç OUT - 1÷
+                è VREF   ø                                                                                                                    (6)
+In case the FB pin gets opened, the device clamps the output voltage at the VOS pin to about 7.4 V.
+
+9.2.2.2 External Component Selection
+The external components have to fulfill the needs of the application, but also the stability criteria of the devices
+control loop. The TPS6216x-Q1 is optimized to work within a range of external components. The LC output filters
+inductance and capacitance have to be considered together, creating a double pole, responsible for the corner
+frequency of the converter (see Output Filter And Loop Stability section). Table 2 can be used to simplify the
+output filter component selection.
+
+                                    Table 2. Recommended LC Output Filter Combinations (1)
+                         4.7 µF            10 µF            22 µF             47 µF            100 µF             200 µF            400 µF
+        1 µH
+       2.2 µH                                   √            √ (2)              √                 √                  √
+       3.3 µH                                   √              √                √                 √
+       4.7 µH
+
+(1)    The values in the table are nominal values. Variations of typically ±20% due to tolerance, saturation, and DC bias are assumed.
+(2)    This LC combination is the standard value and recommended for most applications.
+
+More detailed information on further LC combinations can be found in the Optimizing the TPS62130/40/50/60
+Output Filter Application Report.
+
+9.2.2.2.1 Inductor Selection
+The inductor selection is affected by several effects like inductor ripple current, output ripple voltage, PWM-to-
+PSM transition point, and efficiency. In addition, the inductor selected has to be rated for appropriate saturation
+current and DC resistance (DCR). Equation 7 and Equation 8 calculate the maximum inductor current under
+static load conditions.
+                             DIL(max)
+      IL(max) = IOUT(max) +
+                                2                                                                                (7)
+                          æ       VOUT ö
+                          ç 1- V          ÷
+      DIL(max) = VOUT ´ ç
+                                  IN(max) ÷
+                          ç L(min) ´ ƒSW ÷
+                          çç              ÷÷
+                           è               ø
+        where
+                •   IL(max) is the maximum inductor current
+                •   ΔIL is the peak-to-peak inductor ripple current
+                •   L(min) is the minimum effective inductor value
+                •   fSW is the actual PWM switching frequency                                                                                 (8)
+Calculating the maximum inductor current using the actual operating conditions gives the minimum saturation
+current of the inductor needed. A margin of about 20% is recommended to add. A larger inductor value is also
+useful to get lower ripple current, but increases the transient response time and size as well. The following
+inductors have been used with the TPS6216x-Q1 and are recommended for use:
+
+                                                         Table 3. List of Inductors
+                TYPE               INDUCTANCE [µH]          CURRENT [A] (1)           DIMENSIONS [L x B x H] mm            MANUFACTURER (2)
+      VLF3012ST-2R2M1R4               2.2 µH, ±20%                   1.9 A                   3.0 x 2.8 x 1.2                      TDK
+      VLF302512MT-2R2M                2.2 µH, ±20%                   1.9 A                   3.0 x 2.5 x 1.2                      TDK
+      VLS252012T-2R2M1R3              2.2 µH, ±20%                   1.3 A                   2.5 x 2.0 x 1.2                      TDK
+
+(1)    IRMS at 40°C rise or ISAT at 30% drop.
+(2)    See Third-Party Products Disclaimer.
+12        Submit Documentation Feedback                                                      Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                                Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                    TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                               SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+                                                Table 3. List of Inductors (continued)
+             TYPE                 INDUCTANCE [µH]          CURRENT [A] (1)      DIMENSIONS [L x B x H] mm      MANUFACTURER (2)
+      XFL3012-222MEC                  2.2 µH, ±20%              1.9 A                  3.0 x 3.0 x 1.2               Coilcraft
+      XFL3012-332MEC                  3.3 µH, ±20%              1.6 A                  3.0 x 3.0 x 1.2               Coilcraft
+      LPS3015-332ML_                  3.3 µH, ±20%              1.4 A                  3.0 x 3.0 x 1.4               Coilcraft
+       NR3015T-2R2M                   2.2 µH, ±20%              1.5 A                  3.0 x 3.0 x 1.5             Taiyo Yuden
+          744025003                   3.3 µH, ±20%              1.5 A                  2.8 x 2.8 x 2.8                Wuerth
+     PSI25201B-2R2MS                  2.2 µH, ±20%              1.3 A                  2.0 x 2.5 x 1.2                Cyntec
+
+The TPS6216x-Q1 can be run with an inductor as low as 2.2 µH. However, for applications with low input
+voltages, 3.3 µH is recommended to allow the full output current. The inductor value also determines the load
+current at which Power Save Mode is entered:
+                 1
+     Iload(PSM) = DIL
+                 2                                                                                         (9)
+Using Equation 8, this current level can be adjusted by changing the inductor value.
+
+9.2.2.2.2 Capacitor Selection
+
+9.2.2.2.2.1 Output Capacitor
+The recommended value for the output capacitor is 22 µF. The architecture of the TPS6216x-Q1 allows the use
+of tiny ceramic output capacitors with low equivalent series resistance (ESR). These capacitors provide low
+output voltage ripple and are recommended. To keep its low resistance up to high frequencies and to get narrow
+capacitance variation with temperature, it is recommended to use X7R or X5R dielectric. Using a higher value
+can have some advantages like smaller voltage ripple and a tighter DC output accuracy in Power Save Mode
+(see the Optimizing the TPS62130/40/50/60 Output Filter Application Report).
+
+                                                      NOTE
+               In power save mode, the output voltage ripple depends on the output capacitance, its
+               ESR, and the peak inductor current. Using ceramic capacitors provides small ESR and
+               low ripple.
+
+9.2.2.2.2.2 Input Capacitor
+For most applications, 10 µF is sufficient and is recommended, though a larger value reduces input current ripple
+further. The input capacitor buffers the input voltage for transient events and also decouples the converter from
+the supply. A low ESR multilayer ceramic capacitor is recommended for best filtering and should be placed
+between VIN and GND as close as possible to those pins.
+
+                                                           NOTE
+               DC Bias effect: High capacitance ceramic capacitors have a DC Bias effect, which will
+               have a strong influence on the final effective capacitance. Therefore, the right capacitor
+               value has to be chosen carefully. Package size and voltage rating in combination with
+               dielectric material are responsible for differences between the rated capacitor value and
+               the effective capacitance.
+
+
+9.2.2.3 Output Filter And Loop Stability
+The TPS6216x-Q1 is internally compensated to be stable with L-C filter combinations corresponding to a corner
+frequency to be calculated with Equation 10:
+               1
+     ƒLC =
+            2p L ´ C                                                                                      (10)
+
+
+
+
+Copyright © 2014–2020, Texas Instruments Incorporated                                          Submit Documentation Feedback     13
+                                               Product Folder Links: TPS62160-Q1 TPS62162-Q1
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                             www.ti.com
+
+
+Proven nominal values for inductance and ceramic capacitance are given in Table 2 and are recommended for
+use. Different values can work, but care has to be taken on the loop stability which might be affected. More
+information including a detailed L-C stability matrix can be found in the Optimizing the TPS62130/40/50/60
+Output Filter Application Report.
+The TPS6216x-Q1 includes an internal 25-pF feedforward capacitor, connected between the VOS and FB pins.
+This capacitor impacts the frequency behavior and sets a pole and zero in the control loop with the resistors of
+the feedback divider, per Equation 11 and Equation 12:
+                      1
+      ƒ zero =
+               2p ´ R1 ´ 25 pF                                                                              (11)
+                    1     æ 1   1 ö
+     ƒpole =             ´ç   +   ÷
+               2p ´ 25 pF è R1 R2 ø                                                                                             (12)
+Though the TPS6216x-Q1 is stable without the pole and zero being in a particular location, adjusting their
+location to the specific needs of the application can provide better performance in Power Save mode and
+improved transient response. An external feedforward capacitor can also be added. A more detailed discussion
+on the optimization for stability vs transient response can be found in the Optimizing Transient Response of
+Internally Compensated DC-DC Converters and Feedforward Capacitor to Improve Stability and Bandwidth of
+TPS621/821-Family application reports.
+If using ceramic capacitors, the DC bias effect has to be considered. The DC bias effect results in a drop in
+effective capacitance as the voltage across the capacitor increases (see the note in the DC Bias effect section).
+
+
+
+
+14     Submit Documentation Feedback                                            Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                        Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                                                                             TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                                                                               SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+9.2.3 Application Curves
+At VIN = 12 V, VOUT = 3.3 V, and TJ = 25°C (unless otherwise noted)
+
+                     100.0                                                                                      100.0
+                      90.0                                                                                       90.0
+                      80.0                                                                                       80.0
+                      70.0                                                  VIN=17V                              70.0       IOUT=1mA                            IOUT=100mA
+
+
+
+    Efficiency (%)                                                                             Efficiency (%)
+                      60.0                                                                                       60.0                            IOUT=10mA                         IOUT=1A
+                      50.0                                    VIN=12V                                            50.0
+                      40.0                                                                                       40.0
+                      30.0                 VIN=6V                                                                30.0
+                      20.0                                                                                       20.0
+                      10.0                                                                                       10.0
+                       0.0                                                                                        0.0
+                        0.0001         0.001            0.01          0.1               1                               7        8       9        10       11    12    13   14    15   16     17
+                                                 Output Current (A)                     G001                                                              Input Voltage (V)                   G001
+
+                                                 Vout = 6 V                                                                                               Vout = 6 V
+
+                                 Figure 8. Efficiency versus Output Current                                                  Figure 9. Efficiency versus Input Voltage
+
+                     100.0                                                                                      100.0
+                      90.0                                                                                       90.0                                                              IOUT=1A
+
+                      80.0                                                                                       80.0
+                      70.0                                                                                       70.0
+
+
+
+    Efficiency (%)                                                                             Efficiency (%)
+                                                                                                                             IOUT=1mA                      IOUT=10mA
+                      60.0                                                  VIN=17V                              60.0                                                       IOUT=100mA
+                      50.0                                VIN=12V                                                50.0
+                      40.0              VIN=5V                                                                   40.0
+                      30.0                                                                                       30.0
+                      20.0                                                                                       20.0
+                      10.0                                                                                       10.0
+                       0.0                                                                                        0.0
+                        0.0001         0.001            0.01          0.1               1                               4    5       6       7       8     9 10 11 12 13 14 15 16 17
+                                                 Output Current (A)                     G001                                                              Input Voltage (V)        G001
+
+                                               Vout = 3.3 V                                                                                              Vout = 3.3 V
+
+                             Figure 10. Efficiency versus Output Current                                                     Figure 11. Efficiency versus Input Voltage
+
+                     100.0                                                                                      100.0
+                      90.0            VIN=5V                                                                     90.0                                                            IOUT=500mA
+
+                      80.0                                                                                       80.0
+                      70.0                                                                                       70.0
+
+
+
+    Efficiency (%)                                                                             Efficiency (%)
+                      60.0                                                                                       60.0
+                                                                              VIN=17V                                                IOUT=1mA
+                      50.0                                                                                       50.0                                        IOUT=10mA
+                      40.0                       VIN=12V                                                         40.0                                                        IOUT=100mA
+                      30.0                                                                                       30.0
+                      20.0                                                                                       20.0
+                      10.0                                                                                       10.0
+                       0.0                                                                                        0.0
+                        0.0001         0.001            0.01          0.1               1                               3    4       5   6       7        8 9 10 11 12 13 14 15 16 17
+                                                 Output Current (A)                     G001                                                               Input Voltage (V)        G001
+
+                                               Vout = 1.8 V                                                                                              Vout = 1.8 V
+
+                             Figure 12. Efficiency versus Output Current                                                     Figure 13. Efficiency versus Input Voltage
+
+
+
+
+Copyright © 2014–2020, Texas Instruments Incorporated                                                                                                    Submit Documentation Feedback               15
+                                                                 Product Folder Links: TPS62160-Q1 TPS62162-Q1
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                                                                                                                       www.ti.com
+
+
+At VIN = 12 V, VOUT = 3.3 V, and TJ = 25°C (unless otherwise noted)
+                                 100.0                                                                                                         100.0
+                                  90.0                                                                                                          90.0               IOUT=10mA
+                                                    VIN=5V                                                                                                                           IOUT=100mA          IOUT=1A
+                                  80.0                                                                                                          80.0
+                                  70.0                                                                                                          70.0
+
+
+
+     Efficiency (%)                                                                                                Efficiency (%)
+                                  60.0                                                                                                          60.0
+                                  50.0                                                            VIN=17V                                       50.0
+                                                                                                                                                               IOUT=1mA
+                                  40.0                                                                                                          40.0
+                                                                    VIN=12V
+                                  30.0                                                                                                          30.0
+                                  20.0                                                                                                          20.0
+                                  10.0                                                                                                          10.0
+                                   0.0                                                                                                           0.0
+                                    0.0001             0.001              0.01          0.1                 1                                          3   4   5     6    7   8 9 10 11 12 13 14 15 16 17
+                                                                   Output Current (A)                       G001                                                               Input Voltage (V)        G001
+
+                                                                   Vout = 0.9 V                                                                                               Vout = 0.9 V
+
+                                             Figure 14. Efficiency versus Output Current                                                                   Figure 15. Efficiency versus Input Voltage
+
+                                  3.35                                                                                                          3.35
+
+
+                                                                                                                                                                          IOUT=1mA                 IOUT=10mA
+
+
+
+
+     Output Voltage (V)                                                                                            Output Voltage (V)
+                                  3.30                                                                                                          3.30
+
+
+
+                                                VIN=5V                            VIN=12V
+                                                                                                  VIN=17V                                                                 IOUT=100mA               IOUT=1A
+                                  3.25                                                                                                          3.25
+
+
+
+
+                                  3.20                                                                                                          3.20
+                                    0.0001             0.001              0.01          0.1                 1                                          4              7             10           13               16
+                                                                   Output Current (A)                       G001                                                               Input Voltage (V)                       G001
+
+                                   Figure 16. Output Voltage Accuracy (Load Regulation)                                                           Figure 17. Output Voltage Accuracy (Line Regulation)
+
+                                    4                                                                                                             4
+
+                                   3.5                                                                                                           3.5
+
+
+
+
+     Switching Frequency (MHz)                                                                                     Switching Frequency (MHz)
+                                    3                                                                                                             3                                  IOUT=1A
+                                   2.5                                                                                                           2.5
+
+                                    2                                                                                                             2
+                                                                                                                                                                     IOUT=0.5A
+                                   1.5                                                                                                           1.5
+
+                                    1                                                                                                             1
+
+                                   0.5                                                                                                           0.5
+
+                                    0                                                                                                             0
+                                         0    0.1    0.2     0.3    0.4 0.5 0.6 0.7         0.8    0.9      1                                          4       6          8       10       12       14       16        18
+                                                                   Output Current (A)                       G000                                                               Input Voltage (V)                       G000
+
+                                   Figure 18. Switching Frequency versus Output Current                                                           Figure 19. Switching Frequency versus Input Voltage
+
+
+
+
+16                                Submit Documentation Feedback                                                                                                    Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                                                                   Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                                                                             TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                                                                                    SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+At VIN = 12 V, VOUT = 3.3 V, and TJ = 25°C (unless otherwise noted)
+                                0.05                                                                                         3
+
+
+                                                                                                                            2.5
+                                0.04
+
+
+
+
+    Output Voltage Ripple (V)
+                                                                             VIN=17V
+
+
+
+
+                                                                                                       Output Current (A)
+                                                                                                                             2                     −40°C                   25°C
+                                0.03
+                                                                                                                            1.5
+                                0.02
+                                                                          VIN=12V
+                                                                                                                             1
+                                                                                                                                              85°C
+                                0.01
+                                                                                                                            0.5
+                                                       VIN=5V
+                                  0                                                                                          0
+                                       0   0.1   0.2    0.3    0.4 0.5 0.6 0.7      0.8   0.9   1                                 4   5   6    7     8     9 10 11 12 13 14 15 16 17
+                                                              Output Current (A)                G000
+                                                                                                                                                          Input Voltage (V)        G000
+
+                                                 Figure 20. Output Voltage Ripple                                                         Figure 21. Maximum Output Current
+
+
+
+
+                                           Figure 22. PWM / PSM Mode Transitions                                                      Figure 23. PWM to PSM Mode Transition
+
+
+
+
+                                                          500 mA to 1 A                                                                            100 mA to 500 mA
+
+                                   Figure 24. Load Transient Response in PWM Mode                                           Figure 25. Load Transient Response from Power Save
+                                                                                                                                                   Mode
+
+
+
+
+Copyright © 2014–2020, Texas Instruments Incorporated                                                                                                    Submit Documentation Feedback    17
+                                                                           Product Folder Links: TPS62160-Q1 TPS62162-Q1
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                              www.ti.com
+
+
+At VIN = 12 V, VOUT = 3.3 V, and TJ = 25°C (unless otherwise noted)
+
+
+
+
+                   500 mA to 1 A, Rising edge                                     500 mA to 1 A, Falling edge
+
+          Figure 26. Load Transient Response in PWM Mode                 Figure 27. Load Transient Response in PWM Mode
+
+
+
+
+                         Iout = 100 mA                                                     Iout = 1 A
+
+                         Figure 28. Start-up                                             Figure 29. Start-up
+
+
+
+
+                          Iout = 66 mA                                                     Iout = 1 A
+
+          Figure 30. Typical Operation in Power Save Mode                   Figure 31. Typical Operation in PWM Mode
+
+
+
+
+18     Submit Documentation Feedback                                             Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                         Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                                          TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                                                SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+9.3 System Examples
+9.3.1 Inverting Power Supply
+The TPS6216x-Q1 can be used as inverting power supply by rearranging external circuitry as shown in
+Figure 32. Since the former GND node now represents a voltage level below system ground, the voltage
+difference between VIN and VOUT has to be limited for operation to the maximum supply voltage of 17 V (see
+Equation 13).
+      VIN + VOUT £ VIN max                                                                                                                         (13)
+
+
+                                           10uF
+
+                       (3 .. 12)V                                                     2.2µH
+                                                     VIN                 SW
+
+                                                     EN                  VOS                      100k      680k
+                                           10uF            TPS62160-Q1                                                               22uF
+                                                     GND                 PG
+                                                                                                            130k
+                                                     PGND                 FB
+                                                                                                                                            -5V
+
+
+
+
+                                                  Figure 32. –5-V Inverting Power Supply
+
+The transfer function of the inverting power supply configuration differs from the buck mode transfer function,
+incorporating a Right Half Plane Zero additionally. The loop stability has to be adapted and an output
+capacitance of at least 22 µF is recommended. A detailed design example is given in the Using the TPS6215x in
+an Inverting Buck-Boost Topology Application Report.
+
+9.3.2 Various Output Voltages
+The TPS62160-Q1 can be set for different output voltages between 0.9 V and 6 V. Some examples are shown
+below.
+                     (5 .. 17)V                                                           2.2µH                                        5V / 1A
+                                                     VIN                   SW
+
+                                                     EN                   VOS                            100k          680k
+                           10uF                          TPS62160-Q1                                                                 22uF
+                                                     AGND                  PG
+                                                                                                                       130k
+                                                     PGND                      FB
+
+
+
+                                                     Figure 33. 5-V/1-A Power Supply
+
+                                                                                              2.2µH                            3.3V / 1A
+                                                           VIN                      SW
+
+                                                           EN                       VOS                         100k
+                                    10uF                       TPS62162-Q1                                                    22uF
+                                                           AGND                     PG
+
+                                                           PGND                      FB
+
+
+
+                                                    Figure 34. 3.3-V/1-A Power Supply
+
+
+
+
+Copyright © 2014–2020, Texas Instruments Incorporated                                                              Submit Documentation Feedback    19
+                                                  Product Folder Links: TPS62160-Q1 TPS62162-Q1
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                             www.ti.com
+
+
+System Examples (continued)
+
+                 (3 .. 17)V                                           2.2µH                             2.5V / 1A
+                                              VIN               SW
+
+                                              EN                VOS             100k     390k
+                       10uF                       TPS62160-Q1                                         22uF
+                                              AGND               PG
+                                                                                         180k
+                                              PGND               FB
+
+
+
+                                          Figure 35. 2.5-V/1-A Power Supply
+
+                 (3 .. 17)V                                           2.2µH                             1.8V / 1A
+                                              VIN               SW
+
+                                              EN                VOS             100k     200k
+                       10uF                       TPS62160-Q1                                         22uF
+                                              AGND               PG
+                                                                                         160k
+                                              PGND               FB
+
+
+
+                                          Figure 36. 1.8-V/1-A Power Supply
+
+                 (3 .. 17)V                                           2.2µH                             1.5V / 1A
+                                              VIN               SW
+
+                                              EN                VOS             100k     130k
+                       10uF                       TPS62160-Q1                                         22uF
+                                              AGND              PG
+                                                                                         150k
+                                              PGND               FB
+
+
+
+                                          Figure 37. 1.5-V/1-A Power Supply
+
+                 (3 .. 17)V                                           2.2µH                             1.2V / 1A
+                                              VIN               SW
+
+                                              EN                VOS             100k      75k
+                       10uF                       TPS62160-Q1                                         22uF
+                                              AGND              PG
+                                                                                         150k
+                                              PGND               FB
+
+
+
+                                          Figure 38. 1.2-V/1-A Power Supply
+
+                 (3 .. 17)V                                           2.2µH                             1V / 1A
+                                              VIN               SW
+
+                                              EN                VOS             100k      51k
+                        10uF                      TPS62160-Q1                                         22uF
+                                              AGND              PG
+                                                                                         200k
+                                              PGND               FB
+
+
+
+                                              Figure 39. 1-V/1-A Power Supply
+
+
+
+
+20     Submit Documentation Feedback                                            Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                        Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                   TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                               SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+10 Power Supply Recommendations
+The TPS6216x-Q1 are designed to operate from a 3-V to 17-V input voltage supply. The output current of the
+input power supply needs to be rated according to the output voltage and the output current of the power rail
+application.
+
+
+
+
+Copyright © 2014–2020, Texas Instruments Incorporated                                          Submit Documentation Feedback     21
+                                               Product Folder Links: TPS62160-Q1 TPS62162-Q1
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                             www.ti.com
+
+
+11 Layout
+
+11.1 Layout Guidelines
+A proper layout is critical for the operation of a switched mode power supply, even more at high switching
+frequencies. Therefore, the PCB layout of the TPS6216x-Q1 demands careful attention to ensure operation and
+to get the performance specified. A poor layout can lead to issues like poor regulation (both line and load),
+stability and accuracy weaknesses, increased EMI radiation, and noise sensitivity. Considering the following
+topics ensures best electrical and optimized thermal performance:
+ 1. The input capacitor must be placed as close as possible to the VIN and PGND pin of the IC. This provides
+    low resistive and inductive path for the high di/dt input current.
+ 2. The VOS pin must be connect in the shortest way to VOUT at the output capacitor - avoiding noise coupling.
+ 3. The feedback resistors, R1 and R2, must be connected close to the FB and AGND pins - avoiding noise
+    coupling.
+ 4. The output capacitor must be placed such that its ground is as close as possible to the PGND pins of the IC
+    - avoiding additional voltage drop in traces.
+ 5. The inductor must be placed close to the SW pin and connect directly to the output capacitor - minimizing the
+    loop area between the SW pin, inductor, output capacitor, and PGND pin.
+More detailed information can be found in the TPS62160EVM-627 and TPS62170EVM-627 Evaluation Modules
+User's Guide.
+The Exposed Thermal Pad must be soldered to the circuit board for mechanical reliability and to achieve
+appropriate power dissipation. Although the Exposed Thermal Pad can be connected to a floating circuit board
+trace, the device will have better thermal performance if it is connected to a larger ground plane. The Exposed
+Thermal Pad is electrically connected to AGND.
+
+11.2 Layout Example
+
+
+                   GND                                      C2                          VOUT
+
+                                                                                                    L1
+                                                    PGND            PG
+
+                            C1                       VIN
+                                                     EN
+                                                                    SW
+                                                                    VOS
+                                                     AGND            FB
+
+                                                    AGND
+                    VIN
+                                                            R2                          R1
+                                              Figure 40. Layout Example
+
+
+
+
+22     Submit Documentation Feedback                                            Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                        Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                   TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                               SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+11.3 Thermal Considerations
+Implementation of integrated circuits in low-profile and fine-pitch surface-mount packages typically requires
+special attention to power dissipation. Many system-dependent issues such as thermal coupling, airflow, added
+heat sinks, and convection surfaces, and the presence of other heat-generating components affect the power-
+dissipation limits of a given component.
+The following are three basic approaches for enhancing thermal performance:
+• Improving the power dissipation capability of the PCB design
+• Improving the thermal coupling of the component to the PCB by soldering the Exposed Thermal Pad
+• Introducing airflow in the system
+For more details on how to use the thermal parameters, see the Thermal Characteristics of Linear and Logic
+Packages Using JEDEC PCB Designs and Semiconductor and IC Package Thermal Metrics application reports.
+The TPS6216x-Q1 are designed for a maximum operating junction temperature (TJ) of 125°C. Therefore, the
+maximum output power is limited by the power losses that can be dissipated over the actual thermal resistance,
+given by the package and the surrounding PCB structures. Since the thermal resistance of the package is fixed,
+increasing the size of the surrounding copper area and improving the thermal connection to the IC can reduce
+the thermal resistance. To get an improved thermal behavior, it is recommended to use top layer metal to
+connect the device with wide and thick metal lines. Internal ground layers can connect to vias directly under the
+IC for improved thermal performance.
+If short circuit or overload conditions are present, the device is protected by limiting internal power dissipation.
+
+
+
+
+Copyright © 2014–2020, Texas Instruments Incorporated                                          Submit Documentation Feedback     23
+                                               Product Folder Links: TPS62160-Q1 TPS62162-Q1
+TPS62160-Q1, TPS62162-Q1
+SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020                                                                                     www.ti.com
+
+
+12 Device and Documentation Support
+
+12.1 Device Support
+12.1.1 Third-Party Products Disclaimer
+TI'S PUBLICATION OF INFORMATION REGARDING THIRD-PARTY PRODUCTS OR SERVICES DOES NOT
+CONSTITUTE AN ENDORSEMENT REGARDING THE SUITABILITY OF SUCH PRODUCTS OR SERVICES
+OR A WARRANTY, REPRESENTATION OR ENDORSEMENT OF SUCH PRODUCTS OR SERVICES, EITHER
+ALONE OR IN COMBINATION WITH ANY TI PRODUCT OR SERVICE.
+
+12.2 Documentation Support
+12.2.1 Related Documentation
+• Optimizing the TPS62130/40/50/60/70 Output Filter Application Report
+• Optimizing Transient Response of Internally Compensated dc-dc Converters With Feedforward Capacitor
+   Application Report
+• Using a Feedforward Capacitor to Improve Stability and Bandwidth of TPS62130/40/50/60/70 Application
+   Report
+• TPS62160EVM-627 and TPS62170EVM-627 Evaluation Modules User's Guide
+• Thermal Characteristics of Linear and Logic Packages Using JEDEC PCB Designs Application Report
+• Semiconductor and IC Package Thermal Metrics Application Report
+
+12.3 Related Links
+The table below lists quick access links. Categories include technical documents, support and community
+resources, tools and software, and quick access to sample or buy.
+
+                                                      Table 4. Related Links
+                                                                        TECHNICAL                TOOLS &                 SUPPORT &
+       PARTS           PRODUCT FOLDER           SAMPLE & BUY
+                                                                        DOCUMENTS               SOFTWARE                 COMMUNITY
+     TPS62160-Q1            Click here             Click here             Click here              Click here               Click here
+     TPS62162-Q1            Click here             Click here             Click here              Click here               Click here
+
+
+12.4 Receiving Notification of Documentation Updates
+To receive notification of documentation updates, navigate to the device product folder on ti.com. In the upper
+right corner, click on Alert me to register and receive a weekly digest of any product information that has
+changed. For change details, review the revision history included in any revised document.
+
+12.5 Support Resources
+TI E2E™ support forums are an engineer's go-to source for fast, verified answers and design help — straight
+from the experts. Search existing answers or ask your own question to get the quick design help you need.
+Linked content is provided "AS IS" by the respective contributors. They do not constitute TI specifications and do
+not necessarily reflect TI's views; see TI's Terms of Use.
+
+12.6 Trademarks
+DCS-Control, E2E are trademarks of Texas Instruments.
+All other trademarks are the property of their respective owners.
+12.7 Electrostatic Discharge Caution
+         These devices have limited built-in ESD protection. The leads should be shorted together or the device placed in conductive foam
+         during storage or handling to prevent electrostatic damage to the MOS gates.
+
+
+
+
+24     Submit Documentation Feedback                                                    Copyright © 2014–2020, Texas Instruments Incorporated
+
+                                          Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                   TPS62160-Q1, TPS62162-Q1
+www.ti.com                                                                               SLVSCK6B – DECEMBER 2014 – REVISED MAY 2020
+
+
+12.8 Glossary
+SLYZ022 — TI Glossary.
+   This glossary lists and explains terms, acronyms, and definitions.
+
+13 Mechanical, Packaging, and Orderable Information
+The following pages include mechanical, packaging, and orderable information. This information is the most
+current data available for the designated devices. This data is subject to change without notice and revision of
+this document. For browser-based versions of this data sheet, refer to the left-hand navigation.
+
+
+
+
+Copyright © 2014–2020, Texas Instruments Incorporated                                          Submit Documentation Feedback     25
+                                               Product Folder Links: TPS62160-Q1 TPS62162-Q1
+                                                                                                                                                                     PACKAGE OPTION ADDENDUM
+
+       www.ti.com                                                                                                                                                                                                    9-Nov-2025
+
+
+
+
+PACKAGING INFORMATION
+
+       Orderable part number          Status     Material type      Package | Pins      Package qty | Carrier       RoHS             Lead finish/               MSL rating/          Op temp (°C)               Part marking
+                                        (1)            (2)                                                            (3)            Ball material              Peak reflow                                           (6)
+                                                                                                                                          (4)                       (5)
+
+        TPS62160QDSGRQ1               Active      Production       WSON (DSG) | 8        3000 | LARGE T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QTVQ
+       TPS62160QDSGRQ1.A              Active      Production       WSON (DSG) | 8        3000 | LARGE T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QTVQ
+       TPS62160QDSGRQ1.B              Active      Production       WSON (DSG) | 8        3000 | LARGE T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QTVQ
+        TPS62160QDSGTQ1               Active      Production       WSON (DSG) | 8         250 | SMALL T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QTVQ
+       TPS62160QDSGTQ1.A              Active      Production       WSON (DSG) | 8         250 | SMALL T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QTVQ
+       TPS62160QDSGTQ1.B              Active      Production       WSON (DSG) | 8         250 | SMALL T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QTVQ
+        TPS62162QDSGRQ1               Active      Production       WSON (DSG) | 8        3000 | LARGE T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QUCQ
+       TPS62162QDSGRQ1.A              Active      Production       WSON (DSG) | 8        3000 | LARGE T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QUCQ
+       TPS62162QDSGRQ1.B              Active      Production       WSON (DSG) | 8        3000 | LARGE T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QUCQ
+        TPS62162QDSGTQ1               Active      Production       WSON (DSG) | 8         250 | SMALL T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QUCQ
+       TPS62162QDSGTQ1.A              Active      Production       WSON (DSG) | 8         250 | SMALL T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QUCQ
+       TPS62162QDSGTQ1.B              Active      Production       WSON (DSG) | 8         250 | SMALL T&R            Yes               NIPDAU           Level-2-260C-1 YEAR            -40 to 125                   QUCQ
+
+(1)
+      Status: For more details on status, see our product life cycle.
+
+(2)
+   Material type: When designated, preproduction parts are prototypes/experimental devices, and are not yet approved or released for full production. Testing and final process, including without limitation quality assurance,
+reliability performance testing, and/or process qualification, may not yet be complete, and this item is subject to further changes or possible discontinuation. If available for ordering, purchases will be subject to an additional
+waiver at checkout, and are intended for early internal evaluation purposes only. These items are sold without warranties of any kind.
+
+(3)
+      RoHS values: Yes, No, RoHS Exempt. See the TI RoHS Statement for additional information and value definition.
+
+(4)
+   Lead finish/Ball material: Parts may have multiple material finish options. Finish options are separated by a vertical ruled line. Lead finish/Ball material values may wrap to two lines if the finish value exceeds the maximum
+column width.
+
+(5)
+  MSL rating/Peak reflow: The moisture sensitivity level ratings and peak solder (reflow) temperatures. In the event that a part has multiple moisture sensitivity ratings, only the lowest level per JEDEC standards is shown.
+Refer to the shipping label for the actual reflow temperature that will be used to mount the part to the printed circuit board.
+
+(6)
+      Part marking: There may be an additional marking, which relates to the logo, the lot trace code information, or the environmental category of the part.
+
+Multiple part markings will be inside parentheses. Only one part marking contained in parentheses and separated by a "~" will appear on a part. If a line is indented then it is a continuation of the previous line and the two
+combined represent the entire part marking for that device.
+
+
+
+                                                                                                          Addendum-Page 1
+                                                                                                                                                                      PACKAGE OPTION ADDENDUM
+
+    www.ti.com                                                                                                                                                                                                    9-Nov-2025
+
+
+
+
+Important Information and Disclaimer:The information provided on this page represents TI's knowledge and belief as of the date that it is provided. TI bases its knowledge and belief on information provided by third parties, and
+makes no representation or warranty as to the accuracy of such information. Efforts are underway to better integrate information from third parties. TI has taken and continues to take reasonable steps to provide representative
+and accurate information but may not have conducted destructive testing or chemical analysis on incoming materials and chemicals. TI and TI suppliers consider certain information to be proprietary, and thus CAS numbers
+and other limited information may not be available for release.
+
+In no event shall TI's liability arising out of such information exceed the total purchase price of the TI part(s) at issue in this document sold by TI to Customer on an annual basis.
+
+OTHER QUALIFIED VERSIONS OF TPS62160-Q1, TPS62162-Q1 :
+
+• Catalog : TPS62160, TPS62162
+
+NOTE: Qualified Version Definitions:
+
+        • Catalog - TI's standard catalog product
+
+
+
+
+                                                                                                          Addendum-Page 2
+                                                                             PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                                                       24-Jul-2025
+
+
+
+TAPE AND REEL INFORMATION
+
+       REEL DIMENSIONS                                                                    TAPE DIMENSIONS
+                                                                                     K0         P1
+
+
+
+                                                                                                                      B0 W
+                                       Reel
+                                     Diameter
+                                                                                  Cavity             A0
+                                                              A0   Dimension designed to accommodate the component width
+                                                              B0   Dimension designed to accommodate the component length
+                                                              K0   Dimension designed to accommodate the component thickness
+                                                              W    Overall width of the carrier tape
+                                                              P1   Pitch between successive cavity centers
+
+
+                                      Reel Width (W1)
+                              QUADRANT ASSIGNMENTS FOR PIN 1 ORIENTATION IN TAPE
+
+                                                                                                     Sprocket Holes
+
+
+                                                Q1       Q2          Q1    Q2
+
+                                                Q3       Q4          Q3    Q4                    User Direction of Feed
+
+
+
+                                                          Pocket Quadrants
+
+
+*All dimensions are nominal
+             Device           Package Package Pins            SPQ        Reel   Reel   A0                   B0         K0     P1     W     Pin1
+                               Type Drawing                            Diameter Width (mm)                 (mm)       (mm)   (mm)   (mm) Quadrant
+                                                                         (mm) W1 (mm)
+  TPS62160QDSGRQ1             WSON     DSG           8        3000        180.0           8.4        2.3    2.3       1.15   4.0    8.0     Q2
+  TPS62160QDSGTQ1             WSON     DSG           8         250        180.0           8.4        2.3    2.3       1.15   4.0    8.0     Q2
+  TPS62162QDSGRQ1             WSON     DSG           8        3000        180.0           8.4        2.3    2.3       1.15   4.0    8.0     Q2
+  TPS62162QDSGTQ1             WSON     DSG           8         250        180.0           8.4        2.3    2.3       1.15   4.0    8.0     Q2
+
+
+
+
+                                                                     Pack Materials-Page 1
+                                                                PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                              24-Jul-2025
+
+
+
+ TAPE AND REEL BOX DIMENSIONS
+
+
+
+
+                                                               Width (mm)
+                                                                              H
+
+
+
+
+                      W                                   L
+
+
+
+
+*All dimensions are nominal
+             Device           Package Type   Package Drawing   Pins         SPQ    Length (mm)   Width (mm)   Height (mm)
+   TPS62160QDSGRQ1               WSON             DSG           8           3000      213.0        191.0         35.0
+   TPS62160QDSGTQ1               WSON             DSG           8           250       213.0        191.0         35.0
+   TPS62162QDSGRQ1               WSON             DSG           8           3000      213.0        191.0         35.0
+   TPS62162QDSGTQ1               WSON             DSG           8           250       213.0        191.0         35.0
+
+
+
+
+                                                        Pack Materials-Page 2
+                                                                  GENERIC PACKAGE VIEW
+DSG 8                                                                   WSON - 0.8 mm max height
+2 x 2, 0.5 mm pitch                                                         PLASTIC SMALL OUTLINE - NO LEAD
+
+
+
+
+               This image is a representation of the package family, actual package may vary.
+                             Refer to the product data sheet for package details.
+
+
+
+
+                                                                                                   4224783/A
+
+
+
+
+                                                    www.ti.com
+                                                                                                            PACKAGE OUTLINE
+DSG0008A                                                          SCALE 5.500
+                                                                                                        WSON - 0.8 mm max height
+                                                                                                            PLASTIC SMALL OUTLINE - NO LEAD
+
+
+
+
+                                                      2.1                           B
+                                  A
+                                                      1.9
+
+
+
+
+                                                                                                            0.32
+                PIN 1 INDEX AREA                                                                            0.18
+                                                                                    2.1
+                                                                                    1.9
+
+                                                                                                                             0.4
+                                                                                                                             0.2
+
+                                                                                                       ALTERNATIVE TERMINAL SHAPE
+                                                                                                                   TYPICAL
+
+
+
+
+                           0.8                                                                 C
+                           0.7
+
+                                                                                                   SEATING PLANE
+                           0.05                                                                                          SIDE WALL
+                                                                                                   0.08 C
+                           0.00                                                                                      METAL THICKNESS
+                                                                                                                            DIM A
+                                                                                                                    OPTION 1     OPTION 2
+                                                                                                                      0.1          0.2
+
+                          EXPOSED
+                       THERMAL PAD                  0.9 0.1                                                                  (DIM A) TYP
+
+
+                                        4                                       5
+
+                               6X 0.5
+
+                         2X
+                                                         9
+                         1.5                                                         1.6 0.1
+
+
+
+
+                                                                                8
+                                        1
+
+                               PIN 1 ID                                                        0.32
+                                                                                          8X
+                            (45 X 0.25)                    0.4                                 0.18
+                                                        8X
+                                                           0.2                                  0.1    C A B
+                                                                                                0.05    C
+
+
+                                                                                                                             4218900/E 08/2022
+
+NOTES:
+
+1. All linear dimensions are in millimeters. Any dimensions in parenthesis are for reference only. Dimensioning and tolerancing
+   per ASME Y14.5M.
+2. This drawing is subject to change without notice.
+3. The package thermal pad must be soldered to the printed circuit board for thermal and mechanical performance.
+
+
+
+
+                                                                  www.ti.com
+                                                                                       EXAMPLE BOARD LAYOUT
+DSG0008A                                                                                         WSON - 0.8 mm max height
+                                                                                                          PLASTIC SMALL OUTLINE - NO LEAD
+
+
+
+
+                                                                     (0.9)            ( 0.2) VIA
+                                       8X (0.5)
+                                                                                      TYP
+                                                  1
+                                                                                            8
+
+
+                                   8X (0.25)
+                                                                                                (0.55)
+                                         SYMM                           9
+                                                                                                         (1.6)
+
+
+                                       6X (0.5)
+                                                                                            5
+                                                  4
+
+                                 (R0.05) TYP                        SYMM
+
+                                                                     (1.9)
+
+                                                      LAND PATTERN EXAMPLE
+                                                                  SCALE:20X
+
+
+
+
+                                               0.07 MAX                                                    0.07 MIN
+                                               ALL AROUND                                                  ALL AROUND
+
+
+
+
+                    SOLDER MASK                       METAL                    METAL UNDER                        SOLDER MASK
+                    OPENING                                                    SOLDER MASK                        OPENING
+                                    NON SOLDER MASK
+                                                                                                   SOLDER MASK
+                                        DEFINED
+                                                                                                     DEFINED
+                                      (PREFERRED)
+
+                                                             SOLDER MASK DETAILS
+
+
+
+                                                                                                                            4218900/E 08/2022
+
+NOTES: (continued)
+
+4. This package is designed to be soldered to a thermal pad on the board. For more information, see Texas Instruments literature
+   number SLUA271 (www.ti.com/lit/slua271).
+5. Vias are optional depending on application, refer to device data sheet. If any vias are implemented, refer to their locations shown
+   on this view. It is recommended that vias under paste be filled, plugged or tented.
+
+
+
+
+                                                                       www.ti.com
+                                                                               EXAMPLE STENCIL DESIGN
+DSG0008A                                                                                 WSON - 0.8 mm max height
+                                                                                                PLASTIC SMALL OUTLINE - NO LEAD
+
+
+
+
+                                  8X (0.5)                       SYMM               METAL
+                                             1
+                                                                                            8
+
+                             8X (0.25)
+                                                                                                (0.45)
+                                  SYMM
+                                                                      9
+
+
+
+                                  6X (0.5)                                                           (0.7)
+
+                                                                                            5
+                                             4
+
+                            (R0.05) TYP                           (0.9)
+
+                                                                  (1.9)
+
+
+                                                    SOLDER PASTE EXAMPLE
+                                                  BASED ON 0.125 mm THICK STENCIL
+
+                                                       EXPOSED PAD 9:
+                                     87% PRINTED SOLDER COVERAGE BY AREA UNDER PACKAGE
+                                                          SCALE:25X
+
+
+
+
+                                                                                                                  4218900/E 08/2022
+
+NOTES: (continued)
+
+6. Laser cutting apertures with trapezoidal walls and rounded corners may offer better paste release. IPC-7525 may have alternate
+   design recommendations.
+
+
+
+
+                                                                 www.ti.com
+                                         IMPORTANT NOTICE AND DISCLAIMER
+TI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATASHEETS), DESIGN RESOURCES (INCLUDING REFERENCE
+DESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS”
+AND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY
+IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD
+PARTY INTELLECTUAL PROPERTY RIGHTS.
+These resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate
+TI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable
+standards, and any other safety, security, regulatory or other requirements.
+These resources are subject to change without notice. TI grants you permission to use these resources only for development of an
+application that uses the TI products described in the resource. Other reproduction and display of these resources is prohibited. No license
+is granted to any other TI intellectual property right or to any third party intellectual property right. TI disclaims responsibility for, and you fully
+indemnify TI and its representatives against any claims, damages, costs, losses, and liabilities arising out of your use of these resources.
+TI’s products are provided subject to TI’s Terms of Sale, TI’s General Quality Guidelines, or other applicable terms available either on
+ti.com or provided in conjunction with such TI products. TI’s provision of these resources does not expand or otherwise alter TI’s applicable
+warranties or warranty disclaimers for TI products. Unless TI explicitly designates a product as custom or customer-specified, TI products
+are standard, catalog, general purpose devices.
+TI objects to and rejects any additional or different terms you may propose.
+IMPORTANT NOTICE
+
+                                                Copyright © 2025, Texas Instruments Incorporated
+                                                                Last updated 10/2025
+

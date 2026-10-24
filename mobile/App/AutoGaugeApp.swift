@@ -13,39 +13,50 @@ struct AutoGaugeApp: App {
 
 @MainActor
 final class AppModel: ObservableObject {
-    @Published var configuration = DemoData.configuration
+    @Published var editor: ConfigurationDraft
     @Published var message: String?
-    @Published var savedRevision = 0
     let catalog = DemoData.catalog
-    private let transport = SimulatedGaugeTransport()
-    private let draftKey = "auto-gauge.simulated-configuration.v1"
+    private let storage: AtomicFileConfigurationStorage
+    var configuration: GaugeConfiguration {
+        get { editor.working }
+        set { editor.working = newValue }
+    }
+    var savedRevision: Int { editor.saved.revision }
 
     init() {
-        if let data = UserDefaults.standard.data(forKey: draftKey),
-           let draft = try? JSONDecoder().decode(GaugeConfiguration.self, from: data),
-           (try? ConfigurationValidator.validate(draft, catalog: DemoData.catalog)) != nil {
-            configuration = draft
-            savedRevision = draft.revision
-        }
+        let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        storage = .init(fileURL: directory.appendingPathComponent("AutoGauge/simulated-configuration-v1.json"))
+        editor = try! ConfigurationDraft(configuration: DemoData.configuration, catalog: DemoData.catalog)
+        do {
+            if let data = try storage.read() {
+                let saved = try JSONDecoder().decode(GaugeConfiguration.self, from: data)
+                editor = try ConfigurationDraft(configuration: saved, catalog: DemoData.catalog)
+            } else if let legacy = UserDefaults.standard.data(forKey: "auto-gauge.simulated-configuration.v1") {
+                let saved = try JSONDecoder().decode(GaugeConfiguration.self, from: legacy)
+                let migrated = try ConfigurationDraft(configuration: saved, catalog: DemoData.catalog)
+                try storage.write(legacy)
+                editor = migrated
+            }
+        } catch { message = "La bozza locale non è leggibile. È stato caricato l’esempio senza sovrascrivere il file salvato. \(error.localizedDescription)" }
+    }
+    func edit(_ operation: (inout ConfigurationDraft) throws -> Void) {
+        var candidate = editor
+        do { try operation(&candidate); editor = candidate }
+        catch { message = error.localizedDescription }
     }
     func save() async {
         do {
-            var candidate = configuration
-            candidate.revision += 1
-            try await transport.apply(candidate)
-            let data = try JSONEncoder().encode(candidate)
-            UserDefaults.standard.set(data, forKey: draftKey)
-            configuration = candidate
-            savedRevision = candidate.revision
-            message = "Configurazione salvata nella simulazione e su questo iPhone. Nessun dispositivo reale modificato."
+            try editor.save(to: storage, catalog: catalog)
+            message = "Bozza salvata su questo iPhone con revisione \(editor.saved.revision). Nessun dispositivo reale modificato."
         } catch { message = error.localizedDescription }
     }
-    func addDashboard() {
-        guard configuration.dashboards.count < 3 else { return }
-        configuration.dashboards.append(Dashboard(id: (1...255).first { candidate in !configuration.dashboards.contains { $0.id == candidate } }!, widgets: [
-            GaugeWidget(pid: catalog[0], frame: .init(x: 0.25, y: 0.3, width: 0.5, height: 0.3))
-        ]))
+    func cancelEdits() { editor.cancel() }
+    func reloadSaved() {
+        do { try editor.reload(from: storage, catalog: catalog) }
+        catch { message = "Ricarica non riuscita: la bozza corrente è stata conservata. \(error.localizedDescription)" }
     }
+    func restoreExample() { edit { try $0.restore(DemoData.configuration, catalog: catalog) } }
+    func addDashboard() { edit { _ = try $0.addDashboard(pid: catalog[0]) } }
 }
 
 private enum Palette {
@@ -156,96 +167,147 @@ struct DashboardListView: View {
                     .font(.subheadline).foregroundStyle(.secondary)
             }
             Section {
-                ForEach(model.configuration.dashboards.indices, id: \.self) { index in
+                ForEach(model.configuration.dashboards) { dashboard in
                     NavigationLink {
-                        DashboardEditorView(index: index)
+                        DashboardEditorView(dashboardID: dashboard.id)
                     } label: {
                         HStack {
-                            Text(String(index + 1)).font(.headline.monospaced()).foregroundStyle(Palette.accent).frame(width: 26)
+                            Text(String(dashboard.id)).font(.headline.monospaced()).foregroundStyle(Palette.accent).frame(width: 26)
                             VStack(alignment: .leading) {
-                                Text(model.configuration.dashboards[index].name)
-                                Text("\(model.configuration.dashboards[index].widgets.count) misure").font(.caption).foregroundStyle(.secondary)
+                                Text(dashboard.name)
+                                Text("\(dashboard.widgets.count) misure").font(.caption).foregroundStyle(.secondary)
                             }
                         }
                     }
-                }
-                .onDelete { offsets in
-                    guard model.configuration.dashboards.count - offsets.count >= 1 else { return }
-                    model.configuration.dashboards.remove(atOffsets: offsets)
+                }.onDelete { offsets in
+                    let ids = offsets.map { model.configuration.dashboards[$0].id }
+                    model.edit { draft in for id in ids { try draft.removeDashboard(id: id) } }
                 }
                 Button { model.addDashboard() } label: { Label("Aggiungi dashboard", systemImage: "plus.circle") }
                     .disabled(model.configuration.dashboards.count >= 3)
-            } header: { Text("Le tue dashboard") } footer: { Text("Da 1 a 3 dashboard, fino a 5 misure per ciascuna.") }
-            Section {
-                Button("Salva nella simulazione") { Task { await model.save() } }
-            } footer: { Text("Nessun invio al gauge reale. La bozza viene conservata su questo iPhone.") }
+            } header: { Text("Le tue dashboard") } footer: { Text("Da 1 a 3 dashboard, fino a 5 misure per ciascuna. Gli ID delle dashboard esistenti non cambiano dopo una rimozione.") }
+            DraftActionsView()
         }.navigationTitle("Dashboard")
+    }
+}
+
+struct DraftActionsView: View {
+    @EnvironmentObject private var model: AppModel
+    var body: some View {
+        Section {
+            Label(model.editor.hasChanges ? "Modifiche non salvate" : "Bozza salvata · revisione \(model.savedRevision)", systemImage: model.editor.hasChanges ? "pencil.circle" : "checkmark.circle")
+                .font(.subheadline).foregroundStyle(model.editor.hasChanges ? .orange : Palette.accent)
+            Button("Salva bozza locale") { Task { await model.save() } }.disabled(!model.editor.hasChanges)
+            Button("Annulla modifiche") { model.cancelEdits() }.disabled(!model.editor.hasChanges)
+            Button("Ricarica bozza salvata") { model.reloadSaved() }
+            Button("Ripristina esempio nella bozza") { model.restoreExample() }
+        } footer: { Text("Salva conserva tutte le dashboard e la luminosità su questo iPhone. Annulla ripristina l’ultimo salvataggio. Ripristina prepara l’esempio senza salvarlo. Nessun invio al gauge reale.") }
     }
 }
 
 struct DashboardEditorView: View {
     @EnvironmentObject private var model: AppModel
-    let index: Int
-    @State private var selectedWidgetID: Int?
+    let dashboardID: Int
+    private var selectedID: Int? {
+        model.editor.selection?.dashboardID == dashboardID ? model.editor.selection?.widgetID : nil
+    }
     var body: some View {
-        if model.configuration.dashboards.indices.contains(index) {
+        if let dashboard = model.configuration.dashboards.first(where: { $0.id == dashboardID }) {
             Form {
                 Section {
-                    GaugePreview(dashboard: model.configuration.dashboards[index])
+                    GaugePreview(dashboard: dashboard, selectedID: selectedID, onSelect: select, onMove: move)
                         .frame(maxWidth: .infinity).padding(.vertical, 12)
                     Text("ANTEPRIMA · VALORI DIMOSTRATIVI").font(.caption2.weight(.semibold)).foregroundStyle(Palette.muted)
                         .frame(maxWidth: .infinity)
+                    Text("Tocca una misura per selezionarla. Trascinala oppure usa i controlli di posizione e dimensione.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }.listRowBackground(Color.clear)
-                Section("Dashboard") { Text(model.configuration.dashboards[index].name) }
-                Section("Misure") {
-                    ForEach(model.configuration.dashboards[index].widgets) { widget in
-                        Button { selectedWidgetID = widget.id } label: {
+                let clipped = model.editor.clippedWidgetIDs(dashboardID: dashboardID)
+                if !clipped.isEmpty {
+                    Section {
+                        Label("\(clipped.count) misure tagliate dal bordo circolare", systemImage: "exclamationmark.triangle")
+                            .foregroundStyle(.orange).font(.subheadline)
+                        Text("Il riquadro supera il bordo del display e l’anteprima viene tagliata. Controlla posizione e dimensioni prima di salvare.")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+                Section(dashboard.name) {
+                    ForEach(dashboard.widgets) { widget in
+                        Button { select(widget.id) } label: {
                             HStack {
                                 VStack(alignment: .leading) {
                                     Text(widget.pid.nameIT).foregroundStyle(.primary)
-                                    Text(widget.pid.unit).font(.caption).foregroundStyle(.secondary)
+                                    Text("Misura \(widget.id) · \(widget.pid.unit)").font(.caption).foregroundStyle(.secondary)
                                 }
                                 Spacer()
-                                Image(systemName: selectedWidgetID == widget.id ? "slider.horizontal.3" : "chevron.right")
+                                if clipped.contains(widget.id) { Image(systemName: "exclamationmark.triangle").foregroundStyle(.orange).accessibilityLabel("Tagliata sul bordo circolare") }
+                                Image(systemName: selectedID == widget.id ? "checkmark.circle.fill" : "circle")
                             }
-                        }
+                        }.accessibilityLabel("\(widget.pid.nameIT), misura \(widget.id)")
+                         .accessibilityValue(selectedID == widget.id ? "Selezionata" : "Non selezionata")
                     }.onDelete { offsets in
-                        guard model.configuration.dashboards[index].widgets.count - offsets.count >= 1 else { return }
-                        model.configuration.dashboards[index].widgets.remove(atOffsets: offsets)
+                        let ids = offsets.map { dashboard.widgets[$0].id }
+                        model.edit { draft in for id in ids { try draft.removeWidget(dashboardID: dashboardID, widgetID: id) } }
                     }
                     Menu {
                         ForEach(model.catalog) { pid in
-                            Button(pid.nameIT) {
-                                model.configuration.dashboards[index].widgets.append(GaugeWidget(id: (1...255).first { candidate in !model.configuration.dashboards[index].widgets.contains { $0.id == candidate } }!, pid: pid, frame: .init(x: 0.25, y: 0.35, width: 0.5, height: 0.2)))
-                            }
+                            Button(pid.nameIT) { model.edit { _ = try $0.addWidget(dashboardID: dashboardID, pid: pid) } }
                         }
                     } label: { Label("Aggiungi misura", systemImage: "plus") }
-                    .disabled(model.configuration.dashboards[index].widgets.count >= 5)
+                    .disabled(dashboard.widgets.count >= 5)
                 }
-                if let widgetIndex = model.configuration.dashboards[index].widgets.firstIndex(where: { $0.id == selectedWidgetID }) {
-                    Section("Posizione e dimensioni") {
-                        geometrySlider("Posizione X", value: $model.configuration.dashboards[index].widgets[widgetIndex].frame.x)
-                        geometrySlider("Posizione Y", value: $model.configuration.dashboards[index].widgets[widgetIndex].frame.y)
-                        geometrySlider("Larghezza", value: $model.configuration.dashboards[index].widgets[widgetIndex].frame.width, minimum: 0.1)
-                        geometrySlider("Altezza", value: $model.configuration.dashboards[index].widgets[widgetIndex].frame.height, minimum: 0.1)
+                if let selectedID, let widget = dashboard.widgets.first(where: { $0.id == selectedID }),
+                   let rectangle = try? EditingRectangle(widget.frame) {
+                    Section("Posizione e dimensioni · misura \(selectedID)") {
+                        ForEach(GeometryField.allCases, id: \.self) { field in
+                            geometryControl(field, rectangle: rectangle, widgetID: selectedID)
+                        }
                     }
                 }
-                Section {
-                    Button("Salva nella simulazione") { Task { await model.save() } }
-                } footer: { Text("L’editor libero è una proposta di sviluppo. Le geometrie fuori area vengono rifiutate al salvataggio.") }
+                DraftActionsView()
             }.navigationTitle("Modifica dashboard").navigationBarTitleDisplayMode(.inline)
+             .onAppear { if selectedID == nil, let id = dashboard.widgets.first?.id { select(id) } }
+        } else {
+            ContentUnavailableView("Dashboard rimossa", systemImage: "rectangle.slash", description: Text("Torna all’elenco per scegliere un’altra dashboard."))
         }
     }
-    private func geometrySlider(_ name: String, value: Binding<Double>, minimum: Double = 0) -> some View {
-        VStack(alignment: .leading) {
-            HStack { Text(name); Spacer(); Text("\(Int(value.wrappedValue * 100))%").foregroundStyle(.secondary).monospacedDigit() }
-            Slider(value: value, in: minimum...1, step: 0.01)
+    private func select(_ id: Int) { model.edit { try $0.select(dashboardID: dashboardID, widgetID: id) } }
+    private func move(_ id: Int, _ x: Int, _ y: Int) {
+        model.edit {
+            try $0.select(dashboardID: dashboardID, widgetID: id)
+            try $0.setGeometry(dashboardID: dashboardID, widgetID: id, field: .x, units: x)
+            try $0.setGeometry(dashboardID: dashboardID, widgetID: id, field: .y, units: y)
+        }
+    }
+    private func geometryControl(_ field: GeometryField, rectangle: EditingRectangle, widgetID: Int) -> some View {
+        let bounds = rectangle.range(for: field)
+        let value = Binding<Double>(get: { Double(rectangle[field]) }, set: { value in
+            model.edit { try $0.setGeometry(dashboardID: dashboardID, widgetID: widgetID, field: field, units: Int(value.rounded())) }
+        })
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(field.titleIT)
+                Spacer()
+                Text("\(rectangle[field]) / 10000").font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+            }
+            if bounds.lowerBound < bounds.upperBound {
+                Slider(value: value, in: Double(bounds.lowerBound)...Double(bounds.upperBound), step: 1)
+                    .accessibilityLabel(field.titleIT).accessibilityValue("\(rectangle[field]) su diecimila")
+            }
+            Stepper("Regola \(field.titleIT.lowercased())", value: Binding<Int>(get: { rectangle[field] }, set: { units in
+                model.edit { try $0.setGeometry(dashboardID: dashboardID, widgetID: widgetID, field: field, units: units) }
+            }), in: bounds, step: 1).font(.caption)
         }
     }
 }
 
 struct GaugePreview: View {
     let dashboard: Dashboard
+    var selectedID: Int? = nil
+    var onSelect: (Int) -> Void = { _ in }
+    var onMove: (Int, Int, Int) -> Void = { _, _, _ in }
+    @State private var draggedID: Int?
+    @State private var dragOrigin: EditingRectangle?
     var body: some View {
         GeometryReader { proxy in
             let size = proxy.size.width
@@ -259,11 +321,27 @@ struct GaugePreview: View {
                         Text(widget.pid.nameIT).font(.system(size: 8)).foregroundStyle(Palette.muted).lineLimit(1).minimumScaleFactor(0.6)
                     }
                     .frame(width: size * widget.frame.width, height: size * widget.frame.height)
+                    .background(selectedID == widget.id ? Palette.accent.opacity(0.10) : Color.clear)
+                    .overlay { Rectangle().stroke(selectedID == widget.id ? Palette.accent : Color.clear, lineWidth: 1) }
+                    .contentShape(Rectangle())
+                    .onTapGesture { onSelect(widget.id) }
+                    .gesture(DragGesture(minimumDistance: 8).onChanged { value in
+                        if draggedID != widget.id { draggedID = widget.id; dragOrigin = try? EditingRectangle(widget.frame) }
+                        if let origin = dragOrigin {
+                            onMove(widget.id, origin.x + Int(value.translation.width / size * 10000), origin.y + Int(value.translation.height / size * 10000))
+                        }
+                    }.onEnded { _ in draggedID = nil; dragOrigin = nil })
                     .position(x: size * (widget.frame.x + widget.frame.width / 2), y: size * (widget.frame.y + widget.frame.height / 2))
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("\(widget.pid.nameIT), valore dimostrativo \(exampleValue(widget.pid.pid)) \(widget.pid.unit)")
+                    .accessibilityValue(selectedID == widget.id ? "Misura selezionata" : "Tocca per selezionare")
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityAction { onSelect(widget.id) }
                 }
             }.clipShape(Circle())
         }.frame(width: 250, height: 250)
-        .accessibilityLabel("Anteprima statica della dashboard \(dashboard.name), con valori dimostrativi")
+         .accessibilityElement(children: .contain)
+         .accessibilityLabel("Anteprima statica di \(dashboard.name), con valori dimostrativi")
     }
     private func exampleValue(_ pid: Int) -> String {
         switch pid { case 12: return "2.150"; case 13: return "72"; case 5: return "89"; case 4: return "38"; case 15: return "24"; default: return "—" }

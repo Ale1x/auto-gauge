@@ -1,0 +1,1736 @@
+                                                                                                                               LM74721-Q1
+                                                                                                SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+    LM74721-Q1 TVS Less Low IQ Automotive Reverse Battery Protection Ideal Diode
+                        Controller with Active Rectification
+
+1 Features                                                              3 Description
+•   AEC-Q100 qualified with the following results                       The LM74721-Q1 ideal diode controller drives and
+    – Device temperature grade 1:                                       controls external back to back N-Channel MOSFETs
+        –40°C to +125°C ambient operating                               to emulate an ideal diode rectifier with power path
+        temperature range                                               ON and OFF control and overvoltage protection. The
+    – Device HBM ESD classification level 2                             wide input supply of 3 V to 65 V allows protection and
+    – Device CDM ESD classification level C4B                           control of 12-V automotive battery powered ECUs.
+•   3-V to 65-V input range                                             The device can withstand and protect the loads from
+•   Reverse input protection down to –33 V                              negative supply voltages down to –33-V DC. An
+•   Integrated VDS clamp for Input TVS less operation                   integrated ideal diode controller (GATE) drives the
+    for ISO7637 pulse suppression                                       first MOSFET to replace a Schottky diode for reverse
+•   Low quiescent current 35 µA (max) in operation                      input protection and output voltage holdup. Integrated
+•   Low 3.3-µA (max) shutdown current (EN = Low)                        VDS clamp feature enables input TVS less system
+•   Ideal diode operation with 17-mV A to C forward                     designs for automotive ISO7637 pulse suppression.
+    voltage drop regulation                                             A strong boost regulator with fast turn ON and OFF
+•   Drives external back-to-back N-Channel MOSFETs                      comparators ensures robust and efficient MOSFET
+•   Integrated 30-mA boost regulator                                    switching performance during automotive testing such
+•   Fast response to reverse current blocking: 0.5 µs                   as ISO16750 or LV124, where an ECU is subjected
+•   Active rectification up to 100 kHz                                  to input short interruptions and AC superimpose input
+•   Adjustable overvoltage protection                                   signals up to 100-kHz frequency. Low Quiescent
+•   Available in space saving 12-pin WSON package                       Current 35 µA (maximum) in operation enables
+•   Pin-to-pin compatible with LM74720-Q1                               always ON system designs. With a second MOSFET
+                                                                        in the power path, the device allows load disconnect
+2 Applications                                                          control using EN pin. Quiescent current reduces to
+•   Automotive battery protection                                       3.3 μA (maximum) with EN low. The device features
+    – ADAS domain controller                                            an adjustable overvoltage cutoff protection feature for
+    – Camera, radar ECUs                                                load dump protection.
+    – Premium audio amplifier                                                                      Device Information
+    – Head-up display                                                         PART NUMBER               PACKAGE(1)       BODY SIZE (NOM)
+                                                                               LM74721-Q1                WSON (12)       3.00 mm × 3.00 mm
+
+                                                                        (1)    For all available packages, see the orderable addendum at
+                                                                               the end of the data sheet.
+
+                         Q1                                                        VBATT
+            VBATT                               VOUT
+             12 V
+
+                                                                                   VOUT
+
+                          GATE C VS CAP LX        PD                                IIN
+                         A
+                         VSNS
+                                                                                    VGATE
+                          SW
+                    R1           LM74721-Q1
+          BATT_MON
+                  R2                                                             VGATE -VBATT
+                                                  EN    ON OFF
+                         OV         GND
+
+
+
+
+     Low IQ TVS Less Ideal Diode for 12-V Battery                              TVS Less ISO7637-2 Pulse 1 Performance
+          Powered Automotive Applications
+
+
+
+      An IMPORTANT NOTICE at the end of this data sheet addresses availability, warranty, changes, use in safety-critical applications,
+      intellectual property matters and other important disclaimers. PRODUCTION DATA.
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                                                                    www.ti.com
+
+
+                                                                        Table of Contents
+1 Features............................................................................1   9 Application and Implementation.................................. 16
+2 Applications..................................................................... 1       9.1 Application Information............................................. 16
+3 Description.......................................................................1       9.2 Typical 12-V Reverse Battery Protection
+4 Revision History.............................................................. 2            Application...................................................................16
+5 Pin Configuration and Functions...................................3                       9.3 What to Do and What Not to Do .............................. 21
+6 Specifications.................................................................. 4      10 Power Supply Recommendations..............................22
+  6.1 Absolute Maximum Ratings........................................ 4                    10.1 Transient Protection................................................ 22
+  6.2 ESD Ratings............................................................... 4        11 Layout........................................................................... 23
+  6.3 Recommended Operating Conditions.........................4                            11.1 Layout Guidelines................................................... 23
+  6.4 Thermal Information....................................................5              11.2 Layout Example...................................................... 23
+  6.5 Electrical Characteristics.............................................5            12 Device and Documentation Support..........................24
+  6.6 Switching Characteristics............................................6                12.1 Receiving Notification of Documentation Updates..24
+  6.7 Typical Characteristics................................................ 7             12.2 Support Resources................................................. 24
+7 Parameter Measurement Information.......................... 10                            12.3 Trademarks............................................................. 24
+8 Detailed Description...................................................... 11             12.4 Electrostatic Discharge Caution..............................24
+  8.1 Overview................................................................... 11        12.5 Glossary..................................................................24
+  8.2 Functional Block Diagram......................................... 11                13 Mechanical, Packaging, and Orderable
+  8.3 Feature Description...................................................11              Information.................................................................... 24
+  8.4 Shutdown Mode........................................................ 15
+
+
+
+4 Revision History
+NOTE: Page numbers for previous revisions may differ from page numbers in the current version.
+Changes from Revision A (February 2022) to Revision B (July 2022)                                                              Page
+• Changed status from "Advance Information" to Production Data"......................................................................1
+
+Changes from Revision * (September 2021) to Revision A (February 2022)                                                                                  Page
+• Updated the data sheet title................................................................................................................................1
+• Updated the Load Disconnect Switch Control (PD) description....................................................................... 13
+
+
+
+
+2       Submit Document Feedback                                                                                            Copyright © 2022 Texas Instruments Incorporated
+
+                                                                   Product Folder Links: LM74721-Q1
+                                                                                                                                    LM74721-Q1
+www.ti.com                                                                                       SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+
+5 Pin Configuration and Functions
+
+                                                  GATE       1                        12
+                                                                                           C
+                                                     A       2                        11   VS
+
+                                                  VSNS       3                        10   CAP
+                                                                       RTN
+                                                   SW        4                         9    LX
+
+                                                                     Exposed           8
+                                                    OV       5                             PD
+                                                                     Thermal
+                                                                       Pad
+                                                    EN       6                         7   GND
+
+
+                                       Figure 5-1. WSON 12-Pin DRR Transparent Top View
+
+
+                                                         Table 5-1. Pin Functions
+                        PIN
+                            LM74721-Q1              TYPE                                           DESCRIPTION
+      NAME
+                          DRR-12 (WSON)
+                                                                 Diode controller gate drive output. Connect to the GATE of the external
+      GATE                        1                      O
+                                                                 MOSFET.
+         A                        2                      I       Anode of the ideal diode. Connect to the source of the external MOSFET.
+      VSNS                        3                      I       Voltage sensing input
+                                                                 Voltage sensing disconnect switch terminal. VSNS and SW are internally
+                                                                 connected through a switch. Use SW as the top connection of the battery
+                                                                 sensing or OV resistor ladder network. When EN is pulled low, the switch is
+       SW                         4                      I
+                                                                 OFF, disconnecting the resistor ladder from the battery line, thereby cutting off
+                                                                 the leakage current. If the internal disconnect switch between VSNS and SW
+                                                                 is not used, then short them together and connect to C pin.
+                                                                 Adjustable overvoltage threshold input. Connect a resistor ladder across SW
+                                                                 to OV terminal. When the voltage at OV exceeds the overvoltage cutoff
+        OV                        5                      I
+                                                                 threshold, then the PD is pulled low turning OFF the HSFET. PD is driven
+                                                                 high when the sense voltage goes below the OV falling threshold.
+                                                                 EN Input. Connect to A or C pin for always ON operation. In this mode, the
+                                                                 device consumes an IQ of 35 µA (maximum) that can be driven externally
+        EN                        6                      I
+                                                                 from a micro controller I/O. Pulling this pin low below 0.5 V enters the device
+                                                                 in low Iq shutdown mode.
+       GND                        7                      G       Connect to the system ground plane.
+                                                                 Pull down connection for the external HSFET. Connect to the GATE of the
+        PD                        8                      O
+                                                                 external FET. Leave PD pin floating if the load disconnect FET is not used.
+                                                                 Switch node of the internal boost regulator. This node must be kept small
+        LX                        9                      I       on the PCB for good performance and low EMI. Connect the boost inductor
+                                                                 between this pin and the DRAIN connection of the external FET.
+                                                                 Boost Regulator Output. This pin is used to provide a drive voltage to the gate
+       CAP                        10                     O       driver of the ideal diode stage as well as drive supply for the HSFET. Connect
+                                                                 a 1-µF capacitor between this pin and the VS pin.
+        VS                        11                     I       Supply voltage pin. Place 0.1-µF capacitor from VS pin to GND.
+                                                                 Cathode of the ideal diode. Connect to the DRAIN of the external MOSFET.
+        C                         12                     I       The voltage sensed at this pin is used to control the external MOSFET GATE.
+                                                                 This pin must be locally bypassed with at least 1 µF.
+       RTN                    Thermal Pad            —           Leave exposed pad floating. Do not connect to GND plane.
+
+
+
+
+Copyright © 2022 Texas Instruments Incorporated                                                                 Submit Document Feedback             3
+                                                     Product Folder Links: LM74721-Q1
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                                             www.ti.com
+
+
+6 Specifications
+6.1 Absolute Maximum Ratings
+over operating free-air temperature range (unless otherwise noted)(1)
+                                                                                                                MIN               MAX       UNIT
+    Input Pins                       A to GND                                                          – (VCLAMP + 1)               70
+    Input Pins                       VS, C to GND                                                               –0.3                70
+    Input Pins                       VSNS, SW, EN, OV to GND, V(A) > 0 V                                        –0.3                70
+                                                                                                                                              V
+    Input Pins                       VSNS, SW, EN, OV to GND, V(A) ≤ 0 V                                         V(A)      (70 + V(A))
+    Input Pins                       C to GND, V(A) ≤ 0 V                                                         –1       (70 + V(A))
+    Input Pins                       RTN to GND                                                        – (VCLAMP + 1)              0.3
+    Input Pins                       IVSNS, ISW                                                                   –1                10
+                                                                                                                                             mA
+    Input Pins                       IEN, IOV, V(A) > 0 V                                                         –1
+    Input Pins                       IEN, IOV, V(A) ≤ 0 V                                                    Internally limited
+    Output Pins                      CAP to C                                                                   –0.3              15.9
+    Output Pins                      CAP to A                                                                   –0.3 VCLAMP + 15.9
+    Output Pins                      GATE to A                                                                  –0.3                15        V
+    Output Pins                      LX, CAP, PD to GND                                                         –0.3                85
+    Output to Input Pins             C to A                                                                       –5          VCLAMP
+    Operating junction temperature, Tj (2)                                                                       –40               150
+                                                                                                                                             °C
+    Storage temperature, Tstg                                                                                    –40               150
+
+(1)      Operation outside the Absolute Maximum Ratings may cause permanent device damage. Absolute Maximum Ratings do not imply
+         functional operation of the device at these or any other conditions beyond those listed under Recommended Operating Conditions.
+         If used outside the Recommended Operating Conditions but within the Absolute Maximum Ratings, the device may not be fully
+         functional, and this may affect device reliability, functionality, performance, and shorten the device lifetime.
+(2)      High junction temperatures degrade operating lifetimes. Operating lifetime is de-rated for junction temperatures greater than 125°C.
+
+
+6.2 ESD Ratings
+                                                                                                                           VALUE           UNIT
+                                                    Human body model (HBM), per AEC Q100-002(1)                            ±2000
+                                                                                    Corner pins (GATE, EN, GND,
+    V(ESD)        Electrostatic discharge           Charged device model (CDM),                                             ±750             V
+                                                                                    C)
+                                                    per AEC Q100-011
+                                                                                    Other pins                              ±500
+
+(1)      AEC Q100-002 indicates that HBM stressing shall be in accordance with the ANSI/ESDA/JEDEC JS-001 specification.
+
+
+6.3 Recommended Operating Conditions
+over operating free-air temperature range (unless otherwise noted)(1)
+                                                                                               MIN             NOM                MAX       UNIT
+                                A to GND                                                       –60                                  65
+    Input Pins                  VS, C to GND                                                                                        65        V
+                                EN to GND                                                      –60                                  65
+                                A                                                                0.1
+    External capacitance                                                                                                                     µF
+                                CAP to VS                                                         1
+    External Inductor           LX                                                             100                                           µH
+    External MOSFET max
+                                                                                                 60
+    VDS rating
+                                                                                                                                              V
+    External MOSFET max
+                                GATE to A                                                        15
+    VGS rating
+
+
+
+
+4        Submit Document Feedback                                                                          Copyright © 2022 Texas Instruments Incorporated
+
+                                                            Product Folder Links: LM74721-Q1
+                                                                                                                                        LM74721-Q1
+www.ti.com                                                                                     SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+6.3 Recommended Operating Conditions (continued)
+over operating free-air temperature range (unless otherwise noted)(1)
+                                                                                              MIN             NOM             MAX              UNIT
+ TJ                          Operating junction temperature range(2)                          –40                                 150           °C
+
+(1)      Recommended Operating Conditions are conditions under which the device is intended to be functional. For specifications and test
+         conditions, see Electrical Characteristics.
+(2)      High junction temperatures degrade operating lifetimes. Operating lifetime is de-rated for junction temperatures greater than 125°C.
+
+
+6.4 Thermal Information
+                                                                                                      LM74721-Q1
+                                    THERMAL METRIC(1)                                                 DRR (WSON)                         UNIT
+                                                                                                           12 PINS
+ RθJA                            Junction-to-ambient thermal resistance                                     61.6                         °C/W
+ RθJC(top)                       Junction-to-case (top) thermal resistance                                   50                          °C/W
+ RθJB                            Junction-to-board thermal resistance                                       32.7                         °C/W
+ ΨJT                             Junction-to-top characterization parameter                                  1.4                         °C/W
+ ΨJB                             Junction-to-board characterization parameter                               32.7                         °C/W
+ RθJC                            Junction-to-case (botton) thermal resistance                                6.9                         °C/W
+
+(1)      For more information about traditional and new thermal metrics, see the Semiconductor and IC Package Thermal Metrics application
+         report, SPRA953.
+
+
+6.5 Electrical Characteristics
+TJ = –40°C to +125°C; typical values at TJ = 25°C, V(A) = V(VS) = 12 V, C(CAP) = 1 µF, V(EN) = 2 V, over operating free-air
+temperature range (unless otherwise noted)
+                          PARAMETER                                       TEST CONDITIONS                          MIN     TYP          MAX      UNIT
+ VA, V(VS) SUPPLY VOLTAGE
+ VCLAMP                V(C–A) clamp voltage                                                                        34.5                  43
+                       VA POR Rising threshold                                                                      3.1     3.4         3.85         V
+ V(A POR)
+                       VA POR Falling threshold                                                                     2.2     2.6          2.9
+                       Minimum Voltage at VS                                                                                              3
+ V(VS)                 VS POR Rising                                                                               2.58     2.8         2.95         V
+                       VS POR Falling                                                                              2.35     2.6         2.85
+ I(SHDN)               Shutdown Supply Current                  V(EN) = 0 V                                                  2           3.3
+                                                                V(EN) = 2 V, Active Rectifier Controller
+                                                                                                                            27           32
+                                                                In Regulation, –40°C ≤ TJ ≤ +85°C                                                    µA
+ I(Q)                  Total System Quiescent Current
+                                                                V(EN) = 2 V, Active Rectifier Controller
+                                                                                                                            27           35
+                                                                In Regulation, –40°C ≤ TJ ≤ +125°C
+ ENABLE INPUT
+ V(EN_IH)              Enable input high threshold                                                                                        2
+                                                                                                                                                     V
+ V(EN_IL)              Enable input low threshold                                                                   0.5    0.85          1.2
+ V(EN_Hys)             Enable Hysteresis                                                                                   485                   mV
+ I(EN)                 Enable sink current                      V(EN) = 12 V                                                55          155          nA
+ VANODE to VCATHODE
+ V(AC_REG)             Regulated Forward V(AC) Threshold                                                             9     16.4         22.7
+                       V(AC) threshold from RCB to Forward
+ V(AC_FWD)                                                                                                          75     105          140
+                       conduction                                                                                                                mV
+                       V(AC) threshold for reverse current
+ V(AC_REV)                                                                                                         –12    –5.65         –1.3
+                       blocking
+ GATE DRIVE
+
+Copyright © 2022 Texas Instruments Incorporated                                                                     Submit Document Feedback              5
+                                                        Product Folder Links: LM74721-Q1
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                                                   www.ti.com
+
+6.5 Electrical Characteristics (continued)
+TJ = –40°C to +125°C; typical values at TJ = 25°C, V(A) = V(VS) = 12 V, C(CAP) = 1 µF, V(EN) = 2 V, over operating free-air
+temperature range (unless otherwise noted)
+                              PARAMETER                                          TEST CONDITIONS                       MIN        TYP       MAX      UNIT
+    V(GATE) - V(A)                                                     3V < V(VS) < 65V                                 9.5                    13      V
+                                                                       V(A) – V(C) = –20 mV,
+    I(GATE_Pull down)       Peak Pulldown current                                                                                  2.5                 A
+                                                                       V(GATE) – V(A) = 100 mV
+    I(GATE)                 Regulation max sink current                V(A) – V(C) = 0 V, V(GATE) – V(A) = 5 V           14         26         39     µA
+                                                                       V(A) – V(C) = –20 mV,
+    RGATE                   GATE pulldown resistance                                                                               1.2                Ω
+                                                                       V(GATE) – V(A) = 100 mV
+    BOOST REGULATOR CHARGE PUMP
+                            Boost output rising threshold                                                                           13       15.5
+    V(CAP) – V(c)                                                                                                                                      V
+                            Hysteresis                                                                                             1.1
+    I(CAP)                  Boost load capacity                        V(CAP) – V(VS) = 7.5 V                                       29                mA
+                                                                       V(VS) = 12 V                                     110       140        170
+    I(LX)                   Peak inductor current limit threshold                                                                                     mA
+                                                                       V(VS) = 3 V                                                           210
+    R(LX)                   Low side switch On-Resistance                                                               1.3        2.7        5.1     Ω
+    BATTERY SENSING (VSNS, SW) AND OVER VOLTAGE DETECTION (OVP, PD)
+                            Battery sensing disconnect switch
+    R(SW)                                                                                                               104       226        430      Ω
+                            resistance
+    V(OVR)                  Overvoltage threshold input, rising                                                        1.13     1.231        1.33
+                                                                                                                                                       V
+    V(OVF)                  Overvoltage threshold input, falling                                                       1.03     1.125      1.215
+    V(OV_Hys)               OV Hysteresis                                                                                          110                mV
+    I(OV)                   OV Input leakage current                   0 V < V(OV) < 5 V                                            50       110      nA
+    I(PD_SRC)               Pullup current                             3V < VS < 65V                                     43         50         60     µA
+                            Peak Pulldown current                                                                        55         88       117
+    I(PD_SINK)                                                         V(OV) > V(OVR)                                                                 mA
+                            DC Pulldown current                                                                           7         10         14
+    CATHODE
+                                                                       V(A) = 12 V, V(A) – V(C) = –100 mV                          9.4         15
+    I(C)                    CATHODE sink current                                                                                                      µA
+                                                                       V(A) = –14 V, V(C) = 14 V                                  10.6         18
+
+
+6.6 Switching Characteristics
+TJ = –40°C to +125°C; typical values at TJ = 25°C, V(A) = V(VS) = 12 V, C(CAP) = 1 µF, V(EN) = 2 V, over operating free-air
+temperature range (unless otherwise noted)
+                             PARAMETER                                        TEST CONDITIONS                         MIN        TYP       MAX      UNIT
+                                                                    V(A) ↑ V(A_POR) to V(GATE-A) > 5V,
+    VA_POR(DLY)         A (low to high) to GATE Turn-On delay                                                                                200
+                                                                    C(GATE-A) = 10 nF
+                        Reverse voltage detection to Gate Turn- V(A) – V(C) = +30 mV to –100
+    tReverse delay                                                                                                               0.47       0.81
+                        Off delay                               mV, V(GATE-A) <1V, C(GATE-A) = 10 nF
+                        Forward voltage detection to Gate Turn- V(A) – V(C) = –100 mV to 700                                                          µs
+    tForward recovery                                                                                                             1.9         2.9
+                        On delay                                mV, V(GATE-A) >5V, C(GATE-A) = 10 nF
+    tEN_OFF(DLY)PD EN to PD Delay                                   EN ↓ to PD ↓                                                  6.5         12
+    tOV_OFF(DLY)PD OV to PD Deglitch                                OV ↑ to PD ↓                                                  0.9         1.5
+    tPD_Pk              Peak Pulldown duration                      I(PD_SINK,Pk) ↑ to   I(PD_SINK,DC) ↓                11         38         65
+
+
+
+
+6            Submit Document Feedback                                                                            Copyright © 2022 Texas Instruments Incorporated
+
+                                                             Product Folder Links: LM74721-Q1
+                                                                                                                                                                                                          LM74721-Q1
+www.ti.com                                                                                                                                                SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+
+6.7 Typical Characteristics
+                                     650
+                                     600                                                              −40C                                 8
+                                                                                                      25C
+                                     550                                                              85C                                  7
+                                     500                                                              125C
+                                     450                                                              150C                                 6
+                                     400
+
+
+                                                                                                                  I(SHDN) (A)
+                                                                                                                                            5
+   IQ (A)
+                                     350
+                                     300                                                                                                    4
+                                     250
+                                     200                                                                                                    3                                                                  −40C
+                                     150                                                                                                                                                                       25C
+                                                                                                                                            2                                                                  85C
+                                     100
+                                                                                                                                                                                                               125C
+                                      50                                                                                                    1                                                                  150C
+                                       0
+                                           0   5   10   15   20    25   30 35    40   45   50    55    60    65                             0
+                                                                        VS (V)                                                                   0   5   10       15   20   25   30 35    40   45   50    55    60   65
+               Figure 6-1. Operating Quiescent Current vs Supply Voltage                                                                                                         VA (V)
+                                                                                                                                          Figure 6-2. Shutdown Supply Current vs Supply Voltage
+                                                                                                                                           3.5
+
+
+                                                                                                                                            3
+
+
+
+
+                                                                                                                  VS POR Thresholds (V)
+                                                                                                                                           2.5
+
+
+                                                                                                                                            2
+
+
+                                                                                                                                           1.5
+                                                                                                                                                                                                         VS PORR
+                                                                                                                                                                                                         VS PORF
+                                                                                                                                            1
+                                                                                                                                            -50               0              50        100          150              200
+                                                                                                                                                                            Temperature (C)
+                                           Figure 6-3. VA POR Threshold vs Temperature                                                           Figure 6-4. VS POR Threshold vs Temperature
+                                     14                                                                                                    40
+                                                                                                                                                                                                         VS = 12 V
+                                                                                                                                           35                                                            VS = 3 V
+
+
+
+
+   Boost Comparator Thresholds (V)
+                                     13                                                                                                    30
+
+                                                                                                                                           25
+
+
+                                                                                                                  I(CAP) (mA)
+                                     12                                                                                                    20
+
+                                                                                                                                           15
+
+                                     11                                                                                                    10
+
+                                                                                           (VCAP−VS) R                                      5
+                                                                                           (VCAP−VS) F
+                                     10                                                                                                     0
+                                      -50           0              50        100           150              200                             -50               0              50        100          150              200
+                                                                  Temperature (C)                                                                                          Temperature (C)
+                              Figure 6-5. Boost Comparator Threshold vs Temperature                                                         Figure 6-6. Boost Loading Capacity vs Temperature
+
+
+
+
+Copyright © 2022 Texas Instruments Incorporated                                                                                                                                    Submit Document Feedback                7
+                                                                                           Product Folder Links: LM74721-Q1
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                                                                                           www.ti.com
+
+6.7 Typical Characteristics (continued)
+                          1.3                                                                                         1.2
+
+
+                                                                                                                          1
+
+
+
+
+    OVP Thresholds (V)
+                                                                                             tOV_OFF(deg)PD (s)
+                          1.2
+                                                                                                                      0.8
+
+
+                                                                                                                      0.6
+
+                          1.1
+                                                                                                                      0.4
+
+                                                                                VOV_R
+                                                                                VOV_F                                 0.2
+                              1                                                                                         -50                0          50        100            150            200
+                              -50            0     50        100          150       200                                                              Temperature (C)
+                                                  Temperature (C)                                                                Figure 6-8. PD Turn-off Delay During OV
+                                    Figure 6-7. OV Threshold vs Temperature
+                          8                                                                                           4
+
+
+                          7
+                                                                                                                      3
+
+
+
+
+    tEN_OFF(dly)PD (s)                                                                      tGATE_ON(DLY) (s)
+                          6
+
+
+                          5                                                                                           2
+
+
+                          4                                                                                                                                             C(GATE − A) = 4.7 nF
+                                                                                                                                                                        C(GATE − A) = 10 nF
+                                                                                                                      1
+                                                                                                                                                                        C(GATE − A) = 22 nF
+                          3                                                                                                                                             C(GATE − A) = 33 nF
+                                                                                                                                                                        C(GATE − A) = 47 nF
+                          2                                                                                           0
+                          -50            0         50        100          150       200                               -50              0              50        100           150             200
+                                                  Temperature (C)                                                                                   Temperature (C)
+                                    Figure 6-9. PD Turn-off Delay During EN                                            Figure 6-10. Forward Turn-on Delay vs Temperature
+                          90                                                                                              5
+                                                                                                                                                                                  RPD = 270 
+                                                                                                                                                                                  RPD = 330 
+                          60                                                                                          4.5
+
+
+
+
+                                                                                             PD Turn-Off Delay (s)
+                          30
+                                                                                                                          4
+
+
+    I(GATE) (A)
+                              0
+                                                                                                                      3.5
+
+                          -30
+                                                                                                                          3
+
+                          -60
+                                                                                                                      2.5
+                          -90
+                            -10          0       10       20         30     40          50                                2
+                                                      V(A− C) mV                                                              5   10   15      20   25   30    35 40    45   50    55    60    65
+                              Figure 6-11. Gate Current vs Forward Voltage Drop                                                                               VS (V)
+                                                                                                                          Figure 6-12. PD Turn-off Delay vs Supply Voltage
+
+
+
+
+8                         Submit Document Feedback                                                                                                   Copyright © 2022 Texas Instruments Incorporated
+
+                                                                          Product Folder Links: LM74721-Q1
+                                                                                                                                                        LM74721-Q1
+www.ti.com                                                                                                               SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+
+6.7 Typical Characteristics (continued)
+                           42                                                                                   5
+
+                                                                                                                0
+                          41.2
+                                                                                                                -5
+
+
+
+
+   VCLAMP Threshold (V)
+                                                                                          Anode Current (A)
+                          40.4                                                                                 -10
+
+                                                                                                               -15
+                                                                                                                                                               −40C
+                          39.6                                                                                                                                 25C
+                                                                                                               -20
+                                                                                                                                                               85C
+                                                                                                                                                               125C
+                          38.8                                                                                 -25                                             150C
+                                                                                                               -30
+                           38
+                            -50       -10        30         70          110       150                          -35
+                                            Free-Air Temperature (C)                                            -35   -30   -25    -20     -15   -10     -5           0
+                                                                                                                                     VANODE (V)
+                                  Figure 6-13. VCLAMP vs Temperature
+                                                                                         Figure 6-14. Anode Leakage Current vs Reverse Anode Voltage
+
+
+
+
+Copyright © 2022 Texas Instruments Incorporated                                                                                         Submit Document Feedback           9
+                                                                        Product Folder Links: LM74721-Q1
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                                                           www.ti.com
+
+
+7 Parameter Measurement Information
+                                               30 mV
+
+                              V A – VC
+                                                                        VA > VC
+                                               0 mV
+                                                                                                         VC > VA
+                                      –100 mV
+
+
+
+                                                       VGATE
+
+
+                              VGATE – VA
+                                                                                                                         1V
+                                                0V
+
+                                                                                                     ttGATE_OFF(DLY)t
+
+
+
+
+                                           700 mV
+
+                              V A – VC
+                                                                                             VA > VC
+                                               0 mV
+                                                                   VC > VA
+                                      –100 mV
+
+                                                                                                                           VGATE
+
+
+
+                              VGATE – VA
+                                                                                                                    5V
+
+
+                                                0V
+                                                                                         ttGATE_ON(DLY)t
+
+
+
+                                                               VOVR + 0.1 V
+                              VOV
+
+                                                0V
+
+
+                                                        VPD
+
+
+                                  VPD – VOUT
+
+                                                 0V
+
+                                                                                  ttOV_OFF(DLY)PDt
+
+                                                           Figure 7-1. Timing Waveforms
+
+
+
+
+10    Submit Document Feedback                                                                                           Copyright © 2022 Texas Instruments Incorporated
+
+                                                                Product Folder Links: LM74721-Q1
+                                                                                                                                                            LM74721-Q1
+www.ti.com                                                                                                     SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+
+8 Detailed Description
+8.1 Overview
+The LM74721-Q1 ideal diode controller drives and controls external N-Channel MOSFET to emulate an ideal
+diode rectifier. The wide input supply of 3 V to 65 V allows protection and control of 12-V automotive battery
+powered ECUs. IQ during operation (EN = High) is < 35 µA and < 3.3 µA during shutdown mode (EN = Low).
+The device can withstand and protect the loads from negative supply voltages down to –33-V DC. Integrated
+VDS clamp feature enables input TVS less system designs for automotive ISO7637 pulse suppression. An
+integrated ideal diode controller (GATE) drives the first MOSFET to replace a Schottky diode for reverse
+input protection and output voltage holdup. A strong 30-mA boost regulator and short turn ON and turn OFF
+delay times of comparator ensures fast transient response, ensuring robust and efficient MOSFET switching
+performance during automotive testing, such as ISO16750 or LV124, where an ECU is subjected to input short
+interruptions and AC superimpose input signals up to 100-kHz frequency.
+The LM74721-Q1 controls the GATE of the MOSFET to regulate the forward voltage drop at 17 mV. The linear
+regulation scheme in these devices enables graceful control of the GATE voltage and turns off of the MOSFET
+during a reverse current event and ensures zero DC reverse current flow.
+Low quiescent current (< 35 µA) in operation enables always ON system designs. With a second MOSFET in the
+power path, the device allows load disconnect control using EN pin. Quiescent current reduces to < 3.3 μA with
+EN low.
+8.2 Functional Block Diagram
+                   VBATT                                       Q1                                                         Q2                         VOUT
+
+
+                                                                                                                                            18 V
+
+                                                        A                GATE             C    VS     CAP           LX                  PD
+
+
+                             VSNS
+                                                                  VC-A CLAMP                                                  50 µA
+                               SW                 EN
+                                                                                                      Boost
+                     R1                                          Reverse Current
+                                                                                                   Converter and
+                                                                                                                         EN
+             BATT_MON                       VA + 10 V        Protection controller and
+                                                                                                      control
+                                                                   Gate Driver                                                              100 mA
+                        R2                                                                                                                         12 mA
+                               OV
+                                                  +
+                                                              OV                                                                      RTN
+                        R3             1.23 V                                                 EN
+                                                  –
+                                       1.12 V                              VS
+                                                                                      +
+                                                                        2.8 V
+                                                                                      –                        OV
+                                                                        2.6 V
+                               EN                 +          EN                                         VCAP
+                                         2V                                                                                             VA + 10 V
+                                                  –                                                     VA           Bias Rails
+                                        0.5 V                                   RTN
+
+                                                             VA             Reverse
+                                                                        Protection Logic
+                                                                                                                                  LM74721-Q1
+
+                                                                                              GND
+
+8.3 Feature Description
+8.3.1 Reverse Battery Protection (A, C, GATE)
+A, C, GATE comprises of ideal diode stage. Connect the Source of the external MOSFET to A, Drain to C and
+Gate to GATE pin. The LM74721-Q1 has integrated reverse input protection down to –33 V.
+In LM74721-Q1 the voltage drop across the MOSFET is continuously monitored between the A and C pins,
+and the GATE to A voltage is adjusted as needed to regulate the forward voltage drop at 17 mV (typical)
+for LM74721-Q1. This closed loop regulation scheme enables graceful turn-off of the MOSFET during a
+
+Copyright © 2022 Texas Instruments Incorporated                                                                                       Submit Document Feedback       11
+                                                            Product Folder Links: LM74721-Q1
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                            www.ti.com
+
+reverse current event and ensures zero DC reverse current flow. This scheme ensures robust performance
+during slow input voltage ramp down tests. Along with the linear regulation amplifier scheme, the LM74721-Q1
+also integrates a fast reverse voltage comparator. When the voltage drop across A and C reaches V(AC_REV)
+threshold, then the GATE goes low within 0.5 µs (typical). This fast reverse voltage comparator scheme ensures
+robust performance during fast input voltage ramp down tests such as input micro-shorts. The external MOSFET
+is turned ON back when the voltage across A and C hits V(AC_FWD) threshold within 1.9 µs (typical) for LM74721-
+Q1. For ideal diode only designs, connect LM74721-Q1 as shown in Figure 8-1
+
+                                                     Q1
+                                       VBATT                                  VOUT
+                                        12 V
+
+
+
+                                                      GATE C VS CAP LX             PD
+                                                     A
+                                                     VSNS
+                                                      SW
+                                                R1            LM74721-Q1
+                                     BATT_MON
+                                             R2
+                                                                                   EN   ON OFF
+                                                     OV           GND
+
+
+
+
+                             Figure 8-1. Configuring LM74721-Q1 for Ideal Diode Only
+
+8.3.1.1 Input TVS Less Operation: VDS Clamp
+The LM74721-Q1 features an integrated VDS clamp that operates the external MOSFET as an active clamp to
+dissipate the automotive ISO7637 pulse 1 transient.
+When the ISO7637 pulse 1 is applied at the input:
+• The GATE goes low and turns OFF the MOSFET after the voltage drop across A and C reaches V(AC_REV)
+  threshold.
+• After the voltage across Drain and Source of the MOSFET reaches VCLAMP level (34-V minimum), it is turned
+  ON back in saturation, operating as an active clamp and dissipates the ISO7637 pulse 1 energy.
+Figure 8-2 shows circuit operation during ISO7637 pulse 1.
+Note that the reverse current flows from VOUT back to input during the ISO7637 pulse 1 test dropping the VOUT.
+The output filter must be designed to ensure that VOUT does not go negative during ISO7637 pulse 1 test. For
+all the other ISO7637 pulses that is pulse 2a, 2b, 3a, 3b, the input and output filter components suppress these
+pulses.
+
+
+
+
+12    Submit Document Feedback                                                            Copyright © 2022 Texas Instruments Incorporated
+
+                                                Product Folder Links: LM74721-Q1
+                                                                                                                                   LM74721-Q1
+www.ti.com                                                                                          SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+
+                                ISO7637 Pulse 1                   VCLAMP
+                                13.5 V                        -             +                                     VOUT
+                                                  VIN
+                         VIN
+                                          0V
+                                                  CIN                                                   C3           COUT
+                                                                      Q1                C2     L1
+                                  - (VCLAMP – VOUT)
+                                                                   GATE C VS CAP LX
+                                 13.5 V                           A
+                         VOUT                                                                                PD
+                                                                  VSNS
+                                           0V                      SW
+                                                    R1                        LM74721-Q1
+                                             BATT_MON
+                                                        R2
+                                                                                                             EN     ON OFF
+                                                        R3        OV                GND
+
+
+
+
+                    Figure 8-2. LM74721-Q1 Ideal Diode Circuit Operation During ISO7637 Pulse 1
+
+8.3.2 Load Disconnect Switch Control (PD)
+The PD pin provides a 50-µA drive and 88-mA peak pulldown strength for the load disconnect switch stage.
+Connect the Gate of the FET to PD pin. Place a 18-V Zener (Dz) across the FET gate and source.
+For inrush current limiting, connect CdVdT capacitor and R1 as shown in Figure 8-3.
+                                                             Q1
+
+                                                                               Dz
+                                                                              18 V                  COUT
+                                                                                   R1
+
+
+                                                              RPD                            CdVdT
+
+                                                              50 µA
+                                                                       PD
+
+                                                        Fault
+                                                         Off               88 mA
+
+                                                                                10 mA
+
+                                                              GND
+
+
+                                                  Figure 8-3. Inrush Current Limiting
+
+The CdVdT capacitor is required for slowing down the PD voltage ramp during power up for inrush current
+limiting. Use Equation 1 to calculate CdVdT capacitance value.
+
+      C(dVdT) = IPD_DRV × COUT
+                     IINRUSH                                                                                                             (1)
+
+
+
+
+Copyright © 2022 Texas Instruments Incorporated                                                                    Submit Document Feedback     13
+                                                        Product Folder Links: LM74721-Q1
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                              www.ti.com
+
+where IPD_DRV is 50 μA (typical), IINRUSH is the inrush current, and COUT is the output load capacitance. An extra
+resistor, R1, in series with the CdVdT capacitor improves the turn-off time.
+PD is pulled low during the following conditions:
+•    During an OV event with the OV pin voltage rising above the V(OVR) threshold
+•    When the EN pin is pulled low with V(EN) driven lower than V(EN_IL) level
+•    When the voltage at VS pin drops below the V(VS POR) falling threshold
+During these conditions, the FET Q1 turns OFF with its GATE connected to its SOURCE terminal through the
+external Zener (Dz).
+Use Equation 2 to calculate the peak power dissipated in the LM74721-Q1 at the instance of PD pulldown.
+
+     PPD_peak = VOUT × IPD_SINK                                                                                                (2)
+
+where
+•    IPDSINK_peak is the peak sink current of 88 mA (typical)
+In the system designs with input voltage above 48 V, TI recommends to place a resistor, RPD, in series with the
+PD pin as shown in Figure 8-3. The peak power dissipation during the pulldown events gets distributed in RPD
+and the internal PD switch. A resistor value in the range of 270 Ω to 330 Ω can be selected to limit the device
+power dissipation within the safe limits.
+8.3.3 Overvoltage Protection and Battery Voltage Sensing (VSNS, SW, OV)
+A disconnect switch is integrated between VSNS and SW pins. This switch is turned OFF when EN pin is pulled
+low. This action helps to reduce the leakage current through the resistor divider network during system shutdown
+state (IGN_OFF state).
+Connect a resistor ladder as shown in Figure 8-4 for battery voltage sensing and overvoltage threshold
+programming.
+                                          VBATT
+
+                                                              A
+
+
+                                                       VSNS
+                                                                       EN
+                                                        SW
+
+                                                  R1
+                                     BATT_MON                          LM74721-Q1
+                                                  R2
+                                                        OV
+                                                                        +          PD_OFF
+                                                  R3          1.23 V
+                                                                        –
+                                                              1.12 V
+
+
+                 Figure 8-4. Programming Overvoltage Threshold and Battery Voltage Sensing
+
+8.3.4 Boost Regulator
+The LM74721-Q1 integrates a boost converter to provide voltage necessary to drive the external N-channel
+MOSFETs for the ideal diode and the load disconnect stages. The boost converter uses hysteretic mode control
+scheme for the output voltage (VCAP-VVS) regulation along with the constant peak inductor current limit (ILX).
+When the CAP–VS voltage is below its nominal value of typically 11.9 V, the low side switch of the boost is
+turned on and the inductor current rises with the slope of VS/L approximately. After the current hits the limit of
+140 mA (typical), then the low side switch is turned off and the inductor current discharges to the output till it
+reaches zero. The low side switch is turned on again and the switching cycle repeats until the CAP–VS voltage
+has risen above the boost rising threshold of 13 V (typical). After this threshold level is reached, the boost
+converter switching is turned OFF to reduce the quiescent current.
+
+14    Submit Document Feedback                                                              Copyright © 2022 Texas Instruments Incorporated
+
+                                                Product Folder Links: LM74721-Q1
+                                                                                                                    LM74721-Q1
+www.ti.com                                                                           SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+For the boost converter to be enabled, the EN pin voltage must be above the specified input high threshold,
+V(ENR). The boost converter has a maximum output load capacity of 30-mA typical. If EN pin is pulled low, then
+the boost converter remains disabled.
+8.4 Shutdown Mode
+The LM74721-Q1 enters shutdown mode when the EN pin voltage is below the specified input low threshold,
+V(EN_IL). Both the gate drivers (GATE and PD) and the boost regulator are disabled in shutdown mode. During
+shutdown mode, the LM74721-Q1 enters low IQ operation with a total input quiescent consumption of 2 µA
+(typical).
+
+
+
+
+Copyright © 2022 Texas Instruments Incorporated                                                     Submit Document Feedback     15
+                                                  Product Folder Links: LM74721-Q1
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                                     www.ti.com
+
+
+9 Application and Implementation
+                                                                Note
+      Information in the following applications sections is not part of the TI component specification,
+      and TI does not warrant its accuracy or completeness. TI’s customers are responsible for
+      determining suitability of components for their purposes, as well as validating and testing their design
+      implementation to confirm system functionality.
+
+9.1 Application Information
+LM74721-Q1 controls two N-channel power MOSFETs with GATE used to control diode MOSFET to emulate an
+ideal diode and PD controlling second MOSFET for power path cutoff when disabled or during an overvoltage
+protection and provide inrush current limiting. IQ during operation (EN = High) is < 35 µA and < 3.3 µA during
+shutdown mode (EN = Low). LM74721-Q1 can be placed into low quiescent current mode using EN = low, where
+both GATE and PD are turned OFF.
+
+9.2 Typical 12-V Reverse Battery Protection Application
+Figure 9-1 shows a typical application circuit of LM74721-Q1 configured to provide TVS less reverse battery
+protection.
+                                                  Q1
+                            VBATT                                                               VOUT
+                             12 V                                                         C3
+                                                                                                           CLOAD
+                                   C1                                   C2       L1      1 µF
+                                                                       1 µF    100 µH    50 V             660 µF
+                                  1 µF                                 50 V                            (220 µF × 3)
+                                  50 V
+
+                                                   GATE C VS CAP              LX
+                                                  A
+                                                  VSNS
+                                                                                        PD
+                                                   SW
+                                    R1
+                                  90.9 k
+                                                            LM74721-Q1
+                           BATT_MON
+                                    R2
+                                  12.6 k                                               EN        ON OFF
+                                                  OV             GND
+
+
+
+
+             Figure 9-1. Typical Application Circuit for 12-V TVS-less Reverse Battery Protection
+
+9.2.1 Design Requirements for 12-V Battery Protection
+Table 9-1 lists the system design requirements.
+        Table 9-1. Design Parameters – 12-V Reverse Battery Protection and Overvoltage Protection
+                     DESIGN PARAMETER                                                           EXAMPLE VALUE
+                                                                       12-V battery, 12-V nominal with 3.2-V cold crank and 35-V load
+                  Operating input voltage range
+                                                                                                   dump
+                         Output power                                                                  50 W
+                      Output current range                                                   4-A nominal, 5-A maximum
+                       Input capacitance                                                         0.1-µF minimum
+                       Output capacitance                                                           220 µF × 3
+                                                                                              2-V peak-peak, 30 kHz
+                     AC super imposed test
+                                                                                                   (maximum)
+
+
+
+16    Submit Document Feedback                                                                     Copyright © 2022 Texas Instruments Incorporated
+
+                                                   Product Folder Links: LM74721-Q1
+                                                                                                                       LM74721-Q1
+www.ti.com                                                                            SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+ Table 9-1. Design Parameters – 12-V Reverse Battery Protection and Overvoltage Protection (continued)
+                          DESIGN PARAMETER                                                 EXAMPLE VALUE
+                                                                     ISO 7637-2 with pulse 1 maximum level of –100-V peak level and
+               Automotive transient immunity compliance
+                                                                           10-Ω generator impedance, ISO 16750-2 and LV124
+
+
+9.2.2 Detailed Design Procedure
+9.2.2.1 Boost Converter Components (C2, C3, L1)
+Place a minimum of a 1-µF capacitor across drain of the FET to GND (C2) and across CAP pin of LM74721-Q1
+to drain of the FET (C3). Use a 100-µH inductor (L1) with saturation current rating > 175 mA. Example:
+XPL2010-104ML from coil craft.
+9.2.2.2 Input and Output Capacitance
+TI recommends a minimum input capacitance C1 of 1 µF and output capacitance COUT of 0.1 µF.
+9.2.2.3 Hold-Up Capacitance
+Usually bulk capacitors are placed on the output due to various reasons, such as uninterrupted operation during
+power interruption or micro-short at the input, hold-up requirements for doing a memory dump before turning of
+the module and filtering requirements as well. This design considers minimum bulk capacitors requirements for
+meeting functional status "A" during LV124 E10 test case 2 100-µs input interruption. To achieve functional pass
+status A, acceptable voltage droop in the output of LM74721-Q1 is based on the UVLO settings of downstream
+DC/DC converters. For this design, 1-V drop in output voltage for 100 µs is considered and the minimum hold-up
+capacitance required is calculated by:
+
+      C(HOLD_UP_MIN) = ILOAD_MAX × 100µs
+                              dVOUT                                                                                          (3)
+
+Minimum hold-up capacitance required for 1-V drop in 100 µs is 500 µF. 3 × 220-µF electrolytic capacitors are
+selected.
+Also during ISO7637-2 pulse 1 transient event, LM74721-Q1 operates external MOSFET in active clamp mode,
+allowing reverse current to flow from output to back to the input source. The output hold-up capacitor also
+ensures output voltage does not swing negative when device is operating VDS clamp mode.
+9.2.2.4 MOSFET Selection: Q1
+For selecting the blocking MOSFET Q1, important electrical parameters are the maximum continuous drain
+current ID, the maximum drain-to-source voltage VDS(MAX), the maximum drain-to-source voltage VGS(MAX),
+Safe Operating Area (SOA), the maximum source current through body diode and the drain-to-source ON
+resistance RDS(ON).
+The maximum continuous drain current (ID) rating must exceed the maximum continuous load current.
+To reduce the MOSFET conduction losses, MOSFET with the lowest possible RDS(ON) is preferred, but selecting
+a MOSFET based on low RDS(ON) cannot be beneficial always. Higher RDS(ON) provides increased voltage
+information to LM74721-Q1 reverse current comparator at a lower reverse current. Reverse current detection is
+better with increased RDS(ON). Choosing a MOSFET with forward voltage drop of less than 50 mV at maximum
+current is a good starting point.
+The maximum drain-to-source voltage, VDS(MAX), must be high enough to withstand the highest differential
+voltage seen in the application. With LM74721-Q1, the maximum differential voltage across the MOSFET is
+VCLAMP (maximum) of 43 V. TI recommends a minimum of 60-V VDS rated. This includes all the automotive
+transient events and any anticipated fault conditions.
+During the ISO7637 pulse 1, the maximum VDS seen by the external MOSFET Q1 is VDSCLAMP (max) that is 43
+V. Use Equation 4 to calculate the peak current during ISO7637-2 pulse 1.
+
+      IISO_PEAK = (VISO + VOUT – VDSCLAMP(max)) / RS                                                                         (4)
+
+
+Copyright © 2022 Texas Instruments Incorporated                                                      Submit Document Feedback         17
+                                                   Product Folder Links: LM74721-Q1
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                     www.ti.com
+
+Where
+•    VISO is the negative peak of the ISO7637-2 pulse 1
+•    VOUT is the initial level of the VBATT before ISO pulse is applied
+•    VDSCLAMP is maximum VCLAMP threshold of LM74721-Q1
+•    RS is the ISO7637 pulse generator input impedance (10 Ω)
+For ISO7637-2 pulse 1 with amplitude of –100 V, VOUT nominal voltage of 13.5 V the peak current seen by
+MOSFET Q1 comes around 7 A.
+The current profile tapers down from 7 A to 0 A from the peak of 7 A as shown in Figure 9-5. The resulting
+average current (IISO_AVG) can be approximated as one third of the peak current that is around 2.4 A. The VDS
+clamp operation lasts for about 1 ms (maximum). Selecting a MOSFET with SOA characteristics covering the
+load line of 43 V which can support drain current greater than (IISO_PEAK / 2) for 1 ms is a good starting point. For
+this particular design example, MOSFET which can support greater than 3.5 A of drain current at 43-V VDS on
+SoA curve is suitable.
+Figure 9-2 shows typical SoA characteristics plot highlighting maximum drain current supported by the MOSFET
+for the duration of 1 ms. MOSFET data sheet SoA curves are typically plotted at ambient temperature, so
+consider sufficient margin over MOSFET parameters calculated values to ensure safe operation over desired
+operating temperature range.
+
+
+
+
+                                  Figure 9-2. Typical MOSFET SoA Characteristics
+
+As external MOSFET dissipates ISO7637-2 pulse 1 energy, a special attention must be given while calculating
+maximum power dissipation and effective temperature rise. Use Equation 5 to calculate an average power
+dissipation across the MOSFET.
+
+     PD_AVG = VDSCLAMP(max) × IISO_AVG                                                                                (5)
+
+For given design example, average power dissipation comes around.
+
+     PD_AVG = 43 V × 2.4 A = 103.2 W                                                                                  (6)
+
+Typical ISO7637-2 pulse 1 transient lasts for 2 ms with total time period of 200 ms between two consecutive
+pulses (duty cycle of 1%). The effective temperature rise due to power dissipation across MOSFET during
+
+18    Submit Document Feedback                                                     Copyright © 2022 Texas Instruments Incorporated
+
+                                                Product Folder Links: LM74721-Q1
+                                                                                                                    LM74721-Q1
+www.ti.com                                                                           SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+ISO7637-2 pulse 1 event can be calculated by looking at transient thermal impedance curve in a MOSFET
+data sheet. Figure 9-3 shows an example of how to estimate transient thermal impedance of a MOSFET for
+ISO7637-2 pulse 1 event.
+
+
+
+
+                                  Figure 9-3. Typical MOSFET Transient Thermal Impedance
+
+The maximum VGS LM74721-Q1 can drive is 13.9 V, so a MOSFET with 15-V minimum VGS rating must be
+selected.
+Based on the design requirements and MOSFET selection criteria BUK7Y4R8-60E, SQJ460AEP, STL130N6F7
+are some of the 60-V MOSFET options that can be selected.
+
+
+
+
+Copyright © 2022 Texas Instruments Incorporated                                                     Submit Document Feedback     19
+                                                  Product Folder Links: LM74721-Q1
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                           www.ti.com
+
+9.2.3 Application Curves
+
+                                                                            VBATT
+
+
+
+                                                                            VOUT
+
+                                                                             IIN
+
+                                                                             VGATE
+
+
+
+
+                                                                          VGATE -VBATT
+
+
+
+                      Figure 9-4. ISO 7637-2 Pulse 1
+
+                                                                                           Time (4 ms/DIV)
+
+                                                                         Figure 9-5. Response to ISO 7637-2 Pulse 1
+
+
+         VBATT                                                               VBATT
+
+
+
+           VOUT
+                                                                              VGATE
+
+          VGATE                                                               VOUT
+
+
+
+                IIN
+
+                                                                                   IIN
+
+
+
+
+                                Time (100 µs/DIV)                                        Time (200 ms/DIV)
+
+     Figure 9-6. Response to ISO 7637-2 Pulse 2A                        Figure 9-7. Response to ISO 7637-2 Pulse 2B
+         VBATT                                                                VBATT
+
+
+         VOUT
+
+                                                                              VOUT
+         VGATE
+
+                                                                              VGATE
+
+
+
+          IIN
+                                                                                IIN
+
+
+
+
+                                Time (100 ms/DIV)                                         Time (40 µs/DIV)
+
+        Figure 9-8. Response to LV124 E-06 (AC                        Figure 9-9. Response to LV124 E-10 (Input Micro
+                   Superimpose Test)                                                   Short, 100 us)
+
+
+
+20    Submit Document Feedback                                                           Copyright © 2022 Texas Instruments Incorporated
+
+                                                    Product Folder Links: LM74721-Q1
+                                                                                                                    LM74721-Q1
+www.ti.com                                                                           SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+
+9.3 What to Do and What Not to Do
+Leave the exposed pad (RTN) of the IC floating. Do not connect the exposed pad to the GND plane. Connecting
+RTN to GND disables the reverse polarity protection feature.
+
+
+
+
+Copyright © 2022 Texas Instruments Incorporated                                                     Submit Document Feedback     21
+                                                  Product Folder Links: LM74721-Q1
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                                 www.ti.com
+
+
+10 Power Supply Recommendations
+10.1 Transient Protection
+When the MOSFET is turned OFF during conditions such as reverse current blocking in the system designs
+where there is an output C-L-C filter (for EMI filtering) as shown in Figure 10-1, the voltage across COUT can
+swing negative based on the values of L2 ,COUT and the initial reverse current in L2 before the MOSFET turns
+OFF. Use a low VF Schottky diode D1 across COUT to GND and place a R-C filter with 100 Ω and 0.1 µF at Vs
+pin, ensuring the device pins does not exceed the Absolute Maximum Ratings.
+
+                                        Q1
+                                                                                                   L2       VOUT
+                       VBA TT
+                        12 V
+                                                       *R          C2
+                                                                             C3       *
+                           CIN                           3
+                                                                        L1                     COUT            CBUL K
+                                                                                          D1
+                                                        C4
+                                         GATE C VS             CAP LX        PD
+                                        A
+                                        VSNS
+                                         SW
+                                 R1                  LM74721-Q1
+                      BATT_MON
+                                 R2
+                                                                             EN       ON OFF
+                                         OV                  GND
+
+
+
+     * Optional components needed for suppression of transients
+
+
+         Figure 10-1. Circuit Implementation with Optional Protection Components for LM74721-Q1
+
+
+
+
+22    Submit Document Feedback                                                                 Copyright © 2022 Texas Instruments Incorporated
+
+                                                   Product Folder Links: LM74721-Q1
+                                                                                                                           LM74721-Q1
+www.ti.com                                                                                  SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022
+
+
+11 Layout
+11.1 Layout Guidelines
+•    Connect A, GATE and C pins of LM74721-Q1 close to the MOSFET SOURCE, GATE and DRAIN pins for the
+     ideal diode stage, c.
+•    Use thick and short traces for source and drain of the MOSFET to minimize resistive losses because the high
+     current path of for this solution is through the MOSFET.
+•    Have the PowerPAD™ integrated circuit package (exposed pad) of the MOSFET soldered directly to the top
+     plane for best thermal performance. Other planes, such as the bottom side of the circuit board, can be used
+     to increase heat sinking. Thermal considerations: during the VDS clamp operation, the MOSFET acts as an
+     active clamp with pulse power dissipation.
+•    Connect the GATE pin of the LM74721-Q1 to the MOSFET GATE with short trace.
+•    Minimize the loops formed by capacitor across CAP pin and DRAIN of the FET and C3 to GND by placing
+     these capacitors as close as possible. Keep the GND side of the C3 capacitor close to GND pin of LM74721-
+     Q1. Boost converter switching currents flow into LX, CAP, GND pins and C3 (across DRAIN of the FET to
+     GND).
+•    Place transient suppression components like output Schottky close to C pin of LM74721-Q1.
+11.2 Layout Example
+
+
+                                             S                         D
+
+
+                                             S                         D
+                                                            Q1
+                                             S                         D
+
+
+                    VIN PLANE                G                         D                         VOUT PLANE
+
+                                                                           C
+                                                                                 C2
+                                                  GATE
+
+
+
+
+                                                   A                       VS
+
+
+                                                  VSNS                     CAP              L1
+                                                                                                      C3
+                      CIN                         SW                       LX
+
+
+
+
+                                                  OV                       PD
+                                                                                                                   COUT
+                          BATT_MON
+                                                  EN                      GND
+
+
+
+
+                                                                   GND PLANE
+
+                                              Figure 11-1. LM74721-Q1 Layout Example
+
+
+
+
+Copyright © 2022 Texas Instruments Incorporated                                                            Submit Document Feedback     23
+                                                         Product Folder Links: LM74721-Q1
+LM74721-Q1
+SNOSDC2B – SEPTEMBER 2021 – REVISED JULY 2022                                                                                 www.ti.com
+
+
+12 Device and Documentation Support
+12.1 Receiving Notification of Documentation Updates
+To receive notification of documentation updates, navigate to the device product folder on ti.com. Click on
+Subscribe to updates to register and receive a weekly digest of any product information that has changed. For
+change details, review the revision history included in any revised document.
+12.2 Support Resources
+TI E2E™ support forums are an engineer's go-to source for fast, verified answers and design help — straight
+from the experts. Search existing answers or ask your own question to get the quick design help you need.
+Linked content is provided "AS IS" by the respective contributors. They do not constitute TI specifications and do
+not necessarily reflect TI's views; see TI's Terms of Use.
+12.3 Trademarks
+PowerPAD™ and TI E2E™ are trademarks of Texas Instruments.
+All trademarks are the property of their respective owners.
+12.4 Electrostatic Discharge Caution
+                This integrated circuit can be damaged by ESD. Texas Instruments recommends that all integrated circuits be handled
+                with appropriate precautions. Failure to observe proper handling and installation procedures can cause damage.
+                ESD damage can range from subtle performance degradation to complete device failure. Precision integrated circuits may
+                be more susceptible to damage because very small parametric changes could cause the device not to meet its published
+                specifications.
+
+
+12.5 Glossary
+ TI Glossary        This glossary lists and explains terms, acronyms, and definitions.
+
+13 Mechanical, Packaging, and Orderable Information
+The following pages include mechanical, packaging, and orderable information. This information is the most
+current data available for the designated devices. This data is subject to change without notice and revision of
+this document. For browser-based versions of this data sheet, refer to the left-hand navigation.
+
+
+
+
+24    Submit Document Feedback                                                                 Copyright © 2022 Texas Instruments Incorporated
+
+                                                 Product Folder Links: LM74721-Q1
+                                                                                                                                                                      PACKAGE OPTION ADDENDUM
+
+       www.ti.com                                                                                                                                                                                                    9-Nov-2025
+
+
+
+
+PACKAGING INFORMATION
+
+       Orderable part number          Status     Material type      Package | Pins      Package qty | Carrier        RoHS             Lead finish/              MSL rating/               Op temp (°C)          Part marking
+                                        (1)            (2)                                                             (3)            Ball material             Peak reflow                                           (6)
+                                                                                                                                            (4)                      (5)
+
+         LM74721QDRRRQ1               Active      Production       WSON (DRR) | 12       3000 | LARGE T&R             Yes                NIPDAU           Level-2-260C-1 YEAR              -40 to 125              L74721
+       LM74721QDRRRQ1.A               Active      Production       WSON (DRR) | 12       3000 | LARGE T&R             Yes                NIPDAU           Level-2-260C-1 YEAR              -40 to 125              L74721
+
+(1)
+      Status: For more details on status, see our product life cycle.
+
+(2)
+   Material type: When designated, preproduction parts are prototypes/experimental devices, and are not yet approved or released for full production. Testing and final process, including without limitation quality assurance,
+reliability performance testing, and/or process qualification, may not yet be complete, and this item is subject to further changes or possible discontinuation. If available for ordering, purchases will be subject to an additional
+waiver at checkout, and are intended for early internal evaluation purposes only. These items are sold without warranties of any kind.
+
+(3)
+      RoHS values: Yes, No, RoHS Exempt. See the TI RoHS Statement for additional information and value definition.
+
+(4)
+   Lead finish/Ball material: Parts may have multiple material finish options. Finish options are separated by a vertical ruled line. Lead finish/Ball material values may wrap to two lines if the finish value exceeds the maximum
+column width.
+
+(5)
+  MSL rating/Peak reflow: The moisture sensitivity level ratings and peak solder (reflow) temperatures. In the event that a part has multiple moisture sensitivity ratings, only the lowest level per JEDEC standards is shown.
+Refer to the shipping label for the actual reflow temperature that will be used to mount the part to the printed circuit board.
+
+(6)
+      Part marking: There may be an additional marking, which relates to the logo, the lot trace code information, or the environmental category of the part.
+
+Multiple part markings will be inside parentheses. Only one part marking contained in parentheses and separated by a "~" will appear on a part. If a line is indented then it is a continuation of the previous line and the two
+combined represent the entire part marking for that device.
+
+Important Information and Disclaimer:The information provided on this page represents TI's knowledge and belief as of the date that it is provided. TI bases its knowledge and belief on information provided by third parties, and
+makes no representation or warranty as to the accuracy of such information. Efforts are underway to better integrate information from third parties. TI has taken and continues to take reasonable steps to provide representative
+and accurate information but may not have conducted destructive testing or chemical analysis on incoming materials and chemicals. TI and TI suppliers consider certain information to be proprietary, and thus CAS numbers
+and other limited information may not be available for release.
+
+In no event shall TI's liability arising out of such information exceed the total purchase price of the TI part(s) at issue in this document sold by TI to Customer on an annual basis.
+
+
+
+
+                                                                                                          Addendum-Page 1
+                                                                              PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                                                   17-Mar-2023
+
+
+
+TAPE AND REEL INFORMATION
+
+       REEL DIMENSIONS                                                                     TAPE DIMENSIONS
+                                                                                      K0       P1
+
+
+
+                                                                                                                     B0 W
+                                       Reel
+                                     Diameter
+                                                                                   Cavity           A0
+                                                               A0   Dimension designed to accommodate the component width
+                                                               B0   Dimension designed to accommodate the component length
+                                                               K0   Dimension designed to accommodate the component thickness
+                                                               W    Overall width of the carrier tape
+                                                               P1   Pitch between successive cavity centers
+
+
+                                      Reel Width (W1)
+                              QUADRANT ASSIGNMENTS FOR PIN 1 ORIENTATION IN TAPE
+
+                                                                                                    Sprocket Holes
+
+
+                                                Q1        Q2          Q1    Q2
+
+                                                Q3        Q4          Q3    Q4                  User Direction of Feed
+
+
+
+                                                           Pocket Quadrants
+
+
+*All dimensions are nominal
+             Device           Package Package Pins             SPQ       Reel   Reel   A0                  B0         K0     P1     W     Pin1
+                               Type Drawing                            Diameter Width (mm)                (mm)       (mm)   (mm)   (mm) Quadrant
+                                                                         (mm) W1 (mm)
+   LM74721QDRRRQ1             WSON     DRR           12        3000        330.0        12.4        3.3    3.3       1.1    8.0    12.0    Q2
+
+
+
+
+                                                                     Pack Materials-Page 1
+                                                                PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                              17-Mar-2023
+
+
+
+ TAPE AND REEL BOX DIMENSIONS
+
+
+
+
+                                                               Width (mm)
+                                                                              H
+
+
+
+
+                      W                                   L
+
+
+
+
+*All dimensions are nominal
+             Device           Package Type   Package Drawing   Pins         SPQ    Length (mm)   Width (mm)   Height (mm)
+   LM74721QDRRRQ1                WSON             DRR           12          3000      367.0        367.0         35.0
+
+
+
+
+                                                        Pack Materials-Page 2
+                                                                  GENERIC PACKAGE VIEW
+DRR 12                                                                  WSON - 0.8 mm max height
+3 x 3, 0.5 mm pitch                                                         PLASTIC SMALL OUTLINE - NO LEAD
+
+
+
+
+               This image is a representation of the package family, actual package may vary.
+                             Refer to the product data sheet for package details.
+
+
+
+
+                                                                                                   4223490/B
+
+
+
+
+                                                    www.ti.com
+                                                                                                     PACKAGE OUTLINE
+DRR0012F                                                                                         WSON - 0.8 mm max height
+                                                                                           PLASTIC QUAD FLAT PACK- NO LEAD
+
+
+                                              B                 3.1                        A
+                                                                2.9
+
+
+
+
+                                                                                           3.1
+                           PIN 1 INDEX AREA                                                2.9                                       0.100 MIN
+
+
+
+
+                                                                                                             (0.130)
+
+                                                                                                             SECTION A-A
+                                                                                                                          TYPICAL
+                                    0.8
+                                    0.7
+                                                                                               C
+
+                                                                                                   SEATING PLANE
+
+                                                                                                   0.08 C
+                                        0.05
+                                        0.00                   1.16
+                                                               0.96
+                                                              SYMM
+                                        (0.55) TYP                                                                             (0.2) TYP
+
+                              10X 0.5
+                                                  6                                7
+
+
+
+
+                                  2X      SYMM                               A         A                      0.16±0.05
+                                                                                            2.6
+                                  2.5                             13                        2.4
+
+
+
+
+                                                  1
+                                                                                   12
+                                 PIN 1 ID                                                      12X 0.3
+                                                                                                   0.2
+                              (OPTIONAL)                          12X 0.52
+                                                                      0.32                          0.1     C A B
+                                                                                                    0.05     C
+
+
+
+                                                                                                                             4225797/A 04/2020
+
+NOTES:
+
+ 1.   All linear dimensions are in millimeters. Any dimensions in parenthesis are for reference only. Dimensioning and tolerancing
+      per ASME Y14.5M.
+ 2.   This drawing is subject to change without notice.
+ 3.   The package thermal pad must be soldered to the printed circuit board for optimal thermal and mechanical performance.
+
+
+
+
+                                                               www.ti.com
+                                                                                    EXAMPLE BOARD LAYOUT
+DRR0012F                                                                                     WSON - 0.8 mm max height
+                                                                                         PLASTIC QUAD FLAT PACK- NO LEAD
+
+
+
+
+                                                                  2X (2.78)
+                                 12X (0.62)
+                                                                    (1.06)
+                          12X (0.25)
+                                              1
+                                                                                                 12
+
+
+
+
+                                 10X (0.5)
+
+                               2X                                        13                            SYMM
+                                                                                                              (2.5)
+                              (2.5)
+
+                                                                                                      2X
+                                                                                                      (1)
+                    (R0.05)
+                      TYP
+
+
+                                              6                                                   7
+
+                                      (Ø0.2) VIA                   SYMM
+                                         TYP
+
+
+
+                                                       LAND PATTERN EXAMPLE
+                                                          EXPOSED METAL SHOWN
+                                                               SCALE: 20X
+
+                   0.07 MAX                                                     0.07 MIN
+                 ALL AROUND                                                   ALL AROUND                          METAL UNDER
+                                                       METAL                                                      SOLDER MASK
+                                                                               EXPOSED
+                                                                                 METAL
+                  EXPOSED
+                    METAL                              SOLDER MASK                                                    SOLDER MASK
+                                                       OPENING                                                        OPENING
+                                 NON SOLDER MASK                                           SOLDER MASK
+                                     DEFINED                                                 DEFINED
+                                   (PREFERRED)
+
+                                                         SOLDER MASK DETAILS
+
+
+
+
+                                                                                                                      4225797/A 04/2020
+
+NOTES: (continued)
+
+ 4.   This package is designed to be soldered to a thermal pad on the board. For more information, see Texas Instruments literature
+      number SLUA271 (www.ti.com/lit/slua271) .
+ 5.   Vias are optional depending on application, refer to device data sheet. If any vias are implemented, refer to their locations shown
+      on this view. It is recommended that vias under paste be filled, plugged or tented.
+
+
+
+
+                                                                www.ti.com
+                                                                                EXAMPLE STENCIL DESIGN
+DRR0012F                                                                                  WSON - 0.8 mm max height
+                                                                                      PLASTIC QUAD FLAT PACK- NO LEAD
+
+
+
+
+                                                               2X (2.78)
+                               12X (0.62)
+                                                                 2X (1)
+                        12X (0.25)
+                                            1                        13
+                                                                                             12
+
+
+                                                                                                   2X
+                                                                                                  (1.1)
+                               10X (0.5)
+
+                             2X                                                                       SYMM
+                            (2.5)
+
+
+
+                  (R0.05)
+                    TYP                                                                               2X
+                                                                                                    (0.65)
+                                                                                              7
+                                            6
+
+                                                                SYMM
+
+
+
+
+                                                    SOLDER PASTE EXAMPLE
+                                                  BASED ON 0.125 mm THICK STENCIL
+
+                                                           EXPOSED PAD
+                                                  83% PRINTED COVERAGE BY AREA
+                                                            SCALE: 20X
+
+
+
+
+                                                                                                                 4225797/A 04/2020
+
+NOTES: (continued)
+
+ 6.   Laser cutting apertures with trapezoidal walls and rounded corners may offer better paste release. IPC-7525 may have alternate
+      design recommendations.
+
+
+
+
+                                                              www.ti.com
+                                         IMPORTANT NOTICE AND DISCLAIMER
+TI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATASHEETS), DESIGN RESOURCES (INCLUDING REFERENCE
+DESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS”
+AND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY
+IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD
+PARTY INTELLECTUAL PROPERTY RIGHTS.
+These resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate
+TI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable
+standards, and any other safety, security, regulatory or other requirements.
+These resources are subject to change without notice. TI grants you permission to use these resources only for development of an
+application that uses the TI products described in the resource. Other reproduction and display of these resources is prohibited. No license
+is granted to any other TI intellectual property right or to any third party intellectual property right. TI disclaims responsibility for, and you fully
+indemnify TI and its representatives against any claims, damages, costs, losses, and liabilities arising out of your use of these resources.
+TI’s products are provided subject to TI’s Terms of Sale, TI’s General Quality Guidelines, or other applicable terms available either on
+ti.com or provided in conjunction with such TI products. TI’s provision of these resources does not expand or otherwise alter TI’s applicable
+warranties or warranty disclaimers for TI products. Unless TI explicitly designates a product as custom or customer-specified, TI products
+are standard, catalog, general purpose devices.
+TI objects to and rejects any additional or different terms you may propose.
+IMPORTANT NOTICE
+
+                                                Copyright © 2025, Texas Instruments Incorporated
+                                                                Last updated 10/2025
+

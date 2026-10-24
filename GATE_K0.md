@@ -113,3 +113,7 @@ BUCK5_FEEDBACK_REVIEW.md confronta due reti Type-3 mediante 16 punti e 64 combin
 ## Avvio software parallelo e prima revisione separata
 
 DEC-010 autorizza app e firmware in parallelo, con assegnazioni in WORKSTREAMS.md e contratto di sviluppo in shared/. La review documentale separata in hardware/reviews/A0_INDEPENDENT_REVIEW.md ha confrontato 53 collegamenti critici senza trovare nuove inversioni nei pin verificati. Conferma gli OPEN e precisa che EN/nSTB a zero mantiene il TCAN in Standby con INH attivo; aggiunge il rilievo condizionale GPIO3/JTAG prima di eventuale provisioning. Stato della review: limitata e documentale, non approvazione completa. I risultati software non dimostrano standby, IGN, recovery o conformità del circuito.
+
+## Secondo incremento parallelo: studio USB e wake
+
+`hardware/usb_power/HW02_REVIEW.md` confronta due OVP/corrente reali con disponibilità osservata e respinge il loro uso diretto davanti al TPS2116 come protezione completa: margini statici troppo stretti e risposta dinamica non garantita. Studiato il preregolatore USB candidato4,2–4,5V H, con limiti di dropout, corrente/CC e avvio ancora aperti. Tre alternative per il recupero dal fault SLEEP sono confrontate senza dichiarare100µA garantiti. Calcoli e fonti sono riproducibili con `scripts/analyze_usb_power.py`; HR-01/HR-02 restano aperti e A0 invariato. App, decoder firmware e codec di sviluppo sono avanzati su host; nessun risultato software chiude le prove elettriche.

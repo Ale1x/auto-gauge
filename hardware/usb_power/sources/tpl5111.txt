@@ -1,0 +1,1482 @@
+                                      Product            Order     Technical             Tools &              Support &
+                                      Folder             Now       Documents             Software             Community
+
+
+
+                                                                                                                                           TPL5111
+                                                                                               SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018
+
+
+                                 TPL5111 Nano-Power System Timer for Power Gating
+1 Features                                                                    3 Description
+•
+1     Selectable Time Intervals: 100 ms to 7200 s                             The TPL5111 Nano Timer is a low-power system
+                                                                              timer designed for power gating in duty cycled or
+•     Timer Accuracy: 1% (Typical)                                            battery-powered applications. Consuming only 35 nA,
+•     Current Consumption at 2.5 V and 35 nA (Typical)                        the TPL5111 can be used to enable and disable the
+•     Resistor Selectable Time Interval                                       power supply for a micro-controller or other system
+•     Manual Power-On Input                                                   device, drastically reducing the overall system stand-
+                                                                              by current during the sleep time. This power saving
+•     One-Shot Feature                                                        enables the use of significantly smaller batteries for
+•     Supply Voltage Range: 1.8 V to 5.5 V                                    energy harvesting or wireless sensor applications.
+                                                                              The TPL5111 provides selectable timing intervals
+2 Applications                                                                from 100 ms to 7200 s. In addition, the TPL5111 has
+                                                                              a unique one-shot feature where the timer will only
+•     Duty Cycle Control of Battery-Powered Systems                           assert its enable pulse for one cycle. The TPL5111 is
+•     Internet of Things (IoT)                                                available in a 6 -
+•     Intruder Detection                                                      pin SOT23 package.
+•     Tamper Detection
+                                                                                                     Device Information(1)
+•     Home Automation Sensors
+                                                                                 PART NUMBER                  PACKAGE               BODY SIZE (NOM)
+•     Thermostats                                                              TPL5111                 SOT (6) DDC                 3.00 mm × 3.00 mm
+•     Consumer Electronics
+                                                                               (1) For all available packages, see the orderable addendum at
+•     Remote Sensor                                                                the end of the data sheet.
+•     White Goods
+                                                      Simplified Application Schematic
+
+
+
+
+                                                                        LDO
+
+                                                                  VIN         VOUT
+
+                                                                  EN
+                                                                                                    CC2531                 Rp
+                                                                                                                          100k
+                                                                  GND                                         RF                  Rp
+                                            TPL5111                                                                              100k      HDC1000
+                                                   EN/
+                                      VDD                                                    VDD                                          VDD
+                                             ONE_SHOT
+
+                                      GND         DRVn                                                       SCL                          SCL
+        +
+      Lithium                         DELAY/
+                                                  DONE                                       GPIO            SDA                          SDA
+    ion battery                       M_DRV
+
+         -                                                                                                   GND                          GND
+
+
+
+
+1
+
+
+
+
+             An IMPORTANT NOTICE at the end of this data sheet addresses availability, warranty, changes, use in safety-critical applications,
+             intellectual property matters and other important disclaimers. PRODUCTION DATA.
+TPL5111
+SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018                                                                                                                                 www.ti.com
+
+
+                                                                           Table of Contents
+    1   Features .................................................................. 1                      7.4 Device Functional Modes.......................................... 9
+    2   Applications ........................................................... 1                         7.5 Programming .......................................................... 10
+    3   Description ............................................................. 1                 8     Application and Implementation ........................ 15
+    4   Revision History..................................................... 2                            8.1 Application Information............................................ 15
+                                                                                                           8.2 Typical Application ................................................. 15
+    5   Pin Configuration and Functions ......................... 3
+    6   Specifications......................................................... 4                   9 Power Supply Recommendations...................... 16
+         6.1    Absolute Maximum Ratings ..................................... 4                    10 Layout................................................................... 16
+         6.2    ESD Ratings ............................................................ 4                 10.1 Layout Guidelines ................................................. 16
+         6.3    Recommended Operating Ratings ........................... 4                                10.2 Layout Example .................................................... 17
+         6.4    Thermal Information ................................................. 4             11 Device and Documentation Support ................. 18
+         6.5    Electrical Characteristics .......................................... 5                    11.1     Receiving Notification of Documentation Updates 18
+         6.6    Timing Requirements ............................................... 6                      11.2     Community Resources.......................................... 18
+         6.7    Typical Characteristics .............................................. 7                   11.3     Trademarks ........................................................... 18
+    7   Detailed Description .............................................. 8                              11.4     Electrostatic Discharge Caution ............................ 18
+         7.1 Overview ................................................................... 8                11.5     Glossary ................................................................ 18
+         7.2 Functional Block Diagram ......................................... 8                   12 Mechanical, Packaging, and Orderable
+         7.3 Feature Description................................................... 8                  Information ........................................................... 18
+
+
+
+4 Revision History
+Changes from Revision A (July 2015) to Revision B                                                                                                                                      Page
+
+•   Changed TADC and RD equations in the Quantization Error section ..................................................................................... 14
+•   Added Receiving Notification of Documentation Updates section ....................................................................................... 18
+
+
+Changes from Original (June 2015) to Revision A                                                                                                                                        Page
+
+•   Added full data sheet. ............................................................................................................................................................ 1
+
+
+
+
+2        Submit Documentation Feedback                                                                                 Copyright © 2015–2018, Texas Instruments Incorporated
+
+                                                                          Product Folder Links: TPL5111
+                                                                                                                                       TPL5111
+www.ti.com                                                                                     SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018
+
+
+5 Pin Configuration and Functions
+
+                                                                   DDC Package
+                                                                   6-Lead SOT-23
+                                                                      Top View
+
+
+                                                                      TPL5111
+
+                                                                              EN/
+                                                 1            VDD                                6
+                                                                       ONE_ SHOT
+
+                                                 2            GND               DRVn             5
+
+                                                              DELAY/
+                                                 3                              DONE             4
+                                                              M_DRV
+
+
+                                                                 Pin Functions
+            PIN
+                                  TYPE (1)                     DESCRIPTION                            APPLICATION INFORMATION
+      NO.      NAME
+       1          VDD                 P              Supply voltage
+       2          GND                 G              Ground
+       3       DELAY/                 I              Time interval configuration (during   Resistance between this pin and GND is used to
+               M_DRV                                 power on) and logic input for         select the time interval. The manual Power ON signal
+                                                     manual Power ON                       (logic HIGH) can also connected to this pin.
+       4       DONE                   I              Logic Input for watchdog              Digital signal driven by the µC to indicate successful
+                                                     functionality                         processing.
+       5          DRVn                O              Power Gating output signal            The ENABLE pin of the LDO or DC-DC converter is
+                                                     generated every tIP                   connected to this pin. DRVn is active HIGH.
+       6        EN/                   I              Select mode of operation              When EN/ONE_SHOT = HIGH, the TPL5111 works
+             ONE_SHOT                                                                      as a TIMER. When EN/ONE_SHOT = LOW, the
+                                                                                           TPL5111 asserts DRVn one time for the
+                                                                                           programmed time interval. In this mode, the DRVn
+                                                                                           signal may be manually asserted by applying a logic
+                                                                                           HIGH to the DELAY/M_DRV pin.
+
+(1)    G= Ground, P= Power, O= Output, I= Input.
+
+
+
+
+Copyright © 2015–2018, Texas Instruments Incorporated                                                   Submit Documentation Feedback               3
+                                                           Product Folder Links: TPL5111
+TPL5111
+SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018                                                                                       www.ti.com
+
+
+6 Specifications
+6.1 Absolute Maximum Ratings (1)
+                                                                                         MIN                     MAX                  UNIT
+Supply Voltage (VDD-GND)                                                                 –0.3                     6.0                   V
+Input Voltage at any pin (2)                                                             –0.3                 VDD + 0.3                 V
+Input Current on any pin                                                                  –5                       5                   mA
+Junction Temperature, TJ (3)                                                                                     150                    °C
+Storage Temperature, Tstg                                                                –65                     150                    °C
+
+(1)   Stresses beyond those listed under Absolute Maximum Ratings may cause permanent damage to the device. These are stress ratings
+      only, which do not imply functional operation of the device at these or any other conditions beyond those indicated under Recommended
+      Operating Conditions. Exposure to absolute-maximum-rated conditions for extended periods may affect device reliability.
+(2)   The voltage between any two pins should not exceed 6 V.
+(3)   The maximum power dissipation is a function of TJ(MAX), RθJA, and the ambient temperature, TA. The maximum allowable power
+      dissipation at any ambient temperature is PDMAX = (TJ(MAX) - TA)/ RθJA. All numbers apply for packages soldered directly onto a printed-
+      circuit board (PCB).
+
+6.2 ESD Ratings
+                                                                                                                        VALUE          UNIT
+                                         Human Body Model, per ANSI/ESDA/JEDEC JS-001 (1)                               ±1000
+V(ESD)      Electrostatic discharge                                                                                                      V
+                                         Charged-device model (CDM), per JEDEC specification JESD22-101 (2)              ±250
+
+(1)   JEDEC document JEP155 states that 500-V HBM allows safe manufacturing with a standard ESD control process.
+(2)   JEDEC document JEP157 states that 250-V CDM allows safe manufacturing with a standard ESD control process.
+
+6.3 Recommended Operating Ratings
+                                                                                                MIN                        MAX        UNIT
+Supply Voltage (VDD-GND)                                                                         1.8                         5.5        V
+Temperature                                                                                     –40                          105        °C
+
+
+6.4 Thermal Information
+                                                                                                               TPL5111
+                                                               (1)
+                                         THERMAL METRIC                                                     DDC (SOT-23)             UNIT
+                                                                                                             DDC 6 PINS
+RθJA              Junction-to-ambient thermal resistance                                                         163                 °C/W
+RθJC(top)         Junction-to-case (top) thermal resistance                                                       26                 °C/W
+RθJB              Junction-to-board thermal resistance                                                            57                 °C/W
+ψJT               Junction-to-top characterization parameter                                                      7.5                °C/W
+ψJB               Junction-to-board characterization parameter                                                    57                 °C/W
+RθJC(bot)         Junction-to-case (bottom) thermal resistance                                                   N/A                 °C/W
+
+(1)   For more information about traditional and new thermal metrics, see the Semiconductor and IC Package Thermal Metrics application
+      report (SPRA953).
+
+
+
+
+4        Submit Documentation Feedback                                                      Copyright © 2015–2018, Texas Instruments Incorporated
+
+                                                         Product Folder Links: TPL5111
+                                                                                                                                        TPL5111
+www.ti.com                                                                                      SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018
+
+
+6.5 Electrical Characteristics (1)
+Specifications are for TA= 25°C, VDD-GND = 2.5 V, unless otherwise stated.
+                     PARAMETER                                      TEST CONDITIONS                         MIN (2)   TYP (3)    MAX (2)    UNIT
+POWER SUPPLY
+IDD               Supply current (4)                       Operation mode                                                 35          50      nA
+                                                           Digital conversion of external                                200         400      µA
+                                                           resistance (Rext)
+TIMER
+tIP               Time interval Period                     1650 selectable        Minimum time                           100
+                                                                                                                                              ms
+                                                           Time intervals         interval
+                                                                                  Maximum time                          7200
+                                                                                                                                               s
+                                                                                  interval
+                                                   (5)
+                  Time interval Setting Accuracy           Excluding the precision of Rext                             ±0.6%
+                  Time interval Setting Accuracy over      1.8 V ≤ VDD ≤ 5.5 V                                           ±25                ppm/V
+                  supply voltage
+tOSC              Oscillator Accuracy                                                                       –0.5%                   0.5%
+                  Oscillator Accuracy over                 –40°C ≤ TA≤ 105°C                                            ±100        ±400 ppm/°C
+                  temperature (6)
+                  Oscillator Accuracy over supply          1.8 V ≤ VDD ≤ 5.5 V                                           ±0.4                %/V
+                  voltage
+                  Oscillator Accuracy over life time (7)                                                              ±0.24%
+                                        (6)
+tDONE             DONE Pulse width                                                                             100                            ns
+tDRVn             DRVn Pulse width                         DONE signal not received                                    tIP-50
+                                                                                                                          ms
+t_Rext            Time to convert Rext                                                                                   100         120      ms
+DIGITAL LOGIC LEVELS
+VIH               Logic High Threshold DONE pin                                                         0.7 × VDD                             V
+VIL               Logic Low Threshold DONE pin                                                                                      0.3 ×     V
+                                                                                                                                    VDD
+                                                           Iout = 100 µA                                VDD – 0.3                             V
+VOH               Logic output High Level DRVn pin
+                                                           Iout = 1 mA                                  VDD – 0.7                             V
+                                                           Iout = -100 µA                                                             0.3     V
+VOL               Logic output Low Level DRVn pin
+                                                           Iout = –1 mA                                                               0.7     V
+VIHM_DRV          Logic High Threshold                                                                         1.5                            V
+                  DELAY/M_DRV pin
+
+(1)   Electrical Characteristics values apply only for factory testing conditions at the temperature indicated. Factory testing conditions result in
+      very limited self-heating of the device such that TJ = TA. No specification of parametric performance is indicated in the electrical tables
+      under conditions of internal self-heating where TJ > TA. Absolute Maximum Ratings indicate junction temperature limits beyond which
+      the device may be permanently degraded, either mechanically or electrically.
+(2)   Limits are specified by testing, design, or statistical analysis at 25°C. Limits over the operating temperature range are specified through
+      correlations using statistical quality control (SQC) method.
+(3)   Typical values represent the most likely parametric norm as determined at the time of characterization. Actual typical values may vary
+      over time and will also depend on the application and configuration. The typical values are not tested and are not specified on shipped
+      production material.
+(4)   The supply current excludes load and pullup resistor current. Input pins are at GND or VDD.
+(5)   The accuracy for time interval settings below 1second is ±10 0ms.
+(6)   This parameter is specified by design and/or characterization and is not tested in production.
+(7)   Operational life time test procedure equivalent to10 years.
+
+
+
+
+Copyright © 2015–2018, Texas Instruments Incorporated                                                    Submit Documentation Feedback              5
+                                                           Product Folder Links: TPL5111
+TPL5111
+SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018                                                                                             www.ti.com
+
+
+6.6 Timing Requirements
+                                                                                                          MIN (1)      NOM (2)      MAX (1)   UNIT
+                                        (3)
+trDRVn              Rise Time DRVn                           Capacitive load 50 pF                                         50                  ns
+tfDRVn              Fall Time DRVn (3)                       Capacitive load 50 pF                                         50                  ns
+                                                             Minimum delay (4)                                            100                  ns
+tDDONE              DONE to DRVn delay                                           (4)
+                                                             Maximum delay                                               tDRVn
+tM_DRV              Valid manual MOSFET Power ON             Observation time 30 ms                               20                           ms
+                    De-bounce manual MOSFET Power
+tDB                                                                                                                        20                  ms
+                    ON
+
+(1)   Limits are specified by testing, design, or statistical analysis at 25°C. Limits over the operating temperature range are specified through
+      correlations using statistical quality control (SQC) method.
+(2)   Typical values represent the most likely parametric norm as determined at the time of characterization. Actual typical values may vary
+      over time and will also depend on the application and configuration. The typical values are not tested and are not specified on shipped
+      production material.
+(3)   This parameter is specified by design and/or characterization and is not tested in production.
+(4)   From DRVn rising edge.
+
+
+
+
+           VDD
+
+
+
+
+EN/ONE_SHOT
+
+
+
+                             ttDDONEt            tDONE
+
+         DONE
+
+
+
+                                                tfDRV              ttDRVnt                                                ttDRVn + tDBt
+
+           DRV
+
+                                        ttIPt                            ttIPt                          trDRV
+                          tR_EXT
+
+DELAY/M_RST
+
+                                                                                                       ttM_DRVt
+
+                                                         Figure 1. TPL5111 Timing
+
+
+
+
+6        Submit Documentation Feedback                                                         Copyright © 2015–2018, Texas Instruments Incorporated
+
+                                                          Product Folder Links: TPL5111
+                                                                                                                                                                                                                                                                                         TPL5111
+www.ti.com                                                                                                                                                                                            SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018
+
+
+6.7 Typical Characteristics
+
+                                80                                                                                                                                         80
+                                                        TA= -40°C                                                                                                                              VDD= 1.8V
+                                                        TA= 25°C                                                                                                                               VDD= 2.5V
+                                                        TA= 70°C                                                                                                                               VDD= 3.3V
+                                70                      TA= 105°C                                                                                                          70                  VDD= 5.5V
+
+
+
+
+      Supply current (nA)                                                                                                                        Supply current (nA)
+                                60                                                                                                                                         60
+
+
+
+                                50                                                                                                                                         50
+
+
+
+                                40                                                                                                                                         40
+
+
+
+                                30                                                                                                                                         30
+
+
+
+                                20                                                                                                                                         20
+                                  1.5             1.9       2.3      2.7      3.1      3.5    3.9       4.3      4.7      5.1    5.5                                         -40         -25          -10          5          20          35       50         65         80         95         110
+                                                                             Supply Voltage (V)                                                                                                                           Temperature (°C)
+
+
+
+
+                                                                       Figure 2. IDD vs. VDD                                                                                                                Figure 3. IDD vs. Temperature
+                                     2                                                                                                                                          2
+                                                         TA= -40°C                                                                                                                              VDD= 1.8V
+                                                         TA= 25°C                                                                                                                               VDD= 2.5V
+                                                         TA= 70°C                                                                                                                               VDD= 3.3V
+                                1.5                      TA= 105°C                                                                                                         1.5                  VDD= 5.5V
+
+
+
+
+      Oscillator accuracy (%)                                                                                                                    Oscillator accuracy (%)
+                                     1                                                                                                                                          1
+
+
+
+                                0.5                                                                                                                                        0.5
+
+
+
+                                     0                                                                                                                                          0
+
+
+
+                                -0.5                                                                                                                                       -0.5
+
+
+
+                                 -1                                                                                                                                         -1
+                                   1.5             1.9       2.3     2.7       3.1     3.5       3.9    4.3      4.7      5.1    5.5                                         -40          -25          -10         5           20         35       50         65         80         95         110
+                                                                             Supply Voltage (V)                                                                                                                               Temperature (°C)
+
+
+
+
+                                                         Figure 4. Oscillator Accuracy vs. VDD                                                                                      Figure 5. Oscillator Accuracy vs. Temperature
+                                1000
+                                                                                                                                                                      40%
+                                                 POR
+                                                    REXT READING
+                                                                                                                                                                      35%
+                                 100
+
+                                                                                                                                                                      30%
+
+
+
+
+        Supply current (PA)
+                                     10                                                                                                                               25%
+
+
+
+                                                                                                                                           Frequency
+                                                                                                                                                                      20%
+                                         1
+                                                                                                                                                                      15%
+
+
+                                                                                                              TIMER MODE                                              10%
+                                  0.1
+
+                                                                                                                                                                           5%
+
+                                0.01
+                                             0      0.1       0.2      0.3      0.4     0.5       0.6    0.7      0.8      0.9    1                                         0
+                                                                                                                                                                                    -1         -0.8         -0.6       -0.4        -0.2        0        0.2        0.4        0.6        0.8
+                                                                                      Time (s)
+                                                                                                                                                                                                                               Accuracy (%)
+                                                                                                                                                                              number of                                                                                   1s < tIP ≤ 7200s
+                                                                                                                                                                            observations
+                                                                                                                                                                                >20000
+
+
+                                                                      Figure 6. IDD vs. Time                                                                                              Figure 7. Time Interval Setting Accuracy
+
+
+
+Copyright © 2015–2018, Texas Instruments Incorporated                                                                                                                                                                   Submit Documentation Feedback                                                7
+                                                                                                                        Product Folder Links: TPL5111
+TPL5111
+SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018                                                                                 www.ti.com
+
+
+7 Detailed Description
+
+7.1 Overview
+The TPL5111 is a timer with power gating feature. The TPL5111 can be used in power-cycled applications and
+provides selectable timing from 100 ms to 7200 s.
+When configured in timer mode (EN/ONE_SHOT= HIGH), the TPL5111 periodically asserts a DRVn signal to an
+LDO or DC-DC converter that is used to turn on a microcontroller. If the microcontroller replies with a DONE
+signal within the programmed time interval (< tDRVn), the TPL5111 de-asserts DRVn. Otherwise, the TPL5111
+asserts DRVn for a time equal to tDRVn.
+The TPL5111 can also work in a one-shot mode (EN/ONE_SHOT= LOW). In this mode, the DRVn signal is
+asserted just one time at the power on of the TPL5111. If the µC replies with a DONE signal within the
+programmed time interval (< tDRVn), the TPL5111 de-asserts DRVn. Otherwise the TPL5111 asserts DRVn for a
+time equal to tDRVn.
+
+7.2 Functional Block Diagram
+
+                                                                VDD
+
+
+
+                                                                                                        EN/
+                                                LOW FREQUENCY                                           ONE_SHOT
+                                                  OSCILLATOR
+                                                                   FREQUENCY         LOGIC              DRVn
+                                                                     DIVIDER        CONTROL
+                                                                                                        DONE
+
+
+                    DELAY/                        DECODER
+                    M_DRV                            &
+                                                MANUAL RESET
+                                                 DETECTOR
+
+
+
+                                                                GND
+
+
+7.3 Feature Description
+The TPL5111 implements a periodic power gating feature or one-shot power gating according to the
+EN/ONE_SHOT voltage. A manual Power ON function is realized by momentarily pulling the DELAY/M_DRV pin
+to VDD.
+
+7.3.1 DRVn
+The DRVn pin may be connected to the enable input of an LDO or DC-DC converter. The pulse generated at
+DRVn is equal to the programmed time interval period (tIP), minus 50 ms. It is shorter if a DONE signal is
+received from the µC before tIP – 50 ms. If the DONE signal is not received within tIP – 50 ms, the DRVn signal
+will be LOW for the last 50 ms of tIP before the next cycle starts.
+The default value (after resistance reading) is HIGH. The signal is sent out from the TPL5111 when the
+programmed time interval starts. When the DRVn is HIGH, the manual power ON signal is ignored.
+
+7.3.2 DONE
+The DONE pin is driven by a µC to signal that the µC is working properly. The TPL5111 recognizes a valid
+DONE signal as a low to high transition. If two or more DONE signals are received within the time interval, only
+the first DONE signal is processed. The minimum DONE signal pulse length is 100 ns. When the TPL5111
+receives the DONE signal it asserts DRVn logic LOW.
+
+
+
+
+8      Submit Documentation Feedback                                                  Copyright © 2015–2018, Texas Instruments Incorporated
+
+                                                    Product Folder Links: TPL5111
+                                                                                                                                     TPL5111
+www.ti.com                                                                                         SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018
+
+
+7.4 Device Functional Modes
+7.4.1 Start-Up
+During start-up after POR, the TPL5111 executes a one-time measurement of the resistance attached to the
+DELAY/M_DRV pin in order to determine the desired time interval for DRVn. This measurement interval is tR_EXT.
+During this measurement a constant current is temporarily flowing into REXT.
+Once the reading of the external resistance is complete, the TPL5111 enters automatically in one of the two
+modes according to the EN/ONE_SHOT value. The EN/ONE_SHOT pin must be hard wired to GND or VDD
+according to the required mode of operation.
+                                                                      ttIPt                ttIPt
+                                                                                          tDRVn              FORCED
+                                    DRVn                                                                   DRVn FALLING
+
+
+
+                                                                                            MISSED
+                                   DONE                                                      DONE
+
+
+
+                                    EN/
+                              ONE_SHOT
+
+
+                                  DELAY/
+                                  M_DRV
+                                                  RESISTANCE
+                                            POR
+                                                   READING
+
+                                                        Figure 8. Startup - Timer Mode
+
+7.4.2 Timer Mode
+During timer mode (EN/ONE_SHOT = HIGH), the TPL5111 asserts periodic DRVn pulses according to the
+programmed time interval. The length of the DRVn pulses is set by the receiving of a DONE pulse from the µC.
+See Figure 8.
+
+7.4.3 One-Shot Mode
+During one-shot mode (EN/ONE_SHOT = LOW), the TPL5111 generates just one pulse at the DRVn pin which
+lasts according to the programmed time interval. In one-shot mode, other DRVn pulses can be triggered using
+the DELAY/M_DRV pin. If a valid manual power ON occurs when EN/ONE_SHOT is LOW, the TPL5111
+generates just one pulse at the DRVn pin. The duration of the pulse is set by the programmed time interval. Also
+in this case, if a DONE signal is received within the programmed time interval (minus 50 ms), the DRVn output is
+asserted LOW. See Figure 9 and Figure 10.
+                                                                                  ttIPt
+
+                                                    DRV
+
+
+
+                                                   DONE
+
+
+
+                                                   EN/
+                                             ONE_SHOT
+
+
+                                                  DELAY/
+                                                  M_DRV
+                                                                  RESISTANCE
+                                                            POR
+                                                                   READING
+
+                              Figure 9. Start-Up One-Shot Mode (DONE Received Within tIP)
+
+
+
+
+Copyright © 2015–2018, Texas Instruments Incorporated                                                     Submit Documentation Feedback       9
+                                                           Product Folder Links: TPL5111
+TPL5111
+SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018                                                                                          www.ti.com
+
+
+Device Functional Modes (continued)
+
+                                                                                 ttIPt
+                                                                                tDRVn          FORCED
+                                          DRV                                                DRVn FALLING
+
+
+
+                                                                                  MISSED
+                                         DONE                                      DONE
+
+
+
+                                          EN/
+                                    ONE_SHOT
+
+
+                                        DELAY/
+                                        M_DRV
+                                                           RESISTANCE
+                                                    POR
+                                                            READING
+
+                       Figure 10. Start-Up One-Shot Mode (No DONE Received Within tIP)
+
+
+7.5 Programming
+7.5.1 Configuring the Time Interval With the DELAY/M_DRV Pin
+The time interval between two adjacent DRVn pulses (rising edges, in timer mode) is selectable through an
+external resistance (REXT) between the DELAY/M_DRV pin and ground. The resistance (REXT) must be in the
+range between 500 Ω and 170 kΩ. At least a 1% precision resistance is recommended. See Selection of the
+External Resistance on how to set the time interval using REXT. During start-up, the external resistance is read
+immediately after POR.
+
+7.5.2 Manual Power ON Applied to the DELAY/M_DRV Pin
+If VDD is applied to the DELAY/M_DRV pin after start-up is completed, the TPL5111 recognizes this as a manual
+Power ON condition. In this case REXT is not re-read. If the manual Power ON is asserted during the POR or
+during the REXT reading procedure, the reading procedure is aborted and is restarted as soon as the manual
+Power ON switch is released. A pulse on the DELAY/M_DRV pin is recognized as a valid manual Power ON only
+if it lasts at least 20 ms (observation time is 30 ms). If DRVn is already HIGH the manual Power ON is ignored.
+The manual Power ON may be implemented using a switch (momentary mechanical action).
+
+                                                                        ttIPt                   ttIPt
+
+
+                                DRV
+
+
+
+                               DONE
+
+
+
+                                EN/
+                          ONE_SHOT
+                                         ttM_DRVt         ttDBt                   ttM_DRVt   ttM_DRVt
+                              DELAY/
+                              M_DRV
+                                                                        INVALID M_DRV        M_DRV IGNORED
+                                         VALID M_DRV
+                                                                          TOO SHORT            DRVn HIGH
+
+                                       Figure 11. Manual Power ON in Timer Mode
+
+
+
+
+10     Submit Documentation Feedback                                                           Copyright © 2015–2018, Texas Instruments Incorporated
+
+                                                     Product Folder Links: TPL5111
+                                                                                                                                 TPL5111
+www.ti.com                                                                                     SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018
+
+
+Programming (continued)
+
+                                                                                ttIPt
+
+                                              DRVn
+
+
+
+                                              DONE
+
+
+
+                                              EN/
+                                        ONE_SHOT
+                                                        ttM_DRVt      ttDBt              ttM_DRVt
+                                            DELAY/
+                                            M_DRV
+
+                                                        VALID M_DRV            NOT VALID M_DRV
+
+                                         Figure 12. Manual Power ON in One-Shot Mode
+
+7.5.2.1 DELAY/M_DRV
+A resistance in the range between 500 Ω and 170 kΩ must to be connected to the DELAY/M_DRV pin to select a
+valid time interval. At POR and during the reading of REXT, the DELAY/M_DRV pin is internally connected to an
+analog signal chain through a multiplexer. After the reading of REXT, the analog circuit is switched off and the
+DELAY/M_DRV pin is internally connected to a digital circuit.
+In this state, a logic HIGH applied to the DELAY/M_DRV pin is interpreted by the TPL5111 as a manual power
+ON. The manual power ON detection is provided with a de-bounce feature (on both edges) which makes the
+TPL5111 insensitive to the glitches on the DELAY/M_DRV.
+The DELAY/M_DRV pin must stay HIGH for at least 20 ms to be valid. Once a valid signal at DELAY/M_DRV is
+understood as a manual power on, the DRVn signal will be asserted within the next 10 ms. Its duration will be
+according to the programmed time interval (minus 50 ms), or less if the DONE is received.
+A manual power ON signal resets all the counters. The counters will restart as soon as a valid manual power ON
+signal is recognized and the signal at DELAY/M_DRV pin is asserted LOW. Due to the asynchronous nature of
+the manual power ON signal and its arbitrary duration, the HIGH status of the DRVn signal may have an
+uncertainty of about ±5 ms.
+An extended assertion of a logic HIGH at the DELAY/M_DRV pin will turn on DRVn for a time longer than the
+programmed time interval. DONE signals received while the DELAY/M_DRV is HIGH are ignored. If the DRVn is
+already HIGH the manual power ON is ignored.
+
+7.5.2.2 Circuitry
+The manual Power ON may be implemented using a switch (momentary mechanical action). Using a single-pole
+single-throw (SPST) switch offers a low cost solution. The DELAY/M_DRV pin may be directly connected to VDD
+with REXT in the circuit. The current drawn from the supply voltage during the manual power ON is given by
+VDD/REXT.
+
+
+
+
+Copyright © 2015–2018, Texas Instruments Incorporated                                                 Submit Documentation Feedback      11
+                                                         Product Folder Links: TPL5111
+TPL5111
+SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018                                                                                   www.ti.com
+
+
+Programming (continued)
+
+                                         VDD
+
+
+
+
+                                                              TPL5111
+
+                                                                       EN/
+                                                        VDD
+                                                                 ONE_SHOT
+
+                                                        GND             DRVn                  To power
+                                                                                              converter
+                                                        DELAY/
+                                                                       DONE                      To uC
+                                                        M_DRV
+                                REXT
+
+
+
+
+                                       Figure 13. Manual Power ON With SPST Switch
+
+7.5.3 Selection of the External Resistance
+To set the time interval, the external resistance REXT is selected according to Equation 1:
+                      §   b   b 2 4 a c 100 T     ·
+      R EXT       100 ¨                           ¸
+                      ¨           2a              ¸
+                      ©                           ¹
+      where
+              •    T is the desired time interval (tIP) in seconds.
+              •    REXT is the resistance value in Ω.
+              •    a, b, c are coefficients depending on the value of the desired time interval. The coefficients are selected from
+                   Table 1 based on the range in which the desired tIP falls.                                                      (1)
+
+                                                Table 1. Coefficients for Equation 1
+                                       TIME INTERVAL
+                  SET                                                   a                    b                           c
+                                         RANGE (S)
+                    1                     1<T≤5                      0.2253             –20.7654                     570.5679
+                    2                     5 < T ≤ 10                 –0.1284             46.9861                   –2651.8889
+                    3                    10 < T ≤ 100                0.1972             –19.3450                     692.1201
+                    4                  100 < T ≤ 1000                0.2617             –56.2407                    5957.7934
+                    5                     T > 1000                   0.3177             –136.2571                  34522.4680
+
+EXAMPLE
+Required time interval: 8 s
+Coefficient set number 2 is used in this case. The formula becomes Equation 2.
+              § 46.9861       46.98612 4*0.1284 2561.8889 100*8 ·¸
+      REXT 100¨
+              ¨                        2*0.1284                  ¸
+              ©                                                  ¹                                                                       (2)
+The resistance value is 10.18 kΩ.
+Table 2 and Table 3 contain example values of tIP and their corresponding value of REXT.
+
+12     Submit Documentation Feedback                                                    Copyright © 2015–2018, Texas Instruments Incorporated
+
+                                                        Product Folder Links: TPL5111
+                                                                                                                               TPL5111
+www.ti.com                                                                                 SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018
+
+
+                                                        Table 2. First 9 Time Intervals
+                                                                                                   PARALLEL of TWO 1% TOLERANCE
+           tIP (ms)                 RESISTANCE (Ω)               CLOSEST REAL VALUE (Ω)
+                                                                                                          RESISTORS, (kΩ)
+             100                           500                               500                                 1.0 // 1.0
+             200                           1000                             1000                                     -
+             300                           1500                             1500                                2.43 // 3.92
+             400                           2000                             2000                                     -
+             500                           2500                             2500                                4.42 // 5.76
+             600                           3000                             3000                                5.36 // 6.81
+             700                           3500                             3500                                4.75 // 13.5
+             800                           4000                             4000                                6.19 // 11.3
+             900                           4500                             4501                                6.19 // 16.5
+
+
+                                    Table 3. Most Common Time Intervals Between 1s to 2h
+                                                                           CLOSEST REAL          PARALLEL of TWO 1% TOLERANCE
+           tIP                 CALCULATED RESISTANCE (kΩ)
+                                                                            VALUE (kΩ)                  RESISTORS,(kΩ)
+           1s                                    5.20                              5.202                     7.15 // 19.1
+           2s                                    6.79                              6.788                     12.4 // 15.0
+           3s                                    7.64                              7.628                      12.7// 19.1
+           4s                                    8.30                              8.306                     14.7 // 19.1
+           5s                                    8.85                              8.852                     16.5 // 19.1
+           6s                                    9.27                              9.223                     18.2 // 18.7
+           7s                                    9.71                              9.673                     19.1 // 19.6
+           8s                                  10.18                            10.180                       11.5 // 8.87
+           9s                                  10.68                               10.68                     17.8 // 26.7
+          10s                                  11.20                            11.199                       15.0 // 44.2
+          20s                                  14.41                            14.405                       16.9 // 97.6
+          30s                                  16.78                            16.778                       32.4 // 34.8
+          40s                                  18.75                            18.748                       22.6 // 110.0
+          50s                                 20.047                            20.047                       28.7 // 66.5
+          1min                                 22.02                            22.021                       40.2 // 48.7
+          2min                                 29.35                            29.349                       35.7 // 165.0
+          3min                                 34.73                            34.729                       63.4 // 76.8
+          4min                                 39.11                            39.097                       63.4 // 102.0
+          5min                                 42.90                            42.887                       54.9 // 196.0
+          6min                                 46.29                            46.301                       75.0 // 121.0
+          7min                                 49.38                            49.392                       97.6 // 100.0
+          8min                                 52.24                            52.224                       88.7 // 127.0
+          9min                                 54.92                            54.902                       86.6 // 150.0
+         10min                                 57.44                            57.437                      107.0 // 124.0
+         20min                                 77.57                            77.579                      140.0 // 174.0
+         30min                                 92.43                            92.233                      182.0 // 187.0
+         40min                                104.67                           104.625                      130.0 // 536.00
+         50min                                115.33                           115.331                      150.0 // 499.00
+           1h                                 124.91                           124.856                      221.0 // 287.00
+        1h30min                               149.39                           149.398                      165.0 // 1580.0
+           2h                                 170.00                            170.00                      340.0 // 340.0
+
+
+
+
+Copyright © 2015–2018, Texas Instruments Incorporated                                             Submit Documentation Feedback      13
+                                                          Product Folder Links: TPL5111
+TPL5111
+SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018                                                                            www.ti.com
+
+
+7.5.4 Quantization Error
+The TPL5111 can generate 1650 discrete timer intervals in the range of 100 ms to 7200 s. The first 9 intervals
+are multiples of 100 ms. The remaining 1641 intervals cover the range between 1 s to 7200 s. Because they are
+discrete intervals, there is a quantization error associated with each value.
+The quantization error can be evaluated according to Equation 3:
+                  TDESIRED TADC
+      Err 100
+                     TDESIRED
+      where
+
+
+           •
+                          é 1
+               TADC = INT ê
+                          ë 100
+                                  2
+                                aRD  (        ù
+                                    + bRD + c ú
+                                              û
+                                                 )
+                    REXT
+               RD =
+           •        100                                                                                                           (3)
+REXT is the resistance calculated with Equation 1 and a, b, c are the coefficients of the equation listed in Table 1.
+
+7.5.5 Error Due to Real External Resistance
+REXT is a theoretical value and may not be available in standard commercial resistor values. It is possible to
+closely approach the theoretical REXT using two or more standard values in parallel. However, standard values
+are characterized by a certain tolerance. This tolerance will affect the accuracy of the time interval.
+The accuracy can be evaluated using the following procedure:
+1. Evaluate the min and max values of REXT (REXT_MIN, REXT_MAX with Equation 1 using the selected commercial
+   resistance values and their tolerances.
+2. Evaluate the time intervals (TADC_MIN[REXT_MIN], TADC_MAX[REXT_MAX]) with the TADC equation mentioned in
+   Equation 3.
+3. Find the errors using Equation 3 with TADC_MIN, TADC_MAX.
+The results of the formula indicate the accuracy of the time interval.
+The example below illustrates the procedure.
+• Desired time interval, T_desired = 600 s,
+• Required REXT from Equation 1, REXT= 57.44 kΩ.
+From Table 3 REXT can be built with a parallel combination of two commercial values with 1% tolerance: R1 =
+107 kΩ, R2 = 124 kΩ. The uncertainty of the equivalent parallel resistance can be found using Equation 4:
+                           2              2
+                 § uR1 ·       § uR 2 ·
+      uR// R//   ¨ ¸           ¨      ¸
+                 © R1 ¹        © R2 ¹
+      where
+           •   uRn (n=1,2) represent the uncertainty of a resistance (see Equation 5)                                             (4)
+SPACER
+                 Tolerance
+     u R n Rn
+                      3                                                                                                           (5)
+The uncertainty of the parallel resistance is 0.82%, which means the value of REXT may range between REXT_MIN
+= 56.96 kΩ and REXT_MAX = 57.90 kΩ.
+Using these value of REXT, the digitized timer intervals calculated by TADC equation mentioned in Equation 3 are
+respectively TADC_MIN = 586.85 s and TADC_MAX = 611.3 s, giving an error range of –1.88% / +2.19%. The
+asymmetry of the error range is due to the quadratic transfer function of the resistance digitizer.
+
+
+
+
+14     Submit Documentation Feedback                                             Copyright © 2015–2018, Texas Instruments Incorporated
+
+                                                 Product Folder Links: TPL5111
+                                                                                                                               TPL5111
+www.ti.com                                                                                SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018
+
+
+8 Application and Implementation
+
+                                                            NOTE
+                Information in the following applications sections is not part of the TI component
+                specification, and TI does not warrant its accuracy or completeness. TI’s customers are
+                responsible for determining suitability of components for their purposes. Customers should
+                validate and test their design implementation to confirm system functionality.
+
+
+8.1 Application Information
+In battery-powered applications one design constraint is the need for low current consumption. The TPL5111 is
+suitable in applications where there is a need to monitor environmental conditions at a fixed time interval, but at a
+very low rate. In these applications a watchdog or other internal timer in a µC is often used to implement a wake-
+up function. Typically, the power consumption of these timers is not optimized. Using the TPL5111 to implement
+a periodic power gating of the µC or of the entire system can reduce current consumption to only tens of nA.
+
+8.2 Typical Application
+The TPL5111 can be used in environment sensor nodes such as humidity and temperature sensor node. The
+measured the humidity and temperature data may be transmitted to a host controller through a low power RF
+micro such as the CC2531. The temperature and the humidity in a home application do not change quickly, so
+the measurement and the transmission of the data can be done at very low rate, such as every 30 seconds.
+Using the TPL5111 as a system timer it is possible to completely turn off the RF micro when not transmitting and
+extend the battery life, as shown in Figure 14. The TPL5111 will turn on the LDO when the programmed time
+interval elapses. The manual Power ON switch can also be used to override the periodic turn-on behavior and
+enable on-demand power on.
+
+
+
+
+                                                                    LDO
+
+                                                              VIN         VOUT
+
+                                                              EN
+                                                                                               CC2531            Rp
+                                                                                                                100k
+                                                              GND                                        RF             Rp
+                                         TPL5111                                                                       100k    HDC1000
+                                                EN/
+                                   VDD                                                  VDD                                   VDD
+                                          ONE_SHOT
+
+                                   GND         DRVn                                                     SCL                   SCL
+      +
+    Lithium                        DELAY/
+                                               DONE                                     GPIO            SDA                   SDA
+  ion battery                      M_DRV
+
+       -                                                                                                GND                   GND
+
+
+
+
+                                                        Figure 14. Sensor Node
+
+8.2.1 Design Requirements
+Assume that the system design requirements include a low current consumption constraint to maximize battery
+life. The data may be acquired at a rate which is in the range between 30 s and 60 s, so the programmability of
+the TPL5111 allows optimization of system power consumption.
+
+
+
+
+Copyright © 2015–2018, Texas Instruments Incorporated                                               Submit Documentation Feedback        15
+                                                        Product Folder Links: TPL5111
+TPL5111
+SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018                                                                                       www.ti.com
+
+
+Typical Application (continued)
+8.2.2 Detailed Design Procedure
+When the primary constraint is battery life, the selection of a low power voltage regulator or DC-DC converter to
+power the µC is mandatory. The first step in the design is to calculate the power consumption of each device in
+the different modes of operation. An example is the HDC1000 digital humidity and temperature sensor combined
+with an RF micro. In measurement mode, the RF micro is in normal operating and transmission mode. The LDO
+or DC-DC converter should be selected to provide the necessary current source. For example, the HDC1000
+consumes a maximum of 220 µA during a humidity measurement, and 300 µA during start-up. The CC2531
+consumes 29 mA in TX mode. The LDO should be capable of sourcing > 30 mA, which is an easy requirement
+to meet.
+Assuming the desired wake-up interval is 30 seconds, then referring to Table 3, the values for parallel REXT
+resistors are 32.4 kΩ and 34.8 kΩ.
+
+8.2.3 Application Curve
+                                                    Without TPL5111
+                                                    With TPL5111
+
+
+
+
+                              Current consumption
+
+
+
+
+                                                                          Time
+                                           Figure 15. Effect of TPL5111 on Current Consumption
+
+9 Power Supply Recommendations
+The TPL5111 requires a voltage supply within 1.8 V and 5.5 V. A multilayer ceramic bypass X7R capacitor of 0.1
+μF between VDD and GND pin is recommended.
+
+10 Layout
+
+10.1 Layout Guidelines
+The DELAY/M_DRV pin is sensitive to parasitic capacitance. TI recommends that the traces connecting the
+resistance on this pin to GROUND be kept as short as possible to minimize parasitic capacitance. This
+capacitance can affect the initial set up of the time interval. Signal integrity on the DRVn pin is also improved by
+keeping the trace length between the TPL5111 and the enable input of the LDO/DC-DC converter short to
+reduce the parasitic capacitance. The EN/ONE_SHOT should to be tied to GND or VDD with short traces, and
+should never be left floating. The DONE input should never be left floating. If not tied to a µC GPIO, the DONE
+pin should be tied to ground.
+
+
+
+
+16     Submit Documentation Feedback                                                        Copyright © 2015–2018, Texas Instruments Incorporated
+
+                                                            Product Folder Links: TPL5111
+                                                                                                                          TPL5111
+www.ti.com                                                                              SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018
+
+
+10.2 Layout Example
+
+
+
+
+                                                           Figure 16. Layout
+
+
+
+
+Copyright © 2015–2018, Texas Instruments Incorporated                                          Submit Documentation Feedback      17
+                                                        Product Folder Links: TPL5111
+TPL5111
+SNAS659B – JUNE 2015 – REVISED SEPTEMBER 2018                                                                                 www.ti.com
+
+
+11 Device and Documentation Support
+
+11.1 Receiving Notification of Documentation Updates
+To receive notification of documentation updates, navigate to the device product folder on ti.com. In the upper
+right corner, click on Alert me to register and receive a weekly digest of any product information that has
+changed. For change details, review the revision history included in any revised document.
+
+11.2 Community Resources
+The following links connect to TI community resources. Linked contents are provided "AS IS" by the respective
+contributors. They do not constitute TI specifications and do not necessarily reflect TI's views; see TI's Terms of
+Use.
+TI E2E™ Online Community TI's Engineer-to-Engineer (E2E) Community. Created to foster collaboration
+           among engineers. At e2e.ti.com, you can ask questions, share knowledge, explore ideas and help
+           solve problems with fellow engineers.
+Design Support TI's Design Support Quickly find helpful E2E forums along with design support tools and
+           contact information for technical support.
+
+11.3 Trademarks
+E2E is a trademark of Texas Instruments.
+All other trademarks are the property of their respective owners.
+11.4 Electrostatic Discharge Caution
+        This integrated circuit can be damaged by ESD. Texas Instruments recommends that all integrated circuits be handled with
+        appropriate precautions. Failure to observe proper handling and installation procedures can cause damage.
+        ESD damage can range from subtle performance degradation to complete device failure. Precision integrated circuits may be more
+        susceptible to damage because very small parametric changes could cause the device not to meet its published specifications.
+
+11.5 Glossary
+SLYZ022 — TI Glossary.
+   This glossary lists and explains terms, acronyms, and definitions.
+
+12 Mechanical, Packaging, and Orderable Information
+The following pages include mechanical, packaging, and orderable information. This information is the most
+current data available for the designated devices. This data is subject to change without notice and revision of
+this document. For browser-based versions of this data sheet, refer to the left-hand navigation.
+
+
+
+
+18     Submit Documentation Feedback                                                  Copyright © 2015–2018, Texas Instruments Incorporated
+
+                                                   Product Folder Links: TPL5111
+                                                                                                                                                                     PACKAGE OPTION ADDENDUM
+
+       www.ti.com                                                                                                                                                                                                   10-Nov-2025
+
+
+
+
+PACKAGING INFORMATION
+
+       Orderable part number          Status     Material type      Package | Pins      Package qty | Carrier       RoHS             Lead finish/               MSL rating/          Op temp (°C)               Part marking
+                                        (1)            (2)                                                            (3)            Ball material              Peak reflow                                           (6)
+                                                                                                                                          (4)                       (5)
+
+           TPL5111DDCR                Active      Production          SOT-23-            3000 | LARGE T&R            Yes               NIPDAU            Level-1-260C-UNLIM            -40 to 105                   ZFVX
+                                                                    THIN (DDC) | 6
+          TPL5111DDCR.A               Active      Production          SOT-23-            3000 | LARGE T&R            Yes               NIPDAU            Level-1-260C-UNLIM            -40 to 105                   ZFVX
+                                                                    THIN (DDC) | 6
+          TPL5111DDCRG4               Active      Production          SOT-23-            3000 | LARGE T&R            Yes               NIPDAU            Level-1-260C-UNLIM            -40 to 105                   ZFVX
+                                                                    THIN (DDC) | 6
+        TPL5111DDCRG4.A               Active      Production          SOT-23-            3000 | LARGE T&R            Yes               NIPDAU            Level-1-260C-UNLIM            -40 to 105                   ZFVX
+                                                                    THIN (DDC) | 6
+           TPL5111DDCT                Active      Production          SOT-23-             250 | SMALL T&R            Yes               NIPDAU            Level-1-260C-UNLIM            -40 to 105                   ZFVX
+                                                                    THIN (DDC) | 6
+          TPL5111DDCT.A               Active      Production          SOT-23-             250 | SMALL T&R            Yes               NIPDAU            Level-1-260C-UNLIM            -40 to 105                   ZFVX
+                                                                    THIN (DDC) | 6
+
+(1)
+      Status: For more details on status, see our product life cycle.
+
+(2)
+   Material type: When designated, preproduction parts are prototypes/experimental devices, and are not yet approved or released for full production. Testing and final process, including without limitation quality assurance,
+reliability performance testing, and/or process qualification, may not yet be complete, and this item is subject to further changes or possible discontinuation. If available for ordering, purchases will be subject to an additional
+waiver at checkout, and are intended for early internal evaluation purposes only. These items are sold without warranties of any kind.
+
+(3)
+      RoHS values: Yes, No, RoHS Exempt. See the TI RoHS Statement for additional information and value definition.
+
+(4)
+   Lead finish/Ball material: Parts may have multiple material finish options. Finish options are separated by a vertical ruled line. Lead finish/Ball material values may wrap to two lines if the finish value exceeds the maximum
+column width.
+
+(5)
+  MSL rating/Peak reflow: The moisture sensitivity level ratings and peak solder (reflow) temperatures. In the event that a part has multiple moisture sensitivity ratings, only the lowest level per JEDEC standards is shown.
+Refer to the shipping label for the actual reflow temperature that will be used to mount the part to the printed circuit board.
+
+(6)
+      Part marking: There may be an additional marking, which relates to the logo, the lot trace code information, or the environmental category of the part.
+
+Multiple part markings will be inside parentheses. Only one part marking contained in parentheses and separated by a "~" will appear on a part. If a line is indented then it is a continuation of the previous line and the two
+combined represent the entire part marking for that device.
+
+
+
+
+                                                                                                          Addendum-Page 1
+                                                                                                                                                                      PACKAGE OPTION ADDENDUM
+
+    www.ti.com                                                                                                                                                                                                   10-Nov-2025
+
+
+
+
+Important Information and Disclaimer:The information provided on this page represents TI's knowledge and belief as of the date that it is provided. TI bases its knowledge and belief on information provided by third parties, and
+makes no representation or warranty as to the accuracy of such information. Efforts are underway to better integrate information from third parties. TI has taken and continues to take reasonable steps to provide representative
+and accurate information but may not have conducted destructive testing or chemical analysis on incoming materials and chemicals. TI and TI suppliers consider certain information to be proprietary, and thus CAS numbers
+and other limited information may not be available for release.
+
+In no event shall TI's liability arising out of such information exceed the total purchase price of the TI part(s) at issue in this document sold by TI to Customer on an annual basis.
+
+
+
+
+                                                                                                          Addendum-Page 2
+                                                                                PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                                                          5-Sep-2025
+
+
+
+TAPE AND REEL INFORMATION
+
+       REEL DIMENSIONS                                                                       TAPE DIMENSIONS
+                                                                                        K0         P1
+
+
+
+                                                                                                                         B0 W
+                                          Reel
+                                        Diameter
+                                                                                     Cavity             A0
+                                                                 A0   Dimension designed to accommodate the component width
+                                                                 B0   Dimension designed to accommodate the component length
+                                                                 K0   Dimension designed to accommodate the component thickness
+                                                                 W    Overall width of the carrier tape
+                                                                 P1   Pitch between successive cavity centers
+
+
+                                         Reel Width (W1)
+                               QUADRANT ASSIGNMENTS FOR PIN 1 ORIENTATION IN TAPE
+
+                                                                                                        Sprocket Holes
+
+
+                                                   Q1       Q2          Q1    Q2
+
+                                                   Q3       Q4          Q3    Q4                    User Direction of Feed
+
+
+
+                                                             Pocket Quadrants
+
+
+*All dimensions are nominal
+             Device           Package Package Pins               SPQ        Reel   Reel   A0                   B0         K0     P1     W     Pin1
+                               Type Drawing                               Diameter Width (mm)                 (mm)       (mm)   (mm)   (mm) Quadrant
+                                                                            (mm) W1 (mm)
+      TPL5111DDCR             SOT-23-     DDC           6        3000        178.0           8.4        3.2    3.2       1.4    4.0    8.0     Q3
+                               THIN
+    TPL5111DDCRG4             SOT-23-     DDC           6        3000        178.0           8.4        3.2    3.2       1.4    4.0    8.0     Q3
+                               THIN
+      TPL5111DDCT             SOT-23-     DDC           6         250        178.0           8.4        3.2    3.2       1.4    4.0    8.0     Q3
+                               THIN
+
+
+
+
+                                                                        Pack Materials-Page 1
+                                                                PACKAGE MATERIALS INFORMATION
+
+www.ti.com                                                                                                              5-Sep-2025
+
+
+
+ TAPE AND REEL BOX DIMENSIONS
+
+
+
+
+                                                               Width (mm)
+                                                                              H
+
+
+
+
+                      W                                   L
+
+
+
+
+*All dimensions are nominal
+             Device           Package Type   Package Drawing   Pins         SPQ    Length (mm)   Width (mm)   Height (mm)
+      TPL5111DDCR             SOT-23-THIN         DDC           6           3000      208.0        191.0         35.0
+    TPL5111DDCRG4             SOT-23-THIN         DDC           6           3000      208.0        191.0         35.0
+      TPL5111DDCT             SOT-23-THIN         DDC           6           250       208.0        191.0         35.0
+
+
+
+
+                                                        Pack Materials-Page 2
+                                                                                                             PACKAGE OUTLINE
+ DDC0006A                                                           SCALE 4.000
+                                                                                                             SOT-23 - 1.1 max height
+                                                                                                                 SMALL OUTLINE TRANSISTOR
+
+
+
+
+                                              3.05                                                                  1.1
+                                              2.55                                                                  0.7
+                                              1.75                                                                                0.1 C
+                                                                B                        A
+                                              1.45
+                 PIN 1
+           INDEX AREA
+
+                             1
+                                                                                   6
+
+
+                   4X 0.95
+
+                                                                                        3.05
+             1.9
+                                                                                        2.75
+
+
+
+
+                                                                                   4
+                             3                                                                    4X 0 -15
+
+
+                                                                                           0.5                               0.1
+                                                                                        6X                                       TYP
+                                                                                           0.3                               0.0
+                                                                                          0.2    C A B
+
+
+
+
+                                                                          4X 4 -15
+
+
+
+
+                                                                                             C
+      0 -8 TYP
+
+
+
+                                                 SEATING PLANE                          0.25
+           0.20
+                TYP                                                                     GAGE PLANE
+           0.12
+                                       0.6
+                                           TYP
+                                       0.3
+
+
+
+
+                                                                                                                          4214841/E 08/2024
+
+NOTES:
+
+1. All linear dimensions are in millimeters. Any dimensions in parenthesis are for reference only. Dimensioning and tolerancing
+   per ASME Y14.5M.
+2. This drawing is subject to change without notice.
+3. Reference JEDEC MO-193.
+
+
+
+
+                                                                                  www.ti.com
+                                                                               EXAMPLE BOARD LAYOUT
+ DDC0006A                                                                                     SOT-23 - 1.1 max height
+                                                                                                     SMALL OUTLINE TRANSISTOR
+
+
+
+
+                                                                SYMM
+                                                  6X (1.1)
+                                             1
+
+                                  6X (0.6)                                                6
+
+
+
+                                                                                              SYMM
+
+
+                              4X (0.95)
+
+                                                                                          4
+                                             3
+
+                            (R0.05) TYP
+                                                                 (2.7)
+
+
+                                                     LAND PATTERN EXAMPLE
+                                                         EXPLOSED METAL SHOWN
+                                                               SCALE:15X
+
+
+
+
+                                                                         METAL UNDER                     SOLDER MASK
+              SOLDER MASK                        METAL                   SOLDER MASK                     OPENING
+              OPENING
+
+                                                                 EXPOSED METAL
+
+
+                                                      EXPOSED METAL
+
+                                    0.07 MAX                                                  0.07 MIN
+                                    ARROUND                                                   ARROUND
+
+                             NON SOLDER MASK                                             SOLDER MASK
+                                 DEFINED                                                   DEFINED
+
+
+                                                    SOLDERMASK DETAILS
+
+
+
+
+                                                                                                              4214841/E 08/2024
+
+NOTES: (continued)
+
+4. Publication IPC-7351 may have alternate designs.
+5. Solder mask tolerances between and around signal pads can vary based on board fabrication site.
+
+
+
+
+                                                                 www.ti.com
+                                                                               EXAMPLE STENCIL DESIGN
+ DDC0006A                                                                                       SOT-23 - 1.1 max height
+                                                                                                      SMALL OUTLINE TRANSISTOR
+
+
+
+
+                                                                SYMM
+                                                6X (1.1)
+                                            1
+
+                                 6X (0.6)                                                6
+
+
+
+                                                                                             SYMM
+
+
+                             4X(0.95)
+
+                                                                                         4
+                                            3
+
+                           (R0.05) TYP
+                                                                 (2.7)
+
+
+                                                   SOLDER PASTE EXAMPLE
+                                                   BASED ON 0.125 THICK STENCIL
+                                                           SCALE:15X
+
+
+
+
+                                                                                                                   4214841/E 08/2024
+
+NOTES: (continued)
+
+6. Laser cutting apertures with trapezoidal walls and rounded corners may offer better paste release. IPC-7525 may have alternate
+    design recommendations.
+7. Board assembly site may have different recommendations for stencil design.
+
+
+
+
+                                                                  www.ti.com
+                                         IMPORTANT NOTICE AND DISCLAIMER
+TI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATASHEETS), DESIGN RESOURCES (INCLUDING REFERENCE
+DESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS”
+AND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY
+IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD
+PARTY INTELLECTUAL PROPERTY RIGHTS.
+These resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate
+TI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable
+standards, and any other safety, security, regulatory or other requirements.
+These resources are subject to change without notice. TI grants you permission to use these resources only for development of an
+application that uses the TI products described in the resource. Other reproduction and display of these resources is prohibited. No license
+is granted to any other TI intellectual property right or to any third party intellectual property right. TI disclaims responsibility for, and you fully
+indemnify TI and its representatives against any claims, damages, costs, losses, and liabilities arising out of your use of these resources.
+TI’s products are provided subject to TI’s Terms of Sale, TI’s General Quality Guidelines, or other applicable terms available either on
+ti.com or provided in conjunction with such TI products. TI’s provision of these resources does not expand or otherwise alter TI’s applicable
+warranties or warranty disclaimers for TI products. Unless TI explicitly designates a product as custom or customer-specified, TI products
+are standard, catalog, general purpose devices.
+TI objects to and rejects any additional or different terms you may propose.
+IMPORTANT NOTICE
+
+                                                Copyright © 2025, Texas Instruments Incorporated
+                                                                Last updated 10/2025
+

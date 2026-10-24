@@ -26,6 +26,7 @@ def main():
     if not args.skip_ios_build and shutil.which('xcodebuild') is None:
         raise SystemExit('xcodebuild missing; use --skip-ios-build for host checks only')
     run([sys.executable, 'scripts/check_shared_contract.py'])
+    run([sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', '-v'])
     with tempfile.TemporaryDirectory(prefix='auto-gauge-check-') as temp:
         scratch = Path(temp)
         run(['cmake', '-S', ROOT / 'firmware', '-B', scratch / 'firmware',

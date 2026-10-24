@@ -1,0 +1,26 @@
+{
+  "sources/lm74721-q1.pdf": {
+    "bytes": 2655418,
+    "sha256": "a8cfe109f0887a4441d499ee419e96c68a7b7acb405960786d25027983ae8b99"
+  },
+  "sources/tpl5111.pdf": {
+    "bytes": 854208,
+    "sha256": "8bec8b53d32403e1460a824986ea6ad18ada8dfb09e8299a27e3bd466e0b01fe"
+  },
+  "sources/tps25940-q1.pdf": {
+    "bytes": 2552917,
+    "sha256": "b3012db7eae1569eb61697e3050194353f37e0ac3a9da1bad88a22a6799a9b38"
+  },
+  "sources/tps2596.pdf": {
+    "bytes": 4249190,
+    "sha256": "66f6bae4494f7bfe7dfdc314e508f0291d9ca1e87265cca9b6fdfeaa5cb19fe9"
+  },
+  "sources/tps62160-q1.pdf": {
+    "bytes": 2569622,
+    "sha256": "940736f835a41f87a3a22dcc31e8308bf6bef3bc5a176443cc3c05b4fa7d75e5"
+  },
+  "sources/tps7a16-q1.pdf": {
+    "bytes": 1884041,
+    "sha256": "46564fa59be425644b3a094986edde1633ce9001d1f22022bce9be1b7b3aa8b5"
+  }
+}

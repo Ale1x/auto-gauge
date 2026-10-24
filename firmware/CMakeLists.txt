@@ -4,7 +4,8 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-add_library(gauge_core STATIC src/config.c src/can_policy.c src/log_queue.c src/session_clock.c)
+add_library(gauge_core STATIC src/config.c src/can_policy.c src/log_queue.c src/session_clock.c
+  src/obd_decode.c src/isotp_rx.c src/scheduler.c)
 target_include_directories(gauge_core PUBLIC include)
 target_compile_options(gauge_core PRIVATE -Wall -Wextra -Wpedantic -Werror)
 option(AG_SANITIZERS "Address/undefined-behavior sanitizer for host tests" ON)
@@ -27,3 +28,7 @@ target_include_directories(gauge_core_tests PRIVATE "${CMAKE_CURRENT_BINARY_DIR}
 target_link_libraries(gauge_core_tests PRIVATE gauge_core)
 target_compile_options(gauge_core_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
 add_test(NAME gauge_core_tests COMMAND gauge_core_tests)
+add_executable(gauge_diagnostics_tests tests/test_diagnostics.c)
+target_link_libraries(gauge_diagnostics_tests PRIVATE gauge_core)
+target_compile_options(gauge_diagnostics_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_test(NAME gauge_diagnostics_tests COMMAND gauge_diagnostics_tests)

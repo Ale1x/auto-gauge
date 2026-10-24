@@ -1,0 +1,18 @@
+{
+  "status": "STUDY_ONLY_HR01_HR02_NOT_CLOSED",
+  "ovp_candidates": 2,
+  "ovp_cases": 6,
+  "charge_cases": 36,
+  "inrush_cases": 4,
+  "power_cases": 240,
+  "wake_cases": 4,
+  "no_a0_schematic_changes": true,
+  "no_pcb": true,
+  "unresolved": [
+    "Maximum OVP response/overshoot",
+    "CC/default USB and ROM current",
+    "Preregulator low-VIN dropout/transient proof",
+    "Partial-power/reverse current measurements",
+    "Complete protected wake budget and fault recovery"
+  ]
+}

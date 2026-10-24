@@ -41,3 +41,24 @@ Dettagli e limiti delle prove in `shared/VERIFICATION_V0.1.md`. Il primo increme
 | INT-02 | Integrazione | Collegare app a un simulatore del protocollo device, import log con deduplica/resume | Contratto di messaggi e parser bounded; niente dipendenza da cloud per il gauge |
 
 APP-02, FW-02 e HW-02 possono avanzare in parallelo. INT-02 segue la prima definizione di SH-02. Il backend cloud può restare un'interfaccia finché provider e policy non sono scelti; nessun falso login o servizio esterno è necessario per continuare.
+
+## Secondo incremento parallelo
+
+| Attività | Risultato implementato | Confine attuale |
+|---|---|---|
+| APP-02 | Editor con selezione, drag e griglia intera; bozze/snapshot, annulla/ricarica/ripristino e file locale atomico; warning bordo circolare | Modello editor provvisorio, nessuna nuova regola O-10 congelata o verifica visiva |
+| FW-02 | Decoder iniziali 04/05/0C/0D/0F/10/11, bitmap per ECU, ISO-TP RX bounded256byte, scheduler a una transazione e guardia al dispatch | Nessun Flow Control TX o driver CAN, solo normal addressing/classic CAN; niente dichiarazione di supporto completo Service01 |
+| SH-02 | Codec packet Python/C/Swift e15 vettori comuni, limite4096byte payload, reassembly con timeout nel riferimento Python | CRC non autentica; GATT/ownership/sicurezza reali non disponibili |
+| INT-02 | Simulatore locale config con received/applied distinti; riferimento SQLite per import log, resume, deduplica, perdite esplicite e commit prima di ACK | Componenti di riferimento testati su host, non ancora collegati alla UI storici o alla flash device |
+| HW-02 | Due OVP confrontate e respinte come soluzione diretta; preregolatore USB e3alternative wake studiati con fonti/calcoli | HR-01/HR-02 ancora aperti, A0 non modificato e nessun nuovo componente congelato |
+
+La review separata del riferimento ha riprodotto tre difetti e ne ha verificato le correzioni: cursor serializzato con `BEGIN IMMEDIATE`, configurazione normalizzata/rileggibile prima dell'apply, campi bounded verificati prima della serializzazione. I rispettivi test di regressione sono nel repository.
+
+Verifica integrata e limiti in `shared/VERIFICATION_V0.2.md`. Hardware: `hardware/usb_power/HW02_REVIEW.md`. La scelta O-08 sul recupero di un iPhone perso è presentata in `shared/OWNERSHIP_PROPOSAL.md`: finché manca la risposta non si implementa un trasferimento ownership reale. Studio hardware, decoder e simulazione possono continuare indipendentemente.
+
+## Ordine successivo
+
+1. Tradurre la scelta O-08 in macchina a stati e threat model; non attivare mutazioni BLE fino a sessione autenticata verificata.
+2. Integrare il riferimento log nel core Swift e nella schermata storici con fixture, conservando le garanzie ACK/resume; aggiungere produttore pagine bounded sul firmware.
+3. Estendere decoder/ISO-TP con fonti e simulatori, includendo timeout/discovery e addressing necessari; costruire con ESP-IDF qualificato prima di driver reali.
+4. Simulare e dimensionare il preregolatore USB candidato e confrontare le alternative wake A/B con OCP/fusibile/SOA e budget corrente completo. Nessun bypass o flag ERC al posto della protezione.

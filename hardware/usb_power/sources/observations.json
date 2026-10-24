@@ -1,0 +1,36 @@
+{
+  "observed_date": "2026-10-24",
+  "status": "OBSERVED_PUBLIC_CATALOG_NOT_RESERVED",
+  "technical_sources": {
+    "TPS259631": "https://www.ti.com/lit/ds/symlink/tps2596.pdf",
+    "TPS25940-Q1": "https://www.ti.com/lit/ds/symlink/tps25940-q1.pdf",
+    "TPS62160-Q1": "https://www.ti.com/lit/ds/symlink/tps62160-q1.pdf",
+    "LM74721-Q1": "https://www.ti.com/lit/ds/symlink/lm74721-q1.pdf"
+  },
+  "stock_observations": [
+    {
+      "mpn": "TPS259631DDAR",
+      "url": "https://www.digikey.com/en/products/detail/texas-instruments/TPS259631DDAR/10445330",
+      "quantity": 1162,
+      "qty1_usd": 1.0,
+      "moq": 1,
+      "evidence": "opened distributor product page; stock located via find; subject to change"
+    },
+    {
+      "mpn": "TPS25940AQRVCRQ1",
+      "url": "https://www.digikey.com/en/products/detail/texas-instruments/TPS25940AQRVCRQ1/6100244",
+      "quantity": 9476,
+      "qty1_usd": 3.08,
+      "moq": 1,
+      "evidence": "opened distributor product page; most recent stock located via find; subject to change"
+    },
+    {
+      "mpn": "TPS62160QDSGRQ1",
+      "url": "https://www.mouser.com/en/ProductDetail/Texas-Instruments/TPS62160QDSGRQ1?qs=7z%252BmIopC6%2FJcaztvQ5d0cw%3D%3D",
+      "quantity": 138,
+      "qty1_usd": 2.09,
+      "moq": 1,
+      "evidence": "search-indexed distributor page, not a reserved/live quote; DigiKey stock differs"
+    }
+  ]
+}
