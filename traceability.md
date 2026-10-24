@@ -1,4 +1,4 @@
-# Tracciabilità K0 — revisione 0.2
+# Tracciabilità K0 — revisione 0.3
 
 Data 2026-10-24. Fonte normativa SPEC_V0.2.md + DECISIONS.md (requisiti risultanti v0.2.2).
 Generato da scripts/build_k0_registers.py. Gli sheet sono destinazioni pianificate: non esiste ancora un progetto KiCad.
@@ -14,7 +14,7 @@ Generato da scripts/build_k0_registers.py. Gli sheet sono destinazioni pianifica
 | PR-006 | Display acceso con quadro acceso; resta acceso se motore spento ma quadro acceso. | SPEC §1.2 | T-005 | 04_CAN_PHY / power / stato IGN | BLOCCATO | HW-IGN / O-18 |
 | PR-007 | Gauge lasciabile collegato per settimane; riaccensione automatica senza intervento umano. | SPEC §1.2 | T-006, T-007 | power always-on / wake | BLOCCATO | O-04/O-06/O-18 |
 | PR-008 | Porta **USB-C nascosta**, destinata solo a sviluppo/manutenzione e recupero firmware; nessuna alimentazione esterna per l'uso normale. | SPEC §1.2 | recovery e matrice USB/OBD | 07_TEST_SERVICE | BLOCCATO | O-03; piano backfeed in CAN_POWER_TEST_PLAN.md |
-| PR-009 | **Display circolare AMOLED 1,75 pollici**, touch, collegato tramite FPC a **un PCB completamente custom**. | SPEC §1.2 | drawing + sourcing + T-010 | 05_AMOLED_TOUCH | BLOCCATO | E01 riammesso allo studio DEC-002; fit e O-16 aperti |
+| PR-009 | **Display circolare AMOLED 1,75 pollici**, touch, collegato tramite FPC a **un PCB completamente custom**. | SPEC §1.2 | drawing + sourcing + T-010 | 05_AMOLED_TOUCH | BLOCCATO | E01/E19–E22: PANEL_SOURCING_K0.md; fit e O-16 aperti |
 | PR-010 | Un tap in qualsiasi posizione sul display passa alla dashboard successiva. | SPEC §1.2 | T-010 | touch / firmware UI | DA IMPLEMENTARE | SPEC §6.1; nessun prototipo |
 | PR-011 | Fino a **3 dashboard** e fino a **5 misurazioni per dashboard**. | SPEC §1.2 | T-010, T-011 + limiti 3x5 | UI / validazione firmware-app | DA IMPLEMENTARE | SPEC §6.1 |
 | PR-012 | **Cavo OBD-II di 2 m**, con connettore removibile **lato display**; non usare due schede funzionali separate. | SPEC §1.2 | T-004, T-017 | 01_OBD_INPUT / cavo / presa gauge | BLOCCATO | MPN e cablaggio da verificare; O-21 |
@@ -47,7 +47,7 @@ Generato da scripts/build_k0_registers.py. Gli sheet sono destinazioni pianifica
 | O-13 | Provider cloud, account, autenticazione, policy privacy e offline, retention storico. | SPEC §11 (P1) | requisiti backend/app | cloud / account | APERTA P1 | Nessuna scelta provider |
 | O-14 | Origine e permanenza dei log se iPhone non è connesso: storage locale sul gauge oppure storico solo in app quando connessa. | SPEC §11 (P0) | decisione owner + T-016 | storage / memoria / log | APERTA P0 | Buffer locale o solo app connessa da decidere |
 | O-15 | Distribuzione firmware e recovery/security policy. | SPEC §11 (P2) | decisione owner + T-015 | bootloader / distribuzione firmware | APERTA P2 | E08 solo capacità piattaforma |
-| O-16 | Pannello AMOLED nudo realmente approvvigionabile con FPC/pinout e vincoli dimensionali. | SPEC §11 (P0) | datasheet corretto + campione + offerta | 05_AMOLED_TOUCH / meccanica | APERTA P0 | E01 riammesso allo studio; datasheet/sourcing aperti; issues/K0-001_BLOCKERS.md |
+| O-16 | Pannello AMOLED nudo realmente approvvigionabile con FPC/pinout e vincoli dimensionali. | SPEC §11 (P0) | datasheet corretto + campione + offerta | 05_AMOLED_TOUCH / meccanica | APERTA P0 | PANEL_SOURCING_K0.md: tre candidati, nessuno congelabile |
 | O-17 | Chi monta connettore lato gauge, il cavo e il display e a che prezzo? | SPEC §11 (P0) | conferma scritta + T-018 | fornitore assieme | APERTA P0 | Bozza RFQ pronta, non inviata |
 | O-18 | Meccanismo verificabile per «quadro acceso», senza dipendenze OEM. Quale compromesso è ammissibile? | SPEC §11 (P0) | HW-IGN: log CAN/corrente/ground truth | wake / CAN / power | APERTA P0 | Piano prove pronto; nessun test |
 | O-19 | Budget 40–70 EUR include IVA, trasporto, attrezzaggio, cavo/display e montaggio o solo BOM+PCB? | SPEC §11 (P1) | decisione owner + preventivo completo | economia lotto | APERTA P1 | Perimetro imposte/trasporto non approvato |

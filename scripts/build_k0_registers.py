@@ -19,7 +19,7 @@ pr = {
 6: ('T-005', '04_CAN_PHY / power / stato IGN', 'BLOCCATO', 'HW-IGN / O-18'),
 7: ('T-006, T-007', 'power always-on / wake', 'BLOCCATO', 'O-04/O-06/O-18'),
 8: ('recovery e matrice USB/OBD', '07_TEST_SERVICE', 'BLOCCATO', 'O-03; piano backfeed in CAN_POWER_TEST_PLAN.md'),
-9: ('drawing + sourcing + T-010', '05_AMOLED_TOUCH', 'BLOCCATO', 'E01 riammesso allo studio DEC-002; fit e O-16 aperti'),
+9: ('drawing + sourcing + T-010', '05_AMOLED_TOUCH', 'BLOCCATO', 'E01/E19–E22: PANEL_SOURCING_K0.md; fit e O-16 aperti'),
 10: ('T-010', 'touch / firmware UI', 'DA IMPLEMENTARE', 'SPEC §6.1; nessun prototipo'),
 11: ('T-010, T-011 + limiti 3x5', 'UI / validazione firmware-app', 'DA IMPLEMENTARE', 'SPEC §6.1'),
 12: ('T-004, T-017', '01_OBD_INPUT / cavo / presa gauge', 'BLOCCATO', 'MPN e cablaggio da verificare; O-21'),
@@ -54,7 +54,7 @@ opened = {
 13: ('requisiti backend/app', 'cloud / account', 'APERTA P1', 'Nessuna scelta provider'),
 14: ('decisione owner + T-016', 'storage / memoria / log', 'APERTA P0', 'Buffer locale o solo app connessa da decidere'),
 15: ('decisione owner + T-015', 'bootloader / distribuzione firmware', 'APERTA P2', 'E08 solo capacità piattaforma'),
-16: ('datasheet corretto + campione + offerta', '05_AMOLED_TOUCH / meccanica', 'APERTA P0', 'E01 riammesso allo studio; datasheet/sourcing aperti; issues/K0-001_BLOCKERS.md'),
+16: ('datasheet corretto + campione + offerta', '05_AMOLED_TOUCH / meccanica', 'APERTA P0', 'PANEL_SOURCING_K0.md: tre candidati, nessuno congelabile'),
 17: ('conferma scritta + T-018', 'fornitore assieme', 'APERTA P0', 'Bozza RFQ pronta, non inviata'),
 18: ('HW-IGN: log CAN/corrente/ground truth', 'wake / CAN / power', 'APERTA P0', 'Piano prove pronto; nessun test'),
 19: ('decisione owner + preventivo completo', 'economia lotto', 'APERTA P1', 'Perimetro imposte/trasporto non approvato'),
@@ -68,7 +68,7 @@ opened = {
 def esc(s):
     return s.replace('|', '\\|').replace('\n', ' ')
 
-lines = ['# Tracciabilità K0 — revisione 0.2', '',
+lines = ['# Tracciabilità K0 — revisione 0.3', '',
          'Data 2026-10-24. Fonte normativa SPEC_V0.2.md + DECISIONS.md (requisiti risultanti v0.2.2).',
          'Generato da scripts/build_k0_registers.py. Gli sheet sono destinazioni pianificate: non esiste ancora un progetto KiCad.',
          '«CANDIDATO» non significa selezionato o validato. Nessun test T è stato eseguito.', '',
@@ -110,12 +110,16 @@ for i, (origin, desc, test, area) in enumerate(derived, 1):
 
 headers = ['funzione','MPN_candidato','datasheet_link','tensioni','range_termico_C','disponibilita','prezzo_unitario','quantita_per_unita','quantita_lotto_5','libreria_KiCad_o_footprint','LCSC_JLC_code','alternativa','rischio','evidenza','stato']
 rows = [
-['MCU BLE + memoria','ESP32-S3-WROOM-1-N16R8','https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf','3.0–3.6 V','-40…+65 ambiente','Mouser/LCSC: indicazione pubblica indicizzata; riconfermare','USD 6.72 Mouser qty1; USD 5.0752 LCSC promozione qty1','1','5','Candidato RF_Module:ESP32-S3-WROOM-1; pin e land pattern da confrontare','C2913202 LCSC; JLC non confermato','WROOM con R2 o SoC separato: nuova verifica obbligatoria','Temperatura max65; RF magnete; log/OTA non dimensionati; Wi-Fi da disabilitare','E02 E13 E14','NON CONGELATO'],
-['CAN PHY con wake','TCAN1043ADRQ1','https://www.ti.com/lit/ds/symlink/tcan1043a-q1.pdf','VCC 5 V; VIO 1.7–5.5 V; VSUP da verificare su profilo scelto','-40…+125 ambiente','DigiKey 1699 indicati; non riservati','USD 1.71 qty1','1','5','SOIC-14: confrontare drawing e simbolo wake/INH','TBD','TCAN1043ATDRQ1; compatibilità da verificare','Wake non IGN; rail5 necessario; leakage e Vsup protetti','E03 E15','NON CONGELATO'],
-['Buck automotive','LM5164QDDARQ1','https://www.ti.com/lit/ds/symlink/lm5164-q1.pdf','VIN6–100 V; uscita candidata5 V; max1 A','-40…+125 ambiente','Famiglia attiva; stock MPN TBD','TBD','1','5','DDA PowerPAD SOIC8: verifica termica/footprint richiesta','TBD','Altro buck automotive dopo power budget','Non regola sotto6 V; margine potenza/termica non chiuso','E04','CANDIDATO STOCK NON VERIFICATO'],
+['MCU BLE + memoria','ESP32-S3-WROOM-1-N16R8','https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf','3.0–3.6 V','-40…+65 standard; fino+85 con ECC PSRAM e capacità ridotta1/16','Mouser/LCSC: indicazione pubblica indicizzata; riconfermare','USD 6.72 Mouser qty1; USD 5.0752 LCSC promozione qty1','1','5','RF_Module:ESP32-S3-WROOM-1 trovato via MCP; pin/land pattern da verificare','C2913202 LCSC; JLC non confermato','WROOM con R2 o SoC separato: nuova verifica obbligatoria','ECC necessario per estensione termica; RF magnete; log/OTA non dimensionati; Wi-Fi da disabilitare','E02 E13 E14','NON CONGELATO'],
+['CAN PHY con wake','TCAN1043ADRQ1','https://www.ti.com/lit/ds/symlink/tcan1043a-q1.pdf','VCC 5 V; VIO 1.7–5.5 V; VSUP da verificare su profilo scelto','-40…+125 ambiente','DigiKey 1699 indicati; non riservati','USD 1.71 qty1','1','5','Interface_CAN_LIN:TCAN1043xDxQ1 trovato via MCP; SOIC14 e pin da verificare','TBD','TCAN1043ATDRQ1; compatibilità da verificare','Wake non IGN; rail5 necessario; leakage e Vsup protetti','E03 E15','NON CONGELATO'],
+['Buck automotive','LM5164QDDARQ1','https://www.ti.com/lit/ds/symlink/lm5164-q1.pdf','VIN6–100 V; uscita candidata5 V; max1 A','-40…+125 ambiente','Famiglia attiva; stock MPN TBD','TBD','1','5','Regulator_Switching:LM5164DDA trovato via MCP; PowerPAD/pin/rating variante da verificare','TBD','Altro buck automotive dopo power budget','Non regola sotto6 V; margine potenza/termica non chiuso','E04','CANDIDATO STOCK NON VERIFICATO'],
 ['Protezione polarità OV OC','LM74900QRGERQ1','https://www.ti.com/lit/ds/symlink/lm74900-q1.pdf','3–65 V; MOSFET esterni','-40…+125 ambiente','Famiglia attiva; stock MPN TBD','TBD','1','5','VQFN24 RGE: custom/check datasheet','TBD','Architettura a basso IQ da confrontare','Iq e ramo always-on possono compromettere standby; TVS/SOA aperti','E05','CANDIDATO STOCK NON VERIFICATO'],
 ['Sensore luce','OPT3001DNPRQ1','https://www.ti.com/lit/ds/symlink/opt3001-q1.pdf','VDD1.6–3.6 V; I2C','-40…+105 grade2','Stock MPN TBD','TBD','1','5','USON6 DNP: custom/check finestra ottica','TBD','Altro ALS automotive da verificare','Apertura case e calibrazione ottica','E06','CANDIDATO STOCK NON VERIFICATO'],
-['Pannello AMOLED touch','ESHX0175Y003AMT003','https://www.displayamoled.com/photo/displayamoled/document/88489/ESHX0175Y003AMT003-SPEC.pdf','NON CONGELABILI: incongruenze fra sezioni','Incongruente nel PDF; conferma richiesta','MOQ/prezzo/lead time non confermati','TBD','1','5','FPC e pinout solo dopo revisione corretta','TBD','Altro pannello1.75 equivalente; nuovo diametro da definire','Fit completo nel nuovo inviluppo non verificato; dati elettrici incompleti','E01 DEC-002','CANDIDATO RIAMMESSO ALLO STUDIO; NON VALIDATO'],
+['Pannello AMOLED touch','ESHX0175Y003AMT003','https://www.displayamoled.com/photo/displayamoled/document/88489/ESHX0175Y003AMT003-SPEC.pdf','NON CONGELABILI: incongruenze fra sezioni','Incongruente nel PDF; conferma richiesta','E18: MOQ1000 e4–6settimane dichiarati; cinque campioni non confermati','TBD','1','5','FPC e pinout solo dopo revisione corretta','TBD','Altro pannello1.75 equivalente; nuovo diametro da definire','Fit completo nel nuovo inviluppo non verificato; dati elettrici incompleti','E01 E18 DEC-002','CANDIDATO RIAMMESSO ALLO STUDIO; NON VALIDATO'],
+]
+rows += [
+['Pannello AMOLED touch alternativo','ALL-UEOL018VG-RA31-A001A','https://viewedisplay.com/download/72/display-datasheet/6230/all-ueol018wv-ra31-a001a-v1-0-spec.pdf','TBD: PDF relativo a codici diversi','TBD: dati non coerenti fra pagina e PDF','Vendita diretta pubblica; stock lotto5 non confermato','USD14.99 prezzo esposto; trasporto e imposte esclusi','1 alternativa non cumulativa','5 se selezionato','Custom FPC solo dopo identità/drawing corretti','TBD','Huaxin ESHX0175Y003AMT003','VG/WV/cartiglio discordanti; no pinout congelabile','E19 E20 PANEL_SOURCING_K0.md','CANDIDATO; BLOCCATO SU IDENTITA/DATASHEET'],
+['Pannello AMOLED touch alternativo','LX175A3101CTP01','','TBD da datasheet originale','-20…+70 dichiarati dal distributore; da confermare','Özdisan stock0 MOQ1 lead time4–5settimane; Eurocoin su richiesta','TBD','1 alternativa non cumulativa','5 se selezionato','TBD dopo datasheet esatto','TBD','VIEWE / Huaxin, non drop-in','Ingombro51.5mm dichiarato; no fit Ø52 con pareti ipotizzate; touch diverso','E21 E22 PANEL_SOURCING_K0.md','CANDIDATO DI RISERVA; NO STOCK/DATASHEET'],
 ]
 pending = [
 ('TVS ingresso automotive','Energia e clamp dopo O-07','02_AUTOMOTIVE_POWER'),
