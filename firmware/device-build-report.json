@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-10-24T13:02:34.288215+00:00",
+  "generated_utc": "2026-10-24T13:41:07.084732+00:00",
   "status": "ESP32S3_BUILD_SUCCESS_NO_DEVICE_RUN",
   "target": "esp32s3",
   "sdk_tag": "v6.1",
@@ -21,11 +21,11 @@
   "artifacts": {
     "auto_gauge_safe_skeleton.bin": {
       "bytes": 170624,
-      "sha256": "67b97b8185620e5b38378ced5da270d1f7c6c950926077da08e8e0bc54cc3dc4"
+      "sha256": "36e84cef6f93085ac31e057a1c51a3d1ff4485ac79fcedf5edc6cbcfd3c2e39d"
     },
     "auto_gauge_safe_skeleton.elf": {
-      "bytes": 3783936,
-      "sha256": "512f78ade3d6d0b1078e50342430f7aa847df6dc09c20c88dd16f561b1eedbf9"
+      "bytes": 3783904,
+      "sha256": "63e1eeabd42611fccad62b7c23cb6930874ddca36d5920d81de0709d8b0cc7a5"
     },
     "bootloader/bootloader.bin": {
       "bytes": 21120,
@@ -129,6 +129,7 @@
     "firmware/src/config.c",
     "firmware/src/config_store.c",
     "firmware/src/connection.c",
+    "firmware/src/device_endpoint.c",
     "firmware/src/flash_history.c",
     "firmware/src/flash_history_sim.c",
     "firmware/src/flash_sim.c",

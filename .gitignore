@@ -18,3 +18,7 @@ firmware/idf/sdkconfig.old
 *.p8
 *.p12
 *.mobileprovision
+
+firmware/ble_study/build/
+firmware/ble_study/sdkconfig
+firmware/ble_study/sdkconfig.old

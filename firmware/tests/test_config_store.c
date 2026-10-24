@@ -111,12 +111,21 @@ static void test_every_io_byte_boundary_keeps_a_complete_configuration(void) {
             assert(!flash.invalid_access);
             ag_flash_sim_reboot(&flash);
             ag_config_store_t rebooted;
-            open_store(&rebooted, &flash);
+            const ag_config_flash_io_t io = ag_flash_sim_io(&flash);
+            const ag_pid_mask_t supported = capabilities();
+            const ag_config_store_result_t recovered = ag_config_store_open(&rebooted, &io, &supported);
+            assert(recovered == AG_CONFIG_STORE_OK || recovered == AG_CONFIG_STORE_READ_ONLY);
             ag_config_t restored;
             assert(ag_config_store_get(&rebooted, &restored));
             assert(restored.revision == 3 || restored.revision == 4);
             assert(restored.manual_percent == revision(restored.revision).manual_percent);
             if (result == AG_CONFIG_STORE_OK) assert(restored.revision == 4);
+            if (recovered == AG_CONFIG_STORE_READ_ONLY) {
+                const size_t writes = flash.programs, erases = flash.erases;
+                const ag_config_t repair = revision(restored.revision + 1);
+                assert(ag_config_store_commit(&rebooted, (uint32_t)restored.revision, &repair) == AG_CONFIG_STORE_READ_ONLY);
+                assert(flash.programs == writes && flash.erases == erases);
+            }
             ++trials;
         }
     }
@@ -133,8 +142,12 @@ static void test_every_slot_byte_corruption_falls_back_and_both_bad_have_no_defa
         ag_flash_sim_t flash = base;
         flash.bytes[AG_CONFIG_SLOT_BYTES + byte] ^= 1;
         ag_config_store_t store;
-        open_store(&store, &flash);
+        const ag_config_flash_io_t io = ag_flash_sim_io(&flash);
+        const ag_pid_mask_t supported = capabilities();
+        assert(ag_config_store_open(&store, &io, &supported) == AG_CONFIG_STORE_READ_ONLY);
         assert(store.active.revision == 1 && store.active_slot == 0);
+        assert(!store.writable && ag_config_store_commit(&store, 1, &second) == AG_CONFIG_STORE_READ_ONLY);
+        assert(flash.programs == 0 && flash.erases == 0);
     }
     base.bytes[0] ^= 1;
     base.bytes[AG_CONFIG_SLOT_BYTES] ^= 1;
@@ -153,6 +166,25 @@ static void test_every_slot_byte_corruption_falls_back_and_both_bad_have_no_defa
 static bool fake_successful_erase(void *context, uint32_t offset, size_t length) {
     (void)context; (void)offset; (void)length;
     return true; /* Deliberately lying adapter: readback must still stop commit. */
+}
+static void test_committed_latest_corruption_remains_diagnostic(void) {
+    ag_flash_sim_t flash;
+    ag_flash_sim_init(&flash);
+    const ag_config_t first = revision(1), second = revision(2), third = revision(3);
+    seed(&flash, 0, &first, 1);
+    ag_config_store_t store;
+    open_store(&store, &flash);
+    assert(ag_config_store_commit(&store, 1, &second) == AG_CONFIG_STORE_OK);
+    /* Complete committed update, then lost application ACK / corruption of newest marker. */
+    flash.bytes[store.active_slot * AG_CONFIG_SLOT_BYTES + AG_CONFIG_COMMIT_OFFSET] ^= 1;
+    ag_flash_sim_reboot(&flash);
+    const ag_config_flash_io_t io = ag_flash_sim_io(&flash);
+    const ag_pid_mask_t supported = capabilities();
+    assert(ag_config_store_open(&store, &io, &supported) == AG_CONFIG_STORE_READ_ONLY);
+    ag_config_t diagnostic;
+    assert(ag_config_store_get(&store, &diagnostic) && diagnostic.revision == 1 && !store.writable);
+    assert(ag_config_store_commit(&store, 1, &third) == AG_CONFIG_STORE_READ_ONLY);
+    assert(flash.programs == 0 && flash.erases == 0);
 }
 static void test_short_reads_and_readback_fail_closed(void) {
     ag_flash_sim_t flash;
@@ -257,7 +289,8 @@ int main(void) {
     test_short_reads_and_readback_fail_closed();
     test_conflict_revision_generation_and_capabilities();
     test_simulated_adapter_bounds_and_program_rules();
-    printf("PASS: 7 config persistence groups; store=%zu sim=%zu bytes host; zero heap, no hardware IO\n",
+    test_committed_latest_corruption_remains_diagnostic();
+    printf("PASS: 8 config persistence groups; store=%zu sim=%zu bytes host; zero heap, no hardware IO\n",
            sizeof(ag_config_store_t), sizeof(ag_flash_sim_t));
     return 0;
 }

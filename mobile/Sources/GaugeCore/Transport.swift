@@ -10,7 +10,8 @@ public enum GaugeTransportError: Error, LocalizedError {
     }
 }
 
-/// Implementations must validate authentication/capabilities before mutating a device.
+/// Real-device implementations must validate authentication/capabilities before mutation.
+/// Local development implementations remain explicitly labelled and isolated from native radio.
 public protocol GaugeTransport: Sendable {
     func supportedPIDs() async throws -> [PIDDescriptor]
     func configuration() async throws -> GaugeConfiguration

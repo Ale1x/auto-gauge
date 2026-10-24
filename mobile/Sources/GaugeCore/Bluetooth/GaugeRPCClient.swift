@@ -6,6 +6,7 @@ public actor GaugeRPCClient {
     private let allowTestMutations: Bool
     private let requestTimeout: Duration
     private let frameTimeout: Duration
+    private let persistencePolicy: GaugeRPCPersistencePolicy
     private var connection: GaugePipeConnection?
     private var nextID: UInt64 = 1
     private var lastGeneration: UInt64?
@@ -13,8 +14,9 @@ public actor GaugeRPCClient {
     private var busy = false
     private var capabilities: [PIDDescriptor]?
     public private(set) var applyOutcomeUnknown = false
-    public init(pipe: any GaugePacketPipe, allowTestMutations: Bool = false, requestTimeout: Duration = .seconds(30), frameTimeout: Duration = .seconds(10)) {
-        self.pipe = pipe; self.allowTestMutations = allowTestMutations; self.requestTimeout = requestTimeout; self.frameTimeout = frameTimeout
+    public private(set) var lastEndpointFailure: GaugeEndpointFailure?
+    public init(pipe: any GaugePacketPipe, allowTestMutations: Bool = false, requestTimeout: Duration = .seconds(30), frameTimeout: Duration = .seconds(10), persistencePolicy: GaugeRPCPersistencePolicy = .volatileDevelopment) {
+        self.pipe = pipe; self.allowTestMutations = allowTestMutations; self.requestTimeout = requestTimeout; self.frameTimeout = frameTimeout; self.persistencePolicy = persistencePolicy
     }
     public func open() async throws {
         guard !busy, connection == nil else { throw GaugeLinkError.busy }
@@ -24,12 +26,13 @@ public actor GaugeRPCClient {
         connection = ready; lastGeneration = ready.generation; nextID = 1; capabilities = nil; epoch &+= 1
         // A reconnect alone never proves a lost apply did not commit.
     }
+    public func isConnected() -> Bool { connection != nil }
     public func disconnect() async {
         epoch &+= 1
         let old = connection; connection = nil
         if let old { await pipe.disconnect(generation: old.generation) }
     }
-    public func request(_ operation: GaugeRPCOperation, body: Data, expectedAppliedRevision: Int? = nil) async throws -> GaugeRPCResponse {
+    public func request(_ operation: GaugeRPCOperation, body: Data, expectedAppliedRevision: Int? = nil, onReceived: @Sendable () async -> Void = {}) async throws -> GaugeRPCResponse {
         guard !busy else { throw GaugeLinkError.busy }
         guard !operation.mutates || allowTestMutations else { throw GaugeLinkError.unqualified }
         if operation == .apply && applyOutcomeUnknown { throw GaugeLinkError.unknownCommit }
@@ -88,7 +91,11 @@ public actor GaugeRPCClient {
                     guard final == nil, rejection == nil, frame.kind == .response, frame.requestID == id else { throw GaugeLinkError.invalidReply }
                     try StrictLogJSON.check(frame.payload)
                     let reply = try JSONDecoder().decode(GaugeRPCResponse.self, from: frame.payload)
-                    try Self.checkOperation(reply, operation: operation, payload: frame.payload)
+                    if let diagnostic = try Self.checkOperation(reply, operation: operation, payload: frame.payload) {
+                        lastEndpointFailure = diagnostic
+                        throw diagnostic
+                    }
+                    guard reply.storeState == nil else { throw GaugeLinkError.invalidReply }
                     if let error = reply.error {
                         guard !error.isEmpty, (reply.phase == nil || reply.phase == "rejected"), reply.appliedRevision == nil, reply.persistence == nil else { throw GaugeLinkError.invalidReply }
                         rejection = error
@@ -98,8 +105,10 @@ public actor GaugeRPCClient {
                         if !received {
                             guard reply.phase == "received", reply.appliedRevision == nil, reply.persistence == nil else { throw GaugeLinkError.invalidReply }
                             received = true
+                            await onReceived()
+                            guard token == epoch else { throw GaugeLinkError.disconnected }
                         } else {
-                            guard reply.phase == "applied", reply.appliedRevision == expectedAppliedRevision, reply.persistence == "volatile" else { throw GaugeLinkError.invalidReply }
+                            guard reply.phase == "applied", reply.appliedRevision == expectedAppliedRevision, persistencePolicy.accepts(reply.persistence) else { throw GaugeLinkError.invalidReply }
                             final = reply
                         }
                     } else {
@@ -109,7 +118,7 @@ public actor GaugeRPCClient {
                                   let pids = reply.supportedService01PIDs, pids.count <= 255, Set(pids).count == pids.count,
                                   pids.allSatisfy({ (1...255).contains($0) }) else { throw GaugeLinkError.invalidReply }
                         case .configuration:
-                            guard reply.phase == "current", let config = reply.configuration, reply.persistence == "volatile", let capabilities else { throw GaugeLinkError.invalidReply }
+                            guard reply.phase == "current", let config = reply.configuration, persistencePolicy.accepts(reply.persistence), let capabilities else { throw GaugeLinkError.invalidReply }
                             try ConfigurationValidator.validate(config, catalog: capabilities)
                         case .validate: guard reply.phase == "validated" else { throw GaugeLinkError.invalidReply }
                         case .logs: guard let page = reply.page, page.sessionID.value == request.sessionID,
@@ -143,7 +152,7 @@ public actor GaugeRPCClient {
                         }
                         result.configuration = config
                     }
-                    if operation == .apply || operation == .configuration { applyOutcomeUnknown = false }
+                    if operation == .apply || operation == .configuration { applyOutcomeUnknown = false; lastEndpointFailure = nil }
                     return result
                 }
             }
@@ -159,13 +168,13 @@ public actor GaugeRPCClient {
             throw error
         }
     }
-    private static func checkOperation(_ reply: GaugeRPCResponse, operation: GaugeRPCOperation, payload: Data) throws {
-        if let op = reply.op {
-            guard op == operation.rawValue else { throw GaugeLinkError.invalidReply }
-            return
+    private static func checkOperation(_ reply: GaugeRPCResponse, operation: GaugeRPCOperation, payload: Data) throws -> GaugeEndpointFailure? {
+        if let op = reply.op { guard op == operation.rawValue else { throw GaugeLinkError.invalidReply } }
+        if reply.phase == "diagnostic" || reply.phase == "outcome_unknown" {
+            return try endpointDiagnostic(reply, operation: operation, payload: payload)
         }
-        // Legacy responses omit op only for these contract-defined shapes. The frame
-        // ID and pending operation/phase still correlate every such response.
+        if reply.op != nil { return nil }
+        // Legacy omission is restricted to these shapes; op:null cannot use this fallback.
         let allowed: Set<String>
         if reply.phase == "rejected", reply.error != nil {
             allowed = ["simulation", "phase", "error"]
@@ -177,8 +186,28 @@ public actor GaugeRPCClient {
             default: throw GaugeLinkError.invalidReply
             }
         }
-        guard let object = try JSONSerialization.jsonObject(with: payload) as? [String: Any],
-              Set(object.keys).isSubset(of: allowed) else { throw GaugeLinkError.invalidReply }
+        guard let object = try JSONSerialization.jsonObject(with: payload) as? [String: Any], Set(object.keys).isSubset(of: allowed) else { throw GaugeLinkError.invalidReply }
+        return nil
+    }
+    private static func endpointDiagnostic(_ reply: GaugeRPCResponse, operation: GaugeRPCOperation, payload: Data) throws -> GaugeEndpointFailure {
+        var allowed: Set<String> = ["simulation", "phase", "error", "store_state"]
+        if reply.op != nil { allowed.insert("op") }
+        guard let object = try JSONSerialization.jsonObject(with: payload) as? [String: Any], Set(object.keys).isSubset(of: allowed),
+              let state = reply.storeState, reply.appliedRevision == nil, reply.persistence == nil else { throw GaugeLinkError.invalidReply }
+        if reply.phase == "outcome_unknown" {
+            guard operation == .apply, reply.error == "outcome_unknown", state == .commitOrReadbackFailed else { throw GaugeLinkError.invalidReply }
+            return .init(kind: .outcomeUnknown, storeState: state, operation: operation)
+        }
+        if reply.error == "configuration_not_operational" {
+            guard operation == .configuration || operation == .apply,
+                  state != .commitOrReadbackFailed else { throw GaugeLinkError.invalidReply }
+            return .init(kind: .configurationNotOperational, storeState: state, operation: operation)
+        }
+        if reply.error == "history_not_operational" {
+            guard operation == .logs || operation == .acknowledge, state == .readOnly else { throw GaugeLinkError.invalidReply }
+            return .init(kind: .historyNotOperational, storeState: state, operation: operation)
+        }
+        throw GaugeLinkError.invalidReply
     }
     private static func until<T: Sendable>(_ deadline: ContinuousClock.Instant, operation: @escaping @Sendable () async throws -> T) async throws -> T {
         guard ContinuousClock().now < deadline else { throw GaugeLinkError.timeout }

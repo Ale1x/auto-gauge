@@ -12,6 +12,77 @@ void ag_measurement_unavailable(ag_measurement_t *sample, ag_sample_status_t sta
     sample->negative_response_code = 0;
 }
 
+/* Scalar-only Service01 subset. Formulas and omissions: DIAGNOSTIC_COVERAGE.md.
+ * Original implementation; no external decoder source incorporated.
+ * raw is unsigned big-endian1/2/4bytes; value=raw*numerator/denominator+offset.
+ */
+typedef struct {
+    uint8_t pid, length;
+    uint16_t numerator, denominator;
+    int16_t offset;
+    ag_unit_t unit;
+} scalar_decoder_t;
+static const scalar_decoder_t decoders[] = {
+    {0x04,1,100,255,0,AG_UNIT_PERCENT},
+    {0x05,1,1,1,-40,AG_UNIT_CELSIUS},
+    {0x06,1,100,128,-100,AG_UNIT_PERCENT},
+    {0x07,1,100,128,-100,AG_UNIT_PERCENT},
+    {0x08,1,100,128,-100,AG_UNIT_PERCENT},
+    {0x09,1,100,128,-100,AG_UNIT_PERCENT},
+    {0x0a,1,3,1,0,AG_UNIT_KILOPASCAL},
+    {0x0b,1,1,1,0,AG_UNIT_KILOPASCAL},
+    {0x0c,2,1,4,0,AG_UNIT_RPM},
+    {0x0d,1,1,1,0,AG_UNIT_KM_PER_HOUR},
+    {0x0e,1,1,2,-64,AG_UNIT_DEGREE},
+    {0x0f,1,1,1,-40,AG_UNIT_CELSIUS},
+    {0x10,2,1,100,0,AG_UNIT_GRAMS_PER_SECOND},
+    {0x11,1,100,255,0,AG_UNIT_PERCENT},
+    {0x1f,2,1,1,0,AG_UNIT_SECOND},
+    {0x21,2,1,1,0,AG_UNIT_KILOMETER},
+    {0x22,2,79,1000,0,AG_UNIT_KILOPASCAL},
+    {0x23,2,10,1,0,AG_UNIT_KILOPASCAL},
+    {0x2c,1,100,255,0,AG_UNIT_PERCENT},
+    {0x2d,1,100,128,-100,AG_UNIT_PERCENT},
+    {0x2e,1,100,255,0,AG_UNIT_PERCENT},
+    {0x2f,1,100,255,0,AG_UNIT_PERCENT},
+    {0x30,1,1,1,0,AG_UNIT_COUNT},
+    {0x31,2,1,1,0,AG_UNIT_KILOMETER},
+    {0x33,1,1,1,0,AG_UNIT_KILOPASCAL},
+    {0x3c,2,1,10,-40,AG_UNIT_CELSIUS},
+    {0x3d,2,1,10,-40,AG_UNIT_CELSIUS},
+    {0x3e,2,1,10,-40,AG_UNIT_CELSIUS},
+    {0x3f,2,1,10,-40,AG_UNIT_CELSIUS},
+    {0x42,2,1,1000,0,AG_UNIT_VOLT},
+    {0x43,2,100,255,0,AG_UNIT_PERCENT},
+    {0x44,2,1,32768,0,AG_UNIT_RATIO},
+    {0x45,1,100,255,0,AG_UNIT_PERCENT},
+    {0x46,1,1,1,-40,AG_UNIT_CELSIUS},
+    {0x47,1,100,255,0,AG_UNIT_PERCENT},
+    {0x48,1,100,255,0,AG_UNIT_PERCENT},
+    {0x49,1,100,255,0,AG_UNIT_PERCENT},
+    {0x4a,1,100,255,0,AG_UNIT_PERCENT},
+    {0x4b,1,100,255,0,AG_UNIT_PERCENT},
+    {0x4c,1,100,255,0,AG_UNIT_PERCENT},
+    {0x4d,2,1,1,0,AG_UNIT_MINUTE},
+    {0x4e,2,1,1,0,AG_UNIT_MINUTE},
+    {0x52,1,100,255,0,AG_UNIT_PERCENT},
+    {0x59,2,10,1,0,AG_UNIT_KILOPASCAL},
+    {0x5a,1,100,255,0,AG_UNIT_PERCENT},
+    {0x5b,1,100,255,0,AG_UNIT_PERCENT},
+    {0x5c,1,1,1,-40,AG_UNIT_CELSIUS},
+    {0x5d,2,1,128,-210,AG_UNIT_DEGREE},
+    {0x5e,2,1,20,0,AG_UNIT_LITERS_PER_HOUR},
+    {0x61,1,1,1,-125,AG_UNIT_PERCENT},
+    {0x62,1,1,1,-125,AG_UNIT_PERCENT},
+    {0x63,2,1,1,0,AG_UNIT_NEWTON_METER},
+    {0xa6,4,1,10,0,AG_UNIT_KILOMETER}
+};
+_Static_assert(AG_RAW_CAPACITY >= 4, "Service01 scalar decoders require4raw bytes");
+static const scalar_decoder_t *find_decoder(uint8_t pid) {
+    for(size_t i=0;i<sizeof(decoders)/sizeof(decoders[0]);++i)
+        if(decoders[i].pid==pid)return &decoders[i];
+    return NULL;
+}
 ag_obd_result_t ag_obd_parse_measurement(const uint8_t *payload, size_t length,
                                         uint8_t expected_pid, uint32_t ecu_source,
                                         uint64_t now_ms, ag_measurement_t *sample) {
@@ -29,29 +100,19 @@ ag_obd_result_t ag_obd_parse_measurement(const uint8_t *payload, size_t length,
     }
     if (payload[0] != 0x41) return AG_OBD_WRONG_SERVICE;
     if (payload[1] != expected_pid) return AG_OBD_WRONG_PID;
-    if (!ag_obd_pid_implemented(expected_pid)) {
+    const scalar_decoder_t *decoder=find_decoder(expected_pid);
+    if (!ag_obd_pid_implemented(expected_pid) || decoder==NULL) {
         sample->status = AG_SAMPLE_UNSUPPORTED;
         return AG_OBD_UNSUPPORTED_PID;
     }
-    const size_t data_length = (expected_pid == 0x0c || expected_pid == 0x10) ? 2 : 1;
-    if (length != data_length + 2) return AG_OBD_MALFORMED;
-    const unsigned a = payload[2];
-    const unsigned ab = data_length == 2 ? (a * 256u + payload[3]) : a;
-    switch (expected_pid) {
-        case 0x04: case 0x11:
-            sample->value = (double)a * 100.0 / 255.0; sample->unit = AG_UNIT_PERCENT; break;
-        case 0x05: case 0x0f:
-            sample->value = (double)a - 40.0; sample->unit = AG_UNIT_CELSIUS; break;
-        case 0x0c:
-            sample->value = (double)ab / 4.0; sample->unit = AG_UNIT_RPM; break;
-        case 0x0d:
-            sample->value = (double)a; sample->unit = AG_UNIT_KM_PER_HOUR; break;
-        case 0x10:
-            sample->value = (double)ab / 100.0; sample->unit = AG_UNIT_GRAMS_PER_SECOND; break;
-        default: return AG_OBD_UNSUPPORTED_PID;
-    }
-    memcpy(sample->raw, payload + 2, data_length);
-    sample->raw_length = (uint8_t)data_length;
+    if (length != (size_t)decoder->length + 2) return AG_OBD_MALFORMED;
+    uint32_t raw=0;
+    for(size_t i=0;i<decoder->length;++i)raw=(raw<<8)|payload[i+2];
+    /* Convert before scaling: no integer multiply overflow or truncation. */
+    sample->value=(double)raw*decoder->numerator/decoder->denominator+decoder->offset;
+    sample->unit=decoder->unit;
+    memcpy(sample->raw, payload + 2, decoder->length);
+    sample->raw_length = decoder->length;
     sample->status = AG_SAMPLE_VALID;
     sample->has_value = true;
     return AG_OBD_OK;

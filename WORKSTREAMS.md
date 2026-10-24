@@ -111,3 +111,15 @@ La verifica incrociata ha corretto la richiesta indebita diop nelle risposte leg
 Il sourcing hardware è stato ricontrollato con ricerca Gmail mirata12:46UTC: soltanto risposte già registrate, nessun nuovo dato tecnico trovato. Pannello/FPC/rail, protezioni e wake/IGN restano aperti. Repo privato già esistente: gli incrementi si pubblicano con commit/push normali, senza force o AppStore.
 
 Verifica finale del coordinatore:67testPython,89testSwift,9/9CTest e build iOSsim unsigned passati con `scripts/check_software.py`; progetto/risorse rigenerati identici. BuildtargetSDKv6.1 riuscita con14core+4condivise e maininerte. ReviewBluetooth aggiornata dopo l’interopfix:23/23test dedicati, incluse5regressioni golden/negative nuove.
+
+## Sesto incremento — integrazione app/firmware
+
+APP-08 usa il client RPC comune per configurazione/storici demo e verifica il processo C su file con riavvio, A–B–A, import prima dell’ACK e commit ambiguo. Diagnostica tipizzata e revisioni lette prima di nuove apply. Review separata APP08:39/39 test dedicati, nessun rilievo aperto.
+
+L’endpoint C integra stream, ammissione, store e storico bounded. Correzioni del coordinatore: nessun current operativo da slot precedente quando il recente è sporco; nessun tick dal vecchio lease sul peer corrente; fsync obbligatorio prima del ripristino del file host. READ_ONLY può richiedere manutenzione: il recupero automatico dopo interruzione resta aperto.
+
+Studio NimBLE separato con bridge verso il vero endpoint, conferma completa EDONE prima del commit, controllo bond/sicurezza e isolamento callback;15 gruppi di fault injection. SDK compila/linka tutte9 entry point, immagine448880byte e main vuoto. Nessuna esecuzione radio. FW-09 estende a53 PID scalari con fonti, min/max e guardie coerenti, senza promessa di disponibilità su una specifica auto.
+
+Verifica finale: **71 test Python,105 Swift,11/11 CTest**, build iOSsim e genericdevice unsigned riuscite. SDK principale15core+4condivise e studio separato compilati; hash sorgenti studio aggiornati, progetto+3risorse rigenerati identici, checkK0/diff puliti. Primo incremento firmato e pubblicato come e9cb238, CI host verde; pubblicazione del sesto incremento segue con firma configurata mantenuta. Vedi [VERIFICATION_V0.6.md](shared/VERIFICATION_V0.6.md).
+
+Stato prodotto senza hardware: **step4 integrazione operativa ancora in corso**, catena host verificata ma radio/iPhone reali da qualificare. Restano runtime autonomo, persistenza efficiente/recupero, diagnostica restante, OTA/recovery target, CloudKit live dopo membership e QA. Nessun costo o provisioning attivato.

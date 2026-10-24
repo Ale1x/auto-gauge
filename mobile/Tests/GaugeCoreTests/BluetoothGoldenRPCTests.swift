@@ -19,10 +19,11 @@ private actor GoldenPacketPipe: GaugePacketPipe {
     var transmittedResponses: [Data] = []
     var disconnectCount = 0
     var ready = true
+    var generation: UInt64 = 1
     init(_ exchanges: [GoldenRPCExchange], responseChunkBytes: Int = 17) { self.exchanges = exchanges; self.responseChunkBytes = responseChunkBytes }
-    func readyConnection() async throws -> GaugePipeConnection { .init(generation: 1, maximumWriteBytes: 20) }
+    func readyConnection() async throws -> GaugePipeConnection { .init(generation: generation, maximumWriteBytes: 20) }
     func write(_ data: Data, generation: UInt64) async throws {
-        guard ready, generation == 1, data.count <= 20 else { throw GaugeLinkError.disconnected }
+        guard ready, generation == self.generation, data.count <= 20 else { throw GaugeLinkError.disconnected }
         requestBuffer.append(data)
         guard requestBuffer.count >= 12 else { return }
         let bytes = Array(requestBuffer.prefix(12)); let length = Int(bytes[8]) | Int(bytes[9]) << 8
@@ -45,10 +46,14 @@ private actor GoldenPacketPipe: GaugePacketPipe {
         index += 1
     }
     func receive(generation: UInt64) async throws -> GaugeIncomingChunk {
-        guard ready, generation == 1, !chunks.isEmpty else { throw GaugeLinkError.disconnected }
+        guard ready, generation == self.generation, !chunks.isEmpty else { throw GaugeLinkError.disconnected }
         return chunks.removeFirst()
     }
-    func disconnect(generation: UInt64) async { ready = false; disconnectCount += 1; chunks = []; requestBuffer = Data() }
+    func disconnect(generation: UInt64) async {
+        guard generation == self.generation else { return }
+        ready = false; disconnectCount += 1; chunks = []; requestBuffer = Data()
+    }
+    func reconnect() { generation += 1; ready = true }
 }
 
 final class BluetoothGoldenRPCTests: XCTestCase {
@@ -143,4 +148,80 @@ final class BluetoothGoldenRPCTests: XCTestCase {
             let disconnects = await pipe.disconnectCount; XCTAssertEqual(disconnects, 1)
         }
     }
+    func testTypedConfigurationDiagnosticsAcceptOnlyCoherentStoreStates() async throws {
+        let exchanges = try fixtures()
+        for state in [GaugeEndpointStoreState.readOnly, .capabilityMismatch, .noValidConfiguration, .conflict, .ioOrIntegrityError] {
+            for includeOp in [false, true] {
+                var object: [String: Any] = ["phase": "diagnostic", "error": "configuration_not_operational", "store_state": state.rawValue]
+                if includeOp { object["op"] = "config.get" }
+                let get = GoldenRPCExchange(id: 2, request: exchanges[1].request, responses: [try encoded(object)])
+                let pipe = GoldenPacketPipe([exchanges[0], get]); let client = GaugeRPCClient(pipe: pipe); try await client.open()
+                _ = try await client.request(.hello, body: exchanges[0].request)
+                do { _ = try await client.request(.configuration, body: get.request); XCTFail() }
+                catch let failure as GaugeEndpointFailure {
+                    XCTAssertEqual(failure.kind, .configurationNotOperational); XCTAssertEqual(failure.storeState, state); XCTAssertEqual(failure.operation, .configuration)
+                    XCTAssertTrue(failure.localizedDescription.contains("Configurazione non verificabile"))
+                    XCTAssertFalse(failure.localizedDescription.contains(state.rawValue))
+                    let source = await client.lastEndpointFailure; XCTAssertEqual(source, failure)
+                }
+            }
+        }
+    }
+    func testTypedHistoryReadOnlyDiagnosticForReadAndACK() async throws {
+        let exchanges = try fixtures()
+        for index in [6, 7] {
+            let operation: GaugeRPCOperation = index == 6 ? .logs : .acknowledge
+            let payload = try encoded(["phase": "diagnostic", "error": "history_not_operational", "store_state": "read_only"])
+            let exchange = GoldenRPCExchange(id: 1, request: exchanges[index].request, responses: [payload])
+            let pipe = GoldenPacketPipe([exchange]); let client = GaugeRPCClient(pipe: pipe, allowTestMutations: true); try await client.open()
+            do { _ = try await client.request(operation, body: exchange.request); XCTFail() }
+            catch let failure as GaugeEndpointFailure {
+                XCTAssertEqual(failure.kind, .historyNotOperational); XCTAssertEqual(failure.storeState, .readOnly)
+                XCTAssertFalse(failure.localizedDescription.contains("history_not_operational"))
+            }
+        }
+    }
+    func testTypedOutcomeUnknownAndReadOnlyDiagnosticCannotResolveApplyLatch() async throws {
+        let exchanges = try fixtures()
+        let unknown = try encoded(["phase": "outcome_unknown", "error": "outcome_unknown", "store_state": "commit_or_readback_failed"])
+        let diagnostic = try encoded(["phase": "diagnostic", "error": "configuration_not_operational", "store_state": "read_only"])
+        let apply = GoldenRPCExchange(id: 1, request: exchanges[3].request, responses: [exchanges[3].responses[0], unknown])
+        let get = GoldenRPCExchange(id: 2, request: exchanges[1].request, responses: [diagnostic])
+        let pipe = GoldenPacketPipe([apply, exchanges[0], get]); let client = GaugeRPCClient(pipe: pipe, allowTestMutations: true); try await client.open()
+        do { _ = try await client.request(.apply, body: apply.request, expectedAppliedRevision: 2); XCTFail() }
+        catch { guard case GaugeLinkError.unknownCommit = error else { return XCTFail("\(error)") } }
+        let cause = await client.lastEndpointFailure; XCTAssertEqual(cause?.kind, .outcomeUnknown); XCTAssertEqual(cause?.storeState, .commitOrReadbackFailed)
+        await pipe.reconnect(); try await client.open(); _ = try await client.request(.hello, body: exchanges[0].request)
+        do { _ = try await client.request(.configuration, body: get.request); XCTFail() }
+        catch let failure as GaugeEndpointFailure { XCTAssertEqual(failure.storeState, .readOnly) }
+        let latched = await client.applyOutcomeUnknown; XCTAssertTrue(latched)
+        let before = await pipe.index
+        do { _ = try await client.request(.apply, body: apply.request, expectedAppliedRevision: 2); XCTFail() } catch { }
+        let after = await pipe.index; XCTAssertEqual(before, after)
+    }
+    func testDiagnosticWrongPhaseOperationStateAndSuccessFieldsNeverBecomeCurrent() async throws {
+        let exchanges = try fixtures()
+        let configuration = try XCTUnwrap(JSONSerialization.jsonObject(with: exchanges[1].responses[0]) as? [String: Any])["configuration"]
+        let invalid: [[String: Any]] = [
+            ["phase": "diagnostic", "error": "configuration_not_operational", "store_state": "commit_or_readback_failed"],
+            ["phase": "diagnostic", "error": "configuration_not_operational", "store_state": "unknown"],
+            ["phase": "diagnostic", "error": "configuration_not_operational", "store_state": true],
+            ["phase": "diagnostic", "error": "history_not_operational", "store_state": "read_only"],
+            ["phase": "outcome_unknown", "error": "outcome_unknown", "store_state": "commit_or_readback_failed"],
+            ["phase": "diagnostic", "error": "configuration_not_operational", "store_state": "read_only", "op": "logs.read"],
+            ["phase": "diagnostic", "error": "configuration_not_operational", "store_state": "read_only", "op": NSNull()],
+            ["phase": "diagnostic", "error": "configuration_not_operational", "store_state": "read_only", "persistence": "durable"],
+            ["phase": "diagnostic", "error": "configuration_not_operational", "store_state": "read_only", "applied_revision": 2],
+            ["phase": "current", "op": "config.get", "configuration": try XCTUnwrap(configuration), "persistence": "volatile", "store_state": "read_only"]
+        ]
+        for object in invalid {
+            let get = GoldenRPCExchange(id: 2, request: exchanges[1].request, responses: [try encoded(object)])
+            let pipe = GoldenPacketPipe([exchanges[0], get]); let client = GaugeRPCClient(pipe: pipe); try await client.open()
+            _ = try await client.request(.hello, body: exchanges[0].request)
+            do { _ = try await client.request(.configuration, body: get.request); XCTFail("\(object)") } catch { }
+            let source = await client.lastEndpointFailure; XCTAssertNil(source)
+            let count = await pipe.disconnectCount; XCTAssertEqual(count, 1)
+        }
+    }
+
 }

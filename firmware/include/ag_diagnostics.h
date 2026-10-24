@@ -54,7 +54,11 @@ bool ag_isotp_fc_dispatch(ag_isotp_rx_t *, const ag_can_policy_t *, uint64_t now
                           ag_can_frame_t *output);
 
 typedef enum { AG_UNIT_UNKNOWN = 0, AG_UNIT_PERCENT, AG_UNIT_CELSIUS,
-               AG_UNIT_RPM, AG_UNIT_KM_PER_HOUR, AG_UNIT_GRAMS_PER_SECOND } ag_unit_t;
+               AG_UNIT_RPM, AG_UNIT_KM_PER_HOUR, AG_UNIT_GRAMS_PER_SECOND,
+               /* Append only: existing numeric values remain stable. */
+               AG_UNIT_KILOPASCAL, AG_UNIT_VOLT, AG_UNIT_SECOND,
+               AG_UNIT_KILOMETER, AG_UNIT_RATIO, AG_UNIT_COUNT, AG_UNIT_DEGREE,
+               AG_UNIT_MINUTE, AG_UNIT_LITERS_PER_HOUR, AG_UNIT_NEWTON_METER } ag_unit_t;
 typedef struct {
     uint8_t pid;
     uint32_t ecu_source;

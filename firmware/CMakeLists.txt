@@ -6,7 +6,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 add_library(gauge_core STATIC src/config.c src/can_policy.c src/log_queue.c src/session_clock.c
   src/obd_decode.c src/isotp_rx.c src/scheduler.c src/connection.c src/history.c
-  src/config_store.c src/flash_sim.c src/admission.c src/flash_history.c src/flash_history_sim.c
+  src/config_store.c src/flash_sim.c src/admission.c src/flash_history.c src/flash_history_sim.c src/device_endpoint.c
   ../shared/c/ag_config_json.c ../shared/c/ag_frame.c ../shared/c/ag_stream.c ../shared/c/ag_rpc.c)
 target_include_directories(gauge_core PUBLIC include "${CMAKE_CURRENT_SOURCE_DIR}/../shared/c")
 target_compile_options(gauge_core PRIVATE -Wall -Wextra -Wpedantic -Werror)
@@ -79,3 +79,16 @@ target_include_directories(gauge_flash_history_tests PRIVATE "${CMAKE_CURRENT_BI
 target_link_libraries(gauge_flash_history_tests PRIVATE gauge_core)
 target_compile_options(gauge_flash_history_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
 add_test(NAME gauge_flash_history_tests COMMAND gauge_flash_history_tests)
+add_executable(gauge_device_endpoint_cli tools/device_endpoint_cli.c "${CMAKE_CURRENT_BINARY_DIR}/shared_fixture.h")
+target_include_directories(gauge_device_endpoint_cli PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_libraries(gauge_device_endpoint_cli PRIVATE gauge_core)
+target_compile_options(gauge_device_endpoint_cli PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_executable(gauge_device_endpoint_tests tests/test_device_endpoint.c "${CMAKE_CURRENT_BINARY_DIR}/shared_fixture.h")
+target_include_directories(gauge_device_endpoint_tests PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_libraries(gauge_device_endpoint_tests PRIVATE gauge_core)
+target_compile_options(gauge_device_endpoint_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_test(NAME gauge_device_endpoint_tests COMMAND gauge_device_endpoint_tests)
+add_test(NAME gauge_device_endpoint_interop COMMAND ${Python3_EXECUTABLE}
+  "${CMAKE_CURRENT_SOURCE_DIR}/tools/check_endpoint_interop.py"
+  --executable $<TARGET_FILE:gauge_device_endpoint_cli>)
+set_tests_properties(gauge_device_endpoint_interop PROPERTIES ENVIRONMENT "PYTHONDONTWRITEBYTECODE=1")

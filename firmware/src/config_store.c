@@ -104,7 +104,7 @@ static bool all_ff(const uint8_t *data, size_t length) {
     return true;
 }
 typedef struct {
-    bool valid, io_error;
+    bool valid, io_error, dirty;
     uint64_t generation;
     ag_config_t config;
     size_t encoded_length;
@@ -117,6 +117,8 @@ static void read_slot(const ag_config_store_t *store, unsigned slot, slot_info_t
         info->io_error = true;
         return;
     }
+    if (all_ff(bytes, sizeof(bytes))) return;
+    info->dirty = true;
     if (memcmp(bytes + AG_CONFIG_COMMIT_OFFSET, ag_config_commit_marker, 4) != 0
         || memcmp(bytes, magic, 4) != 0 || get16(bytes + 4) != 1 || get64(bytes + 8) == 0
         || get32(bytes + 28) != 0) return;
@@ -132,6 +134,7 @@ static void read_slot(const ag_config_store_t *store, unsigned slot, slot_info_t
     info->encoded_length = length + AG_CONFIG_HEADER_BYTES;
     memcpy(info->encoded, bytes, info->encoded_length);
     info->valid = true;
+    info->dirty = false;
 }
 
 ag_config_store_result_t ag_config_store_open(ag_config_store_t *store,
@@ -171,7 +174,7 @@ ag_config_store_result_t ag_config_store_restore(ag_config_store_t *store) {
     store->generation = slots[chosen].generation;
     store->active_slot = chosen;
     store->ready = true;
-    store->writable = !slots[0].io_error && !slots[1].io_error;
+    store->writable = !slots[0].io_error && !slots[1].io_error && !slots[0].dirty && !slots[1].dirty;
     store->compatible = ag_config_validate(&store->active, &store->supported) == AG_CONFIG_OK;
     if (!store->writable) return AG_CONFIG_STORE_READ_ONLY;
     return store->compatible ? AG_CONFIG_STORE_OK : AG_CONFIG_STORE_CAPABILITY_MISMATCH;

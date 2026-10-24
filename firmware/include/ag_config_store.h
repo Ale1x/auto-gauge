@@ -49,7 +49,8 @@ ag_config_store_result_t ag_config_store_open(ag_config_store_t *, const ag_conf
                                               const ag_pid_mask_t *supported);
 ag_config_store_result_t ag_config_store_restore(ag_config_store_t *);
 /* Diagnostic snapshot, not proof of operational readiness. READ_ONLY may expose
- * an older revision: the unreadable slot might contain a newer record. Check
+ * an older revision: an unreadable OR non-erased invalid slot might contain a
+ * newer record. Fully erased inactive slots are healthy. Never auto-repair. Check
  * restore status plus writable/compatible before operational use. A snapshot
  * remains available on CAPABILITY_MISMATCH for revision/repair UI only.
  * Restore/commit have nested automatic 4096-byte buffers and configuration/slot

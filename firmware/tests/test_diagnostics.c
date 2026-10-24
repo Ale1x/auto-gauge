@@ -44,6 +44,151 @@ static void test_decoder_vectors(void) {
     }
     printf("PASS: %zu independent decoder vectors\n", sizeof(vectors) / sizeof(vectors[0]));
 }
+/* Independent numeric endpoints, not computed from the decoder coefficients. */
+typedef struct {uint8_t pid, bytes;ag_unit_t unit;double minimum,maximum;} endpoint_case_t;
+static const endpoint_case_t scalar_endpoints[] = {
+    {0x04,1,AG_UNIT_PERCENT,0,100}, {0x05,1,AG_UNIT_CELSIUS,-40,215},
+    {0x06,1,AG_UNIT_PERCENT,-100,99.21875}, {0x07,1,AG_UNIT_PERCENT,-100,99.21875},
+    {0x08,1,AG_UNIT_PERCENT,-100,99.21875}, {0x09,1,AG_UNIT_PERCENT,-100,99.21875},
+    {0x0a,1,AG_UNIT_KILOPASCAL,0,765}, {0x0b,1,AG_UNIT_KILOPASCAL,0,255},
+    {0x0c,2,AG_UNIT_RPM,0,16383.75}, {0x0d,1,AG_UNIT_KM_PER_HOUR,0,255},
+    {0x0e,1,AG_UNIT_DEGREE,-64,63.5}, {0x0f,1,AG_UNIT_CELSIUS,-40,215},
+    {0x10,2,AG_UNIT_GRAMS_PER_SECOND,0,655.35}, {0x11,1,AG_UNIT_PERCENT,0,100},
+    {0x1f,2,AG_UNIT_SECOND,0,65535}, {0x21,2,AG_UNIT_KILOMETER,0,65535},
+    {0x22,2,AG_UNIT_KILOPASCAL,0,5177.265}, {0x23,2,AG_UNIT_KILOPASCAL,0,655350},
+    {0x2c,1,AG_UNIT_PERCENT,0,100}, {0x2d,1,AG_UNIT_PERCENT,-100,99.21875},
+    {0x2e,1,AG_UNIT_PERCENT,0,100}, {0x2f,1,AG_UNIT_PERCENT,0,100},
+    {0x30,1,AG_UNIT_COUNT,0,255}, {0x31,2,AG_UNIT_KILOMETER,0,65535},
+    {0x33,1,AG_UNIT_KILOPASCAL,0,255},
+    {0x3c,2,AG_UNIT_CELSIUS,-40,6513.5}, {0x3d,2,AG_UNIT_CELSIUS,-40,6513.5},
+    {0x3e,2,AG_UNIT_CELSIUS,-40,6513.5}, {0x3f,2,AG_UNIT_CELSIUS,-40,6513.5},
+    {0x42,2,AG_UNIT_VOLT,0,65.535}, {0x43,2,AG_UNIT_PERCENT,0,25700},
+    {0x44,2,AG_UNIT_RATIO,0,1.999969482421875}, {0x45,1,AG_UNIT_PERCENT,0,100},
+    {0x46,1,AG_UNIT_CELSIUS,-40,215}, {0x47,1,AG_UNIT_PERCENT,0,100},
+    {0x48,1,AG_UNIT_PERCENT,0,100}, {0x49,1,AG_UNIT_PERCENT,0,100},
+    {0x4a,1,AG_UNIT_PERCENT,0,100}, {0x4b,1,AG_UNIT_PERCENT,0,100},
+    {0x4c,1,AG_UNIT_PERCENT,0,100}, {0x4d,2,AG_UNIT_MINUTE,0,65535},
+    {0x4e,2,AG_UNIT_MINUTE,0,65535}, {0x52,1,AG_UNIT_PERCENT,0,100},
+    {0x59,2,AG_UNIT_KILOPASCAL,0,655350}, {0x5a,1,AG_UNIT_PERCENT,0,100},
+    {0x5b,1,AG_UNIT_PERCENT,0,100}, {0x5c,1,AG_UNIT_CELSIUS,-40,215},
+    {0x5d,2,AG_UNIT_DEGREE,-210,301.9921875}, {0x5e,2,AG_UNIT_LITERS_PER_HOUR,0,3276.75},
+    {0x61,1,AG_UNIT_PERCENT,-125,130}, {0x62,1,AG_UNIT_PERCENT,-125,130},
+    {0x63,2,AG_UNIT_NEWTON_METER,0,65535}, {0xa6,4,AG_UNIT_KILOMETER,0,429496729.5}
+};
+_Static_assert(sizeof(scalar_endpoints)/sizeof(scalar_endpoints[0])==53,"Explicit53PID coverage");
+_Static_assert(AG_UNIT_UNKNOWN==0&&AG_UNIT_PERCENT==1&&AG_UNIT_CELSIUS==2&&AG_UNIT_RPM==3
+    &&AG_UNIT_KM_PER_HOUR==4&&AG_UNIT_GRAMS_PER_SECOND==5,"Preserve existing unit enum values");
+static void assert_numeric(const ag_measurement_t *sample,double expected,ag_unit_t unit) {
+    assert(sample->has_value&&sample->status==AG_SAMPLE_VALID&&sample->unit==unit);
+    assert(isfinite(sample->value)&&fabs(sample->value-expected)<=1e-9+fabs(expected)*1e-14);
+    assert(sample->negative_response_code==0);
+}
+static void assert_empty(const ag_measurement_t *sample,ag_sample_status_t status,uint8_t pid,uint64_t time) {
+    assert(sample->status==status&&!sample->has_value&&isnan(sample->value));
+    assert(sample->pid==pid&&sample->ecu_source==0x7e8&&sample->updated_ms==time);
+    assert(sample->unit==AG_UNIT_UNKNOWN&&sample->raw_length==0);
+    for(size_t i=0;i<AG_RAW_CAPACITY;++i)assert(sample->raw[i]==0);
+}
+static void test_expanded_scalar_endpoints_lengths_and_metadata(void) {
+    for(size_t i=0;i<sizeof(scalar_endpoints)/sizeof(scalar_endpoints[0]);++i) {
+        const endpoint_case_t *c=&scalar_endpoints[i];
+        uint8_t payload[AG_RAW_CAPACITY+3]={0x41,c->pid};
+        ag_measurement_t sample;
+        for(unsigned maximum=0;maximum<2;++maximum) {
+            memset(payload+2,maximum?0xff:0,sizeof(payload)-2);
+            memset(&sample,0xa5,sizeof(sample));
+            assert(ag_obd_parse_measurement(payload,c->bytes+2,c->pid,0x7e8,UINT64_MAX,&sample)==AG_OBD_OK);
+            assert_numeric(&sample,maximum?c->maximum:c->minimum,c->unit);
+            assert(sample.pid==c->pid&&sample.ecu_source==0x7e8&&sample.updated_ms==UINT64_MAX);
+            assert(sample.raw_length==c->bytes&&memcmp(sample.raw,payload+2,c->bytes)==0);
+            for(size_t tail=c->bytes;tail<AG_RAW_CAPACITY;++tail)assert(sample.raw[tail]==0);
+        }
+        for(size_t length=0;length<=sizeof(payload);++length) {
+            if(length==c->bytes+2u)continue;
+            assert(ag_obd_parse_measurement(payload,length,c->pid,0x7e8,77,&sample)==AG_OBD_MALFORMED);
+            assert_empty(&sample,AG_SAMPLE_ERROR,c->pid,77);
+        }
+        assert(ag_obd_parse_measurement(payload,SIZE_MAX,c->pid,0x7e8,78,&sample)==AG_OBD_MALFORMED);
+        assert_empty(&sample,AG_SAMPLE_ERROR,c->pid,78);
+        payload[1]^=0x80;
+        assert(ag_obd_parse_measurement(payload,c->bytes+2,c->pid,0x7e8,79,&sample)==AG_OBD_WRONG_PID);
+        assert_empty(&sample,AG_SAMPLE_ERROR,c->pid,79);
+        const uint8_t negative[]={0x7f,1,0x78};
+        assert(ag_obd_parse_measurement(negative,3,c->pid,0x7e8,80,&sample)==AG_OBD_NEGATIVE_RESPONSE);
+        assert_empty(&sample,AG_SAMPLE_ERROR,c->pid,80);assert(sample.negative_response_code==0x78);
+    }
+    puts("PASS: 53 scalar PID endpoint/strict-length/raw/metadata cases");
+}
+static void test_expanded_scalar_independent_midpoints(void) {
+    const struct {uint8_t pid,bytes,data[4];double expected;ag_unit_t unit;} values[]={
+        {0x06,1,{128},0,AG_UNIT_PERCENT}, {0x06,1,{129},0.78125,AG_UNIT_PERCENT},
+        {0x0a,1,{100},300,AG_UNIT_KILOPASCAL}, {0x0b,1,{100},100,AG_UNIT_KILOPASCAL},
+        {0x0e,1,{129},0.5,AG_UNIT_DEGREE}, {0x1f,2,{0x0e,0x10},3600,AG_UNIT_SECOND},
+        {0x22,2,{0x03,0xe8},79,AG_UNIT_KILOPASCAL}, {0x23,2,{0x13,0x88},50000,AG_UNIT_KILOPASCAL},
+        {0x2d,1,{0x80},0,AG_UNIT_PERCENT}, {0x30,1,{17},17,AG_UNIT_COUNT},
+        {0x31,2,{0x04,0xd2},1234,AG_UNIT_KILOMETER},
+        {0x3c,2,{0x03,0xe9},60.1,AG_UNIT_CELSIUS}, /* Fraction catches integer /10 truncation. */
+        {0x42,2,{0x36,0xb0},14,AG_UNIT_VOLT},
+        {0x43,2,{0x01,0xff},200.3921568627451,AG_UNIT_PERCENT}, /* Never clamp absolute load to100. */
+        {0x44,2,{0x80,0x00},1,AG_UNIT_RATIO}, /* Exact2/65536, not rounded0.0000305. */
+        {0x46,1,{65},25,AG_UNIT_CELSIUS}, {0x4d,2,{0x01,0x02},258,AG_UNIT_MINUTE},
+        {0x59,2,{0x13,0x88},50000,AG_UNIT_KILOPASCAL},
+        {0x5c,1,{130},90,AG_UNIT_CELSIUS},
+        {0x5d,2,{0x69,0x01},0.0078125,AG_UNIT_DEGREE}, /* Fraction catches integer /128 truncation. */
+        {0x5e,2,{0,33},1.65,AG_UNIT_LITERS_PER_HOUR},
+        {0x61,1,{125},0,AG_UNIT_PERCENT}, {0x62,1,{100},-25,AG_UNIT_PERCENT},
+        {0x63,2,{0x01,0xf4},500,AG_UNIT_NEWTON_METER},
+        {0xa6,4,{0x00,0x12,0xd6,0x87},123456.7,AG_UNIT_KILOMETER},
+        {0xa6,4,{0xff,0xff,0xff,0xfe},429496729.4,AG_UNIT_KILOMETER}
+    };
+    for(size_t i=0;i<sizeof(values)/sizeof(values[0]);++i) {
+        uint8_t payload[6]={0x41,values[i].pid};memcpy(payload+2,values[i].data,values[i].bytes);
+        ag_measurement_t sample;
+        assert(ag_obd_parse_measurement(payload,values[i].bytes+2,values[i].pid,0x18daf110,321,&sample)==AG_OBD_OK);
+        assert_numeric(&sample,values[i].expected,values[i].unit);
+        assert(sample.ecu_source==0x18daf110&&sample.updated_ms==321);
+    }
+    printf("PASS: %zu independent expanded scalar midpoint vectors\n",sizeof(values)/sizeof(values[0]));
+}
+static void test_decoder_allowlist_capabilities_and_scope_stay_separate(void) {
+    ag_obd_capabilities_t caps;ag_obd_capabilities_init(&caps,0x7e8);
+    ag_pid_mask_t usable;ag_obd_usable_pids(&caps,&usable);
+    ag_can_policy_t policy=active_policy();
+    for(unsigned pid=0;pid<256;++pid) {
+        const endpoint_case_t *entry=NULL;
+        for(size_t i=0;i<sizeof(scalar_endpoints)/sizeof(scalar_endpoints[0]);++i)
+            if(scalar_endpoints[i].pid==pid)entry=&scalar_endpoints[i];
+        assert(ag_obd_pid_implemented((uint8_t)pid)==(entry!=NULL));
+        uint8_t payload[6]={0x41,(uint8_t)pid,0,0,0,0};ag_measurement_t sample;
+        const ag_obd_capabilities_t before=caps;
+        assert(ag_obd_parse_measurement(payload,entry?entry->bytes+2u:6u,(uint8_t)pid,0x7e8,1,&sample)
+            ==(entry?AG_OBD_OK:AG_OBD_UNSUPPORTED_PID));
+        assert(memcmp(&before,&caps,sizeof(caps))==0);
+        ag_obd_request_t request;
+        assert(!ag_obd_make_read_request(&policy,&usable,AG_READ_MEASUREMENT,(uint8_t)pid,&request));
+        assert(request.length==0); /* Decoder success alone never creates a vehicle capability. */
+    }
+    for(unsigned page=0;page<=0xe0;page+=0x20) {
+        const uint8_t payload[]={0x41,(uint8_t)page,255,255,255,255};
+        assert(ag_obd_capabilities_apply(&caps,0x7e8,payload,sizeof(payload)));
+    }
+    assert(caps.pages_seen==255);ag_obd_usable_pids(&caps,&usable);unsigned count=0;
+    for(unsigned pid=0;pid<256;++pid) {
+        assert(ag_pid_mask_has(&usable,(uint8_t)pid)==ag_obd_pid_implemented((uint8_t)pid));
+        if(!ag_obd_pid_implemented((uint8_t)pid))continue;
+        ++count;ag_obd_request_t request;
+        assert(ag_obd_make_read_request(&policy,&usable,AG_READ_MEASUREMENT,(uint8_t)pid,&request));
+        assert(request.length==2&&request.bytes[0]==1&&request.bytes[1]==pid);
+        ag_can_policy_t blocked=policy;blocked.power=AG_POWER_USB_ONLY;
+        assert(!ag_obd_make_read_request(&blocked,&usable,AG_READ_MEASUREMENT,(uint8_t)pid,&request));
+        blocked=policy;blocked.ignition=AG_IGN_UNKNOWN;
+        assert(!ag_obd_make_read_request(&blocked,&usable,AG_READ_MEASUREMENT,(uint8_t)pid,&request));
+    }
+    assert(count==53);
+    const uint8_t not_service01[]={0x62,0x0b,0};ag_measurement_t sample;
+    assert(ag_obd_parse_measurement(not_service01,3,0x0b,0x7e8,81,&sample)==AG_OBD_WRONG_SERVICE);
+    assert_empty(&sample,AG_SAMPLE_ERROR,0x0b,81);
+}
 static void test_decoder_malformed_and_unavailable(void) {
     ag_measurement_t sample;
     const uint8_t good[] = {0x41, 0x0c, 0x1f, 0x40};
@@ -315,6 +460,9 @@ static void test_every_dispatch_gate_can_revoke_prepared_work(void) {
 
 int main(void) {
     test_decoder_vectors();
+    test_expanded_scalar_endpoints_lengths_and_metadata();
+    test_expanded_scalar_independent_midpoints();
+    test_decoder_allowlist_capabilities_and_scope_stay_separate();
     test_decoder_malformed_and_unavailable();
     test_capability_bit_order_and_ecu_isolation();
     test_profiles_and_isotp_single_frame();
@@ -324,7 +472,7 @@ int main(void) {
     test_scheduler_safety_recheck_and_timeout();
     test_scheduler_round_robin_clock_and_profile_bounds();
     test_every_dispatch_gate_can_revoke_prepared_work();
-    printf("PASS: 10 diagnostics groups, 10000 malformed/random frame trials; RX=%zu bytes, scheduler=%zu bytes; no physical TX\n",
+    printf("PASS: 13 diagnostics groups, 10000 malformed/random frame trials; RX=%zu bytes, scheduler=%zu bytes; no physical TX\n",
            sizeof(ag_isotp_rx_t), sizeof(ag_scheduler_t));
     return 0;
 }

@@ -18,12 +18,12 @@ final class AppModel {
     var gaugeBusy = false
     var gaugeNeedsRead = true
     var gaugeSnapshot: GaugeConfiguration?
-    var gaugeCommitState: SimulatedCommitState = .idle
+    var gaugeCommitState: GaugeCommitState = .idle
     var gaugeNotice = "Nessun collegamento simulato attivo."
     private var started = false
     private let logArchive: LocalLogArchive
     private let storage: AtomicFileConfigurationStorage
-    private let transport: SimulatedGaugeTransport
+    private let transport: DevelopmentGaugeTransport
     private let historySession: LogSessionID
     var configuration: GaugeConfiguration {
         get { editor.working }
@@ -46,7 +46,7 @@ final class AppModel {
         do {
             editor = try ConfigurationDraft(configuration: DemoData.configuration, catalog: DemoData.catalog)
             let fixture = try DemoGaugeFixture.load()
-            transport = SimulatedGaugeTransport(channel: try InMemoryGaugeEndpoint(configuration: fixture.configuration, historySource: fixture.historySource), clientID: "IPHONE-SIM-A")
+            transport = DevelopmentGaugeTransport(pipe: InMemoryGaugePacketPipe(channel: try InMemoryGaugeEndpoint(configuration: fixture.configuration, historySource: fixture.historySource), clientID: "IPHONE-SIM-A"))
             historySession = fixture.historySource.sessionID
         } catch { fatalError("Fixture dimostrative incorporate non valide: \(error)") }
         do {
@@ -133,7 +133,7 @@ final class AppModel {
             gaugeNotice = "Ricezione e applicazione confermate in RAM simulata. La bozza sul telefono non è stata salvata automaticamente."
         } catch { await refreshLinkAfterError(error) }
     }
-    private func receiveGaugePhase(_ phase: SimulatedCommitState) { gaugeCommitState = phase }
+    private func receiveGaugePhase(_ phase: GaugeCommitState) { gaugeCommitState = phase }
     private func refreshLinkAfterError(_ error: Error) async {
         gaugeConnected = await transport.isConnected()
         gaugeNeedsRead = await transport.requiresRead()
@@ -160,7 +160,8 @@ final class AppModel {
         do {
             // Bounded work per interaction; a subsequent tap can resume after the local cursor.
             for _ in 0..<4 {
-                let before = await logArchive.cursor(deviceID: "SIMULATO-001", sessionID: historySession.value)
+                let id = try await transport.deviceIdentifier()
+                let before = await logArchive.cursor(deviceID: id, sessionID: historySession.value)
                 let imported = try await transport.importHistoryPage(sessionID: historySession, archive: logArchive, limit: 2)
                 logSessions = await logArchive.sessions()
                 lastLogAcknowledgement = "Cursore locale \(imported.acknowledgement.acknowledgedThrough.decimal) · \(imported.peerAcknowledged ? "conferma ricevuta dal simulatore" : "conferma non recapitata")"

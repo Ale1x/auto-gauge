@@ -12,8 +12,8 @@
 | Immagine riportata da `esp-idf-size` | 170512 byte, prima del padding `.bin` |
 | Bootloader `.bin` | 21120 byte |
 | Tabella partizioni `.bin` | 3072 byte |
-| Sorgenti core cross-compilate | 14, elencate nel report |
-| Sorgenti C condivise cross-compilate | `ag_config_json.c`, `ag_frame.c`, `ag_stream.c`, elencate separatamente |
+| Sorgenti core cross-compilate | 15, elencate nel report |
+| Sorgenti C condivise cross-compilate | `ag_config_json.c`, `ag_frame.c`, `ag_stream.c`, `ag_rpc.c`, elencate separatamente |
 
 ## Cache e installazione mirata
 
@@ -65,7 +65,7 @@ Il report contiene versioni, hash SHA-256 dei binari, configurazione effettiva, 
 
 ## Interpretazione e limiti
 
-Questa è una build dello **skeleton inerte**, non un firmware operativo sul gauge. Le quattordici unità C superano la compilazione Xtensa, ma il linker elimina le funzioni non usate da `app_main`: nel binario restano soltanto `ag_can_policy_init`, `ag_can_tx_allowed`, `ag_hal_read_power` e `ag_session_clock_init` fra i simboli core. Le dimensioni quindi non comprendono l'uso reale di configurazione, decoder, ISO-TP, storico, connessione/reset e relativi buffer; mancano inoltre driver AMOLED/touch, asset, BLE autenticato, TWAI, flash log e OTA.
+Questa è una build dello **skeleton inerte**, non un firmware operativo sul gauge. Le quindici unità C superano la compilazione Xtensa, ma il linker elimina le funzioni non usate da `app_main`: nel binario restano soltanto `ag_can_policy_init`, `ag_can_tx_allowed`, `ag_hal_read_power` e `ag_session_clock_init` fra i simboli core. Le dimensioni quindi non comprendono l'uso reale di configurazione, decoder, ISO-TP, storico, connessione/reset e relativi buffer; mancano inoltre driver AMOLED/touch, asset, BLE autenticato, TWAI, flash log e OTA.
 
 La configurazione di sviluppo resta quella SDK **2 MB, singola app factory, PSRAM disabilitata**, senza slot OTA o partizione log. Non è la mappa definitiva del candidato WROOM-N16R8 da 16 MiB/8 MiB, non dimostra che tutti i componenti finali entrino e non congela il sizing OTA da cui dipendono i 2 MiB approvati per i log. Secure boot/flash encryption non sono provisionati; l'immagine non è firmata o rilasciata come recovery di produzione.
 
@@ -74,3 +74,7 @@ Bluetooth è disabilitato nella configurazione. `CONFIG_ESP_WIFI_ENABLED=y` è u
 La build SDK emette note Kconfig/deprecazioni interne non bloccanti; non sono stati modificati i sorgenti vendor per nasconderle. Non è stato necessario correggere il C del core per ottenere il link. Non sono stati eseguiti test hardware, misure di standby, prove di boot sul modulo reale o conferme di compatibilità della vettura.
 
 Fonti ufficiali consultate il 24/10/2026: [release ESP-IDF v6.1](https://github.com/espressif/esp-idf/releases/tag/v6.1), [guida ESP32-S3 stable v6.1](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/get-started/index.html), [installazione legacy Linux/macOS](https://docs.espressif.com/projects/esp-idf/en/v6.1/esp32/get-started/linux-macos-setup-legacy.html).
+
+## Studio BLE separato
+
+`ble_study/` compila e collega adapterNimBLE e bridge al vero endpointC, conservando un proprio main vuoto. Bluetooth è abilitato soltanto nella configurazione di questo studio: non modifica il main/config del progetto sopra. I suoi entrypoint sono trattenuti nel link per verificarne le dipendenze, senza essere chiamati. [Procedura e limiti](ble_study/README.md); il report separato non qualifica l’immagine finale o il consumo.

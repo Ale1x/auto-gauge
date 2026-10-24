@@ -19,3 +19,13 @@ Le risposte pendenti del canale in memoria devono riferirsi al lease della conne
 `logs.ack` richiede `session_id` e `acknowledged_through` come stringa uint64. Va inviato solo dopo l'import locale riuscito. Il riferimento risponde con `op=logs.ack`, stessa sessione/cursore e `source_records_deleted=false`; non elimina il buffer condiviso o conserva un registro di Ntelefoni. Una sessione diversa produce `error=session_mismatch`; sorgente non presente `history_unavailable`; parametri fuori limite `invalid_history_request`.
 
 La sorgente volatile di riferimento non è il buffer flash. Nessuna cancellazione, login o sync cloud viene effettuata. La bozza salvata sul telefono, lo snapshot letto dal gauge e l'applicazione volatile confermata sono stati distinti nella UI.
+
+## Estensioni verificate dall’endpointC
+
+`firmware/DEVICE_ENDPOINT.md` collega il codec al controller e store effettivi. Le risposte config legacy possono omettereop e sono correlate tramite requestID/fase alla richiesta pendente; op presente deve corrispondere, hello/logssuccesso lo richiedono. Nessun campoOP viene aggiunto alle fixture per aggirare il contratto.
+
+`persistence=durable` è ammesso soltanto con adapter che garantisce write durevole e readback: nelCLI significa filehost con fsync, non flashdevice qualificata. Il client lo accetta solo con policy esplicita; RAM/inmemory rimangono volatile, la UI nativa restahello-only.
+
+Stato store non utilizzabile: `phase=diagnostic`, `error=configuration_not_operational` e `store_state` tra read_only/capability_mismatch/no_valid_configuration/conflict/io_or_integrity_error. Per lo storico read/ack: diagnostic/history_not_operational/read_only. Nessuna diagnostica diventa current o applied. Errore commit/readback ambiguo: `phase=outcome_unknown`, `error=outcome_unknown`, `store_state=commit_or_readback_failed`; non autorizza retry cieco né dimostra rollback.
+
+Il client riconosce soltanto queste combinazioni per le operazioni appropriate; non allenta genericamente l’omissioneop. Diagnostica config non risolve una precedente apply incerta. Stringhe raw del backend restano dettagli tipizzati, con messaggi comprensibili nell’interfaccia.
