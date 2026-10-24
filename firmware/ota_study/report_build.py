@@ -29,7 +29,8 @@ assert settings['CONFIG_BT_ENABLED']=='n'
 nm=subprocess.check_output([str(BIN/'xtensa-esp32s3-elf-nm'),'--defined-only',str(ELF)],text=True)
 entries=['init','begin','write','finish','select','poll','cancel']
 required=['ag_ota_installer_'+n for n in entries]+['esp_ota_begin','esp_ota_write','esp_ota_end',
-    'esp_ota_set_boot_partition','esp_ota_abort','esp_partition_read','psa_hash_setup','psa_hash_update','psa_hash_finish']
+    'esp_ota_set_boot_partition','esp_ota_abort','esp_partition_read','psa_hash_setup','psa_hash_update','psa_hash_finish',
+    'ag_manifest_verify','ag_manifest_verify_hook','psa_import_key','psa_verify_hash','psa_destroy_key','psa_hash_compute']
 for name in required:assert re.search(r'^[0-9a-fA-F]+ [Tt] '+name+r'$',nm,re.M),name
 radio_names=['esp_wifi_init','esp_bt_controller_init','nimble_port_init']
 radio_symbols={name:bool(re.search(r'^[0-9a-fA-F]+ [Tt] '+name+r'$',nm,re.M)) for name in radio_names}
@@ -40,6 +41,7 @@ assert main and not any(re.search(r'\bcall\w*\b',line) for line in main)
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 artifacts=[ELF,BUILD/'auto_gauge_ota_compile_study.bin',BUILD/'partition_table/partition-table.bin']
 sources=[HERE/'main/ota_installer.c',HERE/'main/ota_installer.h',HERE/'main/main.c',
+         HERE/'main/manifest_verify.c',HERE/'main/manifest_verify.h',
          HERE/'main/CMakeLists.txt',HERE/'sdkconfig.defaults']
 report=dict(status='COMPILE_LINK_ONLY_NOT_RUN',sdk_commit=actual,configuration=settings,
     radio_init_symbols_present=radio_symbols,
@@ -50,11 +52,13 @@ report=dict(status='COMPILE_LINK_ONLY_NOT_RUN',sdk_commit=actual,configuration=s
                  boot_selection='NOT_EXECUTED',efuse='NOT_EXECUTED',radio='NOT_EXECUTED'),
     limitations=['Empty app_main; linked installer APIs would erase/write/select if called in future',
         '4MB factory+two-OTA development table is not the product memory map or 2MiB log sizing',
-        'Mandatory trusted target manifest verifier/provisioned keys not implemented; no wire/RPC update service',
+        'Target manifest verifier linked, but trusted hardware/floor/key lookup must be provisioned by the caller',
+        'No main binding or wire/RPC update service; no production key installed',
         'No health confirmation, reboot, durable release-counter transaction or recovery after ambiguous selection',
         'No Secure Boot/encryption provisioning, physical flash/brownout/wear/rollback qualification',
         'SDK Wi-Fi capability flag may be enabled; initialization symbols absent and main never invokes them',
-        'Only SDK compile/link evidence; host harness uses explicit SDK/hash behavioral doubles'])
+        'SDK compile/link only: PSA hardware provider not executed; native portable crypto has separate evidence',
+        'Behavioral fault-injection harness remains separate from real native RSA/SHA test'])
 (HERE/'build-report.json').write_text(json.dumps(report,indent=2)+'\n')
-print('PASS:7 installer entry points and real SDK dependencies linked; app_main calls none')
+print('PASS:7 installer +2 manifest entry points and real SDK dependencies linked; app_main calls none')
 print('Image bytes:',report['artifacts']['auto_gauge_ota_compile_study.bin']['bytes'])

@@ -1,0 +1,37 @@
+{
+  "status": "NATIVE_PORTABLE_PSA_CRYPTO_PASS_NOT_TARGET_EXECUTION",
+  "sdk_commit": "fff9895c82d744c7237be8847347bdd1b07c6643",
+  "tf_psa_crypto_commit": "a2b32072ea898afc1ed5b6caf6931e36028c91d6",
+  "vendor_snapshot": {
+    "strategy": "GIT_ARCHIVE_PINNED_COMMIT_NO_WORKTREE_COPY",
+    "archive_sha256": "4ed95dddb7bf1a781d749f8b05b4028a5f06129aa067f40a5bf7d425eedfae9a",
+    "tree": "4558786a8d6c76e58bffa3cbee10da34781378fd",
+    "sdk_status": "CLEAN_INCLUDING_UNTRACKED_AND_SUBMODULES",
+    "psa_status": "CLEAN_INCLUDING_UNTRACKED_IGNORED_AND_SUBMODULES"
+  },
+  "vector_count": 55,
+  "result": "PASS: 55 native PSA vectors, 13 accepted; actual RSA-PSS/SHA256",
+  "source_sha256": {
+    "firmware/ota_study/main/manifest_verify.c": "5603ea076f7d4fa5547b0246af2287fa77ea876093e2be0fbf14c8fcca9e82f8",
+    "firmware/ota_study/main/manifest_verify.h": "f0b8f6cbb4ec5d3f1ec9ad42e4082c54f691612429c7e0d5c389d4b2b135ec04",
+    "firmware/ota_study/tests/manifest_native_driver.c": "44cc15fb96e14e7a968472ab1806a5921192172b44fe2c5f2edbea9afcec0127",
+    "scripts/generate_ota_vectors.py": "1c562d385b7dd9975124e26ee9b235053a427f3c1fe596ca17d4be5d1a99c987",
+    "scripts/check_native_ota_crypto.py": "68a68ac2f53ede9077b404a6447072a5fcab0e362b0b47e88e6ef60897be8d32",
+    "tests/test_ota_manifest_target.py": "02e185d8d81417d08762e2450a62b295252e8650886004c74e5a0f48b8789f56"
+  },
+  "actions": {
+    "native_crypto": "EXECUTED",
+    "target_crypto": "NOT_EXECUTED",
+    "flash": "NOT_EXECUTED",
+    "source_copy": "TEMPORARY_REMOVED",
+    "product_keys": "NOT_CREATED"
+  },
+  "limitations": [
+    "Actual portable TF-PSA-Crypto RSA/SHA on native host, not ESP32 hardware acceleration/provider",
+    "Production verifier/driver built with ASan/UBSan; vendor library built Debug without sanitizer instrumentation",
+    "SDK handle/partition types are opaque; five native forwarding headers omit ESP accelerator declarations",
+    "Portable default crypto configuration, no PSA/hash/RSA function or arithmetic is replaced",
+    "Ephemeral OpenSSL public vectors; private test keys removed before native compilation",
+    "No boot/flash/rollback/eFuse/security-key provisioning or physical entropy qualification"
+  ]
+}

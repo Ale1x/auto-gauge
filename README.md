@@ -43,3 +43,5 @@ L’endpointC ora collega autorizzazione, RPC, configurazione e storici; i test 
 Il settimo incremento aggiunge grafici dagli archivi importati, journal storico append-only con adapter endpoint e preflight OTA sullo stesso snapshot firmato. Corrette altre due condizioni di guasto del server BLE. Verifiche e limiti, inclusa durata effettiva del nuovo formato: [shared/VERIFICATION_V0.7.md](shared/VERIFICATION_V0.7.md).
 
 L’ottavo incremento collega polling e registrazione in un runtime autonomo host, estende le formule app a53PID con oracle C ed aggiunge uno studio SDK per scrittura/verifica dello slot OTA inattivo. Main ancora inerti e verificatore del manifesto target da integrare: [shared/VERIFICATION_V0.8.md](shared/VERIFICATION_V0.8.md).
+
+Il nono incremento aggiunge verifica pacchetto OTA offline Swift e verifica manifesto C/PSA linkata nello studio SDK. Vettori comuni con firme reali e prova nativa TF-PSA-Crypto verificano l’interoperabilità; main inerte, trust di produzione e trasferimento restano da integrare. Esiti e limiti: [shared/VERIFICATION_V0.9.md](shared/VERIFICATION_V0.9.md).

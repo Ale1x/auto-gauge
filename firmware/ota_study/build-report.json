@@ -32,20 +32,26 @@
     "esp_partition_read",
     "psa_hash_setup",
     "psa_hash_update",
-    "psa_hash_finish"
+    "psa_hash_finish",
+    "ag_manifest_verify",
+    "ag_manifest_verify_hook",
+    "psa_import_key",
+    "psa_verify_hash",
+    "psa_destroy_key",
+    "psa_hash_compute"
   ],
   "main_instructions": [
-    "42011198:\t004136        \tentry\ta1, 32",
-    "4201119b:\tf01d      \tretw.n"
+    "4201d124:\t004136        \tentry\ta1, 32",
+    "4201d127:\tf01d      \tretw.n"
   ],
   "artifacts": {
     "auto_gauge_ota_compile_study.elf": {
-      "bytes": 4123928,
-      "sha256": "d92848dfdb3105ba07c4a09452d24ebdd2d2984042d06a452b81c0cf3814a7e5"
+      "bytes": 5358508,
+      "sha256": "5a60ee311ead93b2b4fc962f6dcad0e1b4fa18c5b0db6fe83c902816629aada2"
     },
     "auto_gauge_ota_compile_study.bin": {
-      "bytes": 196688,
-      "sha256": "2fdf22ae3af7b555b2d52f4f1e4579d24a6161a5d0904f140bed9d8faa69be5a"
+      "bytes": 254160,
+      "sha256": "b3503bf52bc41d430b420d10d1dcfab8192629950f37305be2874aec4fa28327"
     },
     "partition_table/partition-table.bin": {
       "bytes": 3072,
@@ -56,7 +62,9 @@
     "firmware/ota_study/main/ota_installer.c": "01a390939290ad9906b5259fbdf621e76166ae0fbd1475d4f07dc2f37e4a4576",
     "firmware/ota_study/main/ota_installer.h": "3c1e53c3e38eb1c5831840d08108855ffd9a3081f5c8dc2d9007f0fa7602a11e",
     "firmware/ota_study/main/main.c": "155b18b25e8d023342ab6eeb3a340ab0f785bd4692185245386f881400e55b09",
-    "firmware/ota_study/main/CMakeLists.txt": "079f28383535f6f9c42606dfb03c8b90803487a2954f627ce076dead342adbc0",
+    "firmware/ota_study/main/manifest_verify.c": "5603ea076f7d4fa5547b0246af2287fa77ea876093e2be0fbf14c8fcca9e82f8",
+    "firmware/ota_study/main/manifest_verify.h": "f0b8f6cbb4ec5d3f1ec9ad42e4082c54f691612429c7e0d5c389d4b2b135ec04",
+    "firmware/ota_study/main/CMakeLists.txt": "274d7ae42f73057fafc5f071278f9d5153c7cd22b59c251204244709aad5f73d",
     "firmware/ota_study/sdkconfig.defaults": "4be1a237207480fbb5f1180418f0839ff12f3977bf08b17905e6d098a4e76c8d"
   },
   "actions": {
@@ -70,10 +78,12 @@
   "limitations": [
     "Empty app_main; linked installer APIs would erase/write/select if called in future",
     "4MB factory+two-OTA development table is not the product memory map or 2MiB log sizing",
-    "Mandatory trusted target manifest verifier/provisioned keys not implemented; no wire/RPC update service",
+    "Target manifest verifier linked, but trusted hardware/floor/key lookup must be provisioned by the caller",
+    "No main binding or wire/RPC update service; no production key installed",
     "No health confirmation, reboot, durable release-counter transaction or recovery after ambiguous selection",
     "No Secure Boot/encryption provisioning, physical flash/brownout/wear/rollback qualification",
     "SDK Wi-Fi capability flag may be enabled; initialization symbols absent and main never invokes them",
-    "Only SDK compile/link evidence; host harness uses explicit SDK/hash behavioral doubles"
+    "SDK compile/link only: PSA hardware provider not executed; native portable crypto has separate evidence",
+    "Behavioral fault-injection harness remains separate from real native RSA/SHA test"
   ]
 }
