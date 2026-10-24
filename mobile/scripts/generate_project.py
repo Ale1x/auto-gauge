@@ -2,9 +2,12 @@
 """Generate the development Xcode project using only the Python standard library."""
 import hashlib
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+subprocess.run([sys.executable, str(ROOT/"scripts/generate_demo_logs.py")], check=True)
 objects = {}
 def uid(name):
     return hashlib.sha256(name.encode()).hexdigest()[:24].upper()

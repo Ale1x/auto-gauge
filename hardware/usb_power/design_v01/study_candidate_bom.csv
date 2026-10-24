@@ -1,0 +1,15 @@
+sheet,reference,value,MPN,footprint,datasheet,status,dnp,on_board,in_bom
+USB_PREREGULATOR_STUDY,U1,TPS62160QDSGRQ1 / H,TPS62160QDSGRQ1,,https://www.ti.com/lit/ds/symlink/tps62160-q1.pdf,H / LOW-VIN DROPOUT AND STARTUP OPEN,False,True,True
+USB_PREREGULATOR_STUDY,L1,3.3uH / XAL4030-332MEC H,XAL4030-332MEC,,https://www.coilcraft.com/getmedia/6adcb47d-8b55-416c-976e-1e22e0d2848c/xal4000.pdf,H / SOURCE STOCK0 / HOT CURVE OPEN,False,True,True
+USB_PREREGULATOR_STUDY,C1,10uF 25V X7R H,GRM31CR71E106KA12L,Capacitor_SMD:C_1206_3216Metric,https://ds.murata.com/simsurfing/mlcc.html?oripartnumbers=%5B%22GRM31CR71E106KA12L%22%5D,H / BIAS ENVELOPE OPEN,False,True,True
+USB_PREREGULATOR_STUDY,C2,10uF 25V X7R H,GRM31CR71E106KA12L,Capacitor_SMD:C_1206_3216Metric,https://ds.murata.com/simsurfing/mlcc.html?oripartnumbers=%5B%22GRM31CR71E106KA12L%22%5D,H / BIAS ENVELOPE OPEN,False,True,True
+USB_PREREGULATOR_STUDY,C3,22uF 16V X7R H,CGA6P1X7R1C226M250AC,Capacitor_SMD:C_1210_3225Metric,https://product.tdk.com/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/cga6p1x7r1c226m250ac.pdf,H / BIAS ENVELOPE OPEN,False,True,True
+USB_PREREGULATOR_STUDY,C4,22uF 16V X7R H,CGA6P1X7R1C226M250AC,Capacitor_SMD:C_1210_3225Metric,https://product.tdk.com/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/cga6p1x7r1c226m250ac.pdf,H / BIAS ENVELOPE OPEN,False,True,True
+USB_PREREGULATOR_STUDY,R1,37.4k 0.1% 25ppm H,AT0603BRD0737K4L,Resistor_SMD:R_0603_1608Metric,https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf,H / NOT PURCHASE APPROVED,False,True,True
+USB_PREREGULATOR_STUDY,R2,10k 0.1% 25ppm H,AT0603BRD0710KL,Resistor_SMD:R_0603_1608Metric,https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf,H / NOT PURCHASE APPROVED,False,True,True
+USB_PREREGULATOR_STUDY,R3,10k / EN DEFAULT OFF,AT0603BRD0710KL,Resistor_SMD:R_0603_1608Metric,https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf,H / NOT PURCHASE APPROVED,False,True,True
+USB_PREREGULATOR_STUDY,R4,10k / PG PULLUP H,AT0603BRD0710KL,Resistor_SMD:R_0603_1608Metric,https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf,H / NOT PURCHASE APPROVED,False,True,True
+USB_PREREGULATOR_STUDY,J1,BENCH: VIN / GND / EN,TBD,,,EXTERNAL BENCH INTERFACE ONLY,False,False,False
+USB_PREREGULATOR_STUDY,J2,OUT / GND / PG - NO A0 LINK,TBD,,,TEST ONLY / MUX NOT CONNECTED,False,False,False
+USB_PREREGULATOR_STUDY,#FLG1,BENCH SOURCE DECLARATION,TBD,,,EXTERNAL BENCH SOURCE ONLY,False,False,False
+USB_PREREGULATOR_STUDY,#FLG2,BENCH SOURCE DECLARATION,TBD,,,EXTERNAL BENCH SOURCE ONLY,False,False,False

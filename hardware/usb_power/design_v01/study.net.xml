@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>/Users/alessandro/Documents/auto-gauge/hardware/usb_power/design_v01/usb_preregulator_study.kicad_sch</source>
+    <date>2026-10-24T14:01:38</date>
+    <tool>Eeschema 10.0.7</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>HW03 - Isolated USB preregulator study</title>
+        <company/>
+        <rev>HW03 H0.1</rev>
+        <date>2026-10-24</date>
+        <source>usb_preregulator_study.kicad_sch</source>
+        <comment number="1" value="NOT FOR BUILD - UPSTREAM PROTECTION OPEN"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>10uF 25V X7R H</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <datasheet>https://ds.murata.com/simsurfing/mlcc.html?oripartnumbers=%5B%22GRM31CR71E106KA12L%22%5D</datasheet>
+      <fields>
+        <field name="MPN">GRM31CR71E106KA12L</field>
+        <field name="Review_status">H / BIAS ENVELOPE OPEN</field>
+        <field name="Footprint">Capacitor_SMD:C_1206_3216Metric</field>
+        <field name="Datasheet">https://ds.murata.com/simsurfing/mlcc.html?oripartnumbers=%5B%22GRM31CR71E106KA12L%22%5D</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="GRM31CR71E106KA12L"/>
+      <property name="Review_status" value="H / BIAS ENVELOPE OPEN"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>03faccea-3d55-5e34-9e90-647a238373af</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C2">
+      <value>10uF 25V X7R H</value>
+      <footprint>Capacitor_SMD:C_1206_3216Metric</footprint>
+      <datasheet>https://ds.murata.com/simsurfing/mlcc.html?oripartnumbers=%5B%22GRM31CR71E106KA12L%22%5D</datasheet>
+      <fields>
+        <field name="MPN">GRM31CR71E106KA12L</field>
+        <field name="Review_status">H / BIAS ENVELOPE OPEN</field>
+        <field name="Footprint">Capacitor_SMD:C_1206_3216Metric</field>
+        <field name="Datasheet">https://ds.murata.com/simsurfing/mlcc.html?oripartnumbers=%5B%22GRM31CR71E106KA12L%22%5D</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="GRM31CR71E106KA12L"/>
+      <property name="Review_status" value="H / BIAS ENVELOPE OPEN"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8ba6ea4c-0d67-5a19-b141-4664d8fadd4c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C3">
+      <value>22uF 16V X7R H</value>
+      <footprint>Capacitor_SMD:C_1210_3225Metric</footprint>
+      <datasheet>https://product.tdk.com/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/cga6p1x7r1c226m250ac.pdf</datasheet>
+      <fields>
+        <field name="MPN">CGA6P1X7R1C226M250AC</field>
+        <field name="Review_status">H / BIAS ENVELOPE OPEN</field>
+        <field name="Footprint">Capacitor_SMD:C_1210_3225Metric</field>
+        <field name="Datasheet">https://product.tdk.com/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/cga6p1x7r1c226m250ac.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="CGA6P1X7R1C226M250AC"/>
+      <property name="Review_status" value="H / BIAS ENVELOPE OPEN"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>236d6c6a-05ac-52d9-81f2-930b0b897a2a</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C4">
+      <value>22uF 16V X7R H</value>
+      <footprint>Capacitor_SMD:C_1210_3225Metric</footprint>
+      <datasheet>https://product.tdk.com/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/cga6p1x7r1c226m250ac.pdf</datasheet>
+      <fields>
+        <field name="MPN">CGA6P1X7R1C226M250AC</field>
+        <field name="Review_status">H / BIAS ENVELOPE OPEN</field>
+        <field name="Footprint">Capacitor_SMD:C_1210_3225Metric</field>
+        <field name="Datasheet">https://product.tdk.com/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/cga6p1x7r1c226m250ac.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="CGA6P1X7R1C226M250AC"/>
+      <property name="Review_status" value="H / BIAS ENVELOPE OPEN"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>38732cf1-4ea9-53dd-8b29-676560c8de47</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J1">
+      <value>BENCH: VIN / GND / EN</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">EXTERNAL BENCH INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector_Generic" part="Conn_01x03" description="Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="EXTERNAL BENCH INTERFACE ONLY"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="connector"/>
+      <property name="ki_fp_filters" value="Connector*:*_1x??_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4de8f2c8-4c17-5c46-b6c3-7b9eece1672c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J2">
+      <value>OUT / GND / PG - NO A0 LINK</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">TEST ONLY / MUX NOT CONNECTED</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector_Generic" part="Conn_01x03" description="Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="TEST ONLY / MUX NOT CONNECTED"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="connector"/>
+      <property name="ki_fp_filters" value="Connector*:*_1x??_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>85ad02f4-e696-52c6-9f3c-80ec81ea91a4</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="L1">
+      <value>3.3uH / XAL4030-332MEC H</value>
+      <datasheet>https://www.coilcraft.com/getmedia/6adcb47d-8b55-416c-976e-1e22e0d2848c/xal4000.pdf</datasheet>
+      <fields>
+        <field name="MPN">XAL4030-332MEC</field>
+        <field name="Review_status">H / SOURCE STOCK0 / HOT CURVE OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://www.coilcraft.com/getmedia/6adcb47d-8b55-416c-976e-1e22e0d2848c/xal4000.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="L" description="Inductor"/>
+      <property name="MPN" value="XAL4030-332MEC"/>
+      <property name="Review_status" value="H / SOURCE STOCK0 / HOT CURVE OPEN"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="ki_keywords" value="inductor choke coil reactor magnetic"/>
+      <property name="ki_fp_filters" value="Choke_* *Coil* Inductor_* L_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b81e1bd5-b8ec-536b-8dfd-e408fc55430a</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R1">
+      <value>37.4k 0.1% 25ppm H</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <datasheet>https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf</datasheet>
+      <fields>
+        <field name="MPN">AT0603BRD0737K4L</field>
+        <field name="Review_status">H / NOT PURCHASE APPROVED</field>
+        <field name="Footprint">Resistor_SMD:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="AT0603BRD0737K4L"/>
+      <property name="Review_status" value="H / NOT PURCHASE APPROVED"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>22fb75e5-6524-5a62-b061-5987582b545b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R2">
+      <value>10k 0.1% 25ppm H</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <datasheet>https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf</datasheet>
+      <fields>
+        <field name="MPN">AT0603BRD0710KL</field>
+        <field name="Review_status">H / NOT PURCHASE APPROVED</field>
+        <field name="Footprint">Resistor_SMD:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="AT0603BRD0710KL"/>
+      <property name="Review_status" value="H / NOT PURCHASE APPROVED"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>2bd07fb0-f310-5f34-ac18-0214dfd6a736</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R3">
+      <value>10k / EN DEFAULT OFF</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <datasheet>https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf</datasheet>
+      <fields>
+        <field name="MPN">AT0603BRD0710KL</field>
+        <field name="Review_status">H / NOT PURCHASE APPROVED</field>
+        <field name="Footprint">Resistor_SMD:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="AT0603BRD0710KL"/>
+      <property name="Review_status" value="H / NOT PURCHASE APPROVED"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>65119f29-bb8c-55a3-8d00-3a47bcd5cd27</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R4">
+      <value>10k / PG PULLUP H</value>
+      <footprint>Resistor_SMD:R_0603_1608Metric</footprint>
+      <datasheet>https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf</datasheet>
+      <fields>
+        <field name="MPN">AT0603BRD0710KL</field>
+        <field name="Review_status">H / NOT PURCHASE APPROVED</field>
+        <field name="Footprint">Resistor_SMD:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.tti.com/content/dam/ttiinc/manufacturers/yageo/doc/yageo-at-anti-sulfurated-chip-resistor-datasheet-specification.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="AT0603BRD0710KL"/>
+      <property name="Review_status" value="H / NOT PURCHASE APPROVED"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>46f3df17-83a2-5236-b00e-e9391e11048c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U1">
+      <value>TPS62160QDSGRQ1 / H</value>
+      <datasheet>https://www.ti.com/lit/ds/symlink/tps62160-q1.pdf</datasheet>
+      <fields>
+        <field name="MPN">TPS62160QDSGRQ1</field>
+        <field name="Review_status">H / LOW-VIN DROPOUT AND STARTUP OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/tps62160-q1.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Regulator_Switching" part="TPS62160DSG" description="1A Step-Down Converter with DCS-Control, adjustable output, 3-17V input voltage, WSON-8"/>
+      <property name="MPN" value="TPS62160QDSGRQ1"/>
+      <property name="Review_status" value="H / LOW-VIN DROPOUT AND STARTUP OPEN"/>
+      <property name="Sheetname" value="usb_preregulator_study"/>
+      <property name="Sheetfile" value="usb_preregulator_study.kicad_sch"/>
+      <property name="ki_keywords" value="step-down dc-dc buck regulator"/>
+      <property name="ki_fp_filters" value="*WSON*EP*2x2mm*P0.5mm*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>40eea76b-7dd7-5b19-9346-922cf2e7f650</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="8"/>
+            <pin num="9"/>
+            <pin num="1"/>
+            <pin num="4"/>
+            <pin num="7"/>
+            <pin num="6"/>
+            <pin num="5"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Connector_Generic" part="Conn_01x03">
+      <description>Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x03</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="C">
+      <description>Unpolarized capacitor</description>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Unpolarized capacitor</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="L">
+      <description>Inductor</description>
+      <footprints>
+        <fp>Choke_*</fp>
+        <fp>*Coil*</fp>
+        <fp>Inductor_*</fp>
+        <fp>L_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">L</field>
+        <field name="Value">L</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Inductor</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="R">
+      <description>Resistor</description>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Regulator_Switching" part="TPS62160DSG">
+      <description>1A Step-Down Converter with DCS-Control, adjustable output, 3-17V input voltage, WSON-8</description>
+      <docs>http://www.ti.com/lit/ds/symlink/tps62160.pdf</docs>
+      <footprints>
+        <fp>*WSON*EP*2x2mm*P0.5mm*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TPS62160DSG</field>
+        <field name="Footprint">Package_SON:Texas_DSG0008A_WSON-8-1EP_2x2mm_P0.5mm_EP0.9x1.6mm_ThermalVias</field>
+        <field name="Datasheet">http://www.ti.com/lit/ds/symlink/tps62160.pdf</field>
+        <field name="Description">1A Step-Down Converter with DCS-Control, adjustable output, 3-17V input voltage, WSON-8</field>
+      </fields>
+      <pins>
+        <pin num="1" name="PGND" type="power_in"/>
+        <pin num="2" name="VIN" type="power_in"/>
+        <pin num="3" name="EN" type="input"/>
+        <pin num="4" name="AGND" type="power_in"/>
+        <pin num="5" name="FB" type="input"/>
+        <pin num="6" name="VOS" type="input"/>
+        <pin num="7" name="SW" type="output"/>
+        <pin num="8" name="PG" type="open_collector"/>
+        <pin num="9" name="PAD" type="power_in"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Connector_Generic">
+      <uri>${KICAD10_SYMBOL_DIR}/Connector_Generic.kicad_sym</uri>
+    </library>
+    <library logical="Device">
+      <uri>${KICAD10_SYMBOL_DIR}/Device.kicad_sym</uri>
+    </library>
+    <library logical="Regulator_Switching">
+      <uri>${KICAD10_SYMBOL_DIR}/Regulator_Switching.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="BENCH_AFTER_PROTECTION_OPEN" class="Default">
+      <node ref="C1" pin="1" pintype="passive"/>
+      <node ref="C2" pin="1" pintype="passive"/>
+      <node ref="J1" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
+      <node ref="U1" pin="2" pinfunction="VIN_2" pintype="power_in"/>
+    </net>
+    <net code="2" name="ENABLE_QUALIFIED_OPEN" class="Default">
+      <node ref="J1" pin="3" pinfunction="Pin_3_3" pintype="passive"/>
+      <node ref="R3" pin="1" pintype="passive"/>
+      <node ref="U1" pin="3" pinfunction="EN_3" pintype="input"/>
+    </net>
+    <net code="3" name="GND_STUDY" class="Default">
+      <node ref="C1" pin="2" pintype="passive"/>
+      <node ref="C2" pin="2" pintype="passive"/>
+      <node ref="C3" pin="2" pintype="passive"/>
+      <node ref="C4" pin="2" pintype="passive"/>
+      <node ref="J1" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
+      <node ref="J2" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
+      <node ref="R2" pin="2" pintype="passive"/>
+      <node ref="R3" pin="2" pintype="passive"/>
+      <node ref="U1" pin="1" pinfunction="PGND_1" pintype="power_in"/>
+      <node ref="U1" pin="4" pinfunction="AGND_4" pintype="power_in"/>
+      <node ref="U1" pin="9" pinfunction="PAD_9" pintype="power_in"/>
+    </net>
+    <net code="4" name="PG_STUDY_NOT_MCU_GPIO" class="Default">
+      <node ref="J2" pin="3" pinfunction="Pin_3_3" pintype="passive"/>
+      <node ref="R4" pin="2" pintype="passive"/>
+      <node ref="U1" pin="8" pinfunction="PG_8" pintype="open_collector"/>
+    </net>
+    <net code="5" name="USB_PRE_FB" class="Default">
+      <node ref="R1" pin="2" pintype="passive"/>
+      <node ref="R2" pin="1" pintype="passive"/>
+      <node ref="U1" pin="5" pinfunction="FB_5" pintype="input"/>
+    </net>
+    <net code="6" name="USB_PRE_H3V792" class="Default">
+      <node ref="C3" pin="1" pintype="passive"/>
+      <node ref="C4" pin="1" pintype="passive"/>
+      <node ref="J2" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
+      <node ref="L1" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="R1" pin="1" pintype="passive"/>
+      <node ref="R4" pin="1" pintype="passive"/>
+      <node ref="U1" pin="6" pinfunction="VOS_6" pintype="input"/>
+    </net>
+    <net code="7" name="USB_PRE_SW" class="Default">
+      <node ref="L1" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="7" pinfunction="SW_7" pintype="output"/>
+    </net>
+  </nets>
+</export>

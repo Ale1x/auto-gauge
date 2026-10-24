@@ -13,15 +13,15 @@ spec = (ROOT / 'SPEC_V0.2.md').read_text()
 pr = {
 1: ('T-004, T-008', '01_OBD_INPUT / 04_CAN_PHY / firmware', 'SCHEMA A0 / DA VERIFICARE', 'hardware/04_CAN_PHY.kicad_sch; E03/E07; nessun test hardware'),
 2: ('T-001, T-002, T-003', '02_AUTOMOTIVE_POWER', 'BLOCCATO', 'O-07; nessun dimensionamento protezioni'),
-3: ('T-008', 'firmware catalogo PID', 'DA IMPLEMENTARE', 'DEC-003: solo Service01; discovery/decoder da verificare'),
-4: ('T-008 + test allowlist negativi', 'firmware allowlist centrale', 'DA IMPLEMENTARE', 'SPEC §5.2; CAN_POWER_TEST_PLAN.md'),
+3: ('T-008', 'firmware catalogo PID', 'PARZIALE SU HOST', 'DEC-003; firmware/src/obd_decode.c:7decoder/bitmap, ISO-TP RX simulato; discovery e catalogo completo aperti'),
+4: ('T-008 + test allowlist negativi', 'firmware allowlist centrale', 'CORE HOST VERIFICATO; DRIVER APERTO', 'firmware/tests/test_core.c e test_diagnostics.c; Service01 fisso, nessun invio CAN reale'),
 5: ('T-005, T-006, T-007', 'banco e Polo effettiva', 'DA VERIFICARE', 'Nessun accesso alla vettura; nessun log'),
 6: ('T-005 + T-002', '04_CAN_PHY / power / stato IGN', 'BLOCCATO', 'HW-IGN / O-18; DEC-008:reset durante crank ammesso con ripartenza automatica'),
 7: ('T-006, T-007', 'power always-on / wake', 'BLOCCATO', 'DEC-005:100µA entro300s; wake/IGN e prova aperti'),
 8: ('recovery e matrice USB/OBD', '07_TEST_SERVICE', 'CASO USO APPROVATO; DA VERIFICARE', 'DEC-007:USB recovery senzaOBD; USB_RECOVERY_K0.md'),
 9: ('drawing + sourcing + T-010', '05_AMOLED_TOUCH', 'BLOCCATO', 'E01/E19–E22: PANEL_SOURCING_K0.md; fit e O-16 aperti'),
 10: ('T-010', 'touch / firmware UI', 'DA IMPLEMENTARE', 'SPEC §6.1; nessun prototipo'),
-11: ('T-010, T-011 + limiti 3x5', 'UI / validazione firmware-app', 'DA IMPLEMENTARE', 'SPEC §6.1'),
+11: ('T-010, T-011 + limiti 3x5', 'UI / validazione firmware-app', 'PARZIALE SU HOST', 'shared/fixtures/config.cases.json; testSwift/C limiti3x5; UIembedded non implementata'),
 12: ('T-004, T-017', '01_OBD_INPUT / cavo / presa gauge', 'BLOCCATO', 'Coppia housing e terminali candidati documentati; cavo/OBD e pinout aperti; O-21'),
 13: ('fit quotato + prova montaggio/RF', 'case / magnete / PCB', 'BLOCCATO', 'DEC-002; MECHANICAL_K0.md; O-22'),
 14: ('T-012', '06_LIGHT_SENSOR / firmware / app', 'CANDIDATO', 'hardware/06_LIGHT_SENSOR.kicad_sch; E06; curva O-12 non fissata'),
@@ -30,12 +30,12 @@ pr = {
 17: ('T-018 + accettazione assieme', 'produzione / istruzioni FPC-cavo', 'BLOCCATO', 'O-17; SUPPLIER_RFQ_DRAFT.md'),
 18: ('T-013', 'firmware autonomo / storage', 'DA IMPLEMENTARE', 'O-14 influenza storage, non autonomia UI'),
 19: ('T-015', 'BLE / bootloader / flash', 'CANDIDATO', 'E02/E08; BLE transport e rollback non implementati'),
-20: ('T-014', 'BLE ownership / app', 'BLOCCATO', 'O-08'),
-21: ('test app/account/offline', 'app Swift / backend', 'DA SPECIFICARE', 'O-13/O-23; fuori implementazione HW K0'),
+20: ('T-014 + test connessioni sequenziali/concorrenza', 'BLE sessioni / app', 'VINCOLO APPROVATO; IMPLEMENTAZIONE APERTA', 'DEC-011: N client in sequenza, 1 connessione attiva; nessun reset per cambiare telefono'),
+21: ('test app/account/offline', 'app Swift / backend', 'APP SIMULATA; CLOUD APERTO', 'mobile/README.md; build iOS/testcore; O-13/O-23 ancora aperte'),
 22: ('T-016', 'storage / BLE log / app', 'PARZIALMENTE DEFINITO', 'DEC-004:buffer locale limitato; LOGGING_K0.md, retention aperta'),
-23: ('T-011 + editor', 'schema config / UI / app', 'BLOCCATO', 'O-10'),
-24: ('T-009', 'scheduler / CAN', 'DA VERIFICARE', 'O-09; solo stime illustrative'),
-25: ('timeout/stale/error injection', 'firmware catalogo / UI', 'DA IMPLEMENTARE', 'SPEC §5.3; nessun test eseguito'),
+23: ('T-011 + editor', 'schema config / UI / app', 'EDITOR PROVVISORIO IMPLEMENTATO', 'mobile/Sources/GaugeCore/Editing.swift; grigliaH, O-10 non congelata, nessuna UI live'),
+24: ('T-009', 'scheduler / CAN', 'PARZIALE SU HOST; PRESTAZIONI APERTE', 'firmware/src/scheduler.c; una transazione, timeout/round-robin; nessuna garanzia5Hz'),
+25: ('timeout/stale/error injection', 'firmware catalogo / UI', 'CORE HOST VERIFICATO; DISPLAY APERTO', 'firmware/tests/test_diagnostics.c; nessun vecchio valore attuale; renderer device assente'),
 26: ('discovery simulata + primo boot', 'firmware default dashboard', 'DA IMPLEMENTARE', 'O-24; no PID preteso supportato'),
 }
 opened = {
@@ -46,7 +46,7 @@ opened = {
 5: ('power budget + termica', 'power / display / MCU', 'APERTA P1', 'POWER_ENVELOPE_K0.md:288 scenari; massimi display mancanti, non budget chiuso'),
 6: ('decisione owner + T-007', 'wake / stato firmware', 'APERTA P0', 'DEC-005:standby entro5min OFF; latenza wake e comportamento ambiguo aperti'),
 7: ('profili approvati + T-002/T-003', 'protezioni / case / componenti', 'APERTA P1; BLOCCA K0', 'DEC-008:reset crank ammesso con recupero automatico; profili/protezioni restano aperti'),
-8: ('decisione owner + T-014', 'BLE / app / ownership', 'APERTA P1', 'Nessuna policy approvata'),
+8: ('T-014 + reset locale e interruzioni', 'BLE sessioni / app / reset manutenzione', 'VINCOLO APPROVATO; AUTH/PROVE APERTE', 'DEC-011: più client, una connessione attiva; reset fisico locale separato'),
 9: ('criteri owner + T-009', 'scheduler', 'APERTA P1', 'CAPACITY_K0.md: sensibilità latenza seriale; 1/5/15 PID da misurare'),
 10: ('decisione owner + T-011', 'layout editor / schema', 'APERTA P1', 'Nessun modello approvato'),
 11: ('decisione owner + test cambio auto', 'catalogo / UI', 'APERTA P2', 'PR-025 resta obbligatorio per dato indisponibile'),
@@ -68,8 +68,8 @@ opened = {
 def esc(s):
     return s.replace('|', '\\|').replace('\n', ' ')
 
-lines = ['# Tracciabilità K0 — revisione 0.5', '',
-         'Data 2026-10-24. Fonte normativa SPEC_V0.2.md + DECISIONS.md (requisiti risultanti v0.2.5).',
+lines = ['# Tracciabilità K0 — revisione 0.6', '',
+         'Data 2026-10-24. Fonte normativa SPEC_V0.2.md + DECISIONS.md (requisiti risultanti v0.2.6).',
          'Generato da scripts/build_k0_registers.py. Sheet implementati nella revisione A0 in hardware/ (DEC-009); progetto non definitivo, blocker aperti.',
          '«CANDIDATO» non significa selezionato o validato. Nessun test T è stato eseguito.', '',
          '| ID | Requisito / decisione | Origine | Verifica prevista | Componente / sheet correlato | Stato | Prova disponibile / mancante |',
@@ -89,11 +89,15 @@ for key, description in reqs:
         description += ' Addendum DEC-005: massimo100µA a12V entro5min dal quadro OFF.'
     if key == 'PR-013':
         description += ' Addendum DEC-002: piccolo aumento del diametro esterno autorizzato; massimo finale da definire.'
+    if key == 'PR-020':
+        description = 'DEC-011 sostituisce la formulazione originaria: N client Bluetooth utilizzabili in momenti diversi, una sola connessione attiva; nessun reset richiesto per cambiare telefono.'
     test, area, state, proof = pr[int(key[3:])]
-    lines.append('| ' + ' | '.join(map(esc, [key, description, 'SPEC §1.2 + DECISIONS.md' if key in ('PR-003','PR-006','PR-007','PR-008','PR-013','PR-022') else 'SPEC §1.2', test, area, state, proof])) + ' |')
+    lines.append('| ' + ' | '.join(map(esc, [key, description, 'SPEC §1.2 + DECISIONS.md' if key in ('PR-003','PR-006','PR-007','PR-008','PR-013','PR-020','PR-022') else 'SPEC §1.2', test, area, state, proof])) + ' |')
 questions = re.findall(r'^\| (O-\d{2}) \| (P[012]) \| (.*?) \|$', spec, re.M)
 assert len(questions) == 24
 for key, priority, description in questions:
+    if key == 'O-08':
+        description = 'DEC-011: più client BLE in sequenza, una connessione attiva; reset locale di manutenzione separato. Autenticazione e prove da completare.'
     test, area, state, proof = opened[int(key[2:])]
     lines.append('| ' + ' | '.join(map(esc, [key, description, f'SPEC §11 ({priority})', test, area, state, proof])) + ' |')
 lines.append('| O-25 | Supporto nominale 24 V escluso V1 | SPEC cronologia v0.2 e §11 | Revisione requisiti e BOM | power / scope | CHIUSA DAL PROPRIETARIO | SPEC v0.2; transitori >24 V restano da proteggere |')

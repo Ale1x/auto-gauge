@@ -24,4 +24,6 @@ Il comando verifica casi condivisi e test Python, confronta i codec C/Python con
 
 Queste prove non comprendono ESP-IDF sul device, BLE reale, cloud, consumo standby o test automotive. App e firmware dichiarano le proprie parti simulate o non implementate nei rispettivi README. Non collegare al veicolo uno schema incompleto.
 
-Risultati del secondo incremento: [shared/VERIFICATION_V0.2.md](shared/VERIFICATION_V0.2.md). Proposta sull'associazione e recupero: [shared/OWNERSHIP_PROPOSAL.md](shared/OWNERSHIP_PROPOSAL.md).
+Risultati del secondo incremento: [shared/VERIFICATION_V0.2.md](shared/VERIFICATION_V0.2.md). Policy approvata sui client e reset separato: [shared/CONNECTION_POLICY_V0.1.md](shared/CONNECTION_POLICY_V0.1.md), secondo DEC-011.
+
+Il terzo incremento integra storici locali nell'app, gestione logica di una connessione con più client sequenziali e studio KiCad separato del preregolatore USB. Verifiche: [shared/VERIFICATION_V0.3.md](shared/VERIFICATION_V0.3.md).

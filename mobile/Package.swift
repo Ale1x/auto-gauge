@@ -6,7 +6,7 @@ let package = Package(
     platforms: [.iOS(.v17), .macOS(.v13)],
     products: [.library(name: "GaugeCore", targets: ["GaugeCore"])],
     targets: [
-        .target(name: "GaugeCore"),
+        .target(name: "GaugeCore", resources: [.process("Resources")]),
         .testTarget(name: "GaugeCoreTests", dependencies: ["GaugeCore"])
     ]
 )

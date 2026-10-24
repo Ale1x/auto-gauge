@@ -1,5 +1,7 @@
 # Verifica del secondo incremento parallelo
 
+Nota successiva: la policy di ownership citata nello stato storico di questa verifica è stata superata da DEC-011. Sono ammessi più client in sequenza con una sola connessione attiva; il reset non serve per cambiare telefono. Riferimento corrente: `CONNECTION_POLICY_V0.1.md`.
+
 24 ottobre 2026. App, firmware e studio hardware svolti da tre subagenti con directory separate; coordinamento, riferimenti di protocollo e verifica integrata eseguiti nel repository comune. Nessuna pubblicazione o operazione sul gauge/vettura.
 
 ## Risultati riprodotti dal coordinatore

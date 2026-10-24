@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-24",
+  "study": "HW03 H0.1",
+  "local_sources": {
+    "coilcraft_xal4030.pdf": "b26cf975bd56a807173b05665bddd49ed49323400330eb8f6fa63e24ff6d7d15"
+  },
+  "unresolved_curve_access": [
+    {
+      "manufacturer": "TDK",
+      "url": "https://product.tdk.com/system/files/dam/doc/product/capacitor/ceramic/mlcc/charasheet/cga6p1x7r1c226m250ac.pdf",
+      "local_download": "HTTP403",
+      "web_text": "available, graph axes but no qualified numeric envelope",
+      "bias_factor_used": 0.7,
+      "bias_factor_is_hypothesis": true
+    },
+    {
+      "manufacturer": "Murata",
+      "model": "GRM31CR71E106KA12L",
+      "reference": "SimSurfing",
+      "numeric_envelope_obtained": false
+    }
+  ],
+  "availability": [
+    {
+      "part": "XAL4030-332MEC",
+      "source": "DigiKey Marketplace/Coilcraft",
+      "observed_stock": 0,
+      "status": "NOT_AVAILABLE_IN_CHANNEL_CHECKED"
+    },
+    {
+      "part": "GRM31CR71E106KA12L",
+      "source": "DigiKey indexed product page",
+      "observed_stock": 0,
+      "status": "RECONFIRM_OR_REPLACE"
+    },
+    {
+      "part": "CGA6P1X7R1C226M250AC",
+      "source": "DigiKey opened product page",
+      "observed_stock": 31525,
+      "qty1_USD": 1.24,
+      "status": "OBSERVED_NOT_RESERVED"
+    },
+    {
+      "part": "AT0603BRD0737K4L",
+      "source": "Mouser indexed catalog",
+      "observed_stock": 1093,
+      "status": "OBSERVED_NOT_RESERVED"
+    },
+    {
+      "part": "AT0603BRD0710KL",
+      "source": "LCSC indexed product page",
+      "observed_stock": 680,
+      "status": "OBSERVED_NOT_RESERVED"
+    }
+  ]
+}

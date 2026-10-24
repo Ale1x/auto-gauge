@@ -15,6 +15,8 @@ Nucleo C11 compilabile su host e skeleton ESP-IDF per il candidato ESP32-S3. Si 
 | Log | Coda RAM fissa, massimo 1 Hz per coppia sorgente ECU/PID, overflow con sequenze perse, stop immediato di nuove append | Nessuna scrittura flash, chunk BLE, deduplica import, resume o power-loss recovery |
 | Tempo | Session ID di boot fornito dal chiamante, tempo monotono relativo, regressioni bloccate | Nessun RTC o data assoluta inventata |
 | HAL | Interfacce per power/display/log/BLE/OTA | Restituiscono `NOT_IMPLEMENTED` o `BLOCKED`, mai un falso successo |
+| Connessione | Uno slot attivo, client utilizzabili in sequenza, lease di sessione e verifica esterna separata | Nessuno stack BLE/bonding o autenticazione reale, nessun owner unico |
+| Factory reset locale | Macchina a stati e journal simulato prima delle cancellazioni, recupero bloccato per stato incompleto | Nessuna cancellazione flash o credenziale reale; atomicità hardware non dimostrata |
 
 Le scelte di strutture e capacità sono ipotesi di sviluppo, non nuovi requisiti approvati. Restano normative SPEC_V0.2.md e DECISIONS.md, in particolare DEC-003–008. Il contratto comune è [shared/PROTOCOL_V0.1.md](../shared/PROTOCOL_V0.1.md).
 
@@ -28,11 +30,12 @@ cmake --build firmware/build-host
 ctest --test-dir firmware/build-host --output-on-failure
 firmware/build-host/gauge_core_tests
 firmware/build-host/gauge_diagnostics_tests
+firmware/build-host/gauge_connection_tests
 ```
 
 Da una directory già interna a `firmware/`, usare `-S . -B build-host`.
 
-La suite CTest contiene due eseguibili. `gauge_core_tests` copre otto gruppi: fixture condivise, configurazione/rollback RAM, guardia CAN, Service 01, rate/stati indisponibili, overflow/limiti coda, clock/sessione e HAL bloccato. `gauge_diagnostics_tests` copre dieci gruppi: 13 vettori decoder, risposte malformate, bitmap/sorgenti ECU, profili e SF, FF/CF e wrap sequenza, errori e timeout, 10000 ingressi casuali bounded, scheduling/timeout, round-robin/clock e revoca di ogni guardia tra prepare e dispatch.
+La suite CTest contiene tre eseguibili. `gauge_core_tests` copre otto gruppi: fixture condivise, configurazione/rollback RAM, guardia CAN, Service 01, rate/stati indisponibili, overflow/limiti coda, clock/sessione e HAL bloccato. `gauge_diagnostics_tests` copre dieci gruppi: 13 vettori decoder, risposte malformate, bitmap/sorgenti ECU, profili e SF, FF/CF e wrap sequenza, errori e timeout, 10000 ingressi casuali bounded, scheduling/timeout, round-robin/clock e revoca di ogni guardia tra prepare e dispatch. `gauge_connection_tests` copre otto gruppi: A→busy B→B→A senza cancellazione, auth mancante, lease/boot/counter, qualificazione fisica, 18 punti di interruzione prima/dopo I/O, restore corrotto/mancante/ripetuto, USB persa/intent non confermato e journal/counter estremi.
 
 Il generatore `tools/generate_fixture.py` legge direttamente i JSON in `../shared/fixtures/` e genera un header solo nella directory di build. Al momento 19 dei 22 casi comuni sono rappresentabili in strutture C tipizzate; i 3 casi con booleani/frazioni richiedono il futuro parser JSON e **non sono dichiarati testati sul device**. I test effettuano anche controllo capability, limite 3×5, rifiuto di coordinate estreme, conservazione configurazione invalida e verifica delle richieste per tutti i 256 valori PID.
 
@@ -104,7 +107,40 @@ Questi comandi non sono stati eseguiti qui. Non effettuare flash o collegamento 
 
 Nessun GPIO pannello viene dedotto dallo schema A0. I pin CAN/power dello schema sono ancora ipotesi; il backend HAL dovrà essere implementato solo dopo verifica delle alimentazioni parziali e dei default elettrici. TCAN1043A con EN=0/nSTB=0 è **Standby con INH ancora attivo**, non Sleep; serve la sequenza qualificata della tabella modi e dei flag WAKERQ. `standby_requested` in software significa blocco del polling, non prova che rail e transceiver siano spenti. Il loop corrente non raggiunge né dimostra il target 100 µA entro 5 minuti.
 
-BLE/ownership/autenticazione/antireplay e OTA rimangono bloccati; nessun GATT utilizzabile è pubblicizzato. Secure boot, rollback e recovery richiedono implementazione e prove prima di qualsiasi provisioning irreversibile.
+BLE/autenticazione/antireplay e OTA rimangono bloccati; nessun GATT utilizzabile è pubblicizzato. Non esiste proprietà esclusiva permanente del gauge: DEC-011 ammette più client in sequenza con una sola connessione attiva. Secure boot, rollback e recovery richiedono implementazione e prove prima di qualsiasi provisioning irreversibile.
+
+## FW-03 — una connessione e reset fisico separato
+
+Il contratto aggiornato è [CONNECTION_POLICY_V0.1.md](../shared/CONNECTION_POLICY_V0.1.md), basato su DEC-011. `include/ag_connection.h` e `src/connection.c` non contengono un registro owner, un trasferimento di proprietà o una lista con N massimo di telefoni. Conservano solo il client della connessione corrente. La dimensione interna del suo identificatore opaco è 16 byte, ipotesi tecnica da mappare nel futuro adapter, non un limite al numero N di client utilizzabili nel tempo. L'effettiva capacità di bond del controller/SDK richiederà un bilancio di risorse e non viene presentata come nuova limitazione di prodotto.
+
+`ag_connection_open` accetta un client solo in `IDLE`; un altro tentativo risponde `BUSY` senza preemption. Ogni nuova connessione è `UNVERIFIED`, anche per un telefono usato in precedenza. Disconnettere A e collegare B o nuovamente A non invoca callback di persistenza o erase e conserva configurazione/log/bond. I cursori storico sono locali a ciascun telefono: l'ACK di A non autorizza la cancellazione di record ancora disponibili per B; il futuro ring rimane bounded con overwrite DEC-006. Questo incremento non implementa produttore flash o reclaim globale.
+
+Il lease comprende boot ID 128 bit e contatore 64 bit crescente. Callback tardivi di close/auth dal vecchio lease non toccano la nuova sessione. Il contatore non fa wrap; esaurito, nuove connessioni sono rifiutate fino a un nuovo boot con identificatore distinto. L'ID di boot deve essere nuovo a ogni inizializzazione, inclusi deep sleep/riavvio: la correlazione del lease non è crittografia né prova dell'identità del client. Il valore non va trattato come segreto.
+
+`ag_connection_authenticate` invoca solo un verificatore esterno fidato per il lease corrente e ricontrolla il lease dopo il callback. Senza verificatore restituisce `AUTH_UNAVAILABLE`; con quello HAL attuale ritorna rifiuto. Nessun booleano proveniente da BLE viene promosso a autenticazione. I test modellano una verifica esterna legata a client+boot+contatore, senza implementare una challenge o chiavi proprie. `mutations_allowed` resta false fino a tale verifica ed è sempre false durante manutenzione. Questa funzione è una guardia del core, non un'autorizzazione effettiva a config/OTA: sessione cifrata, antireplay e controllo degli opcode dovranno essere implementati e testati nell'adapter reale.
+
+Le operazioni del core, gli eventi radio e il reset devono essere serializzati da un unico task o lock. Il codice non è thread-safe e i callback I/O/verifica non devono rientrare nella macchina a stati. Una verifica concorrente non è dimostrata dai test host. Il futuro boot adapter deve leggere e verificare il journal prima di pubblicizzare o accettare BLE; `ag_connection_init` parte infatti bloccata, e solo un restore iniziale valido `CLEAN` abilita lo slot.
+
+Il reset di manutenzione richiede due chiamate locali qualificate: `arm` e `confirm`. Entrambe richiedono origine `LOCAL_PHYSICAL`, USB valida e qualificazione fisica fornita dal futuro HAL; `confirm` richiede inoltre consenso locale esplicito. USB inserita da sola, evento BLE e gesto non qualificato non armano né cancellano. Durata, gesto, debounce e protezione da attivazioni accidentali non sono fissati qui. I campi dell'evento sono metadati di un adapter fidato, non un nuovo comando BLE con cui il remoto possa dichiararsi fisico.
+
+| Fase durevole | Operazione successiva ammessa |
+|---|---|
+| CLEAN | Solo arm locale: invalida la sessione e scrive ARMED |
+| ARMED | Solo conferma locale: scrive INTENT, ancora nessuna cancellazione |
+| INTENT | Cancella credenziali/bond/cache locali, poi registra il completamento |
+| CREDENTIALS_ERASED | Cancella configurazione locale, poi registra il completamento |
+| CONFIG_ERASED | Cancella log locali, poi registra il completamento |
+| LOGS_ERASED | Scrive il commit CLEAN finale |
+
+Durante ARMED, IN_PROGRESS o FAILED connessioni e mutazioni restano bloccate. La sessione precedente viene invalidata all'arm, prima di qualsiasi erase. Il callback `erase_credentials` deve cancellare **anche cache RAM di bond, chiavi e verifiche** oltre alle copie persistenti: mantenere il puntatore al verifier non autorizza a continuare a fidarsi di credenziali cache cancellate. Non esiste una callback di cancellazione cloud. Solo dopo tutti gli erase confermati e il commit finale riuscito lo slot torna disponibile, senza owner unico e con nuova autenticazione obbligatoria. I lease precedenti restano invalidi anche se tutto avviene nello stesso boot.
+
+Un passo compie al massimo un erase e la relativa scrittura di journal; le implementazioni reali dovranno essere bounded e coordinate con la messa in quiete dei worker. Un errore I/O o perdita USB rende il manager FAILED e mantiene il blocco. Ripristinando uno snapshot incompleto al reboot non si riabilitano vecchi bond: il sistema resta FAILED finché una nuova qualificazione/conferma locale consente di completare i passi rimanenti. Erase e scrittura devono essere idempotenti, perché uno spegnimento dopo erase ma prima del progresso persistito può far ripetere lo stesso erase. Snapshot mancante, CRC errato o restore fallito bloccano anche il reset automatico; non vengono reinterpretati come stato di fabbrica pulito. Un secondo restore sulla stessa inizializzazione della connessione viene rifiutato.
+
+Il journal è un modello C con versione, generazione di reset, fase, maschera completamenti e CRC-32/ISO-HDLC sui campi canonici (non sul padding della struttura). Il CRC serve a rilevare corruzioni accidentali; **non autentica il journal né impedisce rollback ostili**. Due fixture CRC indipendenti provengono da `binascii.crc32` di Python, e le prove simulano interruzioni prima/dopo ognuna delle nove I/O. L'algoritmo e il polinomio sono quelli pubblici di [RFC 1952, appendice CRC](https://www.rfc-editor.org/rfc/rfc1952). Non sono introdotte primitive crittografiche artigianali.
+
+Il callback di persistenza può rispondere successo solo quando il record è durevole e verificato. Non viene eseguito erase prima che INTENT abbia ricevuto tale successo. Se manca persino il primo ARMED durevole, il reset non è ancora iniziato e nessun dato è stato cancellato: al reboot un journal precedente CLEAN verificato può ancora descrivere la configurazione preesistente, ma il vecchio lease non è valido e l'autenticazione di sessione riparte da zero. Se l'esito di scrittura è ambiguo/corrotto, il futuro adapter deve segnalarlo come restore fallito e restare bloccato. Dopo il commit finale durevole tutti gli erase sono invece già completati; una perdita del solo ACK finale può essere recuperata leggendo CLEAN. Queste differenze sono coperte esplicitamente dai test, senza fingere che uno stato RAM sia persistente.
+
+Non è definito un layout flash, doppio journal, protezione da rollback o prova di atomicità sul componente reale. `app_main` resta inerte; i nuovi HAL verify/erase/journal rispondono rifiuto o `NOT_IMPLEMENTED`. Nessun dato esistente, bond reale, eFuse o chiave è cancellato. Il reset non autorizza CAN e non dimostra standby o recupero elettrico.
 
 ## Prossimi incrementi
 

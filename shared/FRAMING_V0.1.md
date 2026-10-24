@@ -27,6 +27,6 @@ I vettori golden in `fixtures/frame.cases.json` sono condivisi fra Python, C e l
 
 ## Sicurezza e dipendenze
 
-Le operazioni che mutano il dispositivo restano bloccate nel trasporto reale. Il simulatore può applicare in RAM una configurazione indicando esplicitamente `simulation=true` e `persistence=volatile`; non è conferma di salvataggio sul gauge. Ownership, ripristino dopo telefono perso e protocollo autenticato restano da progettare. Non scegliere chiavi, eFuse o provider sulla base di questo framing.
+Le operazioni che mutano il dispositivo restano bloccate nel trasporto reale. Il simulatore può applicare in RAM una configurazione indicando esplicitamente `simulation=true` e `persistence=volatile`; non è conferma di salvataggio sul gauge. DEC-011 consente più client sequenziali e una sola connessione attiva, senza ownership esclusiva o reset per cambiare telefono. Reset locale e protocollo autenticato richiedono ancora implementazione e prove. Non scegliere chiavi, eFuse o provider sulla base di questo framing.
 
 Fonti primarie consultate il24/10/2026: [Bluetooth ATT](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/host/attribute-protocol--att-.html), [Apple scritture CoreBluetooth](https://developer.apple.com/documentation/corebluetooth/cbcharacteristicwritetype). Limiti di notifica e write dipendono da ATT e dalle API; prima dell'implementazione reale riverificare la versione normativa applicabile e `maximumWriteValueLength`.

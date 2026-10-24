@@ -1,0 +1,52 @@
+{
+  "device_id": "SIMULATO-001",
+  "pages": [
+    {
+      "session_id": "01010101010101010101010101010101",
+      "records": [
+        {
+          "sequence": "3",
+          "monotonic_ms": "3000",
+          "pid": 12,
+          "ecu_source": 2024,
+          "status": "valid",
+          "raw_hex": "1a10"
+        }
+      ],
+      "lost": [
+        {
+          "first": "1",
+          "last": "2"
+        }
+      ]
+    },
+    {
+      "session_id": "02020202020202020202020202020202",
+      "records": [
+        {
+          "sequence": "1",
+          "monotonic_ms": "1000",
+          "pid": 12,
+          "ecu_source": 2024,
+          "status": "valid",
+          "raw_hex": "1a10"
+        }
+      ],
+      "lost": []
+    },
+    {
+      "session_id": "03030303030303030303030303030303",
+      "records": [
+        {
+          "sequence": "1",
+          "monotonic_ms": "1000",
+          "pid": 12,
+          "ecu_source": 2024,
+          "status": "timeout",
+          "raw_hex": ""
+        }
+      ],
+      "lost": []
+    }
+  ]
+}

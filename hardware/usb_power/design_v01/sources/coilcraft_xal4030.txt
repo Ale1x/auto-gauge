@@ -1,0 +1,353 @@
+                Web               Sample               Tools &              Support
+                page              & buy                software             & FAQ                                                                  Document 806-1
+
+
+
+
+              Shielded Power Inductors – XAL40xx
+Halogen                                                                                       • High current and very low DCR
+ Free
+                                                                                              • AEC-Q200 qualified
+                                                                                              • Soft saturation makes them ideal for VRM/VRD applications.
+
+
+AEC
+Q200 +125°C                                                                                   Designer’s Kit C429 contains 5 of each value
+                                                                                              Core material Composite
+                                                                                              Core and winding loss See www.coilcraft.com/coreloss
+                                                                                              Environmental RoHS compliant, halogen free
+                                                                                              Terminations RoHS compliant tin-silver (96.5/3.5) over copper. Other
+                                                                                              terminations available at additional cost.
+                                                                                              Operating voltage: 60 V7
+                                                                                              Ambient temperature –40°C to +125°C with (40°C rise) Irms current.
+                                                                                              Maximum part temperature +165°C (ambient + temp rise). Derating.
+                                                                                              Storage temperature Component: –55°C to +165°C.
+                                                                                              Tape and reel packaging: –55°C to +80°C
+                                                                                              Resistance to soldering heat Max three 40 second reflows at
+                                                                                              +260°C, parts cooled to room temperature between cycles
+                                                                                              Moisture Sensitivity Level (MSL) 1 (unlimited floor life at <30°C /
+                                                                                              85% relative humidity)
+                                                                                              PCB washing Tested to MIL-STD-202 Method 215 plus an additional
+                                                                                              aqueous wash. See Doc787_PCB_Washing.pdf.
+
+
+              		                     Inductance2        DCR (mOhms)3            SRF typ4     Isat5         Irms (A)6
+               Part number1           ±20% (µH)          typ   max               (MHz)        (A)    20°C rise 40°C rise
+              XAL4020-221ME_             0.22             5.81   6.40             191        18.7       12.0       16.8
+              XAL4020-401ME_             0.40             7.55   8.30             145        12.5       10.0       14.0
+              XAL4020-601ME_             0.60             9.50  10.45             106        10.4        7.9       11.7
+              XAL4020-102ME_             1.0            13.25   14.60              79          8.7       6.7         9.6
+              XAL4020-122ME_             1.2            17.75   19.50              69          7.9       6.6         9.0
+              XAL4020-152ME_             1.5            21.45   23.60              64          7.1       5.2         7.5
+              XAL4020-222ME_             2.2            35.20   38.70              52          5.6       4.0         5.5
+              XAL4030-332ME_             3.3            26.0    28.6               43          5.9       5.0         6.6
+              XAL4030-472ME_             4.7            40.1    44.1               36          4.6       3.9         5.1
+              XAL4030-682ME_             6.8            67.4    74.1               29          3.6       3.0         3.9
+              XAL4040-822ME_             8.2            60.8    66.9               27          4.0       2.4         3.4
+              XAL4040-103ME_            10              84.0    92.4               24          3.0       2.2         3.1
+              XAL4040-153ME_            15             109     120                 20          2.9       2.0         2.8
+
+              1. When ordering, please specify termination and packaging codes:               5. DC current at 25°C that causes an inductance drop of 30% (typ) from
+                                                                                                 its value without current.
+                                     XAL4040-153MEC                                              Click for temperature derating information.
+                 Termination: E = RoHS compliant tin-silver over copper.                      6. Current that causes the specified temperature rise from 25°C ambient.
+                                   Special order: T = RoHS tin-silver-copper                     This information is for reference only and does not represent absolute
+                                   (95.5/4/0.5) or S = non-RoHS tin-lead (63/37).                maximum ratings. Temperature rise is highly dependent on many
+                 Packaging: C = 7″ machine-ready reel. EIA-481 embossed plastic                  factors including pcb land pattern, trace size, air flow, and proximity
+                                   tape. Quantities less than full reel available: in tape       to other components. Therefore temperature rise should be verified in
+                                   (not machine ready) or with leader and trailer ($25           application conditions. Click for temperature derating information.
+                                   charge).                                                   7. Voltage capability varies by part number and in many cases may be
+                               B = Less than full reel. In an effort to simplify our part        higher than the listed voltage.
+                                   numbering system, Coilcraft is eliminating the need        8. Electrical specifications at 25°C.
+                                   for multiple packaging codes. When ordering, simply
+                                   change the last letter of your part number from B to C.    Refer to Doc 362 “Soldering Surface Mount Components” before soldering.
+                               D = 13″ machine-ready reel. EIA-481 embossed plastic
+                                   tape. Factory order only, not stocked.
+              2. Inductance tested at 1 MHz, 0.1 Vrms, 0 Adc.
+              3. DCR measured on a micro-ohmmeter.
+              4. SRF measured using Agilent/HP 4395A or equivalent.
+
+
+
+                                                                     Specifications subject to
+                                                             US +1-847-639-6400                change without notice.
+                                                                                   sales@coilcraft.com                          Document 806-1            Revised 02/25/26
+                                                                     Please check our
+                                                             UK +44-1236-730595         website for latest information.
+                                                                                    sales@coilcraft-europe.com                                               © Coilcraft Inc. 2026
+                                                             Taiwan +886-2-2264 3646 sales@coilcraft.com.tw                     This product may not be used in medical or high
+                                                                                                                                 risk applications without prior Coilcraft approval.
+                                                             China +86-21-6218 8074 sales@coilcraft.com.cn                         Specification subject to change without notice.
+                                                             Singapore + 65-6484 8412 sales@coilcraft.com.sg                          Please check web site for latest information.
+                                                                                                                                                                                                                                       Document 806-2
+
+
+
+
+                Shielded Power Inductors – XAL40xx
+                L vs Current
+                                0.4                                                                                                                                2.0
+
+
+
+
+              Inductance (µH)                                                                                                                    Inductance (µH)
+                                0.3
+                                                                                                                                                                   1.6
+Halogen
+ Free                                                                                 0.22 µH
+                                                                                                                                                                   1.2
+                                                                                                                                                                                                                       1.5 µH
+                                0.2
+                                                                                                                                                                   0.8
+                                0.1
+                                                                                                                                                                   0.4
+                                 0                                                                                                                                  0
+AEC
+Q200 +125°C
+                                      0       2           4       6           8         10          12           14       16         18    20                            0         1            2            3           4            5            6            7        8
+                                                                              Current (A)                                                                                                                        Current (A)
+
+                                0.6                                                                                                                                4.0
+
+
+
+
+              Inductance (µH)                                                                                                                    Inductance (µH)
+                                                                                                                                                                   3.5
+                                0.5
+                                                                                                                                                                   3.0
+                                0.4                                                                                                                                2.5
+                                                                                      0.40 µH                                                                                                                          2.2 µH
+                                0.3                                                                                                                                2.0
+                                0.2                                                                                                                                1.5
+                                                                                                                                                                   1.0
+                                0.1                                                                                                                                0.5
+                                 0                                                                                                                                   0
+                                      0   1       2       3       4       5       6      7      8        9       10       11    12       13 14                           0   0.5       1.0     1.5     2.0       2.5    3.0     3.5       4.0     4.5     5.0       5.5 6.0
+                                                                              Current (A)                                                                                                                        Current (A)
+
+                                1.0                                                                                                                                 5
+
+
+
+
+              Inductance (µH)                                                                                                                    Inductance (µH)
+                                0.8                                                                                                                                 4
+
+                                0.6                                                                                                                                 3                                                  3.3 µH
+                                                                                      0.60 µH
+                                0.4                                                                                                                                 2
+
+                                0.2                                                                                                                                 1
+                                 0                                                                                                                                  0
+                                      0   1           2       3       4           5      6      7            8        9        10    11 12                               0   0.5       1.0     1.5     2.0       2.5    3.0     3.5       4.0     4.5     5.0       5.5 6.0
+                                                                              Current (A)                                                                                                                        Current (A)
+
+                                1.6                                                                                                                                 6
+
+
+
+
+              Inductance (µH)                                                                                                                    Inductance (µH)
+                                1.4
+                                                                                                                                                                    5
+                                1.2
+                                1.0                                                                                                                                 4
+                                                                                      1.0 µH                                                                                                                           4.7 µH
+                                0.8                                                                                                                                 3
+                                0.6                                                                                                                                 2
+                                0.4
+                                                                                                                                                                    1
+                                0.2
+                                  0                                                                                                                                 0
+                                      0       1           2       3           4          5          6            7         8         9     10                            0   0.5       1.0     1.5     2.0       2.5    3.0     3.5       4.0     4.5     5.0   5.5 6.0
+                                                                              Current (A)                                                                                                                        Current (A)
+
+                                1.6                                                                                                                                10
+
+
+
+
+              Inductance (µH)                                                                                                                    Inductance (µH)
+                                1.4
+                                                                                                                                                                    8
+                                1.2
+                                1.0                                                                                                                                 6
+                                                                                      1.2 µH
+                                0.8                                                                                                                                                                                    6.8 µH
+                                0.6                                                                                                                                 4
+                                0.4
+                                                                                                                                                                    2
+                                0.2
+                                  0                                                                                                                                 0
+                                      0       1           2       3           4         5           6            7         8         9     10                            0    0.5        1.0         1.5     2.0        2.5      3.0        3.5         4.0     4.5    5.0
+                                                                              Current (A)                                                                                                                        Current (A)
+
+
+
+
+                                                                                                US +1-847-639-6400 sales@coilcraft.com                                                                           Document 806-2                 Revised 02/25/26
+                                                                                                UK +44-1236-730595 sales@coilcraft-europe.com                                                                                                 © Coilcraft Inc. 2026
+                                                                                                Taiwan +886-2-2264 3646 sales@coilcraft.com.tw                                                                   This product may not be used in medical or high
+                                                                                                                                                                                                                  risk applications without prior Coilcraft approval.
+                                                                                                China +86-21-6218 8074 sales@coilcraft.com.cn                                                                       Specification subject to change without notice.
+                                                                                                Singapore + 65-6484 8412 sales@coilcraft.com.sg                                                                        Please check web site for latest information.
+                                                                                                                                                       Document 806-3
+
+
+
+
+                Shielded Power Inductors – XAL40xx
+                L vs Current
+                                12
+
+
+
+
+              Inductance (µH)
+Halogen                         10
+ Free
+                                 8
+                                 6                                       8.2 µH
+                                 4
+
+AEC
+Q200 +125°C
+                                2
+                                0
+                                     0   0.5    1.0         1.5    2.0    2.5     3.0    3.5         4.0    4.5   5.0
+                                                                    Current (A)
+
+                                16
+
+
+
+
+              Inductance (µH)
+                                12
+
+                                 8                                       10 µH
+
+                                4
+
+                                0
+                                     0    0.5         1.0         1.5     2.0      2.5         3.0         3.5    4.0
+                                                                    Current (A)
+
+                                20
+
+
+
+
+              Inductance (µH)
+                                16
+
+                                12
+                                                                         15 µH
+                                 8
+
+                                 4
+                                 0
+                                     0    0.5         1.0         1.5     2.0      2.5         3.0         3.5    4.0
+                                                                    Current (A)
+
+
+
+
+                                                                                  US +1-847-639-6400 sales@coilcraft.com            Document 806-3            Revised 02/25/26
+                                                                                  UK +44-1236-730595 sales@coilcraft-europe.com                                  © Coilcraft Inc. 2026
+                                                                                  Taiwan +886-2-2264 3646 sales@coilcraft.com.tw    This product may not be used in medical or high
+                                                                                                                                     risk applications without prior Coilcraft approval.
+                                                                                  China +86-21-6218 8074 sales@coilcraft.com.cn        Specification subject to change without notice.
+                                                                                  Singapore + 65-6484 8412 sales@coilcraft.com.sg         Please check web site for latest information.
+                                                                                                                                                                        Document 806-4
+
+
+
+
+                   Shielded Power Inductors – XAL40xx
+                   Typical L vs Frequency
+                                                    100                                                                0.157 ±0.012
+                                                                                                                          4,0 ±0,3
+
+Halogen                                                                                 15 µH
+ Free                                                                                       10 µH
+
+                                                                                                                      XXX
+
+              Inductance (µH)
+                                                                                             6.8 µH                                      0.157 ±0.012
+                                                    10                                         4.7 µH                                       4,0 ±0,3
+
+                                                                                                    2.2 µH
+AEC
+Q200 +125°C                                                                                         1.5 µH
+                                                                                                     1.0 µH       Dash                Indicates direction of terminals and
+                                                                                                                 number               start (short) lead. Connect high dv/dt
+                                                     1                                                                                here for lowest EMI.
+                                                                                                    0.60 µH
+
+                                                                                                    0.40 µH
+                                                                                                                                                             See table
+                                                                                                    0.22 µH
+                                                    0.1
+                                                                                                                                         0.032 ±0.002                                 0.128
+                                                          0.1   1                  10                   100                                                                                 typ
+                                                                                                                                          0,82 ±0,05                                   3,25
+                                                                    Frequency (MHz)                                                   0.062 ±0.010
+                                                                                                                                       1,57 ±0,25
+
+                   Typical ESR vs Frequency                                                                               0.093                                 Height *
+                                                                                                                           2,37                          Dash    max
+                                                    50                                                                                                 number (in / mm)                   Weight
+
+
+
+
+              Equivalent Series Resistance (Ohms)
+                                                    45                                                                                                  -221  0.083 / 2,1              0.17 – 0.18 g
+                                                                                                                                                        -401  0.083 / 2,1              0.17 – 0.18 g
+                                                                                                              0.134                                     -601  0.083 / 2,1              0.17 – 0.18 g
+                                                    40
+                                                                                                               3,4                                      -102  0.083 / 2,1              0.17 – 0.18 g
+                                                                                15 µH                                                                   -122  0.083 / 2,1              0.17 – 0.18 g
+                                                    35                        10 µH         2.2 µH                                                      -152  0.083 / 2,1              0.17 – 0.18 g
+                                                                              6.8 µH       1.5 µH                                                       -222  0.083 / 2,1              0.17 – 0.18 g
+                                                    30                       4.7 µH        1.0 µH
+                                                                                          0.60 µH                            0.038                      -332  0.122 / 3,1              0.26 – 0.28 g
+                                                                                         0.40 µH                              0,98                      -472  0.122 / 3,1              0.26 – 0.28 g
+                                                    25                                  0.22 µH                       Recommended                       -682  0.122 / 3,1              0.26 – 0.28 g
+                                                                                                                       Land Pattern                     -822  0.161 / 4,1              0.35 – 0.37 g
+                                                    20
+                                                                                                                                                        -103  0.161 / 4,1              0.35 – 0.37 g
+                                                                                                                                                        -153  0.161 / 4,1              0.35 – 0.37 g
+                                                    15
+
+                                                    10                                                                                                * For optional tin-lead and tin-silver-
+                                                                                                                                                       copper terminations, dimensions are
+                                                                                                                                                       for the mounted part. Dimensions
+                                                     5                                                                          inches                 before mounting can be an additional
+                                                                                                              Dimensions are in
+                                                                                                                                  mm                   0.005 inch / 0.13 mm.
+                                                     0
+                                                          0.1   1                  10                   100
+                                                                    Frequency (MHz)
+                                                                                                              Packaging
+                                                                                                              XAL4020: 1000/7″ reel; 3500/13″ reel Plastic tape: 12 mm wide,
+                                                                                                              0.23 mm thick, 8 mm pocket spacing, 2.3 mm pocket depth
+                                                                                                              XAL4030: 500/7″ reel; 2000/13″ reel Plastic tape: 12 mm wide,
+                                                                                                              0.23 mm thick, 8 mm pocket spacing, 3.25 mm pocket depth
+                                                                                                              XAL4040: 500/7″ reel; 2000/13″ reel Plastic tape: 12 mm wide,
+                                                                                                              0.30 mm thick, 8 mm pocket spacing, 4.27 mm pocket depth
+
+
+
+
+                                                                               US +1-847-639-6400 sales@coilcraft.com                                Document 806-4            Revised 02/25/26
+                                                                               UK +44-1236-730595 sales@coilcraft-europe.com                                                      © Coilcraft Inc. 2026
+                                                                               Taiwan +886-2-2264 3646 sales@coilcraft.com.tw                        This product may not be used in medical or high
+                                                                                                                                                      risk applications without prior Coilcraft approval.
+                                                                               China +86-21-6218 8074 sales@coilcraft.com.cn                            Specification subject to change without notice.
+                                                                               Singapore + 65-6484 8412 sales@coilcraft.com.sg                             Please check web site for latest information.
+

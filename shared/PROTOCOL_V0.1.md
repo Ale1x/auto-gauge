@@ -4,7 +4,7 @@ Data: 24 ottobre 2026. Stato: proposta tecnica implementabile in simulazione, no
 
 ## Confini
 
-L'app configura il gauge, importa storici e prepara aggiornamenti; non offre una dashboard live. Il gauge funziona senza telefono. Service 01 soltanto; nessuna API accetta un servizio diagnostico arbitrario. Nessuna trasmissione CAN per risvegliare il veicolo. Associazione esclusiva, autenticazione, antireplay e distribuzione degli aggiornamenti richiedono ancora una policy verificata. I trasporti reali e la scrittura OTA restano disabilitati finché tali dipendenze non sono implementate e testate.
+L'app configura il gauge, importa storici e prepara aggiornamenti; non offre una dashboard live. Il gauge funziona senza telefono. Service 01 soltanto; nessuna API accetta un servizio diagnostico arbitrario. Nessuna trasmissione CAN per risvegliare il veicolo. DEC-011 consente più client Bluetooth in momenti diversi, con una sola connessione attiva; non esiste vincolo a un solo iPhone persistente. Autenticazione, antireplay e distribuzione degli aggiornamenti richiedono ancora una policy verificata. I trasporti reali e la scrittura OTA restano disabilitati finché tali dipendenze non sono implementate e testate.
 
 ## Configurazione logica
 
@@ -42,7 +42,7 @@ Validare prima in una configurazione candidata separata. Un errore conserva quel
 
 Non pubblicizzare un GATT utilizzabile senza implementazione. UUID, framing, limiti MTU, messaggi d'errore wire e protocollo di autenticazione non sono congelati. Il contratto transport Swift e l'HAL firmware possono esistere senza un collegamento BLE reale. La sola connessione BLE non attribuisce proprietà e non autorizza configurazione/OTA.
 
-Il secondo incremento aggiunge una proposta di framing implementata nei codec di test: `FRAMING_V0.1.md`, con vettori comuni Python/C/Swift, e un riferimento locale di sync in `LOG_SYNC_V0.1.md`. Questi componenti non congelano GATT o sicurezza e non attivano trasporti reali. La decisione sul recupero dell'ownership è proposta separatamente in `OWNERSHIP_PROPOSAL.md`, ancora da approvare.
+Il secondo incremento aggiunge una proposta di framing implementata nei codec di test: `FRAMING_V0.1.md`, con vettori comuni Python/C/Swift, e un riferimento locale di sync in `LOG_SYNC_V0.1.md`. Questi componenti non congelano GATT o sicurezza e non attivano trasporti reali. La policy corrente sui client e il reset è in `CONNECTION_POLICY_V0.1.md` (DEC-011); la proposta storica `OWNERSHIP_PROPOSAL.md` è superata.
 
 ## Log e tempo
 

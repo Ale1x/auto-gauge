@@ -62,3 +62,15 @@ Origine: richiesta del proprietario «Organizziamo il lavoro: puoi dividere in p
 È autorizzato avviare contemporaneamente app iOS e firmware mediante subagenti, coordinando le interfacce con il filone hardware. Il primo incremento può usare dati simulati, test host e HAL finché i dettagli hardware non sono verificati. Le assegnazioni e i risultati sono in WORKSTREAMS.md.
 
 Le scelte di sviluppo nel contratto shared/PROTOCOL_V0.1.md (schema, geometria, target SDK) sono ipotesi tecniche, non risposte del proprietario alle questioni aperte. Backend, ownership, sicurezza BLE/OTA e specifiche hardware non sono implicitamente approvati da questa organizzazione del lavoro. Non sono autorizzati pubblicazione dell'app, ordini, provisioning eFuse o collegamenti alla vettura. Requisiti funzionali invariati v0.2.5.
+
+## DEC-011 — 2026-10-24 — più dispositivi BLE, una connessione attiva
+
+Origine, precisazione del proprietario: «il dispositivo può essere connesso a N dispositivi bluetooth, però non contemporaneamente, questo è l'unico constrain».
+
+PR-020 è aggiornato: il gauge può essere utilizzato da più dispositivi Bluetooth in momenti diversi; l'unico vincolo di esclusività è **una sola connessione Bluetooth attiva alla volta**. Non è richiesto un solo iPhone permanentemente associato o un unico proprietario dispositivo nel cloud. Aggiungere o cambiare telefono non richiede reset, cancellazione dei dati o trasferimento di proprietà. Non viene introdotto un numero massimo N come nuovo requisito: gli eventuali limiti tecnici di bonding/memoria vanno documentati e verificati, senza trasformarli tacitamente in un vincolo di prodotto.
+
+La precisazione supera la formulazione originaria di PR-020 e le proposte tecniche successive fondate su owner unico. La policy di connessione non è una prova di autenticazione: sicurezza della sessione, antireplay e aggiornamenti firmati restano requisiti separati già previsti dalla SPEC. Non vanno usati per reintrodurre un'esclusività permanente a un solo telefono. La V1 conserva l'app iOS/Swift; consentire altri client BLE non richiede in questa decisione lo sviluppo di un'app Android.
+
+Decisione precedente mantenuta nel suo ambito corretto: il proprietario ha scelto «Reset fisico via USB/pulsanti, senza autorizzazione cloud» alla domanda che specificava la cancellazione di credenziali, configurazione e log locali del gauge, senza cancellare gli storici cloud. Tale reset rimane una **procedura di manutenzione/factory reset separata**, non il meccanismo necessario per cambiare telefono. La scelta non esegue alcuna cancellazione adesso e non definisce tempi/gesto, circuiti o provisioning.
+
+O-08 è risolta per il vincolo di connessione e la natura locale del reset; implementazione, autenticazione e prove restano aperte. Requisiti risultanti v0.2.6; SPEC_V0.2.md è conservata invariata come fonte originaria. Nessuna approvazione hardware, produzione o attivazione di un trasporto reale.

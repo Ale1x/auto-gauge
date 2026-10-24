@@ -15,6 +15,11 @@ struct AutoGaugeApp: App {
 final class AppModel: ObservableObject {
     @Published var editor: ConfigurationDraft
     @Published var message: String?
+    @Published var logSessions: [ImportedLogSession] = []
+    @Published var logReady = false
+    @Published var logBusy = false
+    @Published var lastLogAcknowledgement: String?
+    private let logArchive: LocalLogArchive
     let catalog = DemoData.catalog
     private let storage: AtomicFileConfigurationStorage
     var configuration: GaugeConfiguration {
@@ -26,6 +31,7 @@ final class AppModel: ObservableObject {
     init() {
         let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
         storage = .init(fileURL: directory.appendingPathComponent("AutoGauge/simulated-configuration-v1.json"))
+        logArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: directory.appendingPathComponent("AutoGauge/simulated-histories-v1.json")))
         editor = try! ConfigurationDraft(configuration: DemoData.configuration, catalog: DemoData.catalog)
         do {
             if let data = try storage.read() {
@@ -38,6 +44,35 @@ final class AppModel: ObservableObject {
                 editor = migrated
             }
         } catch { message = "La bozza locale non è leggibile. È stato caricato l’esempio senza sovrascrivere il file salvato. \(error.localizedDescription)" }
+        Task { await reloadLogs(importDemoIfEmpty: true) }
+    }
+    func reloadLogs(importDemoIfEmpty: Bool = false) async {
+        guard !logBusy else { return }
+        logBusy = true
+        do {
+            try await logArchive.reload()
+            logSessions = await logArchive.sessions()
+            logReady = true
+            logBusy = false
+            if importDemoIfEmpty && logSessions.isEmpty { await importDemoLogs() }
+        } catch {
+            logBusy = false
+            logReady = false
+            message = "Ricarica storico non riuscita. Nessun dato sovrascritto e nessun nuovo ACK. \(error.localizedDescription)"
+        }
+    }
+    func importDemoLogs() async {
+        guard logReady, !logBusy else { return }
+        logBusy = true
+        defer { logBusy = false }
+        do {
+            let demo = try DemoLogImport.load()
+            for page in demo.pages {
+                let ack = try await logArchive.importPage(deviceID: demo.deviceID, data: page)
+                lastLogAcknowledgement = "Sessione \(ack.sessionID.value.prefix(8)) · fino alla sequenza \(ack.acknowledgedThrough.decimal)"
+                logSessions = await logArchive.sessions()
+            }
+        } catch { message = "Pagina storico rifiutata: nessun ACK per la pagina fallita. \(error.localizedDescription)" }
     }
     func edit(_ operation: (inout ConfigurationDraft) throws -> Void) {
         var candidate = editor
@@ -129,7 +164,7 @@ struct DeviceView: View {
                 }.padding(.horizontal, 16).background(Palette.panel, in: RoundedRectangle(cornerRadius: 22))
                 VStack(alignment: .leading, spacing: 8) {
                     Label("Collegamento al dispositivo", systemImage: "antenna.radiowaves.left.and.right").font(.headline)
-                    Text("Ricerca Bluetooth e associazione esclusiva saranno disponibili dopo l’integrazione della sessione autenticata.")
+                    Text("Più telefoni potranno essere autorizzati, con un solo collegamento Bluetooth attivo alla volta. La sessione autenticata è ancora da integrare.")
                         .font(.subheadline).foregroundStyle(.secondary)
                     Button("Cerca un gauge") {}.buttonStyle(.bordered).disabled(true)
                 }
@@ -385,22 +420,98 @@ struct CatalogView: View {
 }
 
 struct SessionsView: View {
+    @EnvironmentObject private var model: AppModel
     var body: some View {
         List {
             Section {
-                Label("Storici dimostrativi", systemImage: "clock").font(.headline)
-                Text("Il gauge conserverà un buffer limitato e lo sincronizzerà con l’iPhone. Nessuna registrazione reale è stata importata.").font(.subheadline).foregroundStyle(.secondary)
+                Label("Storici importati da fixture locali", systemImage: "tray.and.arrow.down").font(.headline)
+                Text("Dati dimostrativi letti dal bundle e salvati nell’archivio di questo iPhone. Nessuna lettura dal veicolo o telemetria live.")
+                    .font(.subheadline).foregroundStyle(.secondary)
             }
-            Section("Esempio di sessione") {
-                LabeledContent("Origine", value: "Simulazione locale")
-                LabeledContent("Tempo assoluto", value: "Non disponibile")
-                LabeledContent("Durata", value: "18 min · esempio")
-                LabeledContent("Dati persi", value: "Segnalazione prevista")
+            if model.logBusy { Section { ProgressView("Importazione locale in corso…") } }
+            if model.logSessions.isEmpty && !model.logBusy {
+                Section { Text(model.logReady ? "Nessuna sessione importata." : "Archivio locale non disponibile. Riprova la ricarica.").foregroundStyle(.secondary) }
+            }
+            Section("Sessioni su questo iPhone") {
+                ForEach(model.logSessions) { session in
+                    NavigationLink {
+                        HistoricalSessionView(sessionID: session.id)
+                    } label: {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("Sessione \(session.sessionID.value.prefix(8))").font(.headline)
+                            Text("\(session.records.count) record · \(session.lost.count) intervalli di perdita").font(.subheadline).foregroundStyle(.secondary)
+                            Text(session.deviceID).font(.caption.monospaced()).foregroundStyle(Palette.muted)
+                        }.padding(.vertical, 4)
+                    }
+                }
             }
             Section {
+                Button("Importa di nuovo le fixture locali") { Task { await model.importDemoLogs() } }
+                    .disabled(!model.logReady || model.logBusy)
+                Button("Ricarica archivio locale") { Task { await model.reloadLogs() } }.disabled(model.logBusy)
+                if let acknowledgement = model.lastLogAcknowledgement {
+                    Label("Scrittura locale confermata", systemImage: "checkmark.circle").foregroundStyle(Palette.accent)
+                    Text(acknowledgement).font(.caption.monospacedDigit())
+                }
                 Button("Sincronizza dal gauge") {}.disabled(true)
-            } footer: { Text("Nessuna telemetria live sull’iPhone. Resume, deduplica e persistenza delle sessioni reali sono da integrare.") }
+            } footer: {
+                Text("Reimportare la stessa pagina non duplica i record. I cursori appartengono a questa installazione: le conferme locali non cancellano il buffer del gauge né gli storici di altri telefoni. Bluetooth e cloud restano disattivati.")
+            }
+            Section {
+                Text("Archivio dimostrativo limitato: a capacità piena l’import viene rifiutato senza eliminare record già importati.")
+                    .font(.footnote).foregroundStyle(.secondary)
+            }
         }.navigationTitle("Storici")
+    }
+}
+
+struct HistoricalSessionView: View {
+    @EnvironmentObject private var model: AppModel
+    let sessionID: String
+    var body: some View {
+        if let session = model.logSessions.first(where: { $0.id == sessionID }) {
+            List {
+                Section("Sessione dimostrativa") {
+                    LabeledContent("Dispositivo", value: session.deviceID)
+                    LabeledContent("Sessione", value: session.sessionID.value).font(.caption.monospaced())
+                    LabeledContent("Cursore locale", value: session.acknowledgedThrough.decimal).monospacedDigit()
+                    LabeledContent("Orario assoluto", value: "Non disponibile")
+                    Text("I tempi sono relativi all’avvio del gauge. Nessuna data di guida viene ricostruita senza un’ancora temporale affidabile.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                if !session.lost.isEmpty {
+                    Section("Perdite dichiarate dal produttore della pagina") {
+                        ForEach(session.lost.indices, id: \.self) { index in
+                            let interval = session.lost[index]
+                            Label("Sequenze \(interval.first.decimal)–\(interval.last.decimal)", systemImage: "exclamationmark.triangle")
+                                .font(.subheadline.monospacedDigit()).foregroundStyle(.orange)
+                        }
+                    }
+                }
+                Section("Record importati") {
+                    ForEach(session.records) { record in
+                        VStack(alignment: .leading, spacing: 6) {
+                            HStack {
+                                Text("Sequenza \(record.sequence.decimal)").font(.subheadline.monospacedDigit())
+                                Spacer()
+                                Text(record.status.titleIT).font(.caption.weight(.semibold))
+                                    .foregroundStyle(record.status == .valid ? Palette.accent : .orange)
+                            }
+                            Text(record.relativeTimeIT).font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                            Text(String(format: "Service 01 · PID %02X · ECU 0x%X", record.pid, record.ecuSource))
+                                .font(.caption.monospaced()).foregroundStyle(.secondary)
+                            if record.status == .valid {
+                                Text("Bytes OBD: \(record.rawHex)").font(.caption.monospaced()).textSelection(.enabled)
+                            } else {
+                                Text("—").font(.title2).accessibilityLabel("Dato non disponibile")
+                            }
+                        }.padding(.vertical, 5).accessibilityElement(children: .combine)
+                    }
+                }
+            }.navigationTitle("Dettaglio storico").navigationBarTitleDisplayMode(.inline)
+        } else {
+            ContentUnavailableView("Sessione non disponibile", systemImage: "clock", description: Text("Torna all’elenco degli storici."))
+        }
     }
 }
 
@@ -430,8 +541,13 @@ struct AccountView: View {
                 Button("Crea account") {}.disabled(true)
             } footer: { Text("Nessun account creato, nessun dato inviato a servizi esterni. Le sole preferenze dimostrative sono salvate localmente.") }
             Section("Associazione") {
-                LabeledContent("iPhone proprietario", value: "Non associato")
-                Text("Il prodotto prevede un solo iPhone associato alla volta. Recupero e trasferimento di proprietà sono ancora da definire.").font(.footnote).foregroundStyle(.secondary)
+                LabeledContent("Collegamento Bluetooth", value: "Non attivo")
+                Text("Più telefoni possono essere autorizzati e utilizzati in momenti diversi. È consentito un solo collegamento Bluetooth attivo alla volta; cambiare telefono non richiede reset. Autenticazione e gestione dei telefoni autorizzati sono ancora da integrare.").font(.footnote).foregroundStyle(.secondary)
+            }
+            Section("Manutenzione fisica separata") {
+                Text("Il reset volontario richiede USB e conferma fisica qualificata. Cancellerà credenziali, configurazione e log locali del gauge; non eliminerà dati cloud o storici già sincronizzati. Non serve per aggiungere o cambiare telefono.")
+                    .font(.footnote).foregroundStyle(.secondary)
+                Text("Questa app non esegue alcun reset reale.").font(.caption).foregroundStyle(.secondary)
             }
         }.navigationTitle("Account")
     }

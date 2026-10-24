@@ -1,0 +1,28 @@
+{
+  "cin_parts": 2,
+  "cin_nominal_each_F": 1e-05,
+  "cin_min_screen_H_F": 1.0709999999999999e-05,
+  "cout_parts": 2,
+  "cout_nominal_each_F": 2.2e-05,
+  "cout_min_screen_H_F": 2.0944e-05,
+  "cout_max_screen_H_F": 6.071999999999999e-05,
+  "l_nominal_H": 3.3e-06,
+  "lmin_screen_H": 2.376e-06,
+  "inductor_dcr25_max_ohm": 0.0286,
+  "inductor_dcr125_screen_H_ohm": 0.0398398,
+  "lc_corner_screen_H_Hz": 22561.4547294386,
+  "fsw_nominal_Hz": 2250000.0,
+  "fsw_low_screen_H_Hz": 1500000.0,
+  "ripple_screen_H_A": 0.330411998775635,
+  "peak_screen_H_A": 0.751933597437809,
+  "isat_25C_30percent_drop_typ_A": 5.9,
+  "soft_start_slope_typ_V_per_s": 25000,
+  "cap_charge_at_nominal_cout_typ_A": 1.0999999999999999,
+  "cap_charge_at_coutmax_typ_slope_A": 1.5179999999999998,
+  "unknown": [
+    "No guaranteed DC-bias envelope for chosen capacitors",
+    "No low-VIN maximum RHS for either converter",
+    "No max soft-start slew or complete USB input-current envelope",
+    "No loss/thermal model or stability simulation"
+  ]
+}

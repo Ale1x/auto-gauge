@@ -1,0 +1,10 @@
+{
+  "hardware/usb_power/design_v01/usb_preregulator_study.kicad_sch": "42cf6c771f296c63cad74ed0fa837ed1756dce4507ca67b819b1acf044aa9008",
+  "hardware/usb_power/design_v01/study_candidate_bom.csv": "99d00e814f7591082ddc3e3776504c5574c2212ba5bf27c7b03eefe404de0c48",
+  "hardware/usb_power/design_v01/rail_tradeoff.csv": "a638b4119ee4c6ddcfa1d82531554c07ff9d0543c494507dc5f81a2fde2e62ee",
+  "hardware/usb_power/design_v01/study_pin_matrix.csv": "845458826adf07730821e4833c6b0bcc0840bb0a4bbb256327cd47c18ff53d9a",
+  "hardware/usb_power/design_v01/component_screen.json": "1933fa4318d847696850938cf3282c29213c752caed157be8ecda00c544f4190",
+  "hardware/usb_power/design_v01/erc.json": "4b45901c775e2a2b4d60c387c9aaa814de52631d3847fcc4d4cc26ff7b9f10a1",
+  "hardware/usb_power/design_v01/study.net.xml": "7bcc5cb813c3fc4ead73941a9a23c4eadbced0cae832531167f730c63617f048",
+  "scripts/generate_review_schematic.py": "ee5b048025e92c5edd51ce361f1659a39f84c8196cd599234c9b7faad4ff05a6"
+}

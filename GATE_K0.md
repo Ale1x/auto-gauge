@@ -2,7 +2,7 @@
 
 **Esito: NON SUPERATO / BLOCCATO.** Questo è il primo rapporto di fattibilità, non un design freeze. DEC-009 autorizza ad avanzare allo schema di revisione con blocker aperti: hardware/auto_gauge.kicad_sch, revisioneA0. K0 non viene dichiarato superato. Nessuno schematico definitivo, PCB, routing o ordine avviato.
 
-Base requisiti: SPEC_V0.2.md + DEC-001–DEC-008 in DECISIONS.md (v0.2.5). Il proprietario autorizza un piccolo aumento del diametro esterno oltre 44,45 mm. Ø52 mm è ipotesi di studio; massimo finale, tolleranze e inviluppo del plug restano aperti. PR-009 è invariato.
+Base requisiti: SPEC_V0.2.md + DECISIONS.md fino a DEC-011 (v0.2.6). Il proprietario autorizza un piccolo aumento del diametro esterno oltre 44,45 mm. Ø52 mm è ipotesi di studio; massimo finale, tolleranze e inviluppo del plug restano aperti. PR-009 è invariato. DEC-011 consente N client Bluetooth in momenti diversi con una sola connessione attiva; nessun reset per cambiare telefono.
 
 ## Esito degli otto task correnti
 
@@ -117,3 +117,9 @@ DEC-010 autorizza app e firmware in parallelo, con assegnazioni in WORKSTREAMS.m
 ## Secondo incremento parallelo: studio USB e wake
 
 `hardware/usb_power/HW02_REVIEW.md` confronta due OVP/corrente reali con disponibilità osservata e respinge il loro uso diretto davanti al TPS2116 come protezione completa: margini statici troppo stretti e risposta dinamica non garantita. Studiato il preregolatore USB candidato4,2–4,5V H, con limiti di dropout, corrente/CC e avvio ancora aperti. Tre alternative per il recupero dal fault SLEEP sono confrontate senza dichiarare100µA garantiti. Calcoli e fonti sono riproducibili con `scripts/analyze_usb_power.py`; HR-01/HR-02 restano aperti e A0 invariato. App, decoder firmware e codec di sviluppo sono avanzati su host; nessun risultato software chiude le prove elettriche.
+
+## DEC-011 e terzo incremento
+
+PR-020 è aggiornato a N client Bluetooth utilizzabili in momenti diversi, una sola connessione attiva; nessun reset per cambiare telefono. Il reset fisico USB/pulsanti resta manutenzione separata senza cancellazione cloud. Tracciabilità rigenerata a requisitiv0.2.6. Core sessioni/reset verificato su host e app storici locale implementata; nessuna autenticazione o radio reale abilitata.
+
+Lo studio separato `hardware/usb_power/design_v01/` contiene un preregolatore H3,792V con14simboli, netlist/ERC e calcoli3,8/4,0/4,2/4,5V. ERC0vale solo per la connettività di quel blocco con alimentazione di banco dichiarata. Il preregolatore non costituisce da solo la protezione USB: soft-start, faultFB, dropout a bassoVIN, correnteCC e componenti da sostituire/verificare mantengono HR-02 aperto. A0 resta invariato, con36errori e2warning; nessun PCB o prova elettrica.

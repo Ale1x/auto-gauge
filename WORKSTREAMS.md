@@ -15,7 +15,7 @@ Gli agenti lavorano contemporaneamente in directory distinte nello stesso reposi
 
 App e firmware condividono `shared/PROTOCOL_V0.1.md` e la fixture di configurazione. Possono progredire con simulatori e HAL finché pinout pannello, wake/IGN e protezioni non sono chiusi. La revisione hardware alimenta la prossima iterazione dello schema, non una dichiarazione di costruibilità.
 
-Backend account/cloud, trasferimento BLE autenticato, policy ownership e OTA sicura restano da progettare. Il primo incremento non deve simulare questi servizi come se fossero operativi. Prima della connessione reale: fissare trasporto/sicurezza, testare interoperabilità, compilare SDK device e provare su banco.
+Backend account/cloud, trasferimento BLE autenticato e OTA sicura restano da progettare. DEC-011 fissa invece la policy client: più dispositivi in sequenza, una sola connessione attiva; nessuna esclusività persistente a un telefono. Il primo incremento non deve simulare i servizi mancanti come se fossero operativi. Prima della connessione reale: fissare trasporto/sicurezza, testare interoperabilità, compilare SDK device e provare su banco.
 
 ## Primo incremento completato
 
@@ -36,7 +36,7 @@ Dettagli e limiti delle prove in `shared/VERIFICATION_V0.1.md`. Il primo increme
 |---|---|---|---|
 | APP-02 | App iOS | Migliorare editor e gestione locale delle configurazioni; testare navigazione e resa circolare | O-10 da tradurre in proposta, senza congelare regole non approvate |
 | FW-02 | Firmware | Decoder Service 01, discovery e ISO-TP su simulatore; scheduler con timeout e dati indisponibili | Documentazione protocolli e fixture ECU; nessuna necessità di trasmettere su vettura |
-| SH-02 | Coordinamento con app e firmware | Definire framing e trasferimento bounded, sessione autenticata, ownership e conferme distinte | Policy ownership/recupero e sicurezza da progettare e approvare prima dell'uso reale |
+| SH-02 | Coordinamento con app e firmware | Definire framing e trasferimento bounded, sessione autenticata e conferme distinte | DEC-011: più client in sequenza/una connessione; sicurezza reale da implementare |
 | HW-02 | Hardware | Recupero fault/wake e funzione serie USB, poi alimentazioni/passivi | HR-01…HR-04, limiti elettrici e prove di banco |
 | INT-02 | Integrazione | Collegare app a un simulatore del protocollo device, import log con deduplica/resume | Contratto di messaggi e parser bounded; niente dipendenza da cloud per il gauge |
 
@@ -54,11 +54,22 @@ APP-02, FW-02 e HW-02 possono avanzare in parallelo. INT-02 segue la prima defin
 
 La review separata del riferimento ha riprodotto tre difetti e ne ha verificato le correzioni: cursor serializzato con `BEGIN IMMEDIATE`, configurazione normalizzata/rileggibile prima dell'apply, campi bounded verificati prima della serializzazione. I rispettivi test di regressione sono nel repository.
 
-Verifica integrata e limiti in `shared/VERIFICATION_V0.2.md`. Hardware: `hardware/usb_power/HW02_REVIEW.md`. La scelta O-08 sul recupero di un iPhone perso è presentata in `shared/OWNERSHIP_PROPOSAL.md`: finché manca la risposta non si implementa un trasferimento ownership reale. Studio hardware, decoder e simulazione possono continuare indipendentemente.
+Verifica integrata e limiti in `shared/VERIFICATION_V0.2.md`. Hardware: `hardware/usb_power/HW02_REVIEW.md`. La proposta storica `shared/OWNERSHIP_PROPOSAL.md` è stata superata da DEC-011: non serve trasferimento di ownership per passare a un altro telefono. La policy corrente è `shared/CONNECTION_POLICY_V0.1.md`. Reset fisico USB/pulsanti approvato come manutenzione distinta, non come requisito per nuovi client.
 
 ## Ordine successivo
 
-1. Tradurre la scelta O-08 in macchina a stati e threat model; non attivare mutazioni BLE fino a sessione autenticata verificata.
+1. Implementare DEC-011: slot di connessione unico, più client sequenziali e reset locale separato. Nessun owner unico persistente; non attivare mutazioni BLE fino a sessione autenticata verificata.
 2. Integrare il riferimento log nel core Swift e nella schermata storici con fixture, conservando le garanzie ACK/resume; aggiungere produttore pagine bounded sul firmware.
 3. Estendere decoder/ISO-TP con fonti e simulatori, includendo timeout/discovery e addressing necessari; costruire con ESP-IDF qualificato prima di driver reali.
 4. Simulare e dimensionare il preregolatore USB candidato e confrontare le alternative wake A/B con OCP/fusibile/SOA e budget corrente completo. Nessun bypass o flag ERC al posto della protezione.
+
+## Terzo incremento completato — DEC-011
+
+| Filone | Risultato | Verifica e limiti |
+|---|---|---|
+| `app_ios` | Storici da pagine demo realmente importate in archivio locale; deduplica, resume, perdite e ACK dopo scrittura. Testi corretti a più client/una connessione | 32 test Swift, inclusi8scenari log comuni e riapertura dopo ogni operazione; build iOS simulatore. Nessun BLE/cloud reale |
+| `firmware` | Slot connessione unico con più client sequenziali, lease contro callback tardivi, reset locale separato con journal e callback simulati | 3 suite CTest con ASan/UBSan; 18 punti d'interruzione I/O. Nessun owner unico e nessun reset per A→B→A; HAL radio/erase ancora inattiva |
+| `review_hardware` | Schema KiCad standalone del preregolatore USB H3,792V,14simboli, distinta/matrice/netlist/ERC e confronto3,8–4,5V | Studio isolato non collegato ad A0; ERC0del solo blocco logico. Protezioni/CC, startup, dropout e sourcing ancora aperti |
+| Coordinatore | DEC-011 e tracciabilitàv0.2.6, policy sessioni/reset,8fixture log, sorgente volatile con cursori client indipendenti | 30 test Python e verifica integrata. ACKdiA non rimuove dati perB; nessun limite Ndi prodotto introdotto |
+
+Risultati e limiti in `shared/VERIFICATION_V0.3.md`; studio hardware in `hardware/usb_power/design_v01/DESIGN_REVIEW.md`. La proposta storica owner-unico non è più applicabile. Per la policy BLE non resta da chiedere una decisione: è già fissata da DEC-011.

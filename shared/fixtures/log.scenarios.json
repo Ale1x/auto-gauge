@@ -1,0 +1,472 @@
+[
+  {
+    "name": "dedup_resume",
+    "device_id": "SIMULATO-001",
+    "operations": [
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "1",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            },
+            {
+              "sequence": "2",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": true,
+        "acknowledged_through": "2",
+        "record_count": 2
+      },
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "1",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            },
+            {
+              "sequence": "2",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": true,
+        "acknowledged_through": "2",
+        "record_count": 2
+      },
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "2",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            },
+            {
+              "sequence": "3",
+              "monotonic_ms": "3000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": true,
+        "acknowledged_through": "3",
+        "record_count": 3
+      }
+    ]
+  },
+  {
+    "name": "conflict_preserves_state",
+    "device_id": "SIMULATO-001",
+    "operations": [
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "1",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            },
+            {
+              "sequence": "2",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": true,
+        "acknowledged_through": "2",
+        "record_count": 2
+      },
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "2",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "ffff"
+            },
+            {
+              "sequence": "3",
+              "monotonic_ms": "3000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": false,
+        "acknowledged_through": "2",
+        "record_count": 2
+      },
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "2",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            },
+            {
+              "sequence": "3",
+              "monotonic_ms": "3000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": true,
+        "acknowledged_through": "3",
+        "record_count": 3
+      }
+    ]
+  },
+  {
+    "name": "declared_loss_and_late_record",
+    "device_id": "SIMULATO-001",
+    "operations": [
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "3",
+              "monotonic_ms": "3000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": false,
+        "acknowledged_through": "0",
+        "record_count": 0
+      },
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "3",
+              "monotonic_ms": "3000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": [
+            {
+              "first": "1",
+              "last": "2"
+            }
+          ]
+        },
+        "accepted": true,
+        "acknowledged_through": "3",
+        "record_count": 1
+      },
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "1",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": false,
+        "acknowledged_through": "3",
+        "record_count": 1
+      }
+    ]
+  },
+  {
+    "name": "loss_cannot_overwrite_imported",
+    "device_id": "SIMULATO-001",
+    "operations": [
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "1",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            },
+            {
+              "sequence": "2",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": true,
+        "acknowledged_through": "2",
+        "record_count": 2
+      },
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [],
+          "lost": [
+            {
+              "first": "1",
+              "last": "2"
+            }
+          ]
+        },
+        "accepted": false,
+        "acknowledged_through": "2",
+        "record_count": 2
+      }
+    ]
+  },
+  {
+    "name": "session_isolation",
+    "device_id": "SIMULATO-001",
+    "operations": [
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "1",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            },
+            {
+              "sequence": "2",
+              "monotonic_ms": "2000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": true,
+        "acknowledged_through": "2",
+        "record_count": 2
+      },
+      {
+        "page": {
+          "session_id": "02020202020202020202020202020202",
+          "records": [
+            {
+              "sequence": "1",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": true,
+        "acknowledged_through": "1",
+        "record_count": 3
+      }
+    ]
+  },
+  {
+    "name": "invalid_status_raw",
+    "device_id": "SIMULATO-001",
+    "operations": [
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "1",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "timeout",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": []
+        },
+        "accepted": false,
+        "acknowledged_through": "0",
+        "record_count": 0
+      },
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "1",
+              "monotonic_ms": "1000",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "timeout",
+              "raw_hex": ""
+            }
+          ],
+          "lost": []
+        },
+        "accepted": true,
+        "acknowledged_through": "1",
+        "record_count": 1
+      }
+    ]
+  },
+  {
+    "name": "above_double_precision",
+    "device_id": "SIMULATO-001",
+    "operations": [
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "9007199254740993",
+              "monotonic_ms": "9007199254740993",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": [
+            {
+              "first": "1",
+              "last": "9007199254740992"
+            }
+          ]
+        },
+        "accepted": true,
+        "acknowledged_through": "9007199254740993",
+        "record_count": 1
+      }
+    ]
+  },
+  {
+    "name": "uint64_maximum",
+    "device_id": "SIMULATO-001",
+    "operations": [
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "18446744073709551615",
+              "monotonic_ms": "18446744073709551615",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": [
+            {
+              "first": "1",
+              "last": "18446744073709551614"
+            }
+          ]
+        },
+        "accepted": true,
+        "acknowledged_through": "18446744073709551615",
+        "record_count": 1
+      },
+      {
+        "page": {
+          "session_id": "01010101010101010101010101010101",
+          "records": [
+            {
+              "sequence": "18446744073709551615",
+              "monotonic_ms": "18446744073709551615",
+              "pid": 12,
+              "ecu_source": 2024,
+              "status": "valid",
+              "raw_hex": "1a10"
+            }
+          ],
+          "lost": [
+            {
+              "first": "1",
+              "last": "18446744073709551614"
+            }
+          ]
+        },
+        "accepted": true,
+        "acknowledged_through": "18446744073709551615",
+        "record_count": 1
+      }
+    ]
+  }
+]

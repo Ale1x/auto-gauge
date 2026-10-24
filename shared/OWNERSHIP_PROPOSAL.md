@@ -1,4 +1,8 @@
-# Associazione esclusiva — decisione O-08 da prendere
+# Proposta storica di ownership — SUPERATA
+
+**Non implementare questa proposta come policy corrente.** Il proprietario ha chiarito in DEC-011 che sono ammessi N dispositivi in momenti diversi e una sola connessione Bluetooth attiva alla volta. Nessun owner unico persistente, nessun reset richiesto per aggiungere/cambiare telefono. Il reset fisico USB/pulsanti è approvato solo come manutenzione separata, con cancellazione locale e nessuna cancellazione degli storici cloud. Policy corrente: `CONNECTION_POLICY_V0.1.md`.
+
+Il testo sotto è conservato come proposta precedente, non come requisito attuale.
 
 24 ottobre 2026. Proposta al proprietario, nessuna opzione approvata o implementata. La V1 richiede un solo iPhone associato alla volta, ma non specifica chi possa sostituirlo se viene perso. Il prossimo trasporto autenticato dipende da questa scelta.
 
