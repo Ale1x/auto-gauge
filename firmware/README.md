@@ -262,3 +262,7 @@ Documentazione primaria consultata il 24/10/2026: [ESP Timer release 5.3](https:
 ## Trasferimento OTA bounded FW-13
 
 `include/ota_transfer.h` / `src/ota_transfer.c` implementano codec payload e owner a memoria fissa con lease fidata, offset esatti, deadline/poll e select distinta. Lo studio `ota_study/main/transfer_adapter.c` collega le callback al vero verificatorePSA e installerSDK, senza avviarli dal main. Il CLI `tools/ota_transfer_cli.c` richiede `--trusted-fixture-maintenance` e usa backend comportamentali, senza RSA/flash. Nessuna route BLE/RPC nativa è abilitata. [Contratto](../shared/OTA_TRANSFER_V0.1.md), [verifica](../shared/VERIFICATION_V0.10.md).
+
+## Endpoint OTA AG FW-14
+
+`ota_framed_endpoint` aggiunge reassembly bounded, staging/step separati, ID sequenziali, ACK correnti e chiusura terminale con cleanup singolo dell’owner. Lo studio `ota_study/main/framed_adapter` collega l’intera catena al verificatore/installer esistenti; il CLI framed richiede ammissione fixture esplicita e non usa flash o crypto reali. Main/bridge NimBLE restano senza route OTA attiva. [Contratto](../shared/OTA_FRAMED_V0.1.md), [verifica](../shared/VERIFICATION_V0.11.md).

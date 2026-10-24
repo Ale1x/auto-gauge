@@ -43,3 +43,7 @@ The host transport must supply a nonzero immutable generation and trusted readin
 ## Verification boundary
 
 Shared JSON fixtures encode exact valid and invalid payload bytes; C and Swift consume the same cases. Target tests use behavioral callbacks to prove ordering, lease isolation, no writes before begin verification, bounds, lost ACK behavior assumptions, revocation/timeouts/cancel/select ambiguity. Swift tests use real verified candidates from ephemeral OpenSSL vectors. Host exchange tests do not qualify BLE, flash, boot, power loss or SDK crypto. An adapter to the real installer may be compiled separately; main remains inert.
+
+## Framed binding update
+
+The [dedicated AG session](OTA_FRAMED_V0.1.md) now implements the framing boundary using unchanged kind1/2 codecs, request correlation, fragmentation/deadlines and terminal closure. It is tested through the actual Swift packet transport and C endpoint on a behavioral host process. A separate aggregate SDK adapter links endpoint→owner→manifest verifier→installer; main is inert. This updates the earlier payload-only milestone, without enabling native BLE routing, provisioning, health/floor or physical installation.

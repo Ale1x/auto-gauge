@@ -44,20 +44,35 @@
     "ag_ota_transfer_adapter_poll",
     "ag_ot_owner_init",
     "ag_ot_owner_handle",
-    "ag_ot_owner_poll"
+    "ag_ot_owner_poll",
+    "ag_ota_framed_adapter_init",
+    "ag_ota_framed_adapter_feed",
+    "ag_ota_framed_adapter_step",
+    "ag_ota_framed_adapter_take_output",
+    "ag_ota_framed_adapter_poll",
+    "ag_ota_framed_adapter_close",
+    "ag_ot_endpoint_init",
+    "ag_ot_endpoint_feed",
+    "ag_ot_endpoint_step",
+    "ag_ot_endpoint_take_output",
+    "ag_ot_endpoint_poll",
+    "ag_ot_endpoint_close",
+    "ag_frame_encode",
+    "ag_frame_decode",
+    "ag_stream_feed"
   ],
   "main_instructions": [
-    "4201db38:\t004136        \tentry\ta1, 32",
-    "4201db3b:\tf01d      \tretw.n"
+    "4201e860:\t004136        \tentry\ta1, 32",
+    "4201e863:\tf01d      \tretw.n"
   ],
   "artifacts": {
     "auto_gauge_ota_compile_study.elf": {
-      "bytes": 5390256,
-      "sha256": "e473d41f65a77f70463f62e2b977eb9c52ea52fb4e67ab68e08156ee23521b71"
+      "bytes": 5432864,
+      "sha256": "fde631b53311246276d81279621fd3ae227105022d6e2e9ce90eb92f98774c09"
     },
     "auto_gauge_ota_compile_study.bin": {
-      "bytes": 256912,
-      "sha256": "8bf174037bd97f97d2d8342eb8120ca7eaf17e3b3d057908b4e4e2cadde0f2ce"
+      "bytes": 260608,
+      "sha256": "cd3e2458a486e80f5034bbd0138881bc465f486debdf2f9743f75c802c7ae385"
     },
     "partition_table/partition-table.bin": {
       "bytes": 3072,
@@ -74,7 +89,15 @@
     "firmware/ota_study/main/transfer_adapter.h": "7279742eea1f0cdb0c517141ac8a8f01fd42e7f388d98289222a85def7fc9856",
     "firmware/src/ota_transfer.c": "769d36b64915bad0ebfec00babe5a37efbfd42361e1e185875066027e4e9a25e",
     "firmware/include/ota_transfer.h": "76abb1b713f441c3ea3735368a90f2e9bc6d9131fb438644a66c41f10c3d832b",
-    "firmware/ota_study/main/CMakeLists.txt": "f9e2bc9d49fdcc518fe9e0868137602399a95b53e9e629f1c9ef23ebdaf4740f",
+    "firmware/ota_study/main/framed_adapter.c": "940259bd6024c204589945e420713ea01abaecc234d246e0f46704e61ccbb19c",
+    "firmware/ota_study/main/framed_adapter.h": "44f3837480bc0fb3fe726baab030da7899460df26921893c105fc27e87fc1b9c",
+    "firmware/src/ota_framed_endpoint.c": "9bc557b523f7e83abb381ac824479562adc1d22280bf7bc4544125fecb1a34ed",
+    "firmware/include/ota_framed_endpoint.h": "4fef039013a4373c4fc225b2bc4d76457a3d437c0d6989be49e8405e846f452c",
+    "shared/c/ag_frame.c": "e2d0e2786c0f36914e15e63307e9b4f1f8218f61a7a4d572965837d5c03e1299",
+    "shared/c/ag_frame.h": "4f1280fd380cbb20e0a4525074450075021955c7c42a1c255c8bbf5a0ef60c04",
+    "shared/c/ag_stream.c": "d4afa5f352faccd2580a02eef69d6845a0f1189a3d7d093878eeeadd9b218cbc",
+    "shared/c/ag_stream.h": "a5f19dbd0174de031e532b2677bbcb2ad4cbf455dbd95ae18ab75d91c837a91e",
+    "firmware/ota_study/main/CMakeLists.txt": "89d62cd522ae456555b4b1bd0198131651583dfa79bdf8bc380b87b130526487",
     "firmware/ota_study/sdkconfig.defaults": "4be1a237207480fbb5f1180418f0839ff12f3977bf08b17905e6d098a4e76c8d"
   },
   "actions": {
@@ -89,7 +112,7 @@
     "Empty app_main; linked installer APIs would erase/write/select if called in future",
     "4MB factory+two-OTA development table is not the product memory map or 2MiB log sizing",
     "Target manifest verifier and transfer adapter linked; trusted hardware/floor/key lookup and platform policy remain caller supplied",
-    "Bounded payload controller linked to installer but no main or BLE/RPC route; no production key installed",
+    "Framed endpoint and payload controller linked to installer but no main or BLE/RPC route; no production key installed",
     "No health confirmation, reboot, durable release-counter transaction or recovery after ambiguous selection",
     "No Secure Boot/encryption provisioning, physical flash/brownout/wear/rollback qualification",
     "SDK Wi-Fi capability flag may be enabled; initialization symbols absent and main never invokes them",

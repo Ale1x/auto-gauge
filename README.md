@@ -47,3 +47,5 @@ L’ottavo incremento collega polling e registrazione in un runtime autonomo hos
 Il nono incremento aggiunge verifica pacchetto OTA offline Swift e verifica manifesto C/PSA linkata nello studio SDK. Vettori comuni con firme reali e prova nativa TF-PSA-Crypto verificano l’interoperabilità; main inerte, trust di produzione e trasferimento restano da integrare. Esiti e limiti: [shared/VERIFICATION_V0.9.md](shared/VERIFICATION_V0.9.md).
 
 Il decimo incremento implementa sender Swift e controller C per trasferimento OTA a blocchi con ACK esatti, stop prima della select e blocco dei retry dopo esiti incerti. Un adapter li collega al verificatore/installer nello studio SDK; trasporto BLE/main e chiavi di produzione restano da integrare. [shared/VERIFICATION_V0.10.md](shared/VERIFICATION_V0.10.md).
+
+L’undicesimo incremento porta il trasferimento OTA nei frame AG con frammentazione, correlazione, timeout e chiusura senza retry. Le prove Swift→C attraversano il vero endpoint framed; lo studio SDK collega l’intera catena con main inerte. Nessuna route BLE/UI è attivata. [shared/VERIFICATION_V0.11.md](shared/VERIFICATION_V0.11.md).

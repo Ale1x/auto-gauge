@@ -32,7 +32,11 @@ required=['ag_ota_installer_'+n for n in entries]+['esp_ota_begin','esp_ota_writ
     'esp_ota_set_boot_partition','esp_ota_abort','esp_partition_read','psa_hash_setup','psa_hash_update','psa_hash_finish',
     'ag_manifest_verify','ag_manifest_verify_hook','psa_import_key','psa_verify_hash','psa_destroy_key','psa_hash_compute',
     'ag_ota_transfer_adapter_init','ag_ota_transfer_adapter_handle','ag_ota_transfer_adapter_poll',
-    'ag_ot_owner_init','ag_ot_owner_handle','ag_ot_owner_poll']
+    'ag_ot_owner_init','ag_ot_owner_handle','ag_ot_owner_poll',
+    'ag_ota_framed_adapter_init','ag_ota_framed_adapter_feed','ag_ota_framed_adapter_step',
+    'ag_ota_framed_adapter_take_output','ag_ota_framed_adapter_poll','ag_ota_framed_adapter_close',
+    'ag_ot_endpoint_init','ag_ot_endpoint_feed','ag_ot_endpoint_step','ag_ot_endpoint_take_output',
+    'ag_ot_endpoint_poll','ag_ot_endpoint_close','ag_frame_encode','ag_frame_decode','ag_stream_feed']
 for name in required:assert re.search(r'^[0-9a-fA-F]+ [Tt] '+name+r'$',nm,re.M),name
 radio_names=['esp_wifi_init','esp_bt_controller_init','nimble_port_init']
 radio_symbols={name:bool(re.search(r'^[0-9a-fA-F]+ [Tt] '+name+r'$',nm,re.M)) for name in radio_names}
@@ -46,6 +50,9 @@ sources=[HERE/'main/ota_installer.c',HERE/'main/ota_installer.h',HERE/'main/main
          HERE/'main/manifest_verify.c',HERE/'main/manifest_verify.h',
          HERE/'main/transfer_adapter.c',HERE/'main/transfer_adapter.h',
          ROOT/'firmware/src/ota_transfer.c',ROOT/'firmware/include/ota_transfer.h',
+         HERE/'main/framed_adapter.c',HERE/'main/framed_adapter.h',
+         ROOT/'firmware/src/ota_framed_endpoint.c',ROOT/'firmware/include/ota_framed_endpoint.h',
+         ROOT/'shared/c/ag_frame.c',ROOT/'shared/c/ag_frame.h',ROOT/'shared/c/ag_stream.c',ROOT/'shared/c/ag_stream.h',
          HERE/'main/CMakeLists.txt',HERE/'sdkconfig.defaults']
 report=dict(status='COMPILE_LINK_ONLY_NOT_RUN',sdk_commit=actual,configuration=settings,
     radio_init_symbols_present=radio_symbols,
@@ -57,12 +64,12 @@ report=dict(status='COMPILE_LINK_ONLY_NOT_RUN',sdk_commit=actual,configuration=s
     limitations=['Empty app_main; linked installer APIs would erase/write/select if called in future',
         '4MB factory+two-OTA development table is not the product memory map or 2MiB log sizing',
         'Target manifest verifier and transfer adapter linked; trusted hardware/floor/key lookup and platform policy remain caller supplied',
-        'Bounded payload controller linked to installer but no main or BLE/RPC route; no production key installed',
+        'Framed endpoint and payload controller linked to installer but no main or BLE/RPC route; no production key installed',
         'No health confirmation, reboot, durable release-counter transaction or recovery after ambiguous selection',
         'No Secure Boot/encryption provisioning, physical flash/brownout/wear/rollback qualification',
         'SDK Wi-Fi capability flag may be enabled; initialization symbols absent and main never invokes them',
         'SDK compile/link only: PSA hardware provider not executed; native portable crypto has separate evidence',
         'Behavioral fault-injection harness remains separate from real native RSA/SHA test'])
 (HERE/'build-report.json').write_text(json.dumps(report,indent=2)+'\n')
-print('PASS:7 installer +2 manifest +3 transfer adapter entry points and real SDK dependencies linked; app_main calls none')
+print('PASS:7 installer +2 manifest +3 payload adapter +6 framed adapter entry points and real SDK dependencies linked; app_main calls none')
 print('Image bytes:',report['artifacts']['auto_gauge_ota_compile_study.bin']['bytes'])

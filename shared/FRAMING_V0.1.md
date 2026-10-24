@@ -30,3 +30,7 @@ I vettori golden in `fixtures/frame.cases.json` sono condivisi fra Python, C e l
 Le operazioni che mutano il dispositivo restano bloccate nel trasporto reale. Il simulatore può applicare in RAM una configurazione indicando esplicitamente `simulation=true` e `persistence=volatile`; non è conferma di salvataggio sul gauge. DEC-011 consente più client sequenziali e una sola connessione attiva, senza ownership esclusiva o reset per cambiare telefono. Reset locale e protocollo autenticato richiedono ancora implementazione e prove. Non scegliere chiavi, eFuse o provider sulla base di questo framing.
 
 Fonti primarie consultate il24/10/2026: [Bluetooth ATT](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/host/attribute-protocol--att-.html), [Apple scritture CoreBluetooth](https://developer.apple.com/documentation/corebluetooth/cbcharacteristicwritetype). Limiti di notifica e write dipendono da ATT e dalle API; prima dell'implementazione reale riverificare la versione normativa applicabile e `maximumWriteValueLength`.
+
+## Sessione OTA dedicata
+
+La [sessione OTA framed](OTA_FRAMED_V0.1.md) usa gli stessi kind1/2 e codec, con payload OTA binari chiusi al posto del JSON e ID consecutivi. Nessuna modifica ai vettori framing o al parser RPC; il contenuto del packet non attiva da solo la route OTA. Lo studio SDK collega l’endpoint dedicato e il trasporto Swift è testato su pipe host, con gate di sviluppo chiuso per default. Nessuna radio viene avviata da questa integrazione.

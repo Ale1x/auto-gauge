@@ -127,3 +127,13 @@ add_test(NAME gauge_ota_transfer_tests COMMAND gauge_ota_transfer_tests)
 add_executable(gauge_ota_transfer_cli tools/ota_transfer_cli.c)
 target_link_libraries(gauge_ota_transfer_cli PRIVATE gauge_core)
 target_compile_options(gauge_ota_transfer_cli PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+
+# Dedicated framed OTA session core only; no BLE route or main activation.
+target_sources(gauge_core PRIVATE src/ota_framed_endpoint.c)
+add_executable(gauge_ota_framed_tests tests/test_ota_framed_endpoint.c)
+target_link_libraries(gauge_ota_framed_tests PRIVATE gauge_core)
+target_compile_options(gauge_ota_framed_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_test(NAME gauge_ota_framed_tests COMMAND gauge_ota_framed_tests)
+add_executable(gauge_ota_framed_cli tools/ota_framed_cli.c)
+target_link_libraries(gauge_ota_framed_cli PRIVATE gauge_core)
+target_compile_options(gauge_ota_framed_cli PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)

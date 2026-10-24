@@ -159,3 +159,11 @@ APP-12 aggiunge sender Swift actor su trasporto a payload completo, chiuso per d
 FW-13 aggiunge codec e owner bounded con manifesto4096byte, chunk1024, un trasferimento/boot, lease locale isolata, controlli pre/post callback, polling/deadline e cleanup singolo. Adapter studio collega owner→verificatorePSA→installerSDK. Corretto mapping cancel DENIED+FAULT senza perdere cleanup incerto; select tentata conserva possibile modifica boot e non consente retry.6gruppiC+3review indipendenti,61vettori comuni codec e harness adapter con backend esplicitamente comportamentale.98testPython e17/17CTest superati.
 
 Crossbuild studioSDK reale:12entry point forzate più dipendenze controller,256912byte, mainvuoto e nessuna radio/flash. Progetto/risorse rigenerati identici; review e [VERIFICATION_V0.10.md](shared/VERIFICATION_V0.10.md) esplicitano che non esistono ancora routeBLE/RPC, provisioning/trust produzione, salute/floor/rollback/recovery o qualifiche fisiche.
+
+## Undicesimo incremento — sessione OTA con frame AG
+
+APP-13 implementa `OTAPacketTransport` su GaugePacketPipe: sessione esclusiva e gatehost chiuso, open senza scan/pairing, frammentazione al limite effettivo≤512, ID consecutivi e singolo ACK esatto. Controlli epoch dopo ogni await, generazione/write-limit, timestamp, timeout frame/operazione; errore terminale disconnette senza riaprire o ritentare. **153testSwift** inclusi8nuovi e2interop framedC, buildsim/device unsigned riuscite.
+
+FW-14 aggiunge endpoint AG con feed che stage soltanto, step separato, leaseobsolete senza callback, replay/trailing/concat/headeroversize respinti prima di dispatch e timer pending assoluto. Close cancella il proprio owner attivo una volta e non lo resetta; select già tentata conserva l’incertezza. Aggregate adapterSDK collega frame→owner→verificatore→installer.6gruppiC+3review indipendenti, harness SDK comportamentale e review senza rilievi aperti.
+
+**100testPython e18/18CTest** passati. CrossbuildSDK con18entry point forzate,260608byte, maininerte e nessuna radio/flash. Sessione OTA non instradata nel bridgeBLE/RPC né abilitata nella UI. Provisioning/health/floor atomico/rollback/recovery e qualifica fisica restano aperti. [VERIFICATION_V0.11.md](shared/VERIFICATION_V0.11.md).
