@@ -151,3 +151,11 @@ APP-11 verifica offline un pacchetto firmato con Security.framework/CryptoKit e 
 FW-12 verifica il manifesto con PSA reale, output transazionale e cleanup fail-closed; wrapper disponibile ma non collegato a main/platform owner o servizio OTA. Studio SDK con9entry point trattenute, immagine254160byte e main vuoto. Nessuna chiave di prodotto o floor durabile provisionato. Fixture condivise:46casi pubblici con chiavi OpenSSL effimere eliminate prima del return;55vettori C inclusi i casi review.
 
 Verifica integrata già eseguita:89testPython,130Swift,16/16CTest e build iOSsim unsigned; genericdevice unsigned riuscita. Prova reale portable TF-PSA-Crypto:55vettori/13manifesti accettati, distinta dallo shim comportamentale e dall’esecuzione ESP32. Chiusura riproducibilità cache e dettagli finali in [VERIFICATION_V0.9.md](shared/VERIFICATION_V0.9.md). OTA trasferimento/boot health/floor atomico/rollback/recovery, runtime fisico/TWAI/BLE/flash e CloudKit live restano aperti.
+
+## Decimo incremento — trasferimento OTA bounded
+
+APP-12 aggiunge sender Swift actor su trasporto a payload completo, chiuso per default e non collegato a BLE/UI. Usa soltanto candidato immutabile verificato; upload termina READY, select esplicita distinta. ACK esatti per offset/ID/stato, generazione/deadline/cancellazione e busy fra await; ogni esito incerto chiude il sender senza retry o restart. **143testSwift**, inclusi2interop con processoC, buildsim/device unsigned riuscite.
+
+FW-13 aggiunge codec e owner bounded con manifesto4096byte, chunk1024, un trasferimento/boot, lease locale isolata, controlli pre/post callback, polling/deadline e cleanup singolo. Adapter studio collega owner→verificatorePSA→installerSDK. Corretto mapping cancel DENIED+FAULT senza perdere cleanup incerto; select tentata conserva possibile modifica boot e non consente retry.6gruppiC+3review indipendenti,61vettori comuni codec e harness adapter con backend esplicitamente comportamentale.98testPython e17/17CTest superati.
+
+Crossbuild studioSDK reale:12entry point forzate più dipendenze controller,256912byte, mainvuoto e nessuna radio/flash. Progetto/risorse rigenerati identici; review e [VERIFICATION_V0.10.md](shared/VERIFICATION_V0.10.md) esplicitano che non esistono ancora routeBLE/RPC, provisioning/trust produzione, salute/floor/rollback/recovery o qualifiche fisiche.

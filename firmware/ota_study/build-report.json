@@ -38,20 +38,26 @@
     "psa_import_key",
     "psa_verify_hash",
     "psa_destroy_key",
-    "psa_hash_compute"
+    "psa_hash_compute",
+    "ag_ota_transfer_adapter_init",
+    "ag_ota_transfer_adapter_handle",
+    "ag_ota_transfer_adapter_poll",
+    "ag_ot_owner_init",
+    "ag_ot_owner_handle",
+    "ag_ot_owner_poll"
   ],
   "main_instructions": [
-    "4201d124:\t004136        \tentry\ta1, 32",
-    "4201d127:\tf01d      \tretw.n"
+    "4201db38:\t004136        \tentry\ta1, 32",
+    "4201db3b:\tf01d      \tretw.n"
   ],
   "artifacts": {
     "auto_gauge_ota_compile_study.elf": {
-      "bytes": 5358508,
-      "sha256": "5a60ee311ead93b2b4fc962f6dcad0e1b4fa18c5b0db6fe83c902816629aada2"
+      "bytes": 5390256,
+      "sha256": "e473d41f65a77f70463f62e2b977eb9c52ea52fb4e67ab68e08156ee23521b71"
     },
     "auto_gauge_ota_compile_study.bin": {
-      "bytes": 254160,
-      "sha256": "b3503bf52bc41d430b420d10d1dcfab8192629950f37305be2874aec4fa28327"
+      "bytes": 256912,
+      "sha256": "8bf174037bd97f97d2d8342eb8120ca7eaf17e3b3d057908b4e4e2cadde0f2ce"
     },
     "partition_table/partition-table.bin": {
       "bytes": 3072,
@@ -60,11 +66,15 @@
   },
   "source_sha256": {
     "firmware/ota_study/main/ota_installer.c": "01a390939290ad9906b5259fbdf621e76166ae0fbd1475d4f07dc2f37e4a4576",
-    "firmware/ota_study/main/ota_installer.h": "3c1e53c3e38eb1c5831840d08108855ffd9a3081f5c8dc2d9007f0fa7602a11e",
+    "firmware/ota_study/main/ota_installer.h": "360f48eb0d77b7c2b4e8ad722ada26e3a02d3b8a02cea53457d179285de2bcb8",
     "firmware/ota_study/main/main.c": "155b18b25e8d023342ab6eeb3a340ab0f785bd4692185245386f881400e55b09",
     "firmware/ota_study/main/manifest_verify.c": "5603ea076f7d4fa5547b0246af2287fa77ea876093e2be0fbf14c8fcca9e82f8",
     "firmware/ota_study/main/manifest_verify.h": "f0b8f6cbb4ec5d3f1ec9ad42e4082c54f691612429c7e0d5c389d4b2b135ec04",
-    "firmware/ota_study/main/CMakeLists.txt": "274d7ae42f73057fafc5f071278f9d5153c7cd22b59c251204244709aad5f73d",
+    "firmware/ota_study/main/transfer_adapter.c": "1c66d536a4ff1ed76257e576be43fd65a244f32ed3267e7374e70f07705d1743",
+    "firmware/ota_study/main/transfer_adapter.h": "7279742eea1f0cdb0c517141ac8a8f01fd42e7f388d98289222a85def7fc9856",
+    "firmware/src/ota_transfer.c": "769d36b64915bad0ebfec00babe5a37efbfd42361e1e185875066027e4e9a25e",
+    "firmware/include/ota_transfer.h": "76abb1b713f441c3ea3735368a90f2e9bc6d9131fb438644a66c41f10c3d832b",
+    "firmware/ota_study/main/CMakeLists.txt": "f9e2bc9d49fdcc518fe9e0868137602399a95b53e9e629f1c9ef23ebdaf4740f",
     "firmware/ota_study/sdkconfig.defaults": "4be1a237207480fbb5f1180418f0839ff12f3977bf08b17905e6d098a4e76c8d"
   },
   "actions": {
@@ -78,8 +88,8 @@
   "limitations": [
     "Empty app_main; linked installer APIs would erase/write/select if called in future",
     "4MB factory+two-OTA development table is not the product memory map or 2MiB log sizing",
-    "Target manifest verifier linked, but trusted hardware/floor/key lookup must be provisioned by the caller",
-    "No main binding or wire/RPC update service; no production key installed",
+    "Target manifest verifier and transfer adapter linked; trusted hardware/floor/key lookup and platform policy remain caller supplied",
+    "Bounded payload controller linked to installer but no main or BLE/RPC route; no production key installed",
     "No health confirmation, reboot, durable release-counter transaction or recovery after ambiguous selection",
     "No Secure Boot/encryption provisioning, physical flash/brownout/wear/rollback qualification",
     "SDK Wi-Fi capability flag may be enabled; initialization symbols absent and main never invokes them",

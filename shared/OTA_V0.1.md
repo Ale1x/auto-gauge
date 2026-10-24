@@ -41,3 +41,7 @@ Aggiornamento OTA-03: lo [studio SDK separato](../firmware/ota_study/README.md) 
 6. Collaudare trasferimento interrotto, immagine tronca/incompatibile, verifica fallita, boot fallito e recupero USB su banco. Nessun update via veicolo prima dei gate hardware.
 
 Fonti primarie: [ESP-IDFv6.1 OTA ESP32-S3](https://docs.espressif.com/projects/esp-idf/en/v6.1/esp32s3/api-reference/system/ota.html), [Secure Bootv2 ESP32-S3](https://docs.espressif.com/projects/esp-idf/en/v6.1/esp32s3/security/secure-boot-v2.html). Il formato envelope sopra è nostro riferimento applicativo; non è il signature block SDK. Membership Apple e pubblicazione App Store non sono dipendenze per questi test offline.
+
+## Aggiornamento FW-12 / APP-12 / FW-13
+
+Il [verificatore manifesto target](../firmware/ota_study/MANIFEST_VERIFY.md) è ora implementato e linkato; il [controller di trasferimento bounded](OTA_TRANSFER_V0.1.md) e il suo adapter lo collegano all’installer nello studio SDK. Il sender Swift trasferisce soltanto snapshot `VerifiedOTACandidate`, con gate host chiuso di default, ACK esatti e select separata. Esiti incerti sono terminali senza retry automatico. Questa sezione aggiorna lo stato storico dei paragrafi OTA-03: restano assenti binding BLE/main e provisioning/policy produzione, boot health/floor atomico/rollback/recovery fisica. Le prove di trasferimento host non attestano radio o flash. [V0.10](VERIFICATION_V0.10.md).

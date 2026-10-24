@@ -258,3 +258,7 @@ Implementazione e limiti in [FLASH_HISTORY_MODEL.md](FLASH_HISTORY_MODEL.md): du
 5. Chiudere hardware e HAL power/display/ALS, poi prove di banco senza vettura.
 
 Documentazione primaria consultata il 24/10/2026: [ESP Timer release 5.3](https://docs.espressif.com/projects/esp-idf/en/release-v5.3/esp32s3/api-reference/system/esp_timer.html), [sorgente documentazione Espressif](https://github.com/espressif/esp-idf/blob/master/docs/en/api-reference/system/esp_timer.rst). Nessuna misura hardware o conformità dichiarata.
+
+## Trasferimento OTA bounded FW-13
+
+`include/ota_transfer.h` / `src/ota_transfer.c` implementano codec payload e owner a memoria fissa con lease fidata, offset esatti, deadline/poll e select distinta. Lo studio `ota_study/main/transfer_adapter.c` collega le callback al vero verificatorePSA e installerSDK, senza avviarli dal main. Il CLI `tools/ota_transfer_cli.c` richiede `--trusted-fixture-maintenance` e usa backend comportamentali, senza RSA/flash. Nessuna route BLE/RPC nativa è abilitata. [Contratto](../shared/OTA_TRANSFER_V0.1.md), [verifica](../shared/VERIFICATION_V0.10.md).

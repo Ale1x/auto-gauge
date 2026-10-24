@@ -117,3 +117,13 @@ add_executable(gauge_runtime_review_tests tests/test_runtime_review.c)
 target_link_libraries(gauge_runtime_review_tests PRIVATE gauge_core)
 target_compile_options(gauge_runtime_review_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
 add_test(NAME gauge_runtime_review_tests COMMAND gauge_runtime_review_tests)
+
+# OTA payload controller only; no native wire route or physical driver enabled.
+target_sources(gauge_core PRIVATE src/ota_transfer.c)
+add_executable(gauge_ota_transfer_tests tests/test_ota_transfer.c)
+target_link_libraries(gauge_ota_transfer_tests PRIVATE gauge_core)
+target_compile_options(gauge_ota_transfer_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_test(NAME gauge_ota_transfer_tests COMMAND gauge_ota_transfer_tests)
+add_executable(gauge_ota_transfer_cli tools/ota_transfer_cli.c)
+target_link_libraries(gauge_ota_transfer_cli PRIVATE gauge_core)
+target_compile_options(gauge_ota_transfer_cli PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)

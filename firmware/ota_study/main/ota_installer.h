@@ -16,7 +16,8 @@ typedef struct {
     void *context;
     /* Mandatory TRUSTED verifier: authenticate manifest/key/hardware/counter and
      * return its plan. Never a wire boolean or an unverified JSON decoder.
-     * Target cryptographic implementation/provisioning is not supplied here. */
+     * manifest_verify.c supplies the verifier; production trust provisioning
+     * and platform binding remain explicit caller responsibilities. */
     bool (*verify_manifest)(void *,const uint8_t *,size_t,ag_ota_plan_t *);
     bool (*maintenance_allowed)(void *,uint64_t lease);
     uint64_t (*clock_ms)(void *);
