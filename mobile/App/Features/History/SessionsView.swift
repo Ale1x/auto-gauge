@@ -15,6 +15,7 @@ struct SessionsView: View {
                     ContentUnavailableView("Nessuno storico importato", systemImage: "clock.arrow.circlepath", description: Text(model.logReady ? "Collega il gauge simulato e importa le sue pagine di esempio." : "Ricarica correttamente l’archivio locale per continuare."))
                 }
             }
+            Section { NavigationLink(value: HistoryRoute.timeline(nil)) { Label("Misure nel tempo", systemImage: "chart.xyaxis.line") } }
             Section("Sessioni su questo telefono") {
                 ForEach(model.logSessions) { session in
                     NavigationLink(value: HistoryRoute.session(session.id)) { HistoricalSessionRow(session: session) }

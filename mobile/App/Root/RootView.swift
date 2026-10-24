@@ -8,6 +8,7 @@ struct RootView: View {
     @State private var devicePath: [DeviceRoute] = []
     @State private var dashboardPath: [DashboardRoute] = []
     @State private var historyPath: [HistoryRoute] = []
+    @State private var debugHistoryRouteApplied = false
     var body: some View {
         @Bindable var model = model
         Group {
@@ -16,20 +17,19 @@ struct RootView: View {
                     Tab("Dispositivo", systemImage: "circle.hexagongrid", value: .device) { DeviceNavigationView(path: $devicePath) }
                     Tab("Dashboard", systemImage: "rectangle.3.group", value: .dashboards) { DashboardNavigationView(path: $dashboardPath) }
                     Tab("Storici", systemImage: "clock.arrow.circlepath", value: .histories) { HistoryNavigationView(path: $historyPath) }
-                    Tab("Account", systemImage: "person.crop.circle", value: .account) { NavigationStack { AccountView() } }
+                    Tab("Account", systemImage: "person.crop.circle", value: .account) { NavigationStack { AccountView().modifier(SimulationBannerModifier()) } }
                 }
             } else {
                 TabView(selection: $selection) {
                     DeviceNavigationView(path: $devicePath).tabItem { Label("Dispositivo", systemImage: "circle.hexagongrid") }.tag(AppTab.device)
                     DashboardNavigationView(path: $dashboardPath).tabItem { Label("Dashboard", systemImage: "rectangle.3.group") }.tag(AppTab.dashboards)
                     HistoryNavigationView(path: $historyPath).tabItem { Label("Storici", systemImage: "clock.arrow.circlepath") }.tag(AppTab.histories)
-                    NavigationStack { AccountView() }.tabItem { Label("Account", systemImage: "person.crop.circle") }.tag(AppTab.account)
+                    NavigationStack { AccountView().modifier(SimulationBannerModifier()) }.tabItem { Label("Account", systemImage: "person.crop.circle") }.tag(AppTab.account)
                 }
             }
         }
         .onChange(of: scenePhase) { _, phase in if phase == .background { model.nativeBluetooth.stop() } }
         .tint(AppTheme.accent)
-        .safeAreaInset(edge: .top, spacing: 0) { SimulationNotice() }
         .alert("Auto Gauge", isPresented: $model.alertPresented) {
             Button("Va bene", role: .cancel) { model.message = nil }
         } message: { Text(model.message ?? "") }
@@ -39,6 +39,10 @@ struct RootView: View {
         .task {
             await model.bootstrap()
             #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains(where: { ["--history-timeline", "--history-timeline-chart", "--history-timeline-table"].contains($0) }), !debugHistoryRouteApplied {
+                debugHistoryRouteApplied = true
+                selection = .histories; historyPath = [.timeline(nil)]
+            }
             if ProcessInfo.processInfo.arguments.contains("--design-snapshots") {
                 do { try DesignSnapshotRenderer.render(model: model) }
                 catch { model.message = "Rendering diagnostico non riuscito: \(error.localizedDescription)" }

@@ -39,7 +39,12 @@ struct AccountView: View {
             }
         }.navigationTitle("Account")
             .navigationDestination(for: AccountRoute.self) { route in
-                switch route { case .restoredHistory: CloudRestoredHistoryView() }
+                Group {
+                switch route {
+                case .restoredHistory: CloudRestoredHistoryView()
+                case .timeline: HistoryTimelineView(source: .restoredCloud)
+                }
+                }.modifier(SimulationBannerModifier())
             }
 
     }

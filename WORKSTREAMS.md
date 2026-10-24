@@ -120,6 +120,16 @@ L’endpoint C integra stream, ammissione, store e storico bounded. Correzioni d
 
 Studio NimBLE separato con bridge verso il vero endpoint, conferma completa EDONE prima del commit, controllo bond/sicurezza e isolamento callback;15 gruppi di fault injection. SDK compila/linka tutte9 entry point, immagine448880byte e main vuoto. Nessuna esecuzione radio. FW-09 estende a53 PID scalari con fonti, min/max e guardie coerenti, senza promessa di disponibilità su una specifica auto.
 
-Verifica finale: **71 test Python,105 Swift,11/11 CTest**, build iOSsim e genericdevice unsigned riuscite. SDK principale15core+4condivise e studio separato compilati; hash sorgenti studio aggiornati, progetto+3risorse rigenerati identici, checkK0/diff puliti. Primo incremento firmato e pubblicato come e9cb238, CI host verde; pubblicazione del sesto incremento segue con firma configurata mantenuta. Vedi [VERIFICATION_V0.6.md](shared/VERIFICATION_V0.6.md).
+Verifica finale: **71 test Python,105 Swift,11/11 CTest**, build iOSsim e genericdevice unsigned riuscite. SDK principale15core+4condivise e studio separato compilati; hash sorgenti studio aggiornati, progetto+3risorse rigenerati identici, checkK0/diff puliti. Incrementi firmati e pubblicati come e9cb238 e a6ed648, CI host verde. Vedi [VERIFICATION_V0.6.md](shared/VERIFICATION_V0.6.md).
 
 Stato prodotto senza hardware: **step4 integrazione operativa ancora in corso**, catena host verificata ma radio/iPhone reali da qualificare. Restano runtime autonomo, persistenza efficiente/recupero, diagnostica restante, OTA/recovery target, CloudKit live dopo membership e QA. Nessun costo o provisioning attivato.
+
+## Settimo incremento — storico append-only e analisi mobile
+
+FW-10 introduce journal a settori con scrittura ordinaria136byte, prenotazioni e witness duplicati contro rollback ambiguo dopo perdita di dati già confermati. Footer di eviction prima dell’erase, contatori/SID monotoni, ACK non distruttivi. Adapter tipizzato per history_read dell’endpoint, senza inizializzazione o writer impliciti. Otto gruppi journal,2573tagliIO principali più bootstrap,8192posizioni-byte XOR1; test golden12pagine e oracolo480operazioni ora nel repository. Review separata senza rilievi concreti aperti. Non è backendV1 qualificato: circa51minuti/5Hz/2MiB, query O(capacità) per pagina, casi ambigui READ_ONLY/manutenzione.
+
+APP-09 aggiunge grafici nativi da archivi realmente importati, filtri sessione/PID/ECU,7formule qualificate e tabella raw/qualità. Massimo240punti originali, no linea attraverso gap/errori, pagine50righe; UInt64 preservati e origine sottratta prima del grafico. Dodici nuovi test core e render del simulatore, senza nuove operazioni BLE/cloud.
+
+OTA-02 aggiunge preflight strutturale ESP32-S3 e API/CLI con firma del manifesto e formato sulla stessa snapshot immutabile;12test e review separata. Non è un installer o una verifica Secure Boot. Nello studio BLE corretti CONNECT rifiutato non tracciato e guasti advertising silenziosi;12gruppi transport+5bridge con sanitizzatori.
+
+Verifica integrata del coordinatore: **83testPython,117Swift,14/14CTest e build iOSsim unsigned riusciti**. SDKprincipale17core+4condivise; studioNimBLE449088byte con9entry point linkate e maininerte, nessuna radio. Misurati frame stack statici journal/adapter, senza dichiarare task stack sufficiente. [Risultati e limiti](shared/VERIFICATION_V0.7.md). Restano runtime/flash/BLE/recovery fisici, diagnostica restante, OTA target, CloudKit live e QA: stato prodotto ancora integrazione, nessun nuovo costo o provisioning.

@@ -11,6 +11,7 @@ struct CloudRestoredHistoryView: View {
                 Text("Archivio separato dai dati dimostrativi del gauge. I tempi restano relativi all’avvio; nessuna telemetria live o data di guida ricostruita.").foregroundStyle(.secondary)
                 Text("Una perdita è un’osservazione della sorgente: un altro telefono può avere recuperato quei record. I record disponibili vengono conservati anche dentro intervalli segnalati persi.")
             }
+            Section { NavigationLink(value: AccountRoute.timeline) { Label("Analizza misure nel tempo", systemImage: "chart.xyaxis.line") } }
             if cloud.restoredItems.isEmpty {
                 ContentUnavailableView("Nessuno storico iCloud recuperato", systemImage: "icloud.slash", description: Text("Verifica l’account e avvia il recupero dalla schermata Account. La configurazione predefinita mantiene il cloud disabilitato."))
             }

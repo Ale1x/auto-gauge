@@ -24,7 +24,7 @@ class NimBLELifecycleTests(unittest.TestCase):
                 '-o', str(executable)], check=True)
             result = subprocess.run([str(executable)], capture_output=True, text=True,
                 check=True, timeout=30)
-            self.assertIn('PASS: 10 NimBLE lifecycle groups', result.stdout)
+            self.assertIn('PASS: 12 NimBLE lifecycle groups', result.stdout)
 
     def test_bridge_with_real_core_and_failure_injection(self):
         compiler = shutil.which(os.environ.get('CC', 'cc'))

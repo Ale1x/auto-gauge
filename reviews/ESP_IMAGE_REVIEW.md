@@ -1,0 +1,13 @@
+# Independent review: OTA-02 ESP image preflight
+
+Reviewed 2026-10-24: `shared/reference/esp_image.py`, `tests/test_esp_image.py`, `shared/ESP_IMAGE_PREFLIGHT.md`, and the OTA-02 addition to `shared/OTA_V0.1.md`. Read-only production review; no production source, SDK or test changes.
+
+**No new concrete defect found within the stated host preflight contract.**
+
+Evidence: `python3 -m unittest discover -s tests -p test_esp_image.py -v` passed **12/12** tests, including real ephemeral RSA3072-PSS signing, CLI trust-input completeness, original-path mutation during/after snapshot verification, version mismatch and signed non-image rejection. An additional temporary in-memory harness passed 16 trusted-bound/type and unsupported-trailing-data checks. No private test key was added to the repository.
+
+Bounds and format: immutable exact `bytes` input, trusted integer types excluding bool, 16 MiB cap, capacity floor, header/segment extents and address overflow, descriptor bounds, checksum alignment/padding, appended SHA256 and exact EOF are checked before acceptance. Truncated or extra Secure Boot signature/trailing data is rejected rather than ignored. Descriptor version must exactly match the authenticated manifest; release counter ordering remains separate from secure_version and label strings. Full chip revision fields are compared against caller-supplied revision; the pinned v6.1 `bootloader_common_check_chip_revision_validity` uses `min_chip_rev_full` and treats unset maximum fields separately, consistent with this deliberately conservative subset.
+
+Snapshot/trust boundary: `verify_candidate` reads one bounded snapshot, verifies the manifest against its private temporary copy and inspects/returns those same retained bytes. It never rereads the caller's original image path after verification. The returned frozen candidate holds immutable image bytes. Trust anchors, current release floor, chip revision and actual slot capacity are caller inputs; the image supplies none of that authority. CLI format-only operation is explicitly labeled, and any partial authentication option set is rejected before image access.
+
+Limits are correctly stated: this does not prove memory mapping, entry point/SPI/MMU compatibility, eFuse constraints, Secure Boot image signature, bootability, installer atomicity or durable anti-replay advancement. A future installer must verify the actual flashed bytes and SDK image/signature policy before boot selection, then coordinate health confirmation, rollback and counter advancement. A successful manifest signature plus container check must not be presented as those target guarantees. No installer or physical image qualification was performed in this review.

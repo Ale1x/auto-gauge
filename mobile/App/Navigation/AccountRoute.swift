@@ -1,1 +1,1 @@
-enum AccountRoute: Hashable { case restoredHistory }
+enum AccountRoute: Hashable { case restoredHistory, timeline }

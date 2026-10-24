@@ -8,6 +8,7 @@ add_library(gauge_core STATIC src/config.c src/can_policy.c src/log_queue.c src/
   src/obd_decode.c src/isotp_rx.c src/scheduler.c src/connection.c src/history.c
   src/config_store.c src/flash_sim.c src/admission.c src/flash_history.c src/flash_history_sim.c src/device_endpoint.c
   ../shared/c/ag_config_json.c ../shared/c/ag_frame.c ../shared/c/ag_stream.c ../shared/c/ag_rpc.c)
+target_sources(gauge_core PRIVATE src/journal_history.c src/journal_endpoint.c)
 target_include_directories(gauge_core PUBLIC include "${CMAKE_CURRENT_SOURCE_DIR}/../shared/c")
 target_compile_options(gauge_core PRIVATE -Wall -Wextra -Wpedantic -Werror)
 option(AG_SANITIZERS "Address/undefined-behavior sanitizer for host tests" ON)
@@ -92,3 +93,17 @@ add_test(NAME gauge_device_endpoint_interop COMMAND ${Python3_EXECUTABLE}
   "${CMAKE_CURRENT_SOURCE_DIR}/tools/check_endpoint_interop.py"
   --executable $<TARGET_FILE:gauge_device_endpoint_cli>)
 set_tests_properties(gauge_device_endpoint_interop PROPERTIES ENVIRONMENT "PYTHONDONTWRITEBYTECODE=1")
+add_executable(gauge_journal_history_tests tests/test_journal_history.c)
+target_link_libraries(gauge_journal_history_tests PRIVATE gauge_core)
+target_compile_options(gauge_journal_history_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_test(NAME gauge_journal_history_tests COMMAND gauge_journal_history_tests)
+add_executable(gauge_journal_endpoint_tests tests/test_journal_endpoint.c)
+target_link_libraries(gauge_journal_endpoint_tests PRIVATE gauge_core)
+target_compile_options(gauge_journal_endpoint_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_test(NAME gauge_journal_endpoint_tests COMMAND gauge_journal_endpoint_tests)
+add_executable(gauge_journal_golden_tests tests/test_journal_golden.c "${CMAKE_CURRENT_BINARY_DIR}/history_fixture.h")
+add_dependencies(gauge_journal_golden_tests ag_history_fixtures)
+target_include_directories(gauge_journal_golden_tests PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_libraries(gauge_journal_golden_tests PRIVATE gauge_core)
+target_compile_options(gauge_journal_golden_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_test(NAME gauge_journal_golden_tests COMMAND gauge_journal_golden_tests)

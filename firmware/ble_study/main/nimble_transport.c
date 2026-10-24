@@ -43,7 +43,7 @@ static struct {
     uint8_t close_attempts;
     uint16_t handle,response_handle;
     uint8_t address_type;
-    bool started,synced,connected,closing,subscribed,awaiting,faulted,termination_fault_reported,restart_advertise,terminate_requested;
+    bool started,synced,connected,closing,rejected,subscribed,awaiting,faulted,adv_stop_failed,termination_fault_reported,restart_advertise,terminate_requested;
 } server;
 
 static uint64_t now_ms(void){return (uint64_t)esp_timer_get_time()/1000u;}
@@ -99,8 +99,17 @@ static void fault(ag_nimble_fault_t reason){
     server.faulted=true;
     server.hooks.fault(server.hooks.context,reason);
 }
+static void stop_advertising(void){
+    if(!ble_gap_adv_active() || server.adv_stop_failed)return;
+    if(ble_gap_adv_stop()!=0){
+        server.adv_stop_failed=true;
+        if(!server.faulted)fault(AG_NIMBLE_FAULT_START);
+        /* Controller may still advertise: explicit owner/reboot handling only.
+         * No tight retry loop or assertion that the radio has stopped. */
+    }
+}
 static void finish_disconnect(void){
-    clear_tx(false);server.connected=false;server.closing=false;
+    clear_tx(false);server.connected=false;server.closing=false;server.rejected=false;
     server.subscribed=false;server.handle=BLE_HS_CONN_HANDLE_NONE;
     server.restart_advertise=!server.faulted;
 }
@@ -125,6 +134,23 @@ static void try_terminate(void){
     if(result==0)server.terminate_requested=true;
     else if(result==BLE_HS_ENOTCONN && ble_gap_conn_find(server.handle,&description)==BLE_HS_ENOTCONN)finish_disconnect();
 }
+static void reject_connection(uint16_t handle){
+    /* A successful CONNECT owns a controller slot even when admission is denied.
+     * Track its teardown without opening a logical client or invoking its hooks.
+     * No callback cookie can safely be reused at generation exhaustion: cleanup
+     * of rejected links is therefore driven only by the descriptor/timer. */
+    if(server.connected){
+        fault(AG_NIMBLE_FAULT_TERMINATE); /* Violates configured max_connections=1. */
+        ag_nimble_close(server.generation);
+        if(handle!=server.handle)(void)ble_gap_terminate(handle,BLE_ERR_REM_USER_CONN_TERM);
+        return;
+    }
+    server.connected=true;server.closing=true;server.rejected=true;server.subscribed=false;
+    server.handle=handle;if(server.generation<UINT32_MAX)++server.generation;
+    server.close_attempts=0;server.termination_fault_reported=false;
+    server.terminate_requested=false;server.close_started_ms=now_ms();
+    try_terminate();
+}
 void ag_nimble_close(uint64_t generation){
     if(!current(generation))return;
     server.closing=true;server.close_attempts=0;server.termination_fault_reported=false;
@@ -137,7 +163,7 @@ static bool arm_timer(void){
     if(ble_npl_callout_reset(&server.timer,ble_npl_time_ms_to_ticks32(100))==0)return true;
     fault(AG_NIMBLE_FAULT_TIMER);
     if(server.connected)ag_nimble_close(server.generation);
-    if(ble_gap_adv_active())(void)ble_gap_adv_stop();
+    stop_advertising();
     return false;
 }
 static bool send_next(void){
@@ -197,10 +223,13 @@ bool ag_nimble_advertise(void){
     struct ble_hs_adv_fields fields={0};
     fields.flags=BLE_HS_ADV_F_DISC_GEN|BLE_HS_ADV_F_BREDR_UNSUP;
     fields.uuids128=(ble_uuid128_t *)&service_uuid;fields.num_uuids128=1;fields.uuids128_is_complete=1;
-    if(ble_gap_adv_set_fields(&fields)!=0)return false;
+    if(ble_gap_adv_set_fields(&fields)!=0){fault(AG_NIMBLE_FAULT_START);return false;}
     struct ble_gap_adv_params parameters={0};
     parameters.conn_mode=BLE_GAP_CONN_MODE_UND;parameters.disc_mode=BLE_GAP_DISC_MODE_GEN;
-    return ble_gap_adv_start(server.address_type,NULL,BLE_HS_FOREVER,&parameters,gap_event,NULL)==0;
+    if(ble_gap_adv_start(server.address_type,NULL,BLE_HS_FOREVER,&parameters,gap_event,NULL)!=0){
+        fault(AG_NIMBLE_FAULT_START);return false;
+    }
+    return true;
 }
 static void timer_event(struct ble_npl_event *event){
     (void)event;
@@ -216,21 +245,22 @@ static void timer_event(struct ble_npl_event *event){
             ag_nimble_close(server.generation);
         }
     }
-    if(ble_gap_adv_active() && !server.hooks.advertise_allowed(server.hooks.context))(void)ble_gap_adv_stop();
+    if(server.faulted || !server.hooks.advertise_allowed(server.hooks.context))stop_advertising();
     if(server.started)(void)arm_timer();
 }
 static int gap_event(struct ble_gap_event *event,void *arg){
     /* A connection callback carries an immutable scalar tag, not a pointer to
      * mutable global generation. Old callbacks cannot act on a reused handle. */
     if(event->type==BLE_GAP_EVENT_CONNECT && arg!=NULL)return 0;
+    if(event->type!=BLE_GAP_EVENT_CONNECT && server.rejected)return 0;
     if(event->type!=BLE_GAP_EVENT_CONNECT && (!server.connected
         || (uint64_t)(uintptr_t)arg!=server.generation))
         return event->type==BLE_GAP_EVENT_REPEAT_PAIRING?BLE_GAP_REPEAT_PAIRING_IGNORE:0;
     switch(event->type){
     case BLE_GAP_EVENT_CONNECT:
         if(event->connect.status!=0){(void)ag_nimble_advertise();return 0;}
-        if(server.faulted || !server.hooks.advertise_allowed(server.hooks.context) || server.connected || server.generation==UINT32_MAX){(void)ble_gap_terminate(event->connect.conn_handle,BLE_ERR_REM_USER_CONN_TERM);return 0;}
-        server.connected=true;server.closing=false;server.subscribed=false;
+        if(server.faulted || !server.hooks.advertise_allowed(server.hooks.context) || server.connected || server.generation==UINT32_MAX){reject_connection(event->connect.conn_handle);return 0;}
+        server.connected=true;server.closing=false;server.rejected=false;server.subscribed=false;
         server.handle=event->connect.conn_handle;++server.generation;server.connected_ms=now_ms();
         if(ble_gap_set_event_cb(server.handle,gap_event,(void *)(uintptr_t)(uint32_t)server.generation)!=0){ag_nimble_close(server.generation);return 0;}
         {struct ble_gap_conn_desc desc;uint8_t client[16]={0};

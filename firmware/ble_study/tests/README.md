@@ -12,7 +12,7 @@ This compiles **the actual, unmodified** `../main/nimble_transport.c` in the dri
 
 The driver includes production C so it can observe static state and inject callbacks. `boot()` clears the singleton to represent a new process/device boot between independent cases; it is not a production restart API. Task creation records and validates parameters without running a task. Calling `host_task()` explicitly exercises only the adapter's handling of unexpected return from a mocked host loop. Hook context is static, and tests honor the adapter's owner/reentry restrictions. Trusted security evidence is modeled input, not a cryptographic proof.
 
-Ten transport groups exercise:
+Twelve transport groups exercise:
 
 1. Task OOM returns NO_MEM, callout stop/deinit and SDK cleanup, including cleanup failure; fault blocks another start. Also initial SDK/GATT/callout failures and mandatory fault hook.
 2. Termination errors and EALREADY get at most three attempts, report fault once, and fail closed. Missing descriptor and ENOTCONN after descriptor disappearance clear local slot. TX failure and logical disconnect callbacks occur once.
@@ -24,6 +24,8 @@ Ten transport groups exercise:
 8. Mbuf failure, synchronous indication failure, later indication failure, 10-second absolute frame timeout despite partial progress, and 30-second unauthenticated-link timeout.
 9. Unexpected host-loop exit, reset and store pressure fault without allowing restart or bond eviction.
 10. Pre-encryption bond lookup: known authenticated SC/128-bit retained key, ENOENT→unknown, other storage errors→failed, invalid authentication/SC/key length/LTK/identity and invalid/stale/faulted connection rejected. Local SDK key-value wiping is reviewed in production source; the test does not read a dead stack frame to pretend to verify erasure. The shim does not contain real key material.
+11. A successful CONNECT rejected before logical admission is still tracked for bounded teardown. Policy change after advertising with terminate error gets three attempts and one explicit fault, never private RX/TX or logical connect/disconnect/display hooks. Stale disconnect callbacks do not clear a rejected link while its SDK descriptor exists. Successful termination waits once until descriptor disappearance or the30-second failure deadline. ENOTCONN cleanup, generation exhaustion without wrap/re-advertising, and rejected connections while faulted are covered.
+12. SDK advertising fields/start failure during initial sync and reconnect produces an explicit latched fault, while a policy-denied call is legitimately false without SDK work/fault. Successful stop obeys policy; failed stop keeps the mock controller advertising, reports a fault and does not enter a tight retry loop or claim the radio stopped. A timer fault plus failed stop retains the original timer-fault report.
 
 `bridge_driver.c` reuses these SDK doubles and includes the same transport, while **linking unmodified `endpoint_bridge.c` and real core implementations separately**: connection, admission, config validator/store, history codec, device endpoint, JSON/RPC/frame/stream. Only physical storage is the existing flash simulator; history reads explicitly report unavailable in this fixture, so no history retrieval claim is made.
 

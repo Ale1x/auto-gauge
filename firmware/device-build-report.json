@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-10-24T13:41:07.084732+00:00",
+  "generated_utc": "2026-10-24T14:04:16.235195+00:00",
   "status": "ESP32S3_BUILD_SUCCESS_NO_DEVICE_RUN",
   "target": "esp32s3",
   "sdk_tag": "v6.1",
@@ -135,6 +135,8 @@
     "firmware/src/flash_sim.c",
     "firmware/src/history.c",
     "firmware/src/isotp_rx.c",
+    "firmware/src/journal_endpoint.c",
+    "firmware/src/journal_history.c",
     "firmware/src/log_queue.c",
     "firmware/src/obd_decode.c",
     "firmware/src/scheduler.c",

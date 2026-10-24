@@ -11,6 +11,7 @@ static struct {
     int64_t us;
     int init_rc,deinit_rc,count_rc,add_rc,callout_init_rc,timer_rc;
     int ensure_rc,infer_rc,terminate_rc,set_cb_rc,secure_rc,store_rc,indicate_rc;
+    int adv_fields_rc,adv_start_rc,adv_stop_rc;
     BaseType_t task_rc;
     bool present,adv,authorized,allow_adv,accept_connect,accept_receive,tick_alive;
     bool mbuf_fail,mbuf_busy,disappear_on_terminate,synchronous_status;
@@ -23,7 +24,7 @@ static struct {
     unsigned faults[6],init_calls,deinit_calls,task_calls,task_delete_calls;
     unsigned timer_init_calls,timer_stop_calls,timer_deinit_calls,timer_reset_calls;
     unsigned terminate_calls,connect_calls,disconnect_calls,clear_calls;
-    unsigned receive_calls,transmit_ok,transmit_fail,indicate_calls,adv_stop_calls,inject_calls;
+    unsigned receive_calls,transmit_ok,transmit_fail,indicate_calls,adv_stop_calls,inject_calls,adv_fields_calls,adv_start_calls;
     size_t lengths[256],sent_length;
     uint8_t sent[AG_GATT_FRAME_BYTES];
 } mock;
@@ -83,11 +84,11 @@ int os_mbuf_copydata(struct os_mbuf *buffer,int offset,int length,void *out){
     assert(buffer->length<=sizeof(buffer->bytes));memcpy(out,buffer->bytes+offset,(size_t)length);return 0;
 }
 bool ble_gap_adv_active(void){return mock.adv;}
-int ble_gap_adv_stop(void){mock.adv=false;++mock.adv_stop_calls;return 0;}
-int ble_gap_adv_set_fields(const struct ble_hs_adv_fields *fields){assert(fields->num_uuids128==1);return 0;}
+int ble_gap_adv_stop(void){if(mock.adv_stop_rc==0)mock.adv=false;++mock.adv_stop_calls;return mock.adv_stop_rc;}
+int ble_gap_adv_set_fields(const struct ble_hs_adv_fields *fields){assert(fields->num_uuids128==1);++mock.adv_fields_calls;return mock.adv_fields_rc;}
 int ble_gap_adv_start(uint8_t type,const ble_addr_t *peer,int32_t timeout,const struct ble_gap_adv_params *params,test_gap_fn fn,void *arg){
     (void)type;assert(peer==NULL&&timeout==BLE_HS_FOREVER);assert(params->conn_mode==BLE_GAP_CONN_MODE_UND);
-    assert(fn==gap_event&&arg==NULL);mock.adv=true;return 0;
+    assert(fn==gap_event&&arg==NULL);++mock.adv_start_calls;if(mock.adv_start_rc==0)mock.adv=true;return mock.adv_start_rc;
 }
 int ble_gap_set_event_cb(uint16_t handle,test_gap_fn fn,void *arg){
     assert(handle==mock.desc.conn_handle);
@@ -236,8 +237,9 @@ static void test_stale_generation(void){
     assert(!ag_nimble_send(1,frame,16));notify(BLE_HS_EDONE,mock.conn_argument);assert(server.tx_offset==20);
     ready();disconnect_link(mock.conn_argument);server.generation=UINT32_MAX;
     assert(!ag_nimble_advertise());
+    mock.present=true;
     struct ble_gap_event connect={.type=BLE_GAP_EVENT_CONNECT};connect.connect.conn_handle=mock.desc.conn_handle;
-    assert(gap_event(&connect,NULL)==0&&server.generation==UINT32_MAX&&!server.connected&&mock.terminate_calls==1);
+    assert(gap_event(&connect,NULL)==0&&server.generation==UINT32_MAX&&server.connected&&server.rejected&&mock.terminate_calls==1);
 }
 static void test_indication_chunks(void){
     const uint16_t mtus[]={23,515,517,3};
@@ -331,9 +333,78 @@ static void test_bond_lookup(void){
     mock.present=false;assert(ag_nimble_lookup_bond(server.generation)==AG_BOND_LOOKUP_FAILED);
     ready();server.faulted=true;assert(ag_nimble_lookup_bond(server.generation)==AG_BOND_LOOKUP_FAILED);
 }
+static void rejected_connect(void){
+    struct ble_gap_event event={.type=BLE_GAP_EVENT_CONNECT};event.connect.conn_handle=mock.desc.conn_handle;
+    assert(gap_event(&event,NULL)==0);
+}
+static void test_early_rejected_connection_teardown(void){
+    boot();start();ble_hs_cfg.sync_cb();mock.adv=false;mock.allow_adv=false;mock.present=true;mock.terminate_rc=99;
+    rejected_connect();assert(server.connected&&server.closing&&server.rejected&&server.generation==1);
+    assert(mock.connect_calls==0&&mock.disconnect_calls==0&&mock.clear_calls==0&&mock.terminate_calls==1);
+    assert(!ag_nimble_send(server.generation,frame,16)&&write_request(1)==BLE_ATT_ERR_INSUFFICIENT_AUTHEN&&mock.receive_calls==0);
+    struct ble_gap_event stale={.type=BLE_GAP_EVENT_DISCONNECT};stale.disconnect.conn=mock.desc;
+    assert(gap_event(&stale,NULL)==0&&server.connected&&server.rejected);
+    assert(gap_event(&stale,(void *)(uintptr_t)1)==0&&server.connected&&server.rejected);
+    advance(100);advance(200);advance(300);advance(400);
+    assert(mock.terminate_calls==3&&server.faulted&&mock.faults[AG_NIMBLE_FAULT_TERMINATE]==1);
+    assert(mock.connect_calls==0&&mock.disconnect_calls==0&&mock.clear_calls==0);
+    mock.present=false;advance(500);assert(!server.connected&&!server.rejected&&!server.restart_advertise);
+
+    /* A successful terminate is awaited once, and a callback with an untrusted
+     * old cookie cannot clear the rejected descriptor early. */
+    boot();start();ble_hs_cfg.sync_cb();mock.adv=false;mock.allow_adv=false;mock.present=true;
+    rejected_connect();advance(29999);assert(mock.terminate_calls==1&&server.connected&&!server.faulted);
+    assert(gap_event(&stale,NULL)==0&&server.connected);
+    advance(30000);assert(server.faulted&&mock.terminate_calls==1&&mock.faults[AG_NIMBLE_FAULT_TERMINATE]==1);
+    assert(mock.connect_calls==0&&mock.disconnect_calls==0);
+
+    boot();start();ble_hs_cfg.sync_cb();mock.adv=false;mock.allow_adv=false;mock.present=true;
+    mock.terminate_rc=BLE_HS_ENOTCONN;mock.disappear_on_terminate=true;rejected_connect();
+    assert(!server.connected&&!server.rejected&&!server.faulted&&mock.terminate_calls==1);
+    assert(mock.connect_calls==0&&mock.disconnect_calls==0);
+
+    /* Exhaustion never wraps its immutable 32-bit cookie. Cleanup relies on
+     * descriptor absence and cannot resume advertising at UINT32_MAX. */
+    boot();start();ble_hs_cfg.sync_cb();mock.adv=false;mock.present=true;server.generation=UINT32_MAX;
+    rejected_connect();assert(server.connected&&server.rejected&&server.generation==UINT32_MAX);
+    assert(gap_event(&stale,(void *)(uintptr_t)UINT32_MAX)==0&&server.connected);
+    mock.present=false;advance(100);assert(!server.connected&&!server.rejected&&!mock.adv&&!ag_nimble_advertise());
+    assert(mock.connect_calls==0&&mock.disconnect_calls==0);
+
+    boot();start();ble_hs_cfg.sync_cb();mock.adv=false;mock.present=true;server.faulted=true;
+    rejected_connect();assert(server.rejected&&server.closing&&mock.connect_calls==0);
+    mock.present=false;advance(100);assert(!server.connected&&!mock.adv&&server.faulted);
+}
+static void test_advertising_failures(void){
+    for(unsigned which=0;which<2;++which){
+        boot();start();if(which==0)mock.adv_fields_rc=99;else mock.adv_start_rc=99;
+        ble_hs_cfg.sync_cb();assert(server.synced&&server.faulted&&!mock.adv&&mock.faults[AG_NIMBLE_FAULT_START]==1);
+        assert(mock.adv_fields_calls==1&&mock.adv_start_calls==(which==0?0u:1u));
+        assert(!ag_nimble_advertise());advance(100);assert(mock.adv_fields_calls==1&&mock.faults[AG_NIMBLE_FAULT_START]==1);
+        ready();disconnect_link(mock.conn_argument);
+        if(which==0)mock.adv_fields_rc=99;else mock.adv_start_rc=99;
+        advance(100);assert(!server.restart_advertise&&server.faulted&&!mock.adv&&mock.faults[AG_NIMBLE_FAULT_START]==1);
+        advance(200);assert(mock.faults[AG_NIMBLE_FAULT_START]==1&&mock.adv_fields_calls==2);
+    }
+    boot();start();mock.allow_adv=false;ble_hs_cfg.sync_cb();
+    assert(!server.faulted&&!mock.adv&&mock.adv_fields_calls==0&&mock.adv_start_calls==0);
+    assert(!ag_nimble_advertise());mock.allow_adv=true;assert(ag_nimble_advertise()&&mock.adv);
+    mock.allow_adv=false;advance(100);assert(!mock.adv&&!server.faulted&&mock.adv_stop_calls==1);
+    advance(200);assert(mock.adv_stop_calls==1);
+
+    boot();start();ble_hs_cfg.sync_cb();mock.allow_adv=false;mock.adv_stop_rc=99;
+    advance(100);assert(mock.adv&&server.adv_stop_failed&&server.faulted&&mock.faults[AG_NIMBLE_FAULT_START]==1);
+    advance(200);advance(300);assert(mock.adv_stop_calls==1&&mock.faults[AG_NIMBLE_FAULT_START]==1);
+    assert(!ag_nimble_advertise()); /* Error does not prove controller stopped. */
+
+    boot();start();ble_hs_cfg.sync_cb();mock.timer_rc=99;mock.adv_stop_rc=99;
+    timer_event(NULL);assert(server.adv_stop_failed&&server.faulted&&mock.adv);
+    assert(mock.faults[AG_NIMBLE_FAULT_TIMER]==1&&mock.faults[AG_NIMBLE_FAULT_START]==0&&mock.adv_stop_calls==1);
+}
 int main(void){
     fill_frame();test_start_failure();test_termination_errors();test_successful_termination();
     test_timer_and_sync_faults();test_stale_generation();test_indication_chunks();
     test_private_guards();test_send_failure_and_timeouts();test_host_and_store_faults();test_bond_lookup();
-    puts("PASS: 10 NimBLE lifecycle groups (behavioral SDK doubles; no radio/ABI qualification)");return 0;
+    test_early_rejected_connection_teardown();test_advertising_failures();
+    puts("PASS: 12 NimBLE lifecycle groups (behavioral SDK doubles; no radio/ABI qualification)");return 0;
 }

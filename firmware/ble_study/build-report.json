@@ -3,8 +3,8 @@
   "sdk_tag": "v6.1",
   "sdk_commit": "fff9895c82d744c7237be8847347bdd1b07c6643",
   "main_instructions": [
-    "42041950:\t004136        \tentry\ta1, 32",
-    "42041953:\tf01d      \tretw.n"
+    "42041a1c:\t004136        \tentry\ta1, 32",
+    "42041a1f:\tf01d      \tretw.n"
   ],
   "retained_symbols": [
     "ag_nimble_transport_start",
@@ -34,16 +34,16 @@
   },
   "artifacts": {
     "auto_gauge_ble_compile_study.elf": {
-      "bytes": 6225708,
-      "sha256": "fabdac8f220e02ccd10e5c594a5a6c4e04357b2f2ea381128ab90db83cfb4b78"
+      "bytes": 6226868,
+      "sha256": "786975e031448d3473c07b6c3f055cbaa4f6b2d94d6fbd58d5d48dfb5eec5210"
     },
     "auto_gauge_ble_compile_study.bin": {
-      "bytes": 448880,
-      "sha256": "1a061d6398292abb7c6b02887f05cd9413ab95c033bbfbc2b19d6b361c554a9f"
+      "bytes": 449088,
+      "sha256": "c5cde85bf998b2e393e3fa7e3d96190368cf1cf7aaea6942e592b94e4a0184a5"
     }
   },
   "source_sha256": {
-    "firmware/ble_study/main/nimble_transport.c": "add8ba7e22f248c365676ed731adf39ce130cf44561e0dbc8ec58a3ebee6b795",
+    "firmware/ble_study/main/nimble_transport.c": "3c6c0b85e8b8454bea0559c6cb0437773af8ceb57004d27ec2f6e6f87591a119",
     "firmware/ble_study/main/endpoint_bridge.c": "7bf051eed53e5ce6da0d42df611161a3a6175cd6af17f274f8da596591ea7bfc",
     "firmware/ble_study/main/main.c": "16b394daface6fb51e39a8229658ef1f4560d5f3675e57723904afdd562aaeb0",
     "firmware/ble_study/main/nimble_transport.h": "78d8b6610ac51073295cef619233f73925112d6f9d59a597676659c743e6b9fc",

@@ -29,6 +29,8 @@ La verifica usa OpenSSL CLI con argomenti espliciti e timeout, senza shell o alg
 
 ## Integrazione target ancora necessaria
 
+Aggiornamento OTA-02: il [preflight immagine host](ESP_IMAGE_PREFLIGHT.md) verifica ora un sottoinsieme strutturale ESP32-S3 e, con `verify_candidate`, firma del manifesto e formato sulla stessa snapshot immutabile. Non modifica i limiti di `verify_package` sopra né sostituisce i controlli SDK/Secure Boot o l’installer target elencati sotto.
+
 1. Fissare hardwareID, partizioni effettive, firma dell’immagine completa e capacità/margine dopo driver/asset/BLE. Lo skeleton170624byte non dimensiona la V1.
 2. Verificare firma del manifesto con trust anchor locale. Trasferire con protocollo bounded su sessione BLE autenticata; aggiornare solo slot inattivo e verificare hash dei **byte effettivamente scritti**, senza assumere immutabile un file già controllato.
 3. Eseguire i controlli ESP-IDF immagine/chip/signature e `esp_ota_end` prima della selezione boot. Errore non seleziona l’immagine e non sovrascrive lo slot attivo.

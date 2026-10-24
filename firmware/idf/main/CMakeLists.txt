@@ -6,6 +6,8 @@ idf_component_register(
     "../../src/config_store.c" "../../src/flash_sim.c" "../../src/admission.c"
     "../../src/flash_history.c" "../../src/flash_history_sim.c"
     "../../src/device_endpoint.c"
+    "../../src/journal_history.c"
+    "../../src/journal_endpoint.c"
     "../../../shared/c/ag_config_json.c"
     "../../../shared/c/ag_frame.c" "../../../shared/c/ag_stream.c"
     "../../../shared/c/ag_rpc.c"

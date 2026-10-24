@@ -14,6 +14,7 @@ struct HistoricalSessionView: View {
                     LabeledContent("Orario assoluto", value: "Non disponibile")
                     Text("I tempi sono relativi all’avvio del gauge. Nessuna data di guida viene ricostruita senza un’ancora temporale affidabile.").foregroundStyle(.secondary)
                 }
+                Section { NavigationLink(value: HistoryRoute.timeline(session.id)) { Label("Analizza misure nel tempo", systemImage: "chart.xyaxis.line") } }
                 if !session.lost.isEmpty {
                     Section("Perdite dichiarate dalla sorgente") {
                         ForEach(session.lost) { interval in

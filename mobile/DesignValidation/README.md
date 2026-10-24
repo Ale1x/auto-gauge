@@ -24,3 +24,5 @@ Rendering ispezionati come immagini statiche per wrapping, sovrapposizioni e coe
 Restano non eseguiti: collaudo interattivo VoiceOver/VoiceControl, misurazione dei target tramite Accessibility Inspector, gestures/reflow su tutti i runtime, fold iPhoneDuo e barre iOS27.1, tutte le schermate native Form/List. Queste limitazioni non vengono presentate come compliance raggiunta. CUA non espone Simulator.app in questa sessione.
 
 I PNG salvati fotografano APP-04; i nuovi accessi/pagine Bluetooth APP-07 e CloudKit APP-05/06 non sono inclusi in quei render. Usano componenti e controlli nativi coerenti, ma non viene estesa a tali schermate la verifica visiva precedente.
+
+La successiva [verifica APP-09](APP09/README.md) aggiunge screenshot reali del simulatore per grafico, filtri e tabella storici, senza estendere retroattivamente queste evidenze APP-04 alle altre schermate.
