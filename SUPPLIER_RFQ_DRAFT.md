@@ -25,3 +25,7 @@ Confermare per iscritto:
 ## Confronto economico da compilare
 
 C_totale = componenti + PCB + PCBA + display + cablaggio/connettori + lavoro manuale + test + attrezzaggi + trasporto + imposte. C_unità = C_totale / 5. Evitare doppio conteggio del display se già nella BOM. Fascia lotto aritmetica 200–350 EUR, perimetro O-19 da confermare. Prezzo finale: TBD per tutti i fornitori. Non sommare i soli componenti noti per dichiarare il budget fattibile.
+
+## Dati aggiuntivi approvati e candidati da quotare
+
+Service01 soltanto; buffer locale limitato e syncBLE; target standby massimo100µA a12V entro5min OFF. Quotare come opzione la coppia Molex0430200600/0430250600 a6vie con terminali corretti, pigtail interno sul singolo PCB, protezione B+ e strain relief. Non sostituire con parti a4vie senza approvazione della strategia masse. Diametro52mm resta ipotesi; fit e connettore non congelati.

@@ -1,8 +1,8 @@
-# Gate K0 — revisione 0.3, 2026-10-24
+# Gate K0 — revisione 0.4, 2026-10-24
 
 **Esito: NON SUPERATO / BLOCCATO.** Questo è il primo rapporto di fattibilità, non un design freeze. Il lavoro autorizzato parte da K0; K1 richiede successiva approvazione esplicita. Nessuno schematico finale, PCB, routing o ordine avviato.
 
-Base requisiti: SPEC_V0.2.md + DEC-001/DEC-002 in DECISIONS.md (v0.2.2). Il proprietario autorizza un piccolo aumento del diametro esterno oltre 44,45 mm. Ø52 mm è ipotesi di studio; massimo finale, tolleranze e inviluppo del plug restano aperti. PR-009 è invariato.
+Base requisiti: SPEC_V0.2.md + DEC-001–DEC-005 in DECISIONS.md (v0.2.3). Il proprietario autorizza un piccolo aumento del diametro esterno oltre 44,45 mm. Ø52 mm è ipotesi di studio; massimo finale, tolleranze e inviluppo del plug restano aperti. PR-009 è invariato.
 
 ## Esito degli otto task correnti
 
@@ -12,7 +12,7 @@ Base requisiti: SPEC_V0.2.md + DEC-001/DEC-002 in DECISIONS.md (v0.2.2). Il prop
 | 2 Pannello nudo | BLOCCATO | Tre candidati in PANEL_SOURCING_K0.md; VIEWE ha vendita pubblica e PDF, ma codici discordanti. Nessuna identità/fornitura congelata |
 | 3 BOM candidata | PARZIALE | BOM_CANDIDATES.csv: candidati e righe TBD; stock/prezzi solo dove supportati da fonte, nessun MPN congelato |
 | 4 CAN/cavo | PARZIALE | Strategia e budget illustrativi in CAN_POWER_TEST_PLAN.md; stack conforme, connettori e ramo2m non verificati |
-| 5 Automotive12V/wake | BLOCCATO | Profili e target proposti, nessun dimensionamento completo né misura. O-04/O-06/O-07/O-18 aperte |
+| 5 Automotive12V/wake | BLOCCATO | Profili e target proposti, nessun dimensionamento completo né misura. target100µA/300s approvato; prova e O-06/O-07/O-18 ancora aperte |
 | 6 Meccanica | BLOCCATO | MECHANICAL_K0.md: tavola concettuale A/B in mechanical/gauge-k0-concepts.drawio.png; quote note e ipotesi distinte, fit completo ancora aperto |
 | 7 Fornitori/costo | PARZIALE | Fonti pubbliche JLCPCB/PCBWay/Seeed verificate; SUPPLIER_RFQ_DRAFT.md pronta, non inviata. Nessuna conferma manual-assembly/sourcing specifica né preventivo |
 | 8 Gate report | COMPLETATO come report preliminare | Questo file e issues/K0-001_BLOCKERS.md; exit gate non raggiunto |
@@ -31,10 +31,10 @@ Misurato sul prodotto: **nulla**. Dati disponibili: nominali da datasheet, pagin
 
 | ID | Chiusura richiesta |
 |---|---|
-| O-01 | Proprietario: perimetro dei servizi diagnostici; proposta Service01 soltanto da approvare |
-| O-04 | Proprietario: limite standby e intervallo dopo OFF; proposta100µA a12V da discutere, non fissata |
-| O-06 | Proprietario: latenza wake, timeout e gestione CAN attivo a quadro OFF |
-| O-14 | Proprietario: log su gauge o solo app connessa; retention e perdita ammessa per dimensionare memoria |
+| O-01 | CHIUSA nello scope da DEC-003: solo PID live Service01; restano implementazione e test |
+| O-04 | Target approvato DEC-005:100µA a12V entro5min OFF; metodo completo e prova da chiudere |
+| O-06 | Standby entro5min OFF approvato; latenza wake e comportamento CAN/IGN ambiguo ancora aperti |
+| O-14 | DEC-004 approva buffer locale limitato con syncBLE; capacità/frequenza/retention/perdita ancora da fissare in LOGGING_K0.md |
 | O-16 | Sourcing/ingegneria: pannello realmente conforme, datasheet corretto, campione e fornitura lotto5 |
 | O-17 | Fornitore: conferma scritta e prezzo per assemblaggio completo; contatto esterno ancora da autorizzare |
 | O-18 | Prova HW-IGN: dimostrare comportamento non proprietario e concordare eventuale compromesso |
@@ -49,7 +49,7 @@ Non usare devboard come pinout pannello; non congelare un nuovo diametro senza f
 
 1. Verificare E01 nel nuovo inviluppo consentito da DEC-002 o trovare alternativa equivalente: correggere le incongruenze del datasheet e acquisire disponibilità/prezzo/MOQ e campione. Il piccolo aumento di diametro non risolve questi blocchi.
 2. Completare due studi quotati reali con pannello/PCB/FPC, presa e plug gauge, USB, magnete, ALS e antenna. Verificare fit e RF prima di congelare footprint.
-3. Definire con owner O-01/O-04/O-06/O-07/O-14 e condizioni d'uso USB; fissare severità e criteri, poi chiudere power/thermal budget.
+3. Applicare DEC-003–005 e completare O-04/metodo, O-06, O-07, O-14/limiti buffer e condizioni d’uso USB; fissare severità e criteri, poi chiudere power/thermal budget.
 4. Eseguire piano HW-IGN prima su simulatore e poi sulla Polo dopo controlli di banco; raccogliere corrente e log con ground truth. Nessun test su vettura già eseguito.
 5. Con autorizzazione al contatto, richiedere fattibilità/quote complete ai fornitori usando la bozza; ottenere conferma sourcing e montaggio manuale. Nessun ordine.
 6. Aggiornare tracciabilità e BOM con evidenze e alternative verificate; chiudere blocker. Solo dopo approvazione K0 iniziare K1: rail, pin matrix, power/RF/thermal budget e BOM fissata. K2 creerà il progetto tramite KiCad MCP con gerarchia SPEC §10; K3 layout, K4 package e preventivo definitivo, K5 solo dopo approvazione produzione.
@@ -61,3 +61,7 @@ Eseguire `python3 scripts/build_k0_registers.py` per rigenerare registro, CSV e 
 ## Avanzamento successivo
 
 Ricerca pannelli estesa a tre candidati e tre canali di fornitura, con richiesta tecnica mirata pronta in PANEL_SOURCING_K0.md. BOM aggiornata con alternative non cumulative. MEMORY_RF_K0.md quantifica framebuffer e sensibilità dei log e rettifica il rating condizionato ECC. Inventario librerie KiCad eseguito in sola lettura. La tavola meccanica è concettuale: la presenza di quote non chiude fit, RF o sourcing. O-16/O-17/HW-IGN e target standby rimangono aperti; nessun ulteriore gate approvato.
+
+## Decisioni e analisi successive
+
+DEC-003–005 hanno fissato Service01, buffering locale limitato con syncBLE, e target100µA a12V entro5min OFF. LOGGING_K0.md propone partizione/coda fisse e decimazione senza rallentare CAN/UI; valori H, policy overflow e retention da approvare. STANDBY_BUDGET_K0.md respinge la protezione sempre in modalità normale e analizza i consumi del percorso sleep. CONNECTORS_CABLE_K0.md introduce una coppia6vie a pannello come candidata; terminali, plugOBD, fit e cablaggio restano aperti. HW_IGN_TEST_PROTOCOL.md e template CSV pronti; nessun test eseguito.

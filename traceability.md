@@ -1,6 +1,6 @@
-# Tracciabilità K0 — revisione 0.3
+# Tracciabilità K0 — revisione 0.4
 
-Data 2026-10-24. Fonte normativa SPEC_V0.2.md + DECISIONS.md (requisiti risultanti v0.2.2).
+Data 2026-10-24. Fonte normativa SPEC_V0.2.md + DECISIONS.md (requisiti risultanti v0.2.3).
 Generato da scripts/build_k0_registers.py. Gli sheet sono destinazioni pianificate: non esiste ancora un progetto KiCad.
 «CANDIDATO» non significa selezionato o validato. Nessun test T è stato eseguito.
 
@@ -8,17 +8,17 @@ Generato da scripts/build_k0_registers.py. Gli sheet sono destinazioni pianifica
 |---|---|---|---|---|---|---|
 | PR-001 | Supportare **solo OBD-II su CAN, ISO 15765-4**; nessun protocollo legacy K-Line/J1850. | SPEC §1.2 | T-004, T-008 | 01_OBD_INPUT / 04_CAN_PHY / firmware | CANDIDATO | CAN_POWER_TEST_PLAN.md; E03/E07; nessun test |
 | PR-002 | Elettronica alimentata esclusivamente da OBD-II, destinata **esclusivamente a veicoli con impianto elettrico nominale a 12 V**; il funzionamento continuo su impianti nominali a 24 V **non è supportato**. | SPEC §1.2 | T-001, T-002, T-003 | 02_AUTOMOTIVE_POWER | BLOCCATO | O-07; nessun dimensionamento protezioni |
-| PR-003 | Interrogare e rendere disponibili tutti i **PID OBD-II standard supportati dal veicolo**, non parametri proprietari. | SPEC §1.2 | T-008 | firmware catalogo PID | BLOCCATO | O-01; discovery proposta, non implementata |
+| PR-003 | Interrogare e rendere disponibili tutti i **PID OBD-II standard supportati dal veicolo**, non parametri proprietari. Addendum DEC-003: solo PID live Service01. | SPEC §1.2 + DECISIONS.md | T-008 | firmware catalogo PID | DA IMPLEMENTARE | DEC-003: solo Service01; discovery/decoder da verificare |
 | PR-004 | Sola lettura diagnostica: sono ammesse richieste diagnostiche necessarie a ottenere letture; proibite cancellazioni, attuazioni e scritture/stati modificabili. | SPEC §1.2 | T-008 + test allowlist negativi | firmware allowlist centrale | DA IMPLEMENTARE | SPEC §5.2; CAN_POWER_TEST_PLAN.md |
 | PR-005 | Veicolo del primo collaudo: **Volkswagen Polo V/6R, 2011, 1.2 TDI, 75 CV, 3 cilindri**. | SPEC §1.2 | T-005, T-006, T-007 | banco e Polo effettiva | DA VERIFICARE | Nessun accesso alla vettura; nessun log |
 | PR-006 | Display acceso con quadro acceso; resta acceso se motore spento ma quadro acceso. | SPEC §1.2 | T-005 | 04_CAN_PHY / power / stato IGN | BLOCCATO | HW-IGN / O-18 |
-| PR-007 | Gauge lasciabile collegato per settimane; riaccensione automatica senza intervento umano. | SPEC §1.2 | T-006, T-007 | power always-on / wake | BLOCCATO | O-04/O-06/O-18 |
+| PR-007 | Gauge lasciabile collegato per settimane; riaccensione automatica senza intervento umano. Addendum DEC-005: massimo100µA a12V entro5min dal quadro OFF. | SPEC §1.2 + DECISIONS.md | T-006, T-007 | power always-on / wake | BLOCCATO | DEC-005:100µA entro300s; wake/IGN e prova aperti |
 | PR-008 | Porta **USB-C nascosta**, destinata solo a sviluppo/manutenzione e recupero firmware; nessuna alimentazione esterna per l'uso normale. | SPEC §1.2 | recovery e matrice USB/OBD | 07_TEST_SERVICE | BLOCCATO | O-03; piano backfeed in CAN_POWER_TEST_PLAN.md |
 | PR-009 | **Display circolare AMOLED 1,75 pollici**, touch, collegato tramite FPC a **un PCB completamente custom**. | SPEC §1.2 | drawing + sourcing + T-010 | 05_AMOLED_TOUCH | BLOCCATO | E01/E19–E22: PANEL_SOURCING_K0.md; fit e O-16 aperti |
 | PR-010 | Un tap in qualsiasi posizione sul display passa alla dashboard successiva. | SPEC §1.2 | T-010 | touch / firmware UI | DA IMPLEMENTARE | SPEC §6.1; nessun prototipo |
 | PR-011 | Fino a **3 dashboard** e fino a **5 misurazioni per dashboard**. | SPEC §1.2 | T-010, T-011 + limiti 3x5 | UI / validazione firmware-app | DA IMPLEMENTARE | SPEC §6.1 |
 | PR-012 | **Cavo OBD-II di 2 m**, con connettore removibile **lato display**; non usare due schede funzionali separate. | SPEC §1.2 | T-004, T-017 | 01_OBD_INPUT / cavo / presa gauge | BLOCCATO | MPN e cablaggio da verificare; O-21 |
-| PR-013 | Montaggio magnetico. Limite dimensionale richiesto: **max 1,75 pollici**, interpretazione fisica esatta da chiarire. Addendum DEC-002: piccolo aumento del diametro esterno autorizzato; massimo finale da definire. | SPEC §1.2 + DEC-002 | fit quotato + prova montaggio/RF | case / magnete / PCB | BLOCCATO | DEC-001; MECHANICAL_K0.md; O-22 |
+| PR-013 | Montaggio magnetico. Limite dimensionale richiesto: **max 1,75 pollici**, interpretazione fisica esatta da chiarire. Addendum DEC-002: piccolo aumento del diametro esterno autorizzato; massimo finale da definire. | SPEC §1.2 + DECISIONS.md | fit quotato + prova montaggio/RF | case / magnete / PCB | BLOCCATO | DEC-001; MECHANICAL_K0.md; O-22 |
 | PR-014 | Luminosità regolabile da app sia manualmente sia automaticamente con **sensore di luce ambientale**. | SPEC §1.2 | T-012 | 06_LIGHT_SENSOR / firmware / app | CANDIDATO | E06; curva O-12 non fissata |
 | PR-015 | Fornitore PCBA candidato: **JLCPCB**, ma non definitivo. | SPEC §1.2 | T-018 | produzione | DA VERIFICARE | E10; RFQ non inviata |
 | PR-016 | Prima tiratura: **5 unità**; obiettivo di spesa **40–70 EUR per unità assemblata**. | SPEC §1.2 | T-018 | BOM / lotto 5 | BLOCCATO | Nessun preventivo completo; O-19 |
@@ -27,17 +27,17 @@ Generato da scripts/build_k0_registers.py. Gli sheet sono destinazioni pianifica
 | PR-019 | **Aggiornamento firmware OTA via BLE**. | SPEC §1.2 | T-015 | BLE / bootloader / flash | CANDIDATO | E02/E08; BLE transport e rollback non implementati |
 | PR-020 | Associazione **esclusiva a un iPhone per volta**. | SPEC §1.2 | T-014 | BLE ownership / app | BLOCCATO | O-08 |
 | PR-021 | App con **account e sincronizzazione cloud**, esclusivamente **iOS / Swift**, soltanto in italiano. | SPEC §1.2 | test app/account/offline | app Swift / backend | DA SPECIFICARE | O-13/O-23; fuori implementazione HW K0 |
-| PR-022 | App non espone una schermata live: è un'app di configurazione; tuttavia registra sessioni/storici/log nell'app. Meccanismo di trasferimento da definire. | SPEC §1.2 | T-016 | storage / BLE log / app | BLOCCATO | O-14; nessuna garanzia storico definita |
+| PR-022 | App non espone una schermata live: è un'app di configurazione; tuttavia registra sessioni/storici/log nell'app. Meccanismo di trasferimento da definire. Addendum DEC-004: buffer locale limitato con successiva sync BLE. | SPEC §1.2 + DECISIONS.md | T-016 | storage / BLE log / app | PARZIALMENTE DEFINITO | DEC-004:buffer locale limitato; LOGGING_K0.md, retention aperta |
 | PR-023 | Dashboard con **layout completamente personalizzabile** (entro i limiti 3×5). | SPEC §1.2 | T-011 + editor | schema config / UI / app | BLOCCATO | O-10 |
 | PR-024 | **Obiettivo di 5 Hz** per misurazioni rapide, compatibilmente con ECU, CAN, protocollo e numero di PID. | SPEC §1.2 | T-009 | scheduler / CAN | DA VERIFICARE | O-09; solo stime illustrative |
 | PR-025 | Dato non disponibile: mostrare `—` e indicatore di indisponibilità, non zero né valore precedente. | SPEC §1.2 | timeout/stale/error injection | firmware catalogo / UI | DA IMPLEMENTARE | SPEC §5.3; nessun test eseguito |
 | PR-026 | Dashboard predefinite al primo avvio con parametri standard **solo se supportati**. | SPEC §1.2 | discovery simulata + primo boot | firmware default dashboard | DA IMPLEMENTARE | O-24; no PID preteso supportato |
-| O-01 | Scope preciso di «tutti i PID standard»: solo Service 01 oppure anche Service 02/09, DTC lettura? | SPEC §11 (P0) | decisione owner + test T-008 | firmware diagnostico | APERTA P0 | Scope Service 01 proposto, non approvato |
+| O-01 | Scope preciso di «tutti i PID standard»: solo Service 01 oppure anche Service 02/09, DTC lettura? | SPEC §11 (P0) | decisione owner + test T-008 | firmware diagnostico | SCOPE CHIUSO | DEC-003:solo PID live Service01; verifica stack ancora necessaria |
 | O-02 | Max 1,75": diametro esterno finito, diametro PCB o area schermo? Tolleranza in millimetri? | SPEC §11 (P0) | decisione owner + CAD assieme | case / PCB / display | AUMENTO APPROVATO; MASSIMO FINALE APERTO | DEC-002: diametro esterno maggiore; Ø52 mm ipotesi, fit/tolleranze/plug aperti |
 | O-03 | USB-C alimenta temporaneamente il PCB per recovery senza OBD o richiede OBD collegato? Come prevenire backfeed? | SPEC §11 (P1) | decisione owner + test backfeed | 07_TEST_SERVICE | APERTA P1 | Due opzioni in CAN_POWER_TEST_PLAN.md |
-| O-04 | Assorbimento massimo consentito in standby misurato su impianto nominale a 12 V, e dopo quanti minuti dal quadro OFF? | SPEC §11 (P0) | approvazione target + T-006 | 02_AUTOMOTIVE_POWER | APERTA P0 | 100 µA solo proposta; nessuna misura |
+| O-04 | Assorbimento massimo consentito in standby misurato su impianto nominale a 12 V, e dopo quanti minuti dal quadro OFF? | SPEC §11 (P0) | metodo misura + T-006 | 02_AUTOMOTIVE_POWER | TARGET APPROVATO; VERIFICA APERTA | DEC-005:100µA a12V entro5min OFF; STANDBY_BUDGET_K0.md |
 | O-05 | Budget di potenza/temperatura accettabile in funzionamento. | SPEC §11 (P1) | power budget + termica | power / display / MCU | APERTA P1 | Esempio 2 W non budget del prodotto |
-| O-06 | Tempo di wake e timeout standby; comportamento in caso di CAN attivo con quadro OFF. | SPEC §11 (P0) | decisione owner + T-007 | wake / stato firmware | APERTA P0 | Nessun limite temporale approvato |
+| O-06 | Tempo di wake e timeout standby; comportamento in caso di CAN attivo con quadro OFF. | SPEC §11 (P0) | decisione owner + T-007 | wake / stato firmware | APERTA P0 | DEC-005:standby entro5min OFF; latenza wake e comportamento ambiguo aperti |
 | O-07 | Temperature e profili automotive; vibrazione, umidità, esposizione solare, grado IP. | SPEC §11 (P1) | profili approvati + T-002/T-003 | protezioni / case / componenti | APERTA P1; BLOCCA K0 | Screening proposti; nessuna conformità |
 | O-08 | Esclusività pairing, factory reset, riassegnazione owner e iPhone perso. | SPEC §11 (P1) | decisione owner + T-014 | BLE / app / ownership | APERTA P1 | Nessuna policy approvata |
 | O-09 | 5 Hz vale per quanti PID contemporanei e quale tolleranza quando ECU lenta? | SPEC §11 (P1) | criteri owner + T-009 | scheduler | APERTA P1 | 1/5/15 PID da misurare |
@@ -45,7 +45,7 @@ Generato da scripts/build_k0_registers.py. Gli sheet sono destinazioni pianifica
 | O-11 | Dashboard configurata per veicolo A usata su veicolo B con PID non disponibile. | SPEC §11 (P2) | decisione owner + test cambio auto | catalogo / UI | APERTA P2 | PR-025 resta obbligatorio per dato indisponibile |
 | O-12 | Brightness auto/manuale: logica precedenze, curva, limiti e override. | SPEC §11 (P2) | decisione owner + T-012 | ALS / brightness | APERTA P2 | Curva, priorità e limiti da fissare |
 | O-13 | Provider cloud, account, autenticazione, policy privacy e offline, retention storico. | SPEC §11 (P1) | requisiti backend/app | cloud / account | APERTA P1 | Nessuna scelta provider |
-| O-14 | Origine e permanenza dei log se iPhone non è connesso: storage locale sul gauge oppure storico solo in app quando connessa. | SPEC §11 (P0) | decisione owner + T-016 | storage / memoria / log | APERTA P0 | Buffer locale o solo app connessa da decidere |
+| O-14 | Origine e permanenza dei log se iPhone non è connesso: storage locale sul gauge oppure storico solo in app quando connessa. | SPEC §11 (P0) | limiti buffer + T-016 | storage / memoria / log | MECCANISMO APPROVATO; DETTAGLI APERTI | DEC-004:buffer locale con syncBLE e carico limitato; LOGGING_K0.md |
 | O-15 | Distribuzione firmware e recovery/security policy. | SPEC §11 (P2) | decisione owner + T-015 | bootloader / distribuzione firmware | APERTA P2 | E08 solo capacità piattaforma |
 | O-16 | Pannello AMOLED nudo realmente approvvigionabile con FPC/pinout e vincoli dimensionali. | SPEC §11 (P0) | datasheet corretto + campione + offerta | 05_AMOLED_TOUCH / meccanica | APERTA P0 | PANEL_SOURCING_K0.md: tre candidati, nessuno congelabile |
 | O-17 | Chi monta connettore lato gauge, il cavo e il display e a che prezzo? | SPEC §11 (P0) | conferma scritta + T-018 | fornitore assieme | APERTA P0 | Bozza RFQ pronta, non inviata |

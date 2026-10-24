@@ -12,7 +12,7 @@ O-14 determina la flash: esempio H di15 misure a5Hz con record medio16byte →1.
 
 Una flash16MiB deve ospitare bootloader/partizioni, configurazione, asset e almeno due immagini OTA. Con esempio H di due slot da4MiB ciascuno rimangono **meno di8MiB** per il resto, non ottoMiB tutti per i log. Serve una build reale per dimensionare gli slot. Nessuna partizione congelata.
 
-Scelte owner da confrontare: log soltanto nell'app quando connessa; buffer locale limitato con sync BLE; storico continuo con durata/loss policy esplicite. RTC/timebase e riavvii vanno inclusi nella scelta. Firmware e gauge live restano autonomi dall'iPhone in ogni opzione.
+Aggiornamento DEC-004: owner ha scelto buffer locale limitato con sync BLE successiva e senza sovraccarico. Frequenza/capacità/retention/loss policy da fissare; proposta in LOGGING_K0.md. RTC/timebase e riavvii vanno inclusi nella scelta. Firmware e gauge live restano autonomi dall'iPhone in ogni opzione.
 
 ## Vincolo RF nel diametro52mm ipotetico
 

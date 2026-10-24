@@ -1,6 +1,6 @@
 # CAN, alimentazione e prove K0 — proposta non congelata
 
-Data 2026-10-24; requisiti SPEC v0.2 + DEC-001/DEC-002 (v0.2.2). Riferimenti E02–E09, E16–E17 in evidence/SOURCES.md. Nessuna misura hardware eseguita.
+Data 2026-10-24; requisiti SPEC v0.2 + DEC-001–DEC-005 (v0.2.3). Riferimenti E02–E09, E16–E17 in evidence/SOURCES.md. Nessuna misura hardware eseguita.
 
 ## CAN e cavo
 
@@ -8,9 +8,9 @@ Architettura candidata: TWAI del MCU + transceiver esterno TCAN1043A-Q1, CAN cla
 
 Avvio: partire in ascolto senza trasmissione; identificare bitrate su traffico valido quando possibile. Se non esiste traffico, non è garantita identificazione passiva. Autodetection diagnostica con trasmissione solo nel banco/stato attivo controllato autorizzato; non scandire bitrate trasmettendo su rete ignota. Implementazione dello stack conforme richiede fissare revisione ISO 15765-4/ISO-TP e catalogo PID standard prima di dichiarare conformità.
 
-Proposta Service 01, subordinata a O-01: discovery pagina 00 e successive pagine a passi di 0x20 solo quando il bit di continuazione della ECU lo indica; capability e dati separati per ECU. Allowlist centralizzata dei servizi e PID ammessi, mai frame raw arbitrari da app. Vietati Mode 04, attuazioni e scritture. ISO-TP: bounded buffer, timeout, sequence counter e flow control verificati, anche risposte multiple. Gli header di indirizzamento, padding, tempi e ID ECU saranno fissati da documentazione normativa e fixture; nessun PID OEM per dedurre IGN.
+DEC-003 approva solo PID live Service 01: discovery pagina 00 e successive pagine a passi di 0x20 solo quando il bit di continuazione della ECU lo indica; capability e dati separati per ECU. Allowlist centralizzata dei servizi e PID ammessi, mai frame raw arbitrari da app. Vietati Mode 04, attuazioni e scritture. ISO-TP: bounded buffer, timeout, sequence counter e flow control verificati, anche risposte multiple. Gli header di indirizzamento, padding, tempi e ID ECU saranno fissati da documentazione normativa e fixture; nessun PID OEM per dedurre IGN.
 
-Pinout preliminare da SPEC §2.1: 6 CAN-H, 14 CAN-L, 16 B+, 4/5 masse con strategia da progettare; altri pin non cablati senza requisito. Plug J1962 Type A candidato, MPN e drawing ancora aperti. La famiglia E16 è un punto di sourcing, non un plug già verificato. Non collegare alla cieca chassis/signal ground.
+Pinout preliminare da SPEC §2.1: 6 CAN-H, 14 CAN-L, 16 B+, 4/5 masse con strategia da progettare; altri pin non cablati senza requisito. Plug J1962 Type A candidato, MPN e drawing del plug veicolo ancora aperti; shortlist lato gauge in CONNECTORS_CABLE_K0.md. La famiglia E16 è un punto di sourcing, non un plug già verificato. Non collegare alla cieca chassis/signal ground.
 
 Cavo 2 m: coppia CAN intrecciata, ritorno potenza e sezione dimensionati, contatti bloccabili e strain relief. Non usare il solo nome OBD per dedurre twist, impedenza o pinout del cavo acquistato. Nessuna terminazione aggiuntiva da 120 Ω nel gauge. ESD CAN presso la presa; TVS e common-mode choke solo dopo valutazione capacità/clamp e SI.
 
@@ -43,7 +43,7 @@ Potenza attiva: P_in = somma(P_rail/efficienza_percorso) + perdite protezioni; c
 
 Standby: misurare l'intero ingresso B+ compresi transceiver wake, alimentazione always-on, protezioni, partitori, TVS, leakage USB/FPC, pull-up e wake spurii. Display/MCU spenti non implicano corrente nulla. Dimensionare partitori disinseribili e verificare retroalimentazione attraverso GPIO.
 
-Sensibilità 4 settimane (672 ore), solo consumo aggiuntivo del gauge: 50 µA → 0,0336 Ah; 100 µA → 0,0672 Ah; 500 µA → 0,336 Ah; 1 mA → 0,672 Ah. Proposta per discussione O-04: ≤100 µA all'ingresso a 12 V nello standby stabile; NON requisito approvato. Con wake spurii 200 mA per 5 s ogni ora, si aggiungono 278 µA medi: includerli nella misura, non solo la lettura a riposo.
+Sensibilità 4 settimane (672 ore), solo consumo aggiuntivo del gauge: 50 µA → 0,0336 Ah; 100 µA → 0,0672 Ah; 500 µA → 0,336 Ah; 1 mA → 0,672 Ah. DEC-005 approva ≤100 µA all’ingresso a 12 V entro5min dal quadro OFF; requisito ancora da dimostrare. STANDBY_BUDGET_K0.md dettaglia il primo screening. Con wake spurii 200 mA per 5 s ogni ora, si aggiungono 278 µA medi: includerli nella misura, non solo la lettura a riposo.
 
 ## Wake e quadro: gate HW-IGN
 

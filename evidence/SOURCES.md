@@ -36,3 +36,15 @@ Nessuna fonte di devboard è stata usata per assegnare il pinout del pannello. N
 | E23 | [Espressif layout moduli](https://docs.espressif.com/projects/esp-hardware-design-guidelines/en/latest/esp32s3/pcb-layout-design.html) | Posizionamento antenna e raccomandazione clearance interna15mm; test sul prodotto richiesti. |
 
 Inventario KiCad via MCP, sola lettura: trovati footprint WROOM-1/1U e simboli TCAN1043xDxQ1/LM5164DDA. Nessun controllo pin-per-pin o scelta definitiva.
+
+## Connettori e standby — 2026-10-24
+
+| ID | Fonte primaria / canale commerciale | Limite |
+|---|---|---|
+| E24 | [Molex0430200600](https://www.molex.com/en-us/products/part-detail/430200600), [0430250600](https://www.molex.com/en-us/products/part-detail/0430250600), [specifica famiglia](https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/productspecificationpdf/430/43045/PS-43045-001.pdf?inline=) | Coppia6vie candidata; contatti/crimp e sistema da verificare. |
+| E25 | [Drawing Molex43020](https://www.molex.com/content/dam/molex/molex-dot-com/products/automated/en-us/salesdrawingpdf/430/43020/430200601_sd.pdf?inline=) | Risorsa originale individuata; download locale fallito, quote non trasferite nel CAD. |
+| E26 | [Molex0430450400](https://www.molex.com/en-us/products/part-detail/0430450400?display=pdf) | Alternativa PCB4vie; non equivalente al6vie. |
+| E27 | [DigiKey0430200600](https://www.digikey.com/en/products/detail/molex/0430200600/252492) | Indicizzati3769 pezzi, USD0,40 qty1 solo housing; non riservati. |
+| E28 | [DigiKey0430250600](https://www.digikey.com/en/products/detail/molex/0430250600/252498) | Indicizzati85648 pezzi, USD0,51 qty1 solo housing; non riservati. |
+
+E03 ed E05 ora conservati anche in PDF locale; tabelle di corrente p.6/p.7 renderizzate e ispezionate. E04 §5.5 consultato online per corrente shutdown: condizioni tabellari VIN24V, non misura a12V.
