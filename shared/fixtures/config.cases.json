@@ -1,0 +1,978 @@
+[
+  {
+    "name": "valid_base",
+    "valid": true,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown_schema",
+    "valid": false,
+    "configuration": {
+      "schema_version": 2,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "boolean_schema",
+    "valid": false,
+    "configuration": {
+      "schema_version": true,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "zero_revision",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 0,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "overflow_revision",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 2147483648,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "empty_dashboard_list",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": []
+    }
+  },
+  {
+    "name": "four_dashboards",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "duplicate_dashboard_id",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        },
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "empty_widgets",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "six_widgets",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 1000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 12,
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 1000
+              }
+            },
+            {
+              "id": 3,
+              "pid": 12,
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 1000
+              }
+            },
+            {
+              "id": 4,
+              "pid": 12,
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 1000
+              }
+            },
+            {
+              "id": 5,
+              "pid": 12,
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 1000
+              }
+            },
+            {
+              "id": 6,
+              "pid": 12,
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 1000,
+                "height": 1000
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "duplicate_widget_id",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 1,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "zero_pid",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 0,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "negative_origin",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": -1,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "zero_width",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 0,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "rectangle_overflow",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 9000,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "fractional_coordinate",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 1.5,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "boolean_coordinate",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": true,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "brightness_overflow",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 101
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown_brightness_mode",
+    "valid": false,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "adaptive",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "auto_keeps_manual_setting",
+    "valid": true,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "auto",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "full_display_bounds",
+    "valid": true,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 10000,
+                "height": 10000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "pid_repeated_across_dashboards",
+    "valid": true,
+    "configuration": {
+      "schema_version": 1,
+      "revision": 1,
+      "brightness": {
+        "mode": "manual",
+        "manual_percent": 50
+      },
+      "dashboards": [
+        {
+          "id": 1,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "widgets": [
+            {
+              "id": 1,
+              "pid": 12,
+              "rect": {
+                "x": 2500,
+                "y": 1500,
+                "width": 5000,
+                "height": 3000
+              }
+            },
+            {
+              "id": 2,
+              "pid": 5,
+              "rect": {
+                "x": 2500,
+                "y": 5500,
+                "width": 5000,
+                "height": 2500
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

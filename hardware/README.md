@@ -30,7 +30,7 @@ Il simboloFPC J501 e i testpoint logici del foglio5 sono esclusi daBOM/board e s
 
 KiCad apre tutti gli8fogli ed esporta PDF,SVG e netlistXML. Il controllo di connettività confronta la netlist effettiva con273 assegnazioni e verifica USB duplicataA/B, Rd distinti, CAN_H/L, railCAN daOBD, GPIO35/36/37 riservati, assenza di120Ω e separazione fraUSB_VBUS_RAW e l’ingressoUSB del mux. Risultato in `exports/connectivity_audit.json`.
 
-**ERC:36errori e2warning aperti, non esclusi né approvati.** Dettagli in `ERC_REVIEW.md` e `exports/erc.json`. Il controllo script classifica gli errori attesi ma non converte il risultato inPASS elettrico. Nessun test hardware, simulazione di circuito, conformità automotive, verifica meccanica o revisione peer indipendente eseguita.
+**ERC:36errori e2warning aperti, non esclusi né approvati.** Dettagli in `ERC_REVIEW.md` e `exports/erc.json`. Il controllo script classifica gli errori attesi ma non converte il risultato inPASS elettrico. Nessun test hardware, simulazione di circuito, conformità automotive o verifica meccanica eseguiti. È stata svolta una revisione documentale limitata da un subagente separato: `reviews/A0_INDEPENDENT_REVIEW.md`, con 53 collegamenti critici confrontati e riscontri HR-01…HR-08. Non equivale a revisione completa o approvazione del circuito.
 
 ## Riproduzione
 

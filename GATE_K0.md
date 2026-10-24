@@ -109,3 +109,7 @@ La richiesta del proprietario cambia l’ordine di lavoro rispetto alle stop con
 ## Screening successivo del buck 5 V
 
 BUCK5_FEEDBACK_REVIEW.md confronta due reti Type-3 mediante 16 punti e 64 combinazioni di tolleranze per punto, con equazioni E04 e vincoli di stabilità E52. Il circuito studiato per circa 20 mV di ripple a 12 V scende sotto 12 mV vicino a 6 V al buck. Una seconda rete conserva il margine nel modello ideale, introducendo maggiore errore DC. Nessuna rete qualificata né MPN nuovo selezionato: R210/C208/C209 restano TBD. Aggiornate le note del foglio 02 e il pacchetto di revisione; lo screening non cambia lo stato K0 né chiude il rischio di wake/fault recovery.
+
+## Avvio software parallelo e prima revisione separata
+
+DEC-010 autorizza app e firmware in parallelo, con assegnazioni in WORKSTREAMS.md e contratto di sviluppo in shared/. La review documentale separata in hardware/reviews/A0_INDEPENDENT_REVIEW.md ha confrontato 53 collegamenti critici senza trovare nuove inversioni nei pin verificati. Conferma gli OPEN e precisa che EN/nSTB a zero mantiene il TCAN in Standby con INH attivo; aggiunge il rilievo condizionale GPIO3/JTAG prima di eventuale provisioning. Stato della review: limitata e documentale, non approvazione completa. I risultati software non dimostrano standby, IGN, recovery o conformità del circuito.

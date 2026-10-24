@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "revision": 1,
+  "brightness": { "mode": "manual", "manual_percent": 50 },
+  "dashboards": [
+    {
+      "id": 1,
+      "widgets": [
+        { "id": 1, "pid": 12, "rect": { "x": 2500, "y": 1500, "width": 5000, "height": 3000 } },
+        { "id": 2, "pid": 5, "rect": { "x": 2500, "y": 5500, "width": 5000, "height": 2500 } }
+      ]
+    }
+  ]
+}

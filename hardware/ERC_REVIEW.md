@@ -14,7 +14,7 @@ Eseguito su gerarchia completa con KiCad10.0.7. Risultato:38segnalazioni,36error
 
 I problemi iniziali di griglia del generatore sono stati corretti. Non risultano altre classi di errore nell’export corrente; questo non prova l’assenza di errori progettuali non rilevabili daERC.
 
-Nessun componente con valoreTBD è approvato per acquisto o popolamento. Le sole dichiarazioniPWR_FLAG presenti riguardano la sorgente esternaOBD e il suo ritorno, non le funzioni incomplete. La revisione indipendente resta da svolgere.
+Nessun componente con valoreTBD è approvato per acquisto o popolamento. Le sole dichiarazioniPWR_FLAG presenti riguardano la sorgente esternaOBD e il suo ritorno, non le funzioni incomplete. La revisione completa resta da svolgere; il primo controllo documentale separato è in `reviews/A0_INDEPENDENT_REVIEW.md` e conferma i blocchi sostanziali.
 
 ## Limite riscontrato nel server MCP
 

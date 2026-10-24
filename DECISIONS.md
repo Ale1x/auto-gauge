@@ -54,3 +54,11 @@ Origine, richiesta esplicita del proprietario: «Procedi,non fermarti fin quando
 È autorizzato proseguire a pin assignment, progetto e schema KiCad modificabile per revisione ingegneristica, anche con i blocker K0 già documentati. Questa richiesta successiva prevale sulle precedenti condizioni operative che impedivano di creare lo schema. Non dimostra il superamento K0 né risolve dati tecnici mancanti: connessioni/valori non verificati devono restare marcati H/TBD/OPEN, senza dichiarare lo schema definitivo o pronto alla fabbricazione.
 
 La revisione A0 non autorizza layout/routing PCB, ordini, eFuse irreversibili o collegamento alla vettura. I requisiti funzionali restano v0.2.5; si tratta di una variazione dell’ordine di lavoro, non di una deroga a protezioni, diametro, standby o comportamento IGN.
+
+## DEC-010 — 2026-10-24 — avvio parallelo app e firmware
+
+Origine: richiesta del proprietario «Organizziamo il lavoro: puoi dividere in più agenti che lavorano contemporaneamente a più task: si può già iniziare a lavorare all'app mobile. Un altro subagente può lavorare al firmware del device».
+
+È autorizzato avviare contemporaneamente app iOS e firmware mediante subagenti, coordinando le interfacce con il filone hardware. Il primo incremento può usare dati simulati, test host e HAL finché i dettagli hardware non sono verificati. Le assegnazioni e i risultati sono in WORKSTREAMS.md.
+
+Le scelte di sviluppo nel contratto shared/PROTOCOL_V0.1.md (schema, geometria, target SDK) sono ipotesi tecniche, non risposte del proprietario alle questioni aperte. Backend, ownership, sicurezza BLE/OTA e specifiche hardware non sono implicitamente approvati da questa organizzazione del lavoro. Non sono autorizzati pubblicazione dell'app, ordini, provisioning eFuse o collegamenti alla vettura. Requisiti funzionali invariati v0.2.5.

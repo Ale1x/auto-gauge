@@ -1,0 +1,169 @@
+// !$*UTF8*$!
+{
+"archiveVersion" = "1";
+"classes" = {
+
+};
+"objectVersion" = "56";
+"objects" = {
+"ACD5510C0DE14745FDBB1E28" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "App/AutoGaugeApp.swift";
+"sourceTree" = "<group>";
+};
+"681C948D238C526E9E3424E0" = {
+"isa" = "PBXFileReference";
+"explicitFileType" = "wrapper.application";
+"includeInIndex" = "0";
+"path" = "AutoGauge.app";
+"sourceTree" = "BUILT_PRODUCTS_DIR";
+};
+"0A3E27B8CA818264D75C8D81" = {
+"isa" = "PBXGroup";
+"children" = ("681C948D238C526E9E3424E0");
+"name" = "Products";
+"sourceTree" = "<group>";
+};
+"C69913C7EE4DFDD011BE172F" = {
+"isa" = "PBXGroup";
+"children" = ("ACD5510C0DE14745FDBB1E28", "0A3E27B8CA818264D75C8D81");
+"sourceTree" = "<group>";
+};
+"BC4A71180870F7945155FBB0" = {
+"isa" = "XCLocalSwiftPackageReference";
+"relativePath" = ".";
+};
+"ED3DC570B697046E1D6DC405" = {
+"isa" = "XCSwiftPackageProductDependency";
+"package" = "BC4A71180870F7945155FBB0";
+"productName" = "GaugeCore";
+};
+"F03453927B1B8496433E0F7A" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "ACD5510C0DE14745FDBB1E28";
+};
+"FB839ECA3F3526248F31E8F8" = {
+"isa" = "PBXBuildFile";
+"productRef" = "ED3DC570B697046E1D6DC405";
+};
+"878A52FC5FF6A57D50B7B870" = {
+"isa" = "PBXSourcesBuildPhase";
+"buildActionMask" = "2147483647";
+"files" = ("F03453927B1B8496433E0F7A");
+"runOnlyForDeploymentPostprocessing" = "0";
+};
+"E2AA269EB967A8853A258BFA" = {
+"isa" = "PBXFrameworksBuildPhase";
+"buildActionMask" = "2147483647";
+"files" = ("FB839ECA3F3526248F31E8F8");
+"runOnlyForDeploymentPostprocessing" = "0";
+};
+"41D311A605520FC7B8B9A980" = {
+"isa" = "PBXResourcesBuildPhase";
+"buildActionMask" = "2147483647";
+"files" = ();
+"runOnlyForDeploymentPostprocessing" = "0";
+};
+"488864B3D19480A82F7F1786" = {
+"isa" = "XCBuildConfiguration";
+"name" = "Debug";
+"buildSettings" = {
+"SDKROOT" = "iphoneos";
+"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
+"SWIFT_VERSION" = "5.0";
+"CLANG_ENABLE_MODULES" = "YES";
+"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+};
+};
+"952548237D7F645F11D1E7B6" = {
+"isa" = "XCBuildConfiguration";
+"name" = "Debug";
+"buildSettings" = {
+"PRODUCT_NAME" = "AutoGauge";
+"PRODUCT_BUNDLE_IDENTIFIER" = "local.autogauge.demo";
+"GENERATE_INFOPLIST_FILE" = "YES";
+"INFOPLIST_KEY_CFBundleDisplayName" = "Auto Gauge";
+"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.utilities";
+"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
+"INFOPLIST_KEY_UIApplicationSceneManifest_Generation" = "YES";
+"TARGETED_DEVICE_FAMILY" = "1";
+"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+"CODE_SIGNING_ALLOWED" = "NO";
+"SWIFT_EMIT_LOC_STRINGS" = "NO";
+"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "DEBUG";
+};
+};
+"35B1014F135DE9B45529B733" = {
+"isa" = "XCBuildConfiguration";
+"name" = "Release";
+"buildSettings" = {
+"SDKROOT" = "iphoneos";
+"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
+"SWIFT_VERSION" = "5.0";
+"CLANG_ENABLE_MODULES" = "YES";
+"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+};
+};
+"E2D3A31BEAA1368FC62DA77A" = {
+"isa" = "XCBuildConfiguration";
+"name" = "Release";
+"buildSettings" = {
+"PRODUCT_NAME" = "AutoGauge";
+"PRODUCT_BUNDLE_IDENTIFIER" = "local.autogauge.demo";
+"GENERATE_INFOPLIST_FILE" = "YES";
+"INFOPLIST_KEY_CFBundleDisplayName" = "Auto Gauge";
+"INFOPLIST_KEY_LSApplicationCategoryType" = "public.app-category.utilities";
+"INFOPLIST_KEY_UILaunchScreen_Generation" = "YES";
+"INFOPLIST_KEY_UIApplicationSceneManifest_Generation" = "YES";
+"TARGETED_DEVICE_FAMILY" = "1";
+"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+"CODE_SIGNING_ALLOWED" = "NO";
+"SWIFT_EMIT_LOC_STRINGS" = "NO";
+"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "";
+};
+};
+"B4E10CAA9C5E22150B71559C" = {
+"isa" = "XCConfigurationList";
+"buildConfigurations" = ("488864B3D19480A82F7F1786", "35B1014F135DE9B45529B733");
+"defaultConfigurationIsVisible" = "0";
+"defaultConfigurationName" = "Release";
+};
+"4A807E8A027297B0B93701FB" = {
+"isa" = "XCConfigurationList";
+"buildConfigurations" = ("952548237D7F645F11D1E7B6", "E2D3A31BEAA1368FC62DA77A");
+"defaultConfigurationIsVisible" = "0";
+"defaultConfigurationName" = "Release";
+};
+"C1E9827DB735CA9BAA54A540" = {
+"isa" = "PBXNativeTarget";
+"buildConfigurationList" = "4A807E8A027297B0B93701FB";
+"buildPhases" = ("878A52FC5FF6A57D50B7B870", "E2AA269EB967A8853A258BFA", "41D311A605520FC7B8B9A980");
+"buildRules" = ();
+"dependencies" = ();
+"name" = "AutoGauge";
+"productName" = "AutoGauge";
+"productReference" = "681C948D238C526E9E3424E0";
+"productType" = "com.apple.product-type.application";
+"packageProductDependencies" = ("ED3DC570B697046E1D6DC405");
+};
+"244210E48437B6556980A702" = {
+"isa" = "PBXProject";
+"attributes" = {
+"BuildIndependentTargetsInParallel" = "YES";
+"LastUpgradeCheck" = "2700";
+};
+"buildConfigurationList" = "B4E10CAA9C5E22150B71559C";
+"compatibilityVersion" = "Xcode 14.0";
+"developmentRegion" = "it";
+"knownRegions" = ("it", "Base");
+"mainGroup" = "C69913C7EE4DFDD011BE172F";
+"productRefGroup" = "0A3E27B8CA818264D75C8D81";
+"projectDirPath" = "";
+"projectRoot" = "";
+"targets" = ("C1E9827DB735CA9BAA54A540");
+"packageReferences" = ("BC4A71180870F7945155FBB0");
+};
+};
+"rootObject" = "244210E48437B6556980A702";
+}

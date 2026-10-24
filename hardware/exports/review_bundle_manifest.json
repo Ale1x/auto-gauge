@@ -35,12 +35,12 @@
       "sha256": "b125f8515c7d5cb712200e5c5d3a09aee44eef4928ba5dde18c49fa2a6993d4a"
     },
     "ERC_REVIEW.md": {
-      "bytes": 3127,
-      "sha256": "63d770a91709fea8d13c575ffbb11f608c31ff23e7a79871c05d024da8fd08c4"
+      "bytes": 3238,
+      "sha256": "dd6e9ecb5b6ae99e830b31655e5c7395b53f84a68501357e64d50c36691756fc"
     },
     "README.md": {
-      "bytes": 5994,
-      "sha256": "915b9355c2cb9f5b9bfadf36368d5d4882aecd84e89022a36fca60b33fbed771"
+      "bytes": 6208,
+      "sha256": "4ca937d1dfa520e092285fd32a481f24281383c2c0b0689d900f7a4372647074"
     },
     "auto_gauge.kicad_pro": {
       "bytes": 77,
@@ -59,8 +59,8 @@
       "sha256": "a30926fdbd863caaf7bb35f1ab219daae64eb47f22cd6f3adb121222ea28ae20"
     },
     "exports/connectivity_audit.json": {
-      "bytes": 590,
-      "sha256": "bdc2f1083b009f49180549ee7fcb007b77c2b257a9f9365cdc5a041375690389"
+      "bytes": 767,
+      "sha256": "120a2820b95dbce950210522cd17d26b933fdc5a21b3306f9b40b0e2462f4337"
     },
     "exports/erc.json": {
       "bytes": 25766,
@@ -101,6 +101,10 @@
     "pin_matrix.csv": {
       "bytes": 20597,
       "sha256": "5ed35af621c11882226273374c07d201b24f7dddc5f09097e49afd9eeba7c593"
+    },
+    "reviews/A0_INDEPENDENT_REVIEW.md": {
+      "bytes": 11568,
+      "sha256": "6e1bdd823d0449a5f2c73e8b5eac61d60d16fde762dbbc16c9c35e65778d276a"
     },
     "schematic_bom_review.csv": {
       "bytes": 8152,

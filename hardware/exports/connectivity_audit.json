@@ -17,5 +17,7 @@
   "no_reserved_memory_gpio_assigned": true,
   "usb_vbus_protection_gap_preserved": true,
   "no_pcb_generated": true,
-  "independent_peer_review": "NOT_PERFORMED"
+  "independent_peer_review": "LIMITED_DOCUMENTARY_REVIEW",
+  "independent_review_file": "reviews/A0_INDEPENDENT_REVIEW.md",
+  "independent_review_sha256": "6e1bdd823d0449a5f2c73e8b5eac61d60d16fde762dbbc16c9c35e65778d276a"
 }

@@ -3,3 +3,12 @@ __pycache__/
 *.lck
 *.kicad_prl
 *-backups/
+.DS_Store
+mobile/.build/
+mobile/.swiftpm/
+mobile/DerivedData/
+firmware/build/
+firmware/build-host/
+firmware/idf/build/
+firmware/idf/sdkconfig
+firmware/idf/sdkconfig.old

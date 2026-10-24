@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.20)
+if(NOT DEFINED ENV{IDF_PATH})
+  message(FATAL_ERROR "ESP-IDF non disponibile: attivare l'ambiente SDK prima della build device")
+endif()
+include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+project(auto_gauge_safe_skeleton VERSION 0.1.0)

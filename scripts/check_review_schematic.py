@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Verify exported connectivity and classify known OPEN ERC issues, not hardware."""
 import csv
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -80,5 +81,10 @@ report=dict(scope='CONNECTIVITY CHECK ONLY; no electrical/automotive approval',
             no_can_termination_120ohm=True,no_reserved_memory_gpio_assigned=True,
             usb_vbus_protection_gap_preserved=True,no_pcb_generated=True,
             independent_peer_review='NOT_PERFORMED')
+review_path=HW/'reviews/A0_INDEPENDENT_REVIEW.md'
+if review_path.is_file():
+    report['independent_peer_review']='LIMITED_DOCUMENTARY_REVIEW'
+    report['independent_review_file']=str(review_path.relative_to(HW))
+    report['independent_review_sha256']=hashlib.sha256(review_path.read_bytes()).hexdigest()
 (HW/'exports/connectivity_audit.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))
