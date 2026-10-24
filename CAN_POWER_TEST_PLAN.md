@@ -1,6 +1,6 @@
 # CAN, alimentazione e prove K0 — proposta non congelata
 
-Data 2026-10-24; requisiti SPEC v0.2 + DEC-001–DEC-005 (v0.2.3). Riferimenti E02–E09, E16–E17 in evidence/SOURCES.md. Nessuna misura hardware eseguita.
+Data 2026-10-24; requisiti SPEC v0.2 + DEC-001–DEC-008 (v0.2.5). Riferimenti E02–E09, E16–E17 in evidence/SOURCES.md. Nessuna misura hardware eseguita.
 
 ## CAN e cavo
 
@@ -29,7 +29,7 @@ Profili ingegneristici da sottoporre a O-07, NON conformità dichiarata:
 | Evento su impianto nominale 12 V | Proposta iniziale / verifica necessaria |
 |---|---|
 | Esercizio | Caratterizzare a 12 e 14,4 V; finestra UV/OV ancora da approvare |
-| Crank | Screening con caduta a 6 V per 1 s; decidere reset consentito o mantenimento; non è una procedura ISO completa |
+| Crank | Screening H con caduta a6V per1s; DEC-008 ammette reset e richiede ripartenza automatica; livello/durata e latenza recupero ancora da approvare, non procedura ISO completa |
 | Polarità inversa | Screening -14 V per 60 s con sorgente limitata; accettazione e procedura da approvare |
 | Load dump soppresso | Valutare 35 V per 400 ms come scenario di progetto; waveform, Ri e ripetizioni da fissare con laboratorio |
 | Load dump non soppresso | Non coperto da questa proposta; nessuna esclusione autorizzata. Valutare separatamente severità, energia e componenti |
@@ -55,6 +55,10 @@ Prove richieste, dopo bring-up sicuro sul banco: prima con simulatore e poi sull
 
 ## USB e recovery
 
-O-03 aperta. Opzione A: USB solo dati, OBD necessario e VBUS usato solo per sensing protetto. Opzione B: USB può alimentare il dominio service tramite power mux con reverse blocking, senza alimentare B+ o cavo. In entrambi i casi proteggere dati/CC/VBUS, verificare stato spento e alimentazioni parziali. Esaminare D+/D-, GPIO e diodi ESD per percorsi di backfeed. Non basta non unire VBUS a B+.
+DEC-007 approva alimentazione USB temporanea per recovery senza OBD. Power mux con reverse blocking e protezioni dedicate da dimensionare; vedere USB_RECOVERY_K0.md. Nessuna alimentazione USB d'uso normale. Verificare dati/CC/VBUS, domini spenti e retroalimentazione attraverso GPIO/ESD, non solo l'assenza di un corto VBUS-B+.
 
 Testare OBD solo, USB solo, entrambi e nessuno; misurare tensione/corrente su porta inattiva e B+, hot plug in entrambe le sequenze. Sicurezza OTA e configurazione non devono disabilitare la sola recovery disponibile: definire bootloader, firma, rollback e policy debug prima di programmare eFuse irreversibili. Nessuna eFuse programmata.
+
+Approfondimento quantitativo riproducibile in CAPACITY_K0.md e evidence/models/: allocazione OTA ipotetica, overhead/formato log e latenza diagnostica. Non sostituisce build o prove.
+
+Approfondimento: POWER_ENVELOPE_K0.md e relativo CSV riproducibile. Comprende caduta cavo e perdite, vincolo del bypass SLEEP/avvio del carico e DEC-008 (reset crank ammesso con ripartenza automatica). Nessuna sezione/fusibile o protezione congelata.

@@ -1,0 +1,647 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-24T12:58:14",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning"
+    ],
+    "kicad_version": "10.0.7",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/d59490e9-babf-5599-b49c-6355421af42b",
+            "violations": [
+                {
+                    "description": "Label connected to only one pin",
+                    "items": [
+                        {
+                            "description": "Etichetta globale 'USB_PRESENT_SAFE_TBD'",
+                            "pos": {
+                                "x": 167.64,
+                                "y": 102.87
+                            },
+                            "uuid": "e07b2f13-7706-5727-ad55-14a955706b48"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "isolated_pin_label"
+                },
+                {
+                    "description": "Label connected to only one pin",
+                    "items": [
+                        {
+                            "description": "Etichetta globale 'OBD_PRESENT_SAFE_TBD'",
+                            "pos": {
+                                "x": 167.64,
+                                "y": 105.41
+                            },
+                            "uuid": "de180a2e-abe7-5f0a-88c2-03f21b6c8aca"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "isolated_pin_label"
+                }
+            ]
+        },
+        {
+            "path": "/01_OBD_INPUT/",
+            "uuid_path": "/d59490e9-babf-5599-b49c-6355421af42b/da2b1a0e-7fc1-5fe3-be67-1ecf300cb9d3",
+            "violations": []
+        },
+        {
+            "path": "/02_AUTOMOTIVE_POWER/",
+            "uuid_path": "/d59490e9-babf-5599-b49c-6355421af42b/94e88b0c-b555-5e42-ab2d-209b1695f96e",
+            "violations": [
+                {
+                    "description": "Input Power pin not driven by any Output Power pins",
+                    "items": [
+                        {
+                            "description": "Symbol U201 Pin 22 [VS, Ingresso potenza, Linea]",
+                            "pos": {
+                                "x": 57.15,
+                                "y": 85.09
+                            },
+                            "uuid": "91611765-64ae-509e-9360-e9b6a64f7dc4"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "power_pin_not_driven"
+                },
+                {
+                    "description": "Input Power pin not driven by any Output Power pins",
+                    "items": [
+                        {
+                            "description": "Symbol U202 Pin 2 [VIN, Ingresso potenza, Linea]",
+                            "pos": {
+                                "x": 361.95,
+                                "y": 87.63
+                            },
+                            "uuid": "fd7e9f2b-6d88-551c-adb2-0190931ca8e7"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "power_pin_not_driven"
+                }
+            ]
+        },
+        {
+            "path": "/03_MCU_MEMORY_BLE/",
+            "uuid_path": "/d59490e9-babf-5599-b49c-6355421af42b/b0500c4b-b732-51c8-aae1-e1284619f7e9",
+            "violations": [
+                {
+                    "description": "Input Power pin not driven by any Output Power pins",
+                    "items": [
+                        {
+                            "description": "Symbol U301 Pin 2 [3V3, Ingresso potenza, Linea]",
+                            "pos": {
+                                "x": 144.78,
+                                "y": 72.39
+                            },
+                            "uuid": "23add75f-48e0-5449-97cc-369f2100c380"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "power_pin_not_driven"
+                }
+            ]
+        },
+        {
+            "path": "/04_CAN_PHY/",
+            "uuid_path": "/d59490e9-babf-5599-b49c-6355421af42b/d33a9e0e-4232-56f1-8e79-ef81c2196b2f",
+            "violations": [
+                {
+                    "description": "Input Power pin not driven by any Output Power pins",
+                    "items": [
+                        {
+                            "description": "Symbol U401 Pin 3 [VCC, Ingresso potenza, Linea]",
+                            "pos": {
+                                "x": 144.78,
+                                "y": 80.01
+                            },
+                            "uuid": "a6f47be2-9df4-5446-9a3e-ac8cea5ecc1b"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "power_pin_not_driven"
+                }
+            ]
+        },
+        {
+            "path": "/05_AMOLED_TOUCH/",
+            "uuid_path": "/d59490e9-babf-5599-b49c-6355421af42b/e649456e-6797-5b03-aedf-70096348f02e",
+            "violations": [
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 1 [Pin_1, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 77.47
+                            },
+                            "uuid": "317a9594-34c6-5f62-bf58-a6aa092f9aaf"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 2 [Pin_2, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 80.01
+                            },
+                            "uuid": "d7e0e558-dba4-57e4-a6c9-7ce8672c0b79"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 3 [Pin_3, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 82.55
+                            },
+                            "uuid": "abaf5642-0c03-5577-84f7-ba33a01bb579"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 4 [Pin_4, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 85.09
+                            },
+                            "uuid": "16227022-3c4a-5b5d-a7ef-c683d85abe15"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 5 [Pin_5, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 87.63
+                            },
+                            "uuid": "7df39cae-7c9e-53f5-8789-23ddd9cd027b"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 6 [Pin_6, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 90.17
+                            },
+                            "uuid": "44be5330-f8b3-538e-b329-54b9d536ea41"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 7 [Pin_7, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 92.71
+                            },
+                            "uuid": "5a083375-d369-5374-a012-f84616a5419f"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 8 [Pin_8, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 95.25
+                            },
+                            "uuid": "aa693853-5ca3-5607-a149-d5e84a5eeb23"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 9 [Pin_9, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 97.79
+                            },
+                            "uuid": "17167e2f-be1d-5337-bead-702c6ac276c1"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 10 [Pin_10, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 100.33
+                            },
+                            "uuid": "22ce4f04-cf4a-5abd-a30f-ee0551ca4ac0"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 11 [Pin_11, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 102.87
+                            },
+                            "uuid": "c24b29bc-2207-565c-93b2-43cb4131e502"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 12 [Pin_12, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 105.41
+                            },
+                            "uuid": "d1649629-4eb4-5221-b9c0-3895e74cba7e"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 13 [Pin_13, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 107.95
+                            },
+                            "uuid": "9b122a2b-6d5d-5b55-88a7-fdc6ee5a7998"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 14 [Pin_14, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 110.49
+                            },
+                            "uuid": "1fe24acb-7800-55e1-8fd6-fc68fa55b683"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 15 [Pin_15, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 113.03
+                            },
+                            "uuid": "8ce48414-4832-5132-a692-2efed3e81925"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 16 [Pin_16, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 115.57
+                            },
+                            "uuid": "e3869f66-0f4f-5628-8a54-712943c5230f"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 17 [Pin_17, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 118.11
+                            },
+                            "uuid": "6efe8255-bed3-5af8-ac58-b3bbde50d782"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 18 [Pin_18, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 120.65
+                            },
+                            "uuid": "86823c66-73e4-5536-9306-30f9ed4e30e4"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 19 [Pin_19, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 123.19
+                            },
+                            "uuid": "99aa99ff-fc84-5369-8e00-c28519110c91"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 20 [Pin_20, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 125.73
+                            },
+                            "uuid": "1316ed7b-f58b-55e9-aded-e3e61d825345"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 21 [Pin_21, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 128.27
+                            },
+                            "uuid": "b4fb7d07-fa9b-5ac0-ad93-f3e0f4f1ee09"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 22 [Pin_22, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 130.81
+                            },
+                            "uuid": "dc31682b-dfa4-5466-ba3e-0c802deaf937"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 23 [Pin_23, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 133.35
+                            },
+                            "uuid": "b8f76f5f-9e37-54da-bacb-dfa2f304516f"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 24 [Pin_24, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 135.89
+                            },
+                            "uuid": "44c3f19d-0d31-5cd5-9c7b-4c3496ac00d9"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 25 [Pin_25, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 138.43
+                            },
+                            "uuid": "1a15977a-d633-51fa-92f5-97a464b593c4"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 26 [Pin_26, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 140.97
+                            },
+                            "uuid": "ea10a8c6-05b4-5c76-9351-bc8a403dc854"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 27 [Pin_27, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 143.51
+                            },
+                            "uuid": "1cd90b19-7986-548c-8f7e-b0b5b5436ed3"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 28 [Pin_28, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 146.05
+                            },
+                            "uuid": "c02c7a8b-4353-593c-b4a9-e7ea5e512c71"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 29 [Pin_29, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 148.59
+                            },
+                            "uuid": "b9a2131b-dbdc-563e-9e7f-33e3c174976a"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 30 [Pin_30, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 151.13
+                            },
+                            "uuid": "bb1b97c6-8af6-5191-be09-1f254f08e215"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J501 Pin 31 [Pin_31, Passivo, Linea]",
+                            "pos": {
+                                "x": 85.09,
+                                "y": 153.67
+                            },
+                            "uuid": "806e31a6-3bef-5ebd-849f-f538982b627f"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                }
+            ]
+        },
+        {
+            "path": "/06_LIGHT_SENSOR/",
+            "uuid_path": "/d59490e9-babf-5599-b49c-6355421af42b/9a24c910-98d1-5b54-aac6-17a75c7c9b1e",
+            "violations": []
+        },
+        {
+            "path": "/07_TEST_SERVICE/",
+            "uuid_path": "/d59490e9-babf-5599-b49c-6355421af42b/0f1bdf53-c90c-549b-9431-f540932b7651",
+            "violations": [
+                {
+                    "description": "Input Power pin not driven by any Output Power pins",
+                    "items": [
+                        {
+                            "description": "Symbol U701 Pin 6 [VIN2, Ingresso potenza, Linea]",
+                            "pos": {
+                                "x": 265.43,
+                                "y": 95.25
+                            },
+                            "uuid": "64478ec4-23ca-5e85-8799-a9c4cc1fa82b"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "power_pin_not_driven"
+                }
+            ]
+        }
+    ],
+    "source": "auto_gauge.kicad_sch"
+}

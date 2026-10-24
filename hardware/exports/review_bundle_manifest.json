@@ -1,0 +1,114 @@
+{
+  "revision": "A0",
+  "status": "INCOMPLETE ENGINEERING REVIEW / OPEN BLOCKERS",
+  "files": {
+    "01_OBD_INPUT.kicad_sch": {
+      "bytes": 26749,
+      "sha256": "a6f122478dd04028f50a7bd08bd4c5146ce195b409e38e079e7f6fec109b82f5"
+    },
+    "02_AUTOMOTIVE_POWER.kicad_sch": {
+      "bytes": 95471,
+      "sha256": "9763a59fb550e7c0d0a1f52407beb6e2f5394565a817b3c142b7f4d42c3d1483"
+    },
+    "03_MCU_MEMORY_BLE.kicad_sch": {
+      "bytes": 40728,
+      "sha256": "a8551399fbc706f976949c258419d6fbaeb76be6e31da40fe82c695788eff9e7"
+    },
+    "04_CAN_PHY.kicad_sch": {
+      "bytes": 28201,
+      "sha256": "a0ecdacf608de7470e34a84b80e5d3f10030e51008d239ed7e4fbc676e33c283"
+    },
+    "05_AMOLED_TOUCH.kicad_sch": {
+      "bytes": 29365,
+      "sha256": "f2fe40082ff7f121c2a25ec7b49fd5599f7db3180880897e2957d7408e6d2a96"
+    },
+    "06_LIGHT_SENSOR.kicad_sch": {
+      "bytes": 15099,
+      "sha256": "a00e6a9fd1c99c3b522ca4080c6d20db6c9fe152fd243ce32cc54c076ae2b3ab"
+    },
+    "07_TEST_SERVICE.kicad_sch": {
+      "bytes": 41338,
+      "sha256": "b9ea4ea33d2217152c83194f0a91cb3b3bc3762381200c9b9116d3cf10d06ae5"
+    },
+    "AutoGauge.kicad_sym": {
+      "bytes": 7604,
+      "sha256": "b125f8515c7d5cb712200e5c5d3a09aee44eef4928ba5dde18c49fa2a6993d4a"
+    },
+    "ERC_REVIEW.md": {
+      "bytes": 2219,
+      "sha256": "c6af7f973ad7851beb9062cd58931051eb2dbcaf65b759b050e0937669780192"
+    },
+    "README.md": {
+      "bytes": 5497,
+      "sha256": "6942474f9893c8b5a7efd7e8499f1591155dbefcd94f77f250260bc626e52f73"
+    },
+    "auto_gauge.kicad_pro": {
+      "bytes": 77,
+      "sha256": "285de9721299042e94c3468a997e7424079dd48cefdb657c1db4056ef19bc191"
+    },
+    "auto_gauge.kicad_sch": {
+      "bytes": 4332,
+      "sha256": "aac492aba21500244bb5671b5e9b45d8dc03340d566afe11fddb738bd8ce7c96"
+    },
+    "exports/auto_gauge.net.xml": {
+      "bytes": 168093,
+      "sha256": "413bd98d689c8133eaa0e19f12cfd14190e8875065705d00327cb755da3f8177"
+    },
+    "exports/auto_gauge_A0.pdf": {
+      "bytes": 423170,
+      "sha256": "0e5278f2439a719b6a0f1130be21942c30578ebe36a11232163bdb90087a124a"
+    },
+    "exports/connectivity_audit.json": {
+      "bytes": 529,
+      "sha256": "c6d85b72f5b41de08619d174ee52e1bdab0ab4bac48337b920021a132e221411"
+    },
+    "exports/erc.json": {
+      "bytes": 25766,
+      "sha256": "22a1bdd00703c7f2a17f023acd1112ec73258abce917122d72256be253f30189"
+    },
+    "exports/svg/auto_gauge-01_OBD_INPUT.svg": {
+      "bytes": 500340,
+      "sha256": "4416127fd3af309d432be389deefdddee5a4daf3e538c554b8531b01dcd9fefe"
+    },
+    "exports/svg/auto_gauge-02_AUTOMOTIVE_POWER.svg": {
+      "bytes": 1450486,
+      "sha256": "3b65dbebf87e0ece9c6a99737db561f3c8279a4a4dbad1b7da9964714dcc21a9"
+    },
+    "exports/svg/auto_gauge-03_MCU_MEMORY_BLE.svg": {
+      "bytes": 727318,
+      "sha256": "a2cbdc0ac4eb9c2ca706462c8f4704658b7c9ff6ba6cf48bc8b215aea18e07e2"
+    },
+    "exports/svg/auto_gauge-04_CAN_PHY.svg": {
+      "bytes": 553552,
+      "sha256": "b2928f0436fc140f5a06b301051b0427134e180d5a97c0aa79074139a099074e"
+    },
+    "exports/svg/auto_gauge-05_AMOLED_TOUCH.svg": {
+      "bytes": 534470,
+      "sha256": "f8e617ad82db06339b9aa4e8cf20a9d31c9d16a7ab9ab8143104e0bcefe84d4c"
+    },
+    "exports/svg/auto_gauge-06_LIGHT_SENSOR.svg": {
+      "bytes": 369868,
+      "sha256": "65355d2d61d0c8661f6be07a65671f880f5afa8e50fc0e6a8b2f829fe7258811"
+    },
+    "exports/svg/auto_gauge-07_TEST_SERVICE.svg": {
+      "bytes": 720468,
+      "sha256": "8c2d8ce18fd73dbaed056d733b1caa5c8329da3bdaaefae9af2616a99fb413f9"
+    },
+    "exports/svg/auto_gauge.svg": {
+      "bytes": 361409,
+      "sha256": "e3684c5f02afd0fd4e420dda5d0284cb4b0f0bc9d0335c118df9b737d445a7be"
+    },
+    "pin_matrix.csv": {
+      "bytes": 20597,
+      "sha256": "5ed35af621c11882226273374c07d201b24f7dddc5f09097e49afd9eeba7c593"
+    },
+    "schematic_bom_review.csv": {
+      "bytes": 8152,
+      "sha256": "280e693798b3d80fb376d522674f9925bb34f3d8c7800c1fe7988f6d30494349"
+    },
+    "sym-lib-table": {
+      "bytes": 175,
+      "sha256": "857d96750f22702019946311caee856c3256ad774d146cb41f39e23333dbac08"
+    }
+  }
+}

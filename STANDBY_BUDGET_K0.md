@@ -26,3 +26,7 @@ Da dimensionare: dominio wake protetto da transitori e inversione, misura batter
 Una visita di 5 s a 200 mA ogni ora aggiunge circa278 µA medi, già oltre100. Anche se il riposo statico passa, i falsi wake possono far fallire il requisito. Il tempo di 5 minuti approvato non permette di rinviare lo standby indefinitamente perché il CAN continua a parlare. Resta aperto O-18: se il traffico non distingue IGN, non si può dichiarare soddisfatto il requisito con un semplice timeout.
 
 T-006/T-007 devono rilevare assorbimento completo e wake spurii insieme a ground truth del quadro. Misurare anche attività porte/chiusura/caricabatteria e log locali: nessun polling per riattivare ECU. Piano operativo in HW_IGN_TEST_PROTOCOL.md. Nessuna prova eseguita.
+
+Approfondimento: POWER_ENVELOPE_K0.md e relativo CSV riproducibile. Comprende caduta cavo e perdite, vincolo del bypass SLEEP/avvio del carico e DEC-008 (reset crank ammesso con ripartenza automatica). Nessuna sezione/fusibile o protezione congelata.
+
+Secondo stadio3,3V candidato: TPS62811QWRWYRQ1, dettagli e condizioni in MCU_RAIL_K0.md. La corrente shutdown dipende dalla temperatura e non è automaticamente nulla. Mappare il dominio5V realmente spento e alimentazioni parassite prima di riportare la corrente all’ingresso12V; non sommare correnti misurate a tensioni diverse come se fossero sullo stesso nodo. Il budget55µA resta solo screening dei tre componenti originari.

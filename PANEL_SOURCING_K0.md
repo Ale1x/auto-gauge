@@ -1,12 +1,12 @@
 # Pannelli K0 — ricerca di secondo livello, 2026-10-24
 
-Nessun acquisto, contatto o disponibilità riservata. Candidati nudi con touch, senza PCB elaborativo; una pagina di vendita non chiude O-16. I pannelli con codici diversi non condividono automaticamente il pinout.
+Nessun acquisto o disponibilità riservata. VIEWE e Huaxin contattati con autorizzazione owner: SUPPLIER_CONTACT_LOG.md. Candidati nudi con touch, senza PCB elaborativo; una pagina di vendita non chiude O-16. I pannelli con codici diversi non condividono automaticamente il pinout.
 
 | Candidato / canale | Evidenza commerciale | Evidenza tecnica | Esito |
 |---|---|---|---|
-| Huaxin ESHX0175Y003AMT003, pagina HX0175Y003AMT003 | E18: MOQ pubblico 1000, lead time 4–6 settimane; cinque campioni non confermati | E01 conservato; incongruenze già registrate | Campioni e identità codice da chiedere; non è una fornitura lotto5 verificata |
+| Huaxin ESHX0175Y003AMT003, pagina HX0175Y003AMT003 | E18: MOQ pubblico 1000, lead time 4–6 settimane. E32: Janie dichiara campioni a stock a USD10/unità; quantità5 e trasporto non confermati | E01 conservato; incongruenze già registrate | Disponibilità campioni dichiarata via email; identità codice/revisione e lotto5 da confermare |
 | VIEWE ALL-UEOL018VG-RA31-A001A | E19: prezzo pubblico USD14,99 e vendita diretta; stock/lotto5/spedizione non confermati | E20 PDF V1.0 originale acquisito; copertina WV invece di VG, cartiglio ancora diverso | Candidato interessante per sourcing, non congelabile |
-| LX Display LX175A3101CTP01 tramite Özdisan / Eurocoin | E21: stock0, MOQ1, lead time dichiarato4–5 settimane; E22 solo richiesta offerta | E21 indica 51,5×51,5 mm, E22 touch CST820; datasheet esatto non ottenuto | Alternativa da investigare, non sostituto equivalente |
+| LX Display LX175A3101CTP01 tramite Özdisan / Eurocoin | E21: stock0, MOQ1, lead time dichiarato4–5 settimane; E22 solo richiesta offerta | E21 indica 51,5×51,5 mm, E22 touch CST820; E29:datasheet originale esatto ottenuto successivamente, ma rail incoerenti | Alternativa da investigare, non sostituto equivalente |
 
 E19 pubblica un pannello, non una devboard. Il suo prezzo implica USD74,95 per cinque soli pannelli prima di trasporto/imposte; non è un preventivo dell'assieme. E18 riporta una fascia prezzo troppo ampia per usarla nel budget. E21 non offre stock disponibile.
 
@@ -22,4 +22,20 @@ Per Huaxin: stessi dati e conferma corrispondenza ESHX/HX; accettazione di cinqu
 
 ## Disposizione proposta
 
-Priorità di verifica documentale: VIEWE, poi Huaxin, poi LX. Nessuna scelta definitiva. Si può continuare con disegni concettuali e calcoli parametrici; schema elettrico e footprint pannello restano bloccati. Per chiudere O-16 servono identità univoca, documentazione consistente e fornitura confermata, poi campione per fit/assorbimento.
+Priorità attuale di chiarimento: Huaxin, che ha risposto con prezzo campioni, poi VIEWE e LX. Nessuna scelta definitiva. Si può continuare con disegni concettuali e calcoli parametrici; schema elettrico e footprint pannello restano bloccati. Per chiudere O-16 servono identità univoca, documentazione consistente e fornitura confermata, poi campione per fit/assorbimento.
+
+## Approfondimento LX — E29
+
+Acquisito il PDF originale LX175A3101CTP01 Ver1.0 del10-12-2024, distribuito da Özdisan. Identità coerente con pagina del produttore LX; tavole fisiche p.5/7/8 renderizzate e ispezionate. La disponibilità resta stock0 del canale E21, non fornitura confermata.
+
+Il documento non risolve il freeze elettrico: tabella absolute maximum e operating riportano ELVDD/ELVSS incompatibili, mentre il pinout descrive un ingresso VBAT3,7–4,5V e VCI3,3V. Non applicare i valori della tabella come schema pronto. Il disegno conferma cover51,5±0,05mm: con parete1mm e gioco0,3mm ipotetici, minimo aritmetico worst-case54,15mm prima delle tolleranze case. AØ52 non entra con quelle ipotesi. Nessuna deroga dimensionale ulteriore implicita.
+
+Il PDF esatto e la pagina produttore migliorano la tracciabilità rispetto alla precedente indicazione «datasheet non ottenuto», ma servono chiarimenti e campione. Nessun pinout trasferito ad altri pannelli31pin.
+
+## Risposte ricevute — 24 ottobre 2026
+
+E32: Janie (Huaxin) dichiara campioni disponibili a USD10/unità e chiede l’indirizzo di spedizione per calcolare il trasporto. Per cinque pezzi il solo prodotto sarebbe USD50 se prezzo e quantità fossero confermati; non è un preventivo totale, prenotazione o ordine. Nessun lead time specifico o chiarimento elettrico fornito.
+
+Il PDF allegato è ESHX0175Y003AMT003 V0, 2024-10-11. Confrontando entrambi tramite `pdftotext -layout`, l’unica differenza testuale rilevata è LCD MODULE → OLED MODULE in copertina. Le incongruenze elettriche/termiche restano; nessuna revisione corretta acquisita. I file PDF hanno hash differenti e sono conservati separatamente. Il subject/metadata del modulo indica erroneamente6,39″; testo della nostra richiesta e risposta di Janie indicano1,75″. Chiedere conferma esplicita del codice esatto e della configurazione touch prima di qualsiasi scelta.
+
+E33: Jessica, Buyer Service Department Ecer, chiede quantità, applicazione, requisiti, budget e telefono/WhatsApp. È un contatto della piattaforma, senza offerta, stock o nuovo documento tecnico; non trattarlo come conferma indipendente del produttore. Quantità5, uso prototipo e requisiti sono già disponibili nella richiesta iniziale. Nessun budget vincolante o recapito telefonico fornito.

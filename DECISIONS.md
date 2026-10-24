@@ -27,3 +27,30 @@ Tre decisioni approvate dal proprietario in questa chat:
 - **DEC-005 — O-04 / parte O-06:** «Sì: 100 µA entro 5 minuti». Target massimo all'ingresso OBD a 12 V: 100 µA entro 5 minuti dal quadro OFF. Il limite è approvato, non misurato. Condizioni termiche, banda e picchi da precisare; latenza di riaccensione e rilevamento IGN restano aperti. Nessuna deroga per CAN attivo a quadro OFF.
 
 Le decisioni integrano SPEC_V0.2.md e i precedenti addendum; requisiti risultanti v0.2.3. O-01 chiusa come decisione di scope; O-04 chiusa nel target e tempo, aperta nella prova/metodo; O-14 risolta nel meccanismo, aperta nei limiti quantitativi. Nessuna approvazione K0, PCB o ordine.
+
+## DEC-006 / DEC-007 — 2026-10-24 — revisione requisiti v0.2.4
+
+- **DEC-006 — O-14:** owner approva la policy proposta:2MiB fissi se disponibili dopo sizing OTA, registrazione fino a1Hz per PID, sovrascrittura dati più vecchi con segnalazione della perdita. Non è garantita una durata fissa: overhead, numeroPID e formato record la determinano. La lettura/UI può restare a5Hz ove supportato; il logger non deve rallentare i percorsi critici. Se2MiB non sono disponibili dopo sizing, riportare il conflitto; non ridurre OTA/recovery autonomamente.
+- **DEC-007 — O-03:** owner approva alimentazione USB temporanea per recovery anche senza OBD collegato. USB non è alimentazione d'uso normale. Restano obbligatorie protezioni e verifica di backfeed in entrambe le direzioni.
+
+Autorizzazione operativa: invio delle richieste già preparate a VIEWE, Huaxin, JLCPCB e PCBWay approvato, senza ordine o impegno di acquisto. Recapito di risposta fornito dall'owner registrato in SUPPLIER_CONTACT_LOG.md.
+
+Queste decisioni integrano gli addendum precedenti; requisiti risultanti v0.2.4. Nessuna approvazione del gate K0 o produzione.
+
+## DEC-008 — 2026-10-24 — revisione requisiti v0.2.5
+
+Origine: alla domanda «Durante l’avviamento del motore, accetti che il gauge possa riavviarsi per una breve caduta di tensione, purché riparta automaticamente?» il proprietario risponde «Sì, riavvio automatico accettabile».
+
+Durante l’avviamento motore è ammesso un riavvio del gauge dovuto a una breve caduta di alimentazione, con ripartenza automatica. Questa eccezione aggiorna PR-006 nel solo evento crank; non autorizza spegnimenti a quadro ON fuori da quell’evento, né richiede continuità del display durante la caduta. Non introduce un’alimentazione nominale24V.
+
+O-07 è risolta solo per la classe funzionale durante il crank: reset ammesso, recupero autonomo richiesto. Livelli/durate del profilo, soglie brownout e latenza massima di recupero restano aperti e da verificare. Integrità configurazione/log/OTA, assenza di trasmissioni diagnostiche improprie al riavvio e protezioni restano da dimostrare.
+
+Requisiti risultanti v0.2.5; SPEC_V0.2.md resta conservata invariata. Nessuna approvazione del gate K0, di componenti definitivi o produzione.
+
+## DEC-009 — 2026-10-24 — autorizzazione operativa allo schema di revisione
+
+Origine, richiesta esplicita del proprietario: «Procedi,non fermarti fin quando abbiamo lo schema kicad, fai tutti gli step necessari».
+
+È autorizzato proseguire a pin assignment, progetto e schema KiCad modificabile per revisione ingegneristica, anche con i blocker K0 già documentati. Questa richiesta successiva prevale sulle precedenti condizioni operative che impedivano di creare lo schema. Non dimostra il superamento K0 né risolve dati tecnici mancanti: connessioni/valori non verificati devono restare marcati H/TBD/OPEN, senza dichiarare lo schema definitivo o pronto alla fabbricazione.
+
+La revisione A0 non autorizza layout/routing PCB, ordini, eFuse irreversibili o collegamento alla vettura. I requisiti funzionali restano v0.2.5; si tratta di una variazione dell’ordine di lavoro, non di una deroga a protezioni, diametro, standby o comportamento IGN.

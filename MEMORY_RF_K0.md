@@ -12,7 +12,7 @@ O-14 determina la flash: esempio H di15 misure a5Hz con record medio16byte →1.
 
 Una flash16MiB deve ospitare bootloader/partizioni, configurazione, asset e almeno due immagini OTA. Con esempio H di due slot da4MiB ciascuno rimangono **meno di8MiB** per il resto, non ottoMiB tutti per i log. Serve una build reale per dimensionare gli slot. Nessuna partizione congelata.
 
-Aggiornamento DEC-004: owner ha scelto buffer locale limitato con sync BLE successiva e senza sovraccarico. Frequenza/capacità/retention/loss policy da fissare; proposta in LOGGING_K0.md. RTC/timebase e riavvii vanno inclusi nella scelta. Firmware e gauge live restano autonomi dall'iPhone in ogni opzione.
+Aggiornamento DEC-004: owner ha scelto buffer locale limitato con sync BLE successiva e senza sovraccarico. DEC-006 ha poi approvato2MiB condizionatiOTA, fino1Hz/PID e overwrite con segnalazione; retention non garantita e formato da verificare in LOGGING_K0.md/CAPACITY_K0.md. RTC/timebase e riavvii vanno inclusi nella scelta. Firmware e gauge live restano autonomi dall'iPhone in ogni opzione.
 
 ## Vincolo RF nel diametro52mm ipotetico
 
@@ -23,3 +23,13 @@ L'anello radiale fra48,96 e52mm è1,52mm: non può essere trattato come una zona
 ## Verifica librerie KiCad MCP (sola lettura)
 
 La ricerca locale ha trovato RF_Module:ESP32-S3-WROOM-1 e RF_Module:ESP32-S3-WROOM-1U; simboli Interface_CAN_LIN:TCAN1043xDxQ1 e Regulator_Switching:LM5164DDA. È un inventario, non una validazione di pin, land pattern o compatibilità della variante automotive. Nessun progetto creato. Il server ha restituito anche SN65HVD257D per la ricerca TCAN: non usarlo come sostituto per somiglianza della ricerca.
+
+Approfondimento quantitativo riproducibile in CAPACITY_K0.md e evidence/models/: allocazione OTA ipotetica, overhead/formato log e latenza diagnostica. Non sostituisce build o prove.
+
+## Audit KiCad del transceiver candidato — 2026-10-24
+
+Eseguita lettura MCP `get_symbol_info` e confronto riproducibile della libreria installata con E03, sezione4: scripts/audit_tcan_library.py conserva hash e risultati in evidence/kicad-tcan-library-audit.json. Tutti14 nomi/numero pin del simbolo Interface_CAN_LIN:TCAN1043xDxQ1 corrispondono alla tabella TCAN1043A-Q1, normalizzando le barre attive basse. Sono presenti14pad numerati1–14 nel footprint associato. Questo risultato non seleziona il componente o approva il footprint.
+
+Il simbolo generico punta al datasheet TCAN1043-Q1 senza suffissoA: in un eventuale progetto futuro occorrerà associare l’MPN esatto e E03, senza modificare globalmente la libreria di sistema. NC11 è nascosto nel simbolo: verificarne la gestione in review e non usarlo come segnale. INH7 e WAKE9 sono ad alta tensione; il nome del simbolo e l’ERC non sostituiscono il controllo dei domini e dei GPIO a3,3V. VSUP10, VCC3 e VIO5 sono alimentazioni distinte.
+
+Differenza geometrica da esaminare: footprint generico con pad1,95×0,60mm centrati aX±2,475mm; esempio TI D0014A con pad1,55×0,60mm e distanza fra file5,4mm. Il passo nominale1,27mm e la classeSOIC14 corrispondono, ma i land pattern non sono identici. Non è dimostrata incompatibilità; scegliere il criterio di land pattern e verificare solder mask/paste, tolleranze e DFM prima del freeze. La variante D/SOIC non richiede di importare il thermal pad della diversa variante DMT/VSON. Nessuna libreria modificata e nessuno schematico/PCB creato.

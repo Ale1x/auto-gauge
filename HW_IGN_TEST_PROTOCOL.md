@@ -36,3 +36,7 @@ Se il gateway non espone un segnale distinguibile ON/OFF con metodi standard e o
 Usare tests/templates/hw_ign_samples.csv con timestamp monotono comune, IGN annotato e corrente/tensione DUT. I contatori DUT di TX/requests sono cumulativi e vanno correlati con cattura esterna; il semplice traffico totale sul bus non attribuisce i frame al gauge. Segnare UNKNOWN dove manca ground truth, non convertire in0. Conservare raw trace e metadati; un file vuoto non è una prova passata.
 
 Esito attuale: NON ESEGUITO. Mancano hardware/fixture verificati, strumenti e accesso alla Polo. Piano pronto per acquisizione, nessuna simulazione presentata come misura reale.
+
+Strumento preparatorio disponibile: scripts/analyze_hw_ign.py; uso e limiti in tests/templates/README.md. Evidenzia osservazioni da revisionare e dati non validi, senza emettere un PASS. Il template originale resta vuoto.
+
+DEC-008 ammette reset durante crank con ripartenza automatica: aggiungere interruzioni/brownout durante scrittura log, cambio configurazione e aggiornamento, verificando recupero, dati validi e avvio con TX diagnostico inibito finché lo stato non è qualificato. Tempo massimo di recupero e profilo restano da fissare; nessuna prova eseguita.

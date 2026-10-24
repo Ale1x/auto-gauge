@@ -1,0 +1,862 @@
+                    深圳联讯光电有限公司
+                SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+
+
+
+     MODEL NO.           :     LX175A3101CTP01
+
+     ISSUED DATE:                 2024-12-10
+
+     VERSION             :           Ver 1.0
+
+
+             □Preliminary Specification
+             ■Final Product Specification
+
+
+
+CUSTOMER:
+      Approved by                                              Notes
+
+
+
+
+LIANXUN:
+       PREPARED                        CHECKED                    APPROVED
+
+
+
+
+Shenzhen LianXun Optronics Co.,Ltd
+ADD: F5, Building 8B, XiangJiang Industrial Park, YingRenShi Community,
+Shiyan Town, Shenzhen 518109, China.
+深圳市宝安区石岩镇应人石社区湘江工业园 8B 栋 5 楼
+Tel: 86-755-23155803           Fax: 86-755-29468750
+www.lxdisplay.com
+                   深圳联讯光电有限公司
+                  SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+ REVISION RECORD
+
+
+    Rev. NO.       Rev. Date   Description      Remarks
+
+
+        1.0       2024-12-10   First Release
+
+
+
+
+LX175A3101CTP01                   -1-             466GB466dot-matrix
+                   深圳联讯光电有限公司
+                  SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+                        TABLE OF CONTENT
+
+
+1. GENERAL SPECIFICATIONS ………………………………………………………..P3
+
+2. ABSOLUTE MAXIMUM RATING ……………………………………………………..P4
+
+3. ELECTRICAL CHARACTERISTICS………………………………………………….P4
+
+4. RECOMMENDED OPERATION SEQUENCE……………………………………….P4
+
+5. DIMENSIONAL DRAWING .…………………….……………...…………....………..P5
+
+6.    INTERFACE PIN CONECTIONS …..………………………………………………...P7
+
+7.    BLOCK DIAGRAM OF LCM………………………..………………………………….P8
+
+8.    OPTICAL CHARACTERISTICS……..…………………………………...…………...P9
+
+9. TOUCH PANEL SPECIFICATION…………………………………………………….P12
+
+10.   INSPECTION CRITERION………………..……………………………… ………..P13
+
+11. RELIABILITY AND INSPECTION STANDARD…..………………………………...P17
+
+12.   PRECAUTIONS FOR USING LCD MODULE……………..…………… …………P18
+
+
+
+
+LX175A3101CTP01                -2-                466GB466dot-matrix
+                        深圳联讯光电有限公司
+                   SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+
+1. General Specifications
+
+       LX175A3101CTP01 is a AMOLED cell. The module display area contains 466x
+466pixels. This product accords with RoHS environmental criterion.
+
+
+
+            Item                        Display Panel                 Remark
+
+            Size                             1.75 inch                    /
+
+        Display Mode                        AMOLED                        /
+
+      Viewing Direction                     Free View                     /
+
+   Module area(W x H x T)             51.5 x 51.5x 1.67                  mm
+
+     LCM Outline(W x H)                    46.35 x 46.35                 mm
+
+     Active Area(W x H)              43.76(W) x 43.76(H)                 mm
+
+         Resolution                     466RGB x 466                      /
+
+      Pixel Pitch(W x H)               0.0939 x 0. 0939                  mm
+
+       Display Drive IC                      CO5300                       /
+
+     Touch Controller IC                     CST820                       /
+
+        Display glass                          BOE                        /
+
+        Interface Type                     MIPI&QSPI                      /
+
+
+
+
+LX175A3101CTP01                      -3-                         466GB466dot-matrix
+                                 深圳联讯光电有限公司
+                             SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+ 2. ABSOLUTE MAXIMUM RATINGS
+
+                 Parameter                              Symbol               Min               Max             Unit
+                                                             VCC               -0.3             5.5             V
+                                                         IOVCC                 -0.3             5.5             V
+        Supply voltage (Display)
+                                                         ELVDD               3.55              4.65             V
+                                                          ELVSS              -2.45             -2.35            V
+              Operating temperature                          TOP               -20              70              C
+               Storage temperature                           TST               -30              80              C
+                    Humidity                                 RH                 -               90             %RH
+ Note: Absolute maximum ratings means the product can withstand short-term, NOT more than 120
+ hours. If the product is a long time to withstand these conditions, the life time would be shorter.
+
+
+
+
+ 3. ELECTRICAL CHARACTERISTICS
+        Parameter                     Symbol         Condition       Min              Typ              Max            Unit
+
+                                        VCC                          3.25             3.3              3.35            V
+
+ Supply voltage (Display)             IOVCC                          1.70             1.8              1.95            V
+                                      ELVDD              -           3.25             3.3              3.35            V
+                                      ELVSS              -           -3.35            -3.3             -3.35           V
+Input voltage        'L' level          VIL         IOVCC=1.65V      GND               -         0.2*IOVCC             V
+                     'H' level          VIH            ~3.3V       0.8*IOVCC           -              IOVCC            V
+Output voltage       'L' level          VOL         I(OH)=-1mA       GND               -         0.2*IOVCC             V
+                     'H' level          VOH         I(OL)=+1mA     0.8*IOVCC           -              IOVCC            V
+                    Sleep out           IVCC         Full white        -               6               7.2            mA
+                      mode             IIOVCC         display          -               3               3.6            mA
+                                     IELVDD/ELVSS    (450nits)         -              22               25.3           mA
+   Current          Sleep in            IVCC                           -              20                40            uA
+  (Display)           mode             IIOVCC                          -              50               100            uA
+                      Deep              IVCC           Power           -               -               <50            uW
+                    Standby            IIOVCC        Consumpti
+                                                                       -               -               <50            uW
+                     Mode                               on
+     Frame Frequency                    fFRM                           -              60                 -            Hz
+
+
+
+
+ LX175A3101CTP01                                         -4-                                 466GB466dot-matrix
+                         深圳联讯光电有限公司
+                    SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+4. RECOMMENDED OPERATION SEQUENCE
+
+     Power on sequence
+
+
+
+
+   Power off sequence
+
+
+
+
+  Reset Timing
+   Reset input timing:
+   IOVCC=1.65 to 3.3V，VCC=2.7 to 3.6V，AGND=DGND=0V，Ta=-40 to 85℃
+                            Related
+  Symbol    Parameter                 MIN    TYP   MAX   Note                        Unit
+                            Pins
+            Reset low pulse
+  tRESW                     RESX      10     -     -     -                           Us
+            width
+                                                         When reset applied during
+                            -         -      -     10                              ms
+  tREST     Reset                                        Sleep
+            complete time                                in mode
+                                                         When reset applied during
+                            -                -     120                             ms
+                                                         Sleep
+                                                         out mode
+
+
+LX175A3101CTP01                            -5-                      466GB466dot-matrix
+                                                                                                                                                                                                                                                                                                                                                                                                  466GB466dot-matrix
+
+                                                                                                     1                                                           2                                                                                 3                                  4                                                  5                            6
+                                                                                                                                                                                                                                                                                                                          版本     标   志       变更记录
+                                                                                                                                                                                                                                                                                                                                                                                   日期
+                                                                                         MIPI接口
+                                                                                         LCM PIN
+                                                                                                                                                                                                                                                                                                  背视图
+             SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+
+
+
+                                                                                          NO. SYMBOL
+                                                                                          1   GND                                                   正视图                                                                                            侧视图                                                                                               弯折示意图
+                                                                           A              2 TP_INT
+                                                                                          3    TP_RST
+                                                                                                                                                                                                                                                                                                                                                                                              A
+深圳联讯光电有限公司
+
+
+
+
+                                                                                          4 TP_SDA
+                                                                                          5    TP_SCL                                                                                                                                                                                                                                                弯折出货
+                                                                                          6 TP_3.3V
+                                                                                          7 GND                                             器件区打胶表面贴高温胶，H=1.2mm
+                                                                                                                                                                                                                                                                                           钢片补强        接地   T=0.05mm双面胶    撕手位
+                                                                                          8 IOVCC                                                                                                                                                              Total 1.67
+                                                                                          9    VCI
+                                                                                          10 VBAT                                                                                                                                                                Poron 0.15
+                                                                                          11 VCI_EN                                                                                                                                                               0.2(LTPS)
+                                                                                          12 GND
+                                                                                                                                                                                                                                                                        0.3
+                                                                                                                                                                                                                                                                   POL 0.15
+                                                                                          13 MTP PWR                                                                                                                                                           LCM 0.8±0.1
+                                                                                                                                                                                                                3.67   2.48
+                                                                                          14 RESET                                                                                                                                                                  OCA 0.18
+                                                                                          15 CSX                                                                                                                                                                      CG 0.7
+                                                                                          16 SDI RDX
+                                                                                          17 DCX                                      屏幕扫描方式（不支持反扫)
+                                                                                          18 WRX SCL
+                                                                                          19    D(1)
+                                                                                          20    D(0)
+                                                                           B              21    TE
+                                                                                                                                                                                                                                                       V.A 0
+                                                                                                                                                                                                                                                                                                                                                                                              B
+                                                                                                                                                                                                                                    CG 51.5±0.05
+
+
+
+                                                                                          22    GND
+                                                                                                                                                                                                    A.A 43.76          46.35±0.15
+
+                                                                                          23    D1P
+                                                                                          24    D1N                             丝印抗    油墨
+                                                                                          25 GND
+                                                                                          26    CLKP
+                                                                                          27    CLKN
+                                                                                          28    GND
+                                                                                          29    D0P
+                                                                                          30    D0N
+                                                                                          31    GND
+                                                                                                                                                                                                                                                                                                                                                                                                  -6-
+                                                                                                                                                                              单层区                                                                                                                       绿油区
+                                                                                                                                                             (根据实际
+                                                                                                                                                             情况增加    元件
+                                                                                                                                                             高温胶纸)
+                                                                                                                                                                     区域
+                                                                                         I2C电压：2.8V
+                                                                                          NO. SYMBOL                                                                          双面                                                                                                    双面
+                                                                                          1     GND                                                                                                                                                                                                双面胶，
+                                                                           C              2
+                                                                                          3
+                                                                                               TP_RST
+                                                                                               TP_SCL
+                                                                                                                                                                                                                                                                                                        双面胶撕手                                                                                 C
+                                                                                          4    TP_SDA
+                                                  5. DIMENSIONAL DRAWING
+
+
+
+
+                                                                                          5    TP_INT                                                                 A.A 43.76                                                                                                 3.5
+                                                                                          6    TP_3V3                                                                                                   2.79                                                                    0.5*(8-1)=2.5
+                                                                                                                                                                                                                                                                               0.3
+                                                                                                                                                                     45.93±0.15                         3.67
+                                                                                                                                                            V.A 0
+                                                                                                     1.75 AMOLED
+                                                                                   DISPLAY TYPE:
+                                                                                                     LTPS-AMOLED
+                                                                                   RESOLUTION:       466(RGB)*466                                   CG 0±0.05
+                                                                                   Driver IC:        CO5300                                                               1    CG材质&表面硬度    旭硝子 0.7mm≥6H（750gf）
+                                                                                   CTP Driver IC:    CST820                                                               2     达因值         CG背面达因能≥32dyn；（CG油墨面、Film非ITO面）
+                                                                               产   POWER IC:         BV6802W                                                              3     强化条件        强化深度DOL≥8um,表面应力CS≥450Mpa
+                                                                           D   品   LCM BRIGHTNESS:
+                                                                                   Chromaticity:
+                                                                                                     TBD
+                                                                                                     以样品为准
+                                                                                                                                                                          4     钢球冲击能量      64g钢球，30cm(0.19j)高度V.A.中心点3次,无破损;
+                                                                                                                                                                                                                                                                                      制    图/日期                                                         DRAWING NO.
+                                                                                                                                                                                                                                                                                                                                                                                              D
+                                                                               规                                                                                          5                                                                                                                                    SLLUO       2024.11.20 TITLE
+                                                                               格
+                                                                                   Homogeneity:
+                                                                                                                                                                          6    VA区透光率/翘曲度   VA透明区≥85%,摄像头孔透光率≥85%；翘曲度≤0.2mm
+                                                                                                                                                                                                                                                                                     （
+                                                                                                                                                                                                                                                                                     审      核/日期
+                                                                                                                                                                                                                                                                                                   ）
+                                                                                                                                                                                                                                                                                                                                                         LX175A3101CTP01 总成图
+                                                                                                                                                                                                                                                                                                                                         LCM 成品图
+                                                                                   BLICKLIGHT:
+                                                                                                                                                                                                                                                                                                                                                                                                  LX175A3101CTP01
+
+
+
+
+                                                                                                                                                                                            BLACK INK图层为黑色印刷;视窗区二次黑离一次黑间距0.5mm以上.
+                                                                                   Interface:        MIPI                                                                 7    油墨厚度          油墨任意位置10mm两点之间阻值大于1000兆欧                                                                                                                                    UNIT         mm   SCALE        FIT
+                                                                                   OPERATING TEMP:   -20°C~70°C                                                                             油墨厚度:黑色油墨厚度不得超过15u,白色油墨厚度不得超过25u；                                                         批准 日期
+                                                                                                                                                                                                     按键位置的油墨台阶要用透明油墨填平，厚度不得超过28u；                                                                                                                       3rd Angle          SHEET   OF
+                                                                                                                                                                                                                                                                                                                                                                                    1
+                                                                                   STORAGE TEMP:     -30°C~80°C
+                                                                                                     IOVCC: *V                                                                                                                                                                        客户确认/日期
+                                                                                   电压：
+                                                                                   寄存器地址：
+                                                                                                     VCC+: *V       VCC-: -*V
+                                                                                                     0xDA ID: 0x ** 有烧录要求需要注明                                                                                                                                                                                                                       深圳联讯光电有限公司
+                                                                                   平面翘曲度：            <=0.30mm
+                                                                                                     1                                                           2                                                                                 3                                  4                                                  5                            6
+                    深圳联讯光电有限公司
+                   SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+6. INTERFACE PIN CONNECTIONS
+ Pin.No Symbol         Function
+
+     1   GND           Ground.
+     2   TP_INT        TP PIN
+     3   TP_RST        TP PIN
+     4   TP_SDA        TP PIN
+     5   TP_SCL        TP PIN
+     6   TP_3V3        TP PIN(2.8-3.3V)
+     7   GND           Ground.
+     8   IOVCC         Power supply (1.8-3.3V)
+     9   VCI           Power supply(3.3V)
+    10   VBAT          Power supply.(3.7-4.5V)
+    11   VCI_EN        Enable for VBAT
+    12   GND           Ground
+    13   MTP_PWR       Power supply for OTP.
+    14   RESET         This signal will reset the device and it must be applied to properly
+                       initialize the chip.
+    15   CSX           Chip select signal input(low active).
+    16   SDI RDX       serial data input 0 / serial data output
+    17   DCX           serial data input 1
+    18   WRX SCL       This pin is used serial interface clock in 3-wire 9-bit / 4-wire 8-bit /QSPI
+                       serial interface.
+    19   D(1)          serial data input 3
+    20   D(0)          serial data input 2
+    21   TE            Tearing effect output pin to synchronize MPU to frame writing.
+    22   GND           Ground
+    23   D1P           MIPI-DSI Data differential signal input pins.
+    24   D1N           MIPI-DSI Data differential signal input pins.
+    25   GND           Ground
+    26   CLKP          CLKP
+    27   CLKN          CLKN
+    28   GND           Ground
+    29   D0P           MIPI-DSI Data differential signal input pins.
+    30   D0N           MIPI-DSI Data differential signal input pins.
+    31   GND           Ground
+
+
+LX175A3101CTP01                               -7-                               466GB466dot-matrix
+                      深圳联讯光电有限公司
+                  SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+Application circuit
+
+
+
+
+LX175A3101CTP01                -8-                466GB466dot-matrix
+                    深圳联讯光电有限公司
+                  SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+7. BLOCK DIAGRAM OF LCM
+
+
+
+                               1              31
+                                      I/F
+
+
+
+                                     CO5300
+
+                                     466
+
+
+
+
+              466                  466X466
+
+
+
+
+LX175A3101CTP01                -9-                 466GB466dot-matrix
+                       深圳联讯光电有限公司
+                      SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+8. ELECTRO-OPTICAL CHARACTERISTICS
+
+    Optical characteristics are determined after the unit has been on and stable for
+ approximately 30 minutes dark environment at 25℃.the value specified are at an
+ approximate distance 500mm from the LCD surface at a viewing angle and θ equal to 0
+
+
+ 8.1 LCD Optical Characteristics
+
+        Item            Symbol        Condition        Min    Type    Max         Unit      Note
+ Surface Luminance      Lv              θ=0           -       700    -           cd/m2    Note1
+Luminance uniformity  WHITE           =0             80      85        -         %      Note2
+   Contrast Ratio       Cr            Ta=25℃         100000      -        -          -     Note3
+                                  Up/Down/Right/Left
+   Viewing Angle                       Cr≥10
+                                                        80      -         -        deg     Note4
+                        Red x                         0.636   0.666   0.696         -
+                        Red y                         0.303   0.333   0.363         -
+                        Green x                       0.186   0.226   0.266         -
+                                        θ=0
+  Color Coordinate      Green y                       0.679   0.719   0.759         -
+                                        =0                                               Note 5
+    of CIE1931          Blue x                        0.118   0.138   0.158         -
+                        Blue y         Ta=25℃.        0.035   0.055   0.075         -
+                        White x                       0.280   0.300    0.320        -
+                        White y                       0.290   0.310   0.330         -
+     NTSC ratio          NTSC          CIE1931           -     100      -          %          -
+      Cross talk           -            25℃.             -      -      1.1         %          -
+       Flicker             -            25℃.                    -      -30         DB         -
+
+
+
+
+       Gamma                -               -           1.9    2.2     2.5          -
+
+
+
+
+  Lifetime(450nits)       T95           25℃             150    240                  h
+
+
+
+
+LX175A3101CTP01                          - 10 -                               466GB466dot-matrix
+                         深圳联讯光电有限公司
+                     SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+Note 1. Surface Luminance
+      Measurement equipment: CS2000 or similar equipment.
+
+      Measuring surroundings: Dark room.
+      Measuring temperature: Ta=25℃.
+      The data are measured after OLEDs are lighted on for more than 5 minutes and all pixels are
+      fully white.
+      The Surface Luminance is the average value of 5 measured spots (Fig-1):
+           Lv = Average Luminance with all white pixels (P1, P2, P3, P4, P5)
+
+
+
+Note 2. Luminance Uniformity
+       Measurement equipment: CS2000 or similar equipment.
+       Measuring surroundings: Dark room.
+       Measuring temperature: Ta=25℃.
+       The data are measured after OLEDs are lighted on for more than 5 minutes and all pixels are
+        fully white.
+       The Luminance Uniformity is calculated by using following formula:
+             WHITE = Lp (Min.) / Lp (Max.)×100 (%)
+          Lp (Min.) = Minimum Luminance with all white pixels (P1, P2,
+          P3, P4, P5) Lp (Max.) = Maximum Luminance with all white
+          pixels (P1, P2, P3, P4, P5)
+
+
+
+Note 3. Contrast Ratio(CR)
+       Measurement equipment: CS2000 or similar equipment.
+       Measuring surroundings: Dark room.
+       Measuring temperature: Ta=25℃.
+       The data are measured after OLEDs are lighted on for more than 5 minutes.
+       The Contrast Ratio is calculated by using following formula:
+
+          Contrast Ratio(Cr) = Lw / Lb
+          Lw = Average Luminance with all white pixels
+          (P1, P2, P3, P4, P5) Lb = Average Luminance
+          with all black pixels (P1, P2, P3, P4, P5)
+
+
+
+
+LX175A3101CTP01                                    - 11 -                      466GB466dot-matrix
+                        深圳联讯光电有限公司
+                    SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+
+
+
+                                            Fig-1
+
+Note 4. Viewing Angle
+       Measurement equipment: DMS803 or similar equipment.
+       Measuring surroundings: Dark room.
+       Measuring temperature: Ta=25℃.
+
+
+       The Viewing Angle is the angle at which the contrast ratio is greater than 10. The angles
+       are determined for the horizontal or x axis and the vertical or y axis with respect to the z
+       axis which is normal to the display surface.
+
+
+
+
+Note 5. Color Coordinate of CIE1931
+        Measurement equipment: CS2000 or similar equipment.
+        Measuring surroundings: Dark room.
+        Measuring temperature: Ta=25℃.
+         The x, y value of Color Coordinate is determined by measuring at center position of the
+         display panel.
+
+
+
+
+LX175A3101CTP01                               - 12 -                              466GB466dot-matrix
+                            深圳联讯光电有限公司
+                       SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+9. TOUCH PANEL SPECIFICATION
+    9.1 General Specification
+
+                Item                                     Display Panel        Remark
+
+                Lens                                       旭硝子                   /
+
+          Outline Dimension                     51.5 x 51.5 x 0.7               mm
+
+             View Area                                   44.16 x 44.16          mm
+
+      Touch Panel Structure                               ONCELL                 /
+
+          Surface Hardness                                   ≧7H                 /
+
+            Controller IC                                  CST820                /
+
+           Interface Type                                    IIC                 /
+
+
+ 9.2 FPC PIN Assignment
+
+ Pin.No       Symbol          Function
+
+     1        GND             Power Ground
+     2        TP_RST          Reset pin for the TP
+     3        TP_SCL          IIC clock for the data input
+     4        TP_SDA          IIC Data input
+     5        TP_INT          Interrupt for the TP
+     6        TP_3V3          Power Supply
+
+
+
+
+LX175A3101CTP01                                 - 13 -                   466GB466dot-matrix
+                        深圳联讯光电有限公司
+                     SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+10.0 INSPECTION CRITERIA
+
+ 10.1 Inspection Conditions
+ 10.1.1 Environmental conditions
+  The environmental conditions for inspection shall be as follows
+   Room temperature: 20±3°C
+   Humidity: 65±20%RH
+ 10.1.2 Environmental conditions
+  With a single 20-watt fluorescent lamp as the light source, the inspection was in the
+  distance of 30cm or more from the LCD to the inspector's eyes.
+
+ 10.2 Light Method
+
+
+
+
+                    Fluorescent lamp perpendicular to the display surface
+
+
+
+
+                                   Inspection distance and angle
+
+
+
+
+        Inspection should be performed within angleφ(φis usually 30°) from Z axis to each X and Y.
+       Inspection distance in any direction within φmust be kept 30±5cm from the display surface.
+
+
+
+LX175A3101CTP01                                 - 14 -                                466GB466dot-matrix
+                       深圳联讯光电有限公司
+                      SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+10.3 Classification of defects
+
+10.3.1 Major defect
+                                                                              Classification
+No.       Item                       Inspection Standard
+                                                                                of defects
+                       1) No display
+                       2) Display abnormally
+          All          3) Open or missing segment
+ 1     functional      4) Short circuit                                            Major
+                       5) Excess power consumption
+        defects
+                       6) Backlight no lighting, flickering and abnormal
+                          lighting
+ 2      Missing        Missing component                                           Major
+         Outline       Overall outline dimension beyond the drawing is
+ 3                                                                                 Major
+       dimension       not allowed
+
+
+
+10.3.2 Cosmetic Defect
+                                                                               Classificatio
+No.       Item                        Inspection Standard
+                                                                               n of defects
+
+                       For dark/white spot,
+                       size Ф is defined
+                       as Ф=(x+y)/2
+      (spot defect)
+        Black and             Size Ф (mm)              Acceptable Quantity
+ 1                                                                                  Minor
+       White spot                Ф≤0.1                       Ignore
+         pinhole              0.10<Ф≤0.15                      2
+                              0.15<Ф≤0.2                       1
+                                 0.2<Ф                         0
+
+
+      (line defect)
+ 2     Black and                                                                    Minor
+       White line
+
+
+
+
+LX175A3101CTP01                               - 15 -                         466GB466dot-matrix
+                      深圳联讯光电有限公司
+                     SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+       Polarizer
+        scratch            Width(mm)           Length(mm);Acceptable
+                                                       Qty
+                          Ф≤0.03 L≤1.0                    Ignore
+                          0.03<W≤0.05                   L≤3.0; N≤2
+                        0.05<W or L>3.0            Define as spot defect
+
+
+                       Dent or bubble(between the polarizer and glass)
+
+
+                             Size Ф(mm)                 Acceptable Qty
+       Polarizer               Ф≤0.10                        Ignor
+ 3                                                                                Minor
+        defect              0.10<Ф≤0.15                        2
+                            0.15<Ф≤0.20                        1
+                               0.20<Ф                          0
+
+
+
+
+10.3.3 Cosmetic Defect
+                                                                              Classificatio
+No.      Item                       Inspection Standard
+                                                                              n of defects
+                      1) Chip on the corner
+
+
+
+
+ 1
+      Glass defect            X                    Y                 Z            Minor
+                             ≤3.0                  ≤S                ≤T
+
+
+                       Remark: S=contact pad length;
+                                T=the thickness of glass
+                       Chips on the corner of terminal shall not be
+                       allowed to extend into the ITO pad or expose
+                       perimeter seal. Acceptable Quantity N≤2.
+
+
+
+LX175A3101CTP01                           - 16 -                           466GB466dot-matrix
+                   深圳联讯光电有限公司
+                  SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+                   2) Chip on the edge of glass
+
+
+
+
+                                                                          Minor
+
+                           X                   Y              Z
+                         Ignore            ≤0.5               ≤T
+
+
+                    Acceptable Quantity: N≤2
+                   3) Creak
+                      Creaks tend to break are not allowed.
+
+
+
+                                                                          Minor
+
+
+
+
+LX175A3101CTP01                       - 17 -                       466GB466dot-matrix
+                       深圳联讯光电有限公司
+                   SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+11 . ELIABILITY AND INSPECTION STANDARD
+
+
+ NO. Test Item                      Test condition                 Criterion
+
+                                    80℃±3℃ 24H
+  1   High Temperature Storage      Restore 2H at 25℃
+                                    Power off
+                                    -30℃±3℃ 24H
+  2   Low Temperature Storage       Restore 2H at 25℃
+                                    Power off
+                                    70℃±3℃ 24H
+  3   High Temperature Operation    Restore 2H at 25℃
+                                    Power on
+                                    -20℃±3℃ 24H                    After testing, cosmetic
+  4   Low Temperature Operation     Restore 2H at 25℃              and electrical defects
+                                    Power on                       should not happen.
+      High Temperature & Humidity   50℃±3℃ 80±3%RH 24H
+  5   Storage                       Power off
+                                     -20℃←→25℃←→70℃
+                                    30min      5min   30min
+  6   Temperature Cycle
+                                    after 10cycle, Restore 2H at
+                                    25℃ Power off
+                                    Frequancy10Hz~55Hz~10Hz
+  7   Vibration Test                Ampliute:1.5mm,X,Y,Zdirectio
+                                    n total 1H;
+  8   ESD Test                      ±8KV,Air Mode,150pF/330Ω；
+                                                                 1.After testing,
+                                                                 cosmetic and electrical
+                                                                 defects should not
+                                    600mm,              concrete happen.
+      Drop Test(package state)
+  9                                 floor,1corner,               2.The product should
+                                    3edges, 6 sides each time    remain at initial place.
+                                                                 3.Product uncovered
+                                                                 or package broken is
+                                                                 not permitted.
+
+
+
+
+LX175A3101CTP01                         - 18 -                            466GB466dot-matrix
+                          深圳联讯光电有限公司
+                      SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+12. PRECAUTIONS FOR USING LCD MODULE
+
+12.1 Handing Precautions
+ (1) The display panel is made of glass and polarizer. As glass is fragile, it tends to become or
+    chipped during handling especially on the edges. Please avoid dropping or jarring. Do not
+    subject it to a mechanical shock by dropping it or impact.
+ (2) If the display panel is damaged and the liquid crystal substance leaks out, be sure not to get
+    any in your mouth. If the substance contacts your skin or clothes, wash it off using soap and
+    water.
+ (3) Do not apply excessive force to the display surface or the adjoining areas since this may cause
+    the color tone to vary. Do not touch the display with bare hands. This will stain the display area
+    and degraded insulation between terminals (some cosmetics are determined to the polarizer).
+ (4) The polarizer covering the display surface of the LCD module is soft and easily scratched.
+    Handle this polarizer carefully. Do not touch, push or rub the exposed polarizers with anything
+    harder than an HB pencil lead (glass, tweezers, etc.). Do not put or attach anything on the
+    display area to avoid leaving marks on. Condensation on the surface and contact with
+    terminals due to cold will damage, stain or dirty the polarizer. After products are tested at low
+    temperature they must be warmed up in a container before coming is contacting with room
+    temperature air.
+ (5) If the display surface becomes contaminated, breathe on the surface and gently wipe it with a
+    soft dry cloth. If it is heavily contaminated, moisten cloth with one of the following solvents
+    - Isopropyl alcohol
+    - Ethyl alcohol
+    Do not scrub hard to avoid damaging the display surface.
+ (6) Solvents other than those above-mentioned may damage the polarizer. Especially, do not use
+    the following.
+    - Water
+    - Ketone
+    - Aromatic solvents
+    Wipe off saliva or water drops immediately, contact with water over a long period of time may
+    cause deformation or color fading. Avoid contacting oil and fats.
+ (7) Exercise care to minimize corrosion of the electrode. Corrosion of the electrodes is accelerated
+    by water droplets, moisture condensation or a current flow in a high-humidity environment.
+ (8) Install the LCD Module by using the mounting holes. When mounting the LCD module make
+    sure it is free of twisting, warping and distortion. In particular, do not forcibly pull or bend the I/O
+    cable or the backlight cable.
+ (9) Do not attempt to disassemble or process the LCD module.
+
+
+LX175A3101CTP01                                - 19 -                                466GB466dot-matrix
+                         深圳联讯光电有限公司
+                     SHENZHEN LIANXUN OPTRONICS CO.,LTD
+
+ (10) NC terminal should be open. Do not connect anything.
+ (11) If the logic circuit power is off, do not apply the input signals.
+ (12) Since LCM has been assembled and adjusted with a high degree of precision, avoid applying
+      excessive shocks to the module or making any alterations or modifications to it.
+     - Do not alter, modify or change the shape of the tab on the metal frame.
+      - Do not make extra holes on the printed circuit board, modify its shape or change the
+       positions of components to be attached.
+     - Do not damage or modify the pattern writing on the printed circuit board.
+      - Absolutely do not modify the zebra rubber strip (conductive rubber) or heat seal connector.
+      - Except for soldering the interface, do not make any alterations or modifications with a
+       soldering iron.
+     - Do not drop, bend or twist LCM.
+
+
+ 12.2 Storage Precautions
+    When storing the LCD modules, the following precaution is necessary.
+ (1) Store them in a sealed polyethylene bag. If properly sealed, there is no need for the dessicant.
+ (2) Store them in a dark place. Do not expose to sunlight or fluorescent light, keep the temperature
+    between 0°C and 35°C.
+ (3) The polarizer surface should not come in contact with any other objects. (We advise you to
+    store them in the container in which they were shipped).
+
+
+ 12.3 Others
+   Liquid crystals solidify under low temperature (below the storage temperature range) leading to
+ defective orientation or the generation of air bubbles (black or white). Air bubbles may also be
+ generated if the module is subject to a low temperature.
+ If the LCD modules have been operating for a long time showing the same display patterns, the
+ display patterns may remain on the screen as ghost images and a slight contrast irregularity may
+ also appear. A normal operating status can be regained by suspending use for some time. It
+ should be noted that this phenomenon does not adversely affect performance reliability.
+
+
+
+
+LX175A3101CTP01                                 - 20 -                           466GB466dot-matrix
+

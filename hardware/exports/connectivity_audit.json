@@ -1,0 +1,17 @@
+{
+  "scope": "CONNECTIVITY CHECK ONLY; no electrical/automotive approval",
+  "checked_assigned_pins": 273,
+  "placed_symbols": 97,
+  "matrix_rows": 336,
+  "erc_counts": {
+    "isolated_pin_label": 2,
+    "power_pin_not_driven": 5,
+    "pin_not_connected": 31
+  },
+  "erc_status": "OPEN FINDINGS REMAIN; NOT CLEAN / NOT WAIVED",
+  "no_can_termination_120ohm": true,
+  "no_reserved_memory_gpio_assigned": true,
+  "usb_vbus_protection_gap_preserved": true,
+  "no_pcb_generated": true,
+  "independent_peer_review": "NOT_PERFORMED"
+}

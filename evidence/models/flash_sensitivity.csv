@@ -1,0 +1,13 @@
+slot_mib,assets_mib,log_mib,reserved_kib,remaining_mib,fits_arithmetic_only
+3,1,2,256,6.75,True
+3,2,2,256,5.75,True
+3,4,2,256,3.75,True
+4,1,2,256,4.75,True
+4,2,2,256,3.75,True
+4,4,2,256,1.75,True
+5,1,2,256,2.75,True
+5,2,2,256,1.75,True
+5,4,2,256,-0.25,False
+6,1,2,256,0.75,True
+6,2,2,256,-0.25,False
+6,4,2,256,-2.25,False

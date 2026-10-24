@@ -1,0 +1,4014 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>/Users/alessandro/Documents/auto-gauge/hardware/auto_gauge.kicad_sch</source>
+    <date>2026-10-24T12:58:13</date>
+    <tool>Eeschema 10.0.7</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>auto_gauge.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="2" name="/01_OBD_INPUT/" tstamps="/da2b1a0e-7fc1-5fe3-be67-1ecf300cb9d3/">
+      <title_block>
+        <title>Auto Gauge - 01_OBD_INPUT</title>
+        <company/>
+        <rev>A0 REVIEW</rev>
+        <date>2026-10-24</date>
+        <source>01_OBD_INPUT.kicad_sch</source>
+        <comment number="1" value="NO VEHICLE CONNECTION OR FABRICATION RELEASE"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="3" name="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/">
+      <title_block>
+        <title>Auto Gauge - 02_AUTOMOTIVE_POWER</title>
+        <company/>
+        <rev>A0 REVIEW</rev>
+        <date>2026-10-24</date>
+        <source>02_AUTOMOTIVE_POWER.kicad_sch</source>
+        <comment number="1" value="NO VEHICLE CONNECTION OR FABRICATION RELEASE"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="4" name="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/">
+      <title_block>
+        <title>Auto Gauge - 03_MCU_MEMORY_BLE</title>
+        <company/>
+        <rev>A0 REVIEW</rev>
+        <date>2026-10-24</date>
+        <source>03_MCU_MEMORY_BLE.kicad_sch</source>
+        <comment number="1" value="NO VEHICLE CONNECTION OR FABRICATION RELEASE"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="5" name="/04_CAN_PHY/" tstamps="/d33a9e0e-4232-56f1-8e79-ef81c2196b2f/">
+      <title_block>
+        <title>Auto Gauge - 04_CAN_PHY</title>
+        <company/>
+        <rev>A0 REVIEW</rev>
+        <date>2026-10-24</date>
+        <source>04_CAN_PHY.kicad_sch</source>
+        <comment number="1" value="NO VEHICLE CONNECTION OR FABRICATION RELEASE"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="6" name="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/">
+      <title_block>
+        <title>Auto Gauge - 05_AMOLED_TOUCH</title>
+        <company/>
+        <rev>A0 REVIEW</rev>
+        <date>2026-10-24</date>
+        <source>05_AMOLED_TOUCH.kicad_sch</source>
+        <comment number="1" value="NO VEHICLE CONNECTION OR FABRICATION RELEASE"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="7" name="/06_LIGHT_SENSOR/" tstamps="/9a24c910-98d1-5b54-aac6-17a75c7c9b1e/">
+      <title_block>
+        <title>Auto Gauge - 06_LIGHT_SENSOR</title>
+        <company/>
+        <rev>A0 REVIEW</rev>
+        <date>2026-10-24</date>
+        <source>06_LIGHT_SENSOR.kicad_sch</source>
+        <comment number="1" value="NO VEHICLE CONNECTION OR FABRICATION RELEASE"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+    <sheet number="8" name="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/">
+      <title_block>
+        <title>Auto Gauge - 07_TEST_SERVICE</title>
+        <company/>
+        <rev>A0 REVIEW</rev>
+        <date>2026-10-24</date>
+        <source>07_TEST_SERVICE.kicad_sch</source>
+        <comment number="1" value="NO VEHICLE CONNECTION OR FABRICATION RELEASE"/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="F100">
+      <value>TBD FUSE / AT OBD B+</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN: CURRENT / I2T / DC BREAKING</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="Fuse" description="Fuse"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN: CURRENT / I2T / DC BREAKING"/>
+      <property name="Sheetname" value="01_OBD_INPUT"/>
+      <property name="Sheetfile" value="01_OBD_INPUT.kicad_sch"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="fuse"/>
+      <property name="ki_fp_filters" value="*Fuse*"/>
+      <sheetpath names="/01_OBD_INPUT/" tstamps="/da2b1a0e-7fc1-5fe3-be67-1ecf300cb9d3/"/>
+      <tstamps>9955d554-5a11-502f-a158-09176377c4e6</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J100">
+      <value>EXTERNAL J1962 TYPE A / 12V</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">EXTERNAL HARNESS / TYPE A DRAWING OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector_Generic" part="Conn_01x16" description="Generic connector, single row, 01x16, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="EXTERNAL HARNESS / TYPE A DRAWING OPEN"/>
+      <property name="Sheetname" value="01_OBD_INPUT"/>
+      <property name="Sheetfile" value="01_OBD_INPUT.kicad_sch"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="connector"/>
+      <property name="ki_fp_filters" value="Connector*:*_1x??_*"/>
+      <sheetpath names="/01_OBD_INPUT/" tstamps="/da2b1a0e-7fc1-5fe3-be67-1ecf300cb9d3/"/>
+      <tstamps>e2fc59ed-97f9-5b6e-a60c-e66040558dac</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="6"/>
+            <pin num="7"/>
+            <pin num="8"/>
+            <pin num="9"/>
+            <pin num="10"/>
+            <pin num="11"/>
+            <pin num="12"/>
+            <pin num="13"/>
+            <pin num="14"/>
+            <pin num="15"/>
+            <pin num="16"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J101">
+      <value>GAUGE INPUT / MAP H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">MAPPING H / HOUSINGS 0430200600 + 0430250600</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector_Generic" part="Conn_01x06" description="Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="MAPPING H / HOUSINGS 0430200600 + 0430250600"/>
+      <property name="Sheetname" value="01_OBD_INPUT"/>
+      <property name="Sheetfile" value="01_OBD_INPUT.kicad_sch"/>
+      <property name="ki_keywords" value="connector"/>
+      <property name="ki_fp_filters" value="Connector*:*_1x??_*"/>
+      <sheetpath names="/01_OBD_INPUT/" tstamps="/da2b1a0e-7fc1-5fe3-be67-1ecf300cb9d3/"/>
+      <tstamps>3cc3746a-db4f-5fcd-811c-14267a9b9eed</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R101">
+      <value>DNP / GROUND LINK TBD</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN GROUND / EMC REVIEW</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN GROUND / EMC REVIEW"/>
+      <property name="Sheetname" value="01_OBD_INPUT"/>
+      <property name="Sheetfile" value="01_OBD_INPUT.kicad_sch"/>
+      <property name="dnp"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/01_OBD_INPUT/" tstamps="/da2b1a0e-7fc1-5fe3-be67-1ecf300cb9d3/"/>
+      <tstamps>2f89fd11-3f4e-563b-9335-e78cebae0f47</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C201">
+      <value>100n / 100V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>b7956ac5-60a4-5d5c-98fb-615c3070d9d6</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C202">
+      <value>100n / 16V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>4a901570-c80d-5f4b-8358-05b51f341982</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C203">
+      <value>TBD TIMER</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN FAULT TIME</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN FAULT TIME"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>58e6bced-05e6-5531-ad96-6f0b1d84af94</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C204">
+      <value>TBD BULK / RATING</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN INRUSH / SOA</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN INRUSH / SOA"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>11ff2bfb-81dd-55f2-8cc4-c41bf7ce77e6</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C205">
+      <value>2.2u / 100V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>895b8563-2c23-5bfd-9486-bc327ad15181</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C206">
+      <value>2.2n / 50V X7R</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>10c6f03b-7d35-56a8-83c0-41c7ad75aa7b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C207">
+      <value>47u / 10V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>80a76b93-d480-50fc-9c63-84813d32a309</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C208">
+      <value>TBD RIPPLE CA</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN TYPE3 LOOP</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN TYPE3 LOOP"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>6eaddb18-f9bf-594d-b9a8-8bd4f9674eec</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C209">
+      <value>TBD RIPPLE CB</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN TYPE3 LOOP</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN TYPE3 LOOP"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>0695e835-0f3e-568d-a344-eeeb2d33b45f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C210">
+      <value>22u / 10V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>01b94312-7bf9-55f2-ae3c-f0b0c34d8f5c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C211">
+      <value>22u / 10V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>fbee90ec-97cc-5256-9ed9-3fdb0ffe5398</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C212">
+      <value>22u / 10V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>400cff94-174b-56bf-92d9-fce0849ee174</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C213">
+      <value>4.7n H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>663968a5-4f05-5b72-a786-1c1a7b8e2d7d</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C214">
+      <value>10p H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>0ee69a0f-fa3c-52c4-a906-82d0d2d59f9a</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C217">
+      <value>TBD / 50V</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN WAKE SEQUENCE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN WAKE SEQUENCE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>ed98ed6d-3356-56e1-9a7e-900cf59773db</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D201">
+      <value>TBD AUTOMOTIVE TVS</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN CLAMP / ENERGY / POLARITY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="D_TVS" description="Bidirectional transient-voltage-suppression diode"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN CLAMP / ENERGY / POLARITY"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="diode TVS thyrector"/>
+      <property name="ki_fp_filters" value="TO-???* *_Diode_* *SingleDiode* D_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>bfc75f04-b10e-5b1b-a23e-e53bcff63b0a</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="L202">
+      <value>47uH H / Isat TBD</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">H / CURRENT AND LOSS OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="L" description="Inductor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="H / CURRENT AND LOSS OPEN"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="inductor choke coil reactor magnetic"/>
+      <property name="ki_fp_filters" value="Choke_* *Coil* Inductor_* L_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>6ca3479c-9b72-5df0-8b0d-7e90fbb92fdc</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="L203">
+      <value>0.47uH H / Isat TBD</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="L" description="Inductor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="inductor choke coil reactor magnetic"/>
+      <property name="ki_fp_filters" value="Choke_* *Coil* Inductor_* L_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>caa91299-a0c8-5394-b5fe-6e4050fd834c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="Q201">
+      <value>TBD 80V+ / SOA</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN MOSFET SELECTION</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Transistor_FET" part="Q_NMOS_GDS" description="N-MOSFET transistor, gate/drain/source"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN MOSFET SELECTION"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="transistor NMOS N-MOS N-MOSFET"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>0e9a7cea-e32a-57d2-94de-0d3d2f4a0956</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="Q202">
+      <value>TBD 80V+ / SOA</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN MOSFET SELECTION</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Transistor_FET" part="Q_NMOS_GDS" description="N-MOSFET transistor, gate/drain/source"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN MOSFET SELECTION"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="transistor NMOS N-MOS N-MOSFET"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>169286f5-bc71-5bf3-8f3b-c3cbff12d516</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R201">
+      <value>TBD SHUNT</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN OCP / I2T</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN OCP / I2T"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>209096da-fa99-5fc3-ae7d-ef1aa350687c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R202">
+      <value>0.1 ohm H / CS FILTER</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>c782f098-da2f-5c20-9403-aef96e6be5dc</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R203">
+      <value>TBD UV TOP</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN UV/OV LIMITS</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN UV/OV LIMITS"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>6bf66b00-34a8-5746-8462-2366dd4952b3</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R204">
+      <value>TBD UV/OV MID</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN UV/OV LIMITS</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN UV/OV LIMITS"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>fea6c4c8-59ea-5474-b171-02cd42d44a1b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R205">
+      <value>TBD OV BOTTOM</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN UV/OV LIMITS</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN UV/OV LIMITS"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>266a540f-d3c6-5d32-b571-825b752002b7</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R206">
+      <value>TBD ILIM</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN OCP</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN OCP"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>ebb506a3-7601-50f2-b642-cec5b680dbf9</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R207">
+      <value>41.2k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>b76ef701-ca27-52ce-b0ff-061a6b46f1c9</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R208">
+      <value>316k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>760b3f52-3f2b-56d7-b949-f829be91df1f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R209">
+      <value>100k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>f425e50a-a492-5d24-a1d4-83b0f2982370</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R210">
+      <value>TBD RIPPLE RA</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN TYPE3 LOOP</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN TYPE3 LOOP"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>b3efdb75-4cb6-5097-9ade-f5b65c6db976</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R211">
+      <value>100k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>365425f2-5d37-5aaa-990b-78969363cc7f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R212">
+      <value>88.7k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>ff221093-cde5-520f-994f-3a1cc64d28d9</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R213">
+      <value>19.6k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>9a198099-c5f0-50b7-97de-079251b47834</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R214">
+      <value>100k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>15d93725-9307-55ac-b777-0c7c5d4aa65f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R215">
+      <value>10k H / HV INPUT</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>2f3bae95-5b40-573f-bb81-bd0b84c09298</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R216">
+      <value>100k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>146b6349-20f1-5ac4-8309-0ced74f705fc</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R217">
+      <value>TBD WAKE DELAY</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN WAKE SEQUENCE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN WAKE SEQUENCE"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>6a63e0f5-fb6e-5e1c-b4f2-9f8d36c53dbc</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U201">
+      <value>LM74900QRGERQ1</value>
+      <datasheet>https://www.ti.com/lit/ds/symlink/lm74900-q1.pdf</datasheet>
+      <fields>
+        <field name="MPN">LM74900QRGERQ1</field>
+        <field name="Review_status">CANDIDATE / LIMITS OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/lm74900-q1.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="AutoGauge" part="LM74900QRGERQ1" description="E05 Rev.C Table5-1. Exposed RTN pad must FLOAT, not GND. Parameters OPEN."/>
+      <property name="MPN" value="LM74900QRGERQ1"/>
+      <property name="Review_status" value="CANDIDATE / LIMITS OPEN"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>2721715e-80ba-5c19-a64d-9d955965be12</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="2"/>
+            <pin num="24"/>
+            <pin num="22"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="6"/>
+            <pin num="7"/>
+            <pin num="13"/>
+            <pin num="19"/>
+            <pin num="20"/>
+            <pin num="18"/>
+            <pin num="1"/>
+            <pin num="14"/>
+            <pin num="15"/>
+            <pin num="16"/>
+            <pin num="23"/>
+            <pin num="9"/>
+            <pin num="10"/>
+            <pin num="11"/>
+            <pin num="12"/>
+            <pin num="8"/>
+            <pin num="17"/>
+            <pin num="21"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U202">
+      <value>LM5164QDDARQ1 / 5V H</value>
+      <footprint>Package_SO:HSOP-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.1mm_ThermalVias</footprint>
+      <datasheet>https://www.ti.com/lit/ds/symlink/lm5164-q1.pdf</datasheet>
+      <fields>
+        <field name="MPN">LM5164QDDARQ1</field>
+        <field name="Review_status">CANDIDATE / 5V LOOP H</field>
+        <field name="Footprint">Package_SO:HSOP-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.1mm_ThermalVias</field>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/lm5164-q1.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Regulator_Switching" part="LM5164DDA" description="1A synchronous buck converter with ultra-low IQ, 6V - 100V input, adjustable output voltage, HSOP-8"/>
+      <property name="MPN" value="LM5164QDDARQ1"/>
+      <property name="Review_status" value="CANDIDATE / 5V LOOP H"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <property name="ki_keywords" value="step-down dc-dc buck regulator adjustable"/>
+      <property name="ki_fp_filters" value="HSOP*1EP*3.9x4.9*P1.27mm*"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>e11d1c93-a1a6-5110-8184-7c61d6dd6189</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="1"/>
+            <pin num="9"/>
+            <pin num="7"/>
+            <pin num="8"/>
+            <pin num="5"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U203">
+      <value>TPS62811QWRWYRQ1 / 3V3 H</value>
+      <datasheet>https://www.ti.com/lit/ds/symlink/tps62813-q1.pdf</datasheet>
+      <fields>
+        <field name="MPN">TPS62811QWRWYRQ1</field>
+        <field name="Review_status">CANDIDATE / E46 INITIAL VALUES</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/tps62813-q1.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="AutoGauge" part="TPS62811QWRWYRQ1" description="E46 Rev.K Table5-1; candidate, package and design not frozen"/>
+      <property name="MPN" value="TPS62811QWRWYRQ1"/>
+      <property name="Review_status" value="CANDIDATE / E46 INITIAL VALUES"/>
+      <property name="Sheetname" value="02_AUTOMOTIVE_POWER"/>
+      <property name="Sheetfile" value="02_AUTOMOTIVE_POWER.kicad_sch"/>
+      <sheetpath names="/02_AUTOMOTIVE_POWER/" tstamps="/94e88b0c-b555-5e42-ab2d-209b1695f96e/"/>
+      <tstamps>472a4691-f068-524b-bc0f-f4c94a1fcf27</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="2"/>
+            <pin num="8"/>
+            <pin num="1"/>
+            <pin num="7"/>
+            <pin num="6"/>
+            <pin num="4"/>
+            <pin num="3"/>
+            <pin num="5"/>
+            <pin num="9"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C301">
+      <value>10u / 6.3V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="03_MCU_MEMORY_BLE"/>
+      <property name="Sheetfile" value="03_MCU_MEMORY_BLE.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/"/>
+      <tstamps>15724902-2717-5cce-a37c-89cd02facafe</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C302">
+      <value>100n / 10V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="03_MCU_MEMORY_BLE"/>
+      <property name="Sheetfile" value="03_MCU_MEMORY_BLE.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/"/>
+      <tstamps>aecceacd-127c-5a04-a51a-f5574d0007ab</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C303">
+      <value>1u / 10V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="03_MCU_MEMORY_BLE"/>
+      <property name="Sheetfile" value="03_MCU_MEMORY_BLE.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/"/>
+      <tstamps>1ed38667-6cd8-5a56-a4b1-cbfb6bf75fae</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R301">
+      <value>10k</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="03_MCU_MEMORY_BLE"/>
+      <property name="Sheetfile" value="03_MCU_MEMORY_BLE.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/"/>
+      <tstamps>8bf88a97-693f-516e-a12e-5f208118c892</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R302">
+      <value>10k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="03_MCU_MEMORY_BLE"/>
+      <property name="Sheetfile" value="03_MCU_MEMORY_BLE.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/"/>
+      <tstamps>af6364fe-8ce4-5c6a-a692-05f27dd3e657</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP301">
+      <value>MCU_EN</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">TEST PAD / FOOTPRINT OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="TEST PAD / FOOTPRINT OPEN"/>
+      <property name="Sheetname" value="03_MCU_MEMORY_BLE"/>
+      <property name="Sheetfile" value="03_MCU_MEMORY_BLE.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/"/>
+      <tstamps>47186846-f3d3-5439-b107-27f17e84d1c5</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP302">
+      <value>BOOT_N</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">TEST PAD / FOOTPRINT OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="TEST PAD / FOOTPRINT OPEN"/>
+      <property name="Sheetname" value="03_MCU_MEMORY_BLE"/>
+      <property name="Sheetfile" value="03_MCU_MEMORY_BLE.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/"/>
+      <tstamps>a6f2f589-498a-5d29-bded-70d529476ec1</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP303">
+      <value>UART0_TX_TEST</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">TEST PAD / FOOTPRINT OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="TEST PAD / FOOTPRINT OPEN"/>
+      <property name="Sheetname" value="03_MCU_MEMORY_BLE"/>
+      <property name="Sheetfile" value="03_MCU_MEMORY_BLE.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/"/>
+      <tstamps>01d81bfe-d16b-54a5-8a27-6bd0afad5f4e</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP304">
+      <value>UART0_RX_TEST</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">TEST PAD / FOOTPRINT OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="TEST PAD / FOOTPRINT OPEN"/>
+      <property name="Sheetname" value="03_MCU_MEMORY_BLE"/>
+      <property name="Sheetfile" value="03_MCU_MEMORY_BLE.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/"/>
+      <tstamps>f6511fc6-0d04-5d33-a6bb-e681d2ce63c7</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP305">
+      <value>GND</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">TEST PAD / FOOTPRINT OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="TEST PAD / FOOTPRINT OPEN"/>
+      <property name="Sheetname" value="03_MCU_MEMORY_BLE"/>
+      <property name="Sheetfile" value="03_MCU_MEMORY_BLE.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/"/>
+      <tstamps>b475b135-e16e-5e67-87cd-0f314ad9d167</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U301">
+      <value>ESP32-S3-WROOM-1-N16R8</value>
+      <footprint>RF_Module:ESP32-S3-WROOM-1</footprint>
+      <datasheet>https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf</datasheet>
+      <fields>
+        <field name="MPN">ESP32-S3-WROOM-1-N16R8</field>
+        <field name="Review_status">CANDIDATE / PIN MAP H</field>
+        <field name="Footprint">RF_Module:ESP32-S3-WROOM-1</field>
+        <field name="Datasheet">https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="RF_Module" part="ESP32-S3-WROOM-1" description="RF Module, ESP32-S3 SoC, Wi-Fi 802.11b/g/n, Bluetooth, BLE, 32-bit, 3.3V, onboard antenna, SMD"/>
+      <property name="MPN" value="ESP32-S3-WROOM-1-N16R8"/>
+      <property name="Review_status" value="CANDIDATE / PIN MAP H"/>
+      <property name="Sheetname" value="03_MCU_MEMORY_BLE"/>
+      <property name="Sheetfile" value="03_MCU_MEMORY_BLE.kicad_sch"/>
+      <property name="ki_keywords" value="RF Radio BT ESP ESP32-S3 Espressif onboard PCB antenna"/>
+      <property name="ki_fp_filters" value="ESP32?S3?WROOM?1*"/>
+      <sheetpath names="/03_MCU_MEMORY_BLE/" tstamps="/b0500c4b-b732-51c8-aae1-e1284619f7e9/"/>
+      <tstamps>f64d348c-f130-506f-8140-15872938b969</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="3"/>
+            <pin num="27"/>
+            <pin num="39"/>
+            <pin num="38"/>
+            <pin num="15"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="6"/>
+            <pin num="7"/>
+            <pin num="12"/>
+            <pin num="17"/>
+            <pin num="18"/>
+            <pin num="19"/>
+            <pin num="20"/>
+            <pin num="21"/>
+            <pin num="22"/>
+            <pin num="8"/>
+            <pin num="9"/>
+            <pin num="2"/>
+            <pin num="1"/>
+            <pin num="40"/>
+            <pin num="41"/>
+            <pin num="37"/>
+            <pin num="36"/>
+            <pin num="10"/>
+            <pin num="11"/>
+            <pin num="13"/>
+            <pin num="14"/>
+            <pin num="23"/>
+            <pin num="28"/>
+            <pin num="29"/>
+            <pin num="30"/>
+            <pin num="31"/>
+            <pin num="32"/>
+            <pin num="33"/>
+            <pin num="34"/>
+            <pin num="35"/>
+            <pin num="26"/>
+            <pin num="16"/>
+            <pin num="24"/>
+            <pin num="25"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C401">
+      <value>100n / 10V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="04_CAN_PHY"/>
+      <property name="Sheetfile" value="04_CAN_PHY.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/04_CAN_PHY/" tstamps="/d33a9e0e-4232-56f1-8e79-ef81c2196b2f/"/>
+      <tstamps>6dc01341-b060-5fe9-972f-c436f93d43fd</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C402">
+      <value>100n / 10V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="04_CAN_PHY"/>
+      <property name="Sheetfile" value="04_CAN_PHY.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/04_CAN_PHY/" tstamps="/d33a9e0e-4232-56f1-8e79-ef81c2196b2f/"/>
+      <tstamps>f034a1cc-09e3-5b4c-80ac-49ca0c531396</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C403">
+      <value>100n / 50V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="04_CAN_PHY"/>
+      <property name="Sheetfile" value="04_CAN_PHY.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/04_CAN_PHY/" tstamps="/d33a9e0e-4232-56f1-8e79-ef81c2196b2f/"/>
+      <tstamps>9df9c9ea-f104-5151-b313-c1a3d8b6c2bc</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D401">
+      <value>TBD CAN TVS</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN CAN CLAMP / CAPACITANCE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="D_TVS" description="Bidirectional transient-voltage-suppression diode"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN CAN CLAMP / CAPACITANCE"/>
+      <property name="Sheetname" value="04_CAN_PHY"/>
+      <property name="Sheetfile" value="04_CAN_PHY.kicad_sch"/>
+      <property name="ki_keywords" value="diode TVS thyrector"/>
+      <property name="ki_fp_filters" value="TO-???* *_Diode_* *SingleDiode* D_*"/>
+      <sheetpath names="/04_CAN_PHY/" tstamps="/d33a9e0e-4232-56f1-8e79-ef81c2196b2f/"/>
+      <tstamps>8f373804-4580-5941-9353-946745113ef3</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D402">
+      <value>TBD CAN TVS</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN CAN CLAMP / CAPACITANCE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="D_TVS" description="Bidirectional transient-voltage-suppression diode"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN CAN CLAMP / CAPACITANCE"/>
+      <property name="Sheetname" value="04_CAN_PHY"/>
+      <property name="Sheetfile" value="04_CAN_PHY.kicad_sch"/>
+      <property name="ki_keywords" value="diode TVS thyrector"/>
+      <property name="ki_fp_filters" value="TO-???* *_Diode_* *SingleDiode* D_*"/>
+      <sheetpath names="/04_CAN_PHY/" tstamps="/d33a9e0e-4232-56f1-8e79-ef81c2196b2f/"/>
+      <tstamps>62359191-5598-5801-a2f4-433578e98643</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R401">
+      <value>10k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="04_CAN_PHY"/>
+      <property name="Sheetfile" value="04_CAN_PHY.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/04_CAN_PHY/" tstamps="/d33a9e0e-4232-56f1-8e79-ef81c2196b2f/"/>
+      <tstamps>2661acb2-5a17-5807-b2ca-b52ca98ba2ae</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R402">
+      <value>100k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="04_CAN_PHY"/>
+      <property name="Sheetfile" value="04_CAN_PHY.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/04_CAN_PHY/" tstamps="/d33a9e0e-4232-56f1-8e79-ef81c2196b2f/"/>
+      <tstamps>68ea95ba-122c-5a8d-bf5e-0bbf96e001b7</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R403">
+      <value>100k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="04_CAN_PHY"/>
+      <property name="Sheetfile" value="04_CAN_PHY.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/04_CAN_PHY/" tstamps="/d33a9e0e-4232-56f1-8e79-ef81c2196b2f/"/>
+      <tstamps>f76243f7-a855-5f9e-bcbd-eb8bb53f337f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U401">
+      <value>TCAN1043ADRQ1</value>
+      <footprint>Package_SO:SOIC-14_3.9x8.7mm_P1.27mm</footprint>
+      <datasheet>https://www.ti.com/lit/ds/symlink/tcan1043a-q1.pdf</datasheet>
+      <fields>
+        <field name="MPN">TCAN1043ADRQ1</field>
+        <field name="Review_status">PIN TABLE CHECKED / DFM OPEN</field>
+        <field name="Footprint">Package_SO:SOIC-14_3.9x8.7mm_P1.27mm</field>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/tcan1043a-q1.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Interface_CAN_LIN" part="TCAN1043xDxQ1" description="High-speed CAN-FD Transceiver with Sleep Mode, SOIC-14"/>
+      <property name="MPN" value="TCAN1043ADRQ1"/>
+      <property name="Review_status" value="PIN TABLE CHECKED / DFM OPEN"/>
+      <property name="Sheetname" value="04_CAN_PHY"/>
+      <property name="Sheetfile" value="04_CAN_PHY.kicad_sch"/>
+      <property name="ki_keywords" value="CAN FD High Speed CAN Transceiver Sleep VIO"/>
+      <property name="ki_fp_filters" value="SOIC*3.9x8.7mm*P1.27mm*"/>
+      <sheetpath names="/04_CAN_PHY/" tstamps="/d33a9e0e-4232-56f1-8e79-ef81c2196b2f/"/>
+      <tstamps>839a6139-7582-53a8-a352-e54b893d1302</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="4"/>
+            <pin num="1"/>
+            <pin num="6"/>
+            <pin num="14"/>
+            <pin num="8"/>
+            <pin num="9"/>
+            <pin num="5"/>
+            <pin num="3"/>
+            <pin num="2"/>
+            <pin num="10"/>
+            <pin num="11"/>
+            <pin num="13"/>
+            <pin num="12"/>
+            <pin num="7"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J501">
+      <value>FPC31 / ALL PINS OPEN</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">BLOCKED / EXACT PANEL REVISION AND MATE OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector_Generic" part="Conn_01x31" description="Generic connector, single row, 01x31, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="BLOCKED / EXACT PANEL REVISION AND MATE OPEN"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="connector"/>
+      <property name="ki_fp_filters" value="Connector*:*_1x??_*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>355d2423-41c7-5dd8-aa38-a9cf34294df3</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="6"/>
+            <pin num="7"/>
+            <pin num="8"/>
+            <pin num="9"/>
+            <pin num="10"/>
+            <pin num="11"/>
+            <pin num="12"/>
+            <pin num="13"/>
+            <pin num="14"/>
+            <pin num="15"/>
+            <pin num="16"/>
+            <pin num="17"/>
+            <pin num="18"/>
+            <pin num="19"/>
+            <pin num="20"/>
+            <pin num="21"/>
+            <pin num="22"/>
+            <pin num="23"/>
+            <pin num="24"/>
+            <pin num="25"/>
+            <pin num="26"/>
+            <pin num="27"/>
+            <pin num="28"/>
+            <pin num="29"/>
+            <pin num="30"/>
+            <pin num="31"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP501">
+      <value>DISP_CLK</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>e2ea0c0b-15ca-50bb-8084-561894779d57</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP502">
+      <value>DISP_CS</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>e0c5d40f-b577-542f-94ef-d5be4c9a704c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP503">
+      <value>DISP_D0</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>cb6fe9c6-b9f1-5ef5-94df-f1d037028570</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP504">
+      <value>DISP_D1</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>c1369da1-a503-5a72-b57c-a8331b45db09</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP505">
+      <value>DISP_D2</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>18b229ec-4ff2-5518-b2c5-3d861111f930</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP506">
+      <value>DISP_D3</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>a429a6cb-f557-5967-8aaf-ea0ec055c4a7</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP507">
+      <value>DISP_RESET</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>9e84e597-0874-5784-bf9e-958c8553971d</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP508">
+      <value>DISP_ENABLE</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>eee3e3f0-f6f7-53b8-87c9-95d7c8f80d37</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP509">
+      <value>TOUCH_SCL_TBD_LEVEL</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>76efadc4-20fc-5b40-b6be-fce9b45ac31a</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP510">
+      <value>TOUCH_SDA_TBD_LEVEL</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>ac42006c-c977-5a1a-a6bb-d3d088bb1873</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP511">
+      <value>TOUCH_INT</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>995541dd-f982-50e6-a926-87d843411568</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP512">
+      <value>TOUCH_RESET</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">LOGICAL INTERFACE ONLY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="LOGICAL INTERFACE ONLY"/>
+      <property name="Sheetname" value="05_AMOLED_TOUCH"/>
+      <property name="Sheetfile" value="05_AMOLED_TOUCH.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="exclude_from_board"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/05_AMOLED_TOUCH/" tstamps="/e649456e-6797-5b03-aedf-70096348f02e/"/>
+      <tstamps>0fec8cfd-6aa3-54af-9d92-505826517d5c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C601">
+      <value>100n / 10V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="06_LIGHT_SENSOR"/>
+      <property name="Sheetfile" value="06_LIGHT_SENSOR.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/06_LIGHT_SENSOR/" tstamps="/9a24c910-98d1-5b54-aac6-17a75c7c9b1e/"/>
+      <tstamps>35f219a3-836b-586d-9d57-3443859add94</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R601">
+      <value>10k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="06_LIGHT_SENSOR"/>
+      <property name="Sheetfile" value="06_LIGHT_SENSOR.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/06_LIGHT_SENSOR/" tstamps="/9a24c910-98d1-5b54-aac6-17a75c7c9b1e/"/>
+      <tstamps>dd740dbd-a02c-5602-84d2-ec416a6cbce4</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R602">
+      <value>10k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="06_LIGHT_SENSOR"/>
+      <property name="Sheetfile" value="06_LIGHT_SENSOR.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/06_LIGHT_SENSOR/" tstamps="/9a24c910-98d1-5b54-aac6-17a75c7c9b1e/"/>
+      <tstamps>69c15489-b844-512e-9775-22af1ca4d8c2</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R603">
+      <value>10k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="06_LIGHT_SENSOR"/>
+      <property name="Sheetfile" value="06_LIGHT_SENSOR.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/06_LIGHT_SENSOR/" tstamps="/9a24c910-98d1-5b54-aac6-17a75c7c9b1e/"/>
+      <tstamps>60e0fc69-3da0-5f68-ba6e-902542018469</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U601">
+      <value>OPT3001DNPRQ1</value>
+      <datasheet>https://www.ti.com/lit/ds/symlink/opt3001-q1.pdf</datasheet>
+      <fields>
+        <field name="MPN">OPT3001DNPRQ1</field>
+        <field name="Review_status">PIN TABLE E06 / LAND PATTERN OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/opt3001-q1.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="AutoGauge" part="OPT3001DNPRQ1" description="E06 Rev.C Table4-1; thermal pad land mapping pending"/>
+      <property name="MPN" value="OPT3001DNPRQ1"/>
+      <property name="Review_status" value="PIN TABLE E06 / LAND PATTERN OPEN"/>
+      <property name="Sheetname" value="06_LIGHT_SENSOR"/>
+      <property name="Sheetfile" value="06_LIGHT_SENSOR.kicad_sch"/>
+      <sheetpath names="/06_LIGHT_SENSOR/" tstamps="/9a24c910-98d1-5b54-aac6-17a75c7c9b1e/"/>
+      <tstamps>82f23c6e-c498-501f-bfda-14292aa434e9</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C701">
+      <value>1u / 10V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>1fc400ba-8dbe-5530-8f7d-880308124277</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C702">
+      <value>1u / 10V H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>f3031456-92a7-5e0f-b497-5d129d75a0e7</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J701">
+      <value>USB-C / EXACT MPN OPEN</value>
+      <datasheet>https://www.usb.org/sites/default/files/documents/usb_type-c.zip</datasheet>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CONNECTOR MPN / VBUS PROTECTION OPEN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://www.usb.org/sites/default/files/documents/usb_type-c.zip</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="USB_C_Receptacle_USB2.0_16P" description="USB 2.0-only 16P Type-C Receptacle connector"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CONNECTOR MPN / VBUS PROTECTION OPEN"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="usb universal serial bus type-C USB2.0"/>
+      <property name="ki_fp_filters" value="USB*C*Receptacle*"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>3b886b43-0a2e-5d7a-a23a-99fd15609e2b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="SH"/>
+            <pin num="A1"/>
+            <pin num="A12"/>
+            <pin num="B1"/>
+            <pin num="B12"/>
+            <pin num="A4"/>
+            <pin num="A9"/>
+            <pin num="B4"/>
+            <pin num="B9"/>
+            <pin num="A5"/>
+            <pin num="B5"/>
+            <pin num="A7"/>
+            <pin num="B7"/>
+            <pin num="A6"/>
+            <pin num="B6"/>
+            <pin num="A8"/>
+            <pin num="B8"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R701">
+      <value>5.1k 1% H / Rd</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>84c54df8-6a0c-56bd-a407-41e870dae65f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R702">
+      <value>5.1k 1% H / Rd</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>048c7ab3-467b-502d-9622-1e818aa1c704</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R703">
+      <value>0R H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>a50af019-a6f6-5543-9b73-2fa5963b6404</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R704">
+      <value>0R H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>26700741-a374-5f8d-bb8f-e888a8614c40</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R705">
+      <value>DNP / SHIELD LINK</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">OPEN EMC / CHASSIS STRATEGY</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="OPEN EMC / CHASSIS STRATEGY"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="dnp"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>609726b4-1e58-56eb-981a-cc1f721dba81</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R706">
+      <value>340k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>f2eea171-b1c0-59dd-a22d-f3e0073746b4</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R707">
+      <value>100k H</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>41ee7dbd-e31c-5f2f-8c79-766e6de86cd0</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="SW701">
+      <value>RESET / HIDDEN SERVICE</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Switch" part="SW_Push" description="Push button switch, generic, two pins"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="switch normally-open pushbutton push-button"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>b57bb2e9-f929-5252-b2f2-4b3fad3c1c24</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="SW702">
+      <value>BOOT / HIDDEN SERVICE</value>
+      <fields>
+        <field name="MPN">TBD</field>
+        <field name="Review_status">CANDIDATE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Switch" part="SW_Push" description="Push button switch, generic, two pins"/>
+      <property name="MPN" value="TBD"/>
+      <property name="Review_status" value="CANDIDATE"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="switch normally-open pushbutton push-button"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>9562b97a-ba4f-57a7-8f83-5eb535a34bcf</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U701">
+      <value>TPS2116DRLR</value>
+      <footprint>Package_TO_SOT_SMD:SOT-583-8</footprint>
+      <datasheet>https://www.ti.com/lit/ds/symlink/tps2116.pdf</datasheet>
+      <fields>
+        <field name="MPN">TPS2116DRLR</field>
+        <field name="Review_status">CANDIDATE / USB INPUT PROTECTION OPEN</field>
+        <field name="Footprint">Package_TO_SOT_SMD:SOT-583-8</field>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/tps2116.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Power_Management" part="TPS2116DRL" description="2 Channnels Power Mux with Manual and Priority Switchover, 1.6-5.5V Input Voltage, 2.5A Output Current, Ron 40 mOhm, SOT-583-8"/>
+      <property name="MPN" value="TPS2116DRLR"/>
+      <property name="Review_status" value="CANDIDATE / USB INPUT PROTECTION OPEN"/>
+      <property name="Sheetname" value="07_TEST_SERVICE"/>
+      <property name="Sheetfile" value="07_TEST_SERVICE.kicad_sch"/>
+      <property name="ki_keywords" value="Texas-Instruments power-mux switchover"/>
+      <property name="ki_fp_filters" value="SOT?5?3*"/>
+      <sheetpath names="/07_TEST_SERVICE/" tstamps="/0f1bdf53-c90c-549b-9431-f540932b7651/"/>
+      <tstamps>a24e6667-17ff-5f4d-91a9-f5245431745c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="6"/>
+            <pin num="1"/>
+            <pin num="7"/>
+            <pin num="2"/>
+            <pin num="8"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="AutoGauge" part="LM74900QRGERQ1">
+      <description>E05 Rev.C Table5-1. Exposed RTN pad must FLOAT, not GND. Parameters OPEN.</description>
+      <docs>https://www.ti.com/lit/ds/symlink/lm74900-q1.pdf</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LM74900QRGERQ1</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/lm74900-q1.pdf</field>
+        <field name="Description">E05 Rev.C Table5-1. Exposed RTN pad must FLOAT, not GND. Parameters OPEN.</field>
+      </fields>
+      <pins>
+        <pin num="1" name="DGATE" type="output"/>
+        <pin num="2" name="A" type="input"/>
+        <pin num="3" name="SW_SENSE" type="passive"/>
+        <pin num="4" name="UVLO" type="input"/>
+        <pin num="5" name="OV" type="input"/>
+        <pin num="6" name="EN" type="input"/>
+        <pin num="7" name="SLEEP" type="input"/>
+        <pin num="8" name="NC" type="no_connect"/>
+        <pin num="9" name="TMR" type="input"/>
+        <pin num="10" name="IMON" type="output"/>
+        <pin num="11" name="ILIM" type="input"/>
+        <pin num="12" name="FLT" type="open_collector"/>
+        <pin num="13" name="GND" type="power_in"/>
+        <pin num="14" name="HGATE" type="output"/>
+        <pin num="15" name="OUT" type="input"/>
+        <pin num="16" name="SLEEP_OV" type="input"/>
+        <pin num="17" name="NC" type="no_connect"/>
+        <pin num="18" name="ISCP" type="input"/>
+        <pin num="19" name="CS_MINUS" type="input"/>
+        <pin num="20" name="CS_PLUS" type="input"/>
+        <pin num="21" name="NC" type="no_connect"/>
+        <pin num="22" name="VS" type="power_in"/>
+        <pin num="23" name="CAP" type="output"/>
+        <pin num="24" name="C" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="AutoGauge" part="OPT3001DNPRQ1">
+      <description>E06 Rev.C Table4-1; thermal pad land mapping pending</description>
+      <docs>https://www.ti.com/lit/ds/symlink/opt3001-q1.pdf</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">OPT3001DNPRQ1</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/opt3001-q1.pdf</field>
+        <field name="Description">E06 Rev.C Table4-1; thermal pad land mapping pending</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VDD" type="power_in"/>
+        <pin num="2" name="ADDR" type="input"/>
+        <pin num="3" name="GND" type="power_in"/>
+        <pin num="4" name="SCL" type="input"/>
+        <pin num="5" name="INT" type="open_collector"/>
+        <pin num="6" name="SDA" type="bidirectional"/>
+      </pins>
+    </libpart>
+    <libpart lib="AutoGauge" part="TPS62811QWRWYRQ1">
+      <description>E46 Rev.K Table5-1; candidate, package and design not frozen</description>
+      <docs>https://www.ti.com/lit/ds/symlink/tps62813-q1.pdf</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TPS62811QWRWYRQ1</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/tps62813-q1.pdf</field>
+        <field name="Description">E46 Rev.K Table5-1; candidate, package and design not frozen</field>
+      </fields>
+      <pins>
+        <pin num="1" name="MODE_SYNC" type="input"/>
+        <pin num="2" name="VIN" type="power_in"/>
+        <pin num="3" name="SW" type="output"/>
+        <pin num="4" name="GND" type="power_in"/>
+        <pin num="5" name="FB" type="input"/>
+        <pin num="6" name="SS_TR" type="input"/>
+        <pin num="7" name="COMP_FSET" type="input"/>
+        <pin num="8" name="EN" type="input"/>
+        <pin num="9" name="PG" type="open_collector"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector" part="TestPoint">
+      <description>test point</description>
+      <footprints>
+        <fp>Pin*</fp>
+        <fp>Test*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TestPoint</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">test point</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector" part="USB_C_Receptacle_USB2.0_16P">
+      <description>USB 2.0-only 16P Type-C Receptacle connector</description>
+      <docs>https://www.usb.org/sites/default/files/documents/usb_type-c.zip</docs>
+      <footprints>
+        <fp>USB*C*Receptacle*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">USB_C_Receptacle_USB2.0_16P</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://www.usb.org/sites/default/files/documents/usb_type-c.zip</field>
+        <field name="Description">USB 2.0-only 16P Type-C Receptacle connector</field>
+      </fields>
+      <pins>
+        <pin num="A1" name="GND" type="passive"/>
+        <pin num="A4" name="VBUS" type="passive"/>
+        <pin num="A5" name="CC1" type="bidirectional"/>
+        <pin num="A6" name="D+" type="bidirectional"/>
+        <pin num="A7" name="D-" type="bidirectional"/>
+        <pin num="A8" name="SBU1" type="bidirectional"/>
+        <pin num="A9" name="VBUS" type="passive"/>
+        <pin num="A12" name="GND" type="passive"/>
+        <pin num="B1" name="GND" type="passive"/>
+        <pin num="B4" name="VBUS" type="passive"/>
+        <pin num="B5" name="CC2" type="bidirectional"/>
+        <pin num="B6" name="D+" type="bidirectional"/>
+        <pin num="B7" name="D-" type="bidirectional"/>
+        <pin num="B8" name="SBU2" type="bidirectional"/>
+        <pin num="B9" name="VBUS" type="passive"/>
+        <pin num="B12" name="GND" type="passive"/>
+        <pin num="SH" name="SHIELD" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector_Generic" part="Conn_01x06">
+      <description>Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x06</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+        <pin num="6" name="Pin_6" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector_Generic" part="Conn_01x16">
+      <description>Generic connector, single row, 01x16, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x16</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Generic connector, single row, 01x16, script generated (kicad-library-utils/schlib/autogen/connector/)</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+        <pin num="6" name="Pin_6" type="passive"/>
+        <pin num="7" name="Pin_7" type="passive"/>
+        <pin num="8" name="Pin_8" type="passive"/>
+        <pin num="9" name="Pin_9" type="passive"/>
+        <pin num="10" name="Pin_10" type="passive"/>
+        <pin num="11" name="Pin_11" type="passive"/>
+        <pin num="12" name="Pin_12" type="passive"/>
+        <pin num="13" name="Pin_13" type="passive"/>
+        <pin num="14" name="Pin_14" type="passive"/>
+        <pin num="15" name="Pin_15" type="passive"/>
+        <pin num="16" name="Pin_16" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector_Generic" part="Conn_01x31">
+      <description>Generic connector, single row, 01x31, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x31</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Generic connector, single row, 01x31, script generated (kicad-library-utils/schlib/autogen/connector/)</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+        <pin num="5" name="Pin_5" type="passive"/>
+        <pin num="6" name="Pin_6" type="passive"/>
+        <pin num="7" name="Pin_7" type="passive"/>
+        <pin num="8" name="Pin_8" type="passive"/>
+        <pin num="9" name="Pin_9" type="passive"/>
+        <pin num="10" name="Pin_10" type="passive"/>
+        <pin num="11" name="Pin_11" type="passive"/>
+        <pin num="12" name="Pin_12" type="passive"/>
+        <pin num="13" name="Pin_13" type="passive"/>
+        <pin num="14" name="Pin_14" type="passive"/>
+        <pin num="15" name="Pin_15" type="passive"/>
+        <pin num="16" name="Pin_16" type="passive"/>
+        <pin num="17" name="Pin_17" type="passive"/>
+        <pin num="18" name="Pin_18" type="passive"/>
+        <pin num="19" name="Pin_19" type="passive"/>
+        <pin num="20" name="Pin_20" type="passive"/>
+        <pin num="21" name="Pin_21" type="passive"/>
+        <pin num="22" name="Pin_22" type="passive"/>
+        <pin num="23" name="Pin_23" type="passive"/>
+        <pin num="24" name="Pin_24" type="passive"/>
+        <pin num="25" name="Pin_25" type="passive"/>
+        <pin num="26" name="Pin_26" type="passive"/>
+        <pin num="27" name="Pin_27" type="passive"/>
+        <pin num="28" name="Pin_28" type="passive"/>
+        <pin num="29" name="Pin_29" type="passive"/>
+        <pin num="30" name="Pin_30" type="passive"/>
+        <pin num="31" name="Pin_31" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="C">
+      <description>Unpolarized capacitor</description>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Unpolarized capacitor</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="D_TVS">
+      <description>Bidirectional transient-voltage-suppression diode</description>
+      <footprints>
+        <fp>TO-???*</fp>
+        <fp>*_Diode_*</fp>
+        <fp>*SingleDiode*</fp>
+        <fp>D_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">D_TVS</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Bidirectional transient-voltage-suppression diode</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A1" type="passive"/>
+        <pin num="2" name="A2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="Fuse">
+      <description>Fuse</description>
+      <footprints>
+        <fp>*Fuse*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">F</field>
+        <field name="Value">Fuse</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Fuse</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="L">
+      <description>Inductor</description>
+      <footprints>
+        <fp>Choke_*</fp>
+        <fp>*Coil*</fp>
+        <fp>Inductor_*</fp>
+        <fp>L_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">L</field>
+        <field name="Value">L</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Inductor</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="R">
+      <description>Resistor</description>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Interface_CAN_LIN" part="TCAN1043xDxQ1">
+      <description>High-speed CAN-FD Transceiver with Sleep Mode, SOIC-14</description>
+      <docs>http://www.ti.com/lit/ds/symlink/tcan1043-q1.pdf</docs>
+      <footprints>
+        <fp>SOIC*3.9x8.7mm*P1.27mm*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TCAN1043xDxQ1</field>
+        <field name="Footprint">Package_SO:SOIC-14_3.9x8.7mm_P1.27mm</field>
+        <field name="Datasheet">http://www.ti.com/lit/ds/symlink/tcan1043-q1.pdf</field>
+        <field name="Description">High-speed CAN-FD Transceiver with Sleep Mode, SOIC-14</field>
+      </fields>
+      <pins>
+        <pin num="1" name="TXD" type="input"/>
+        <pin num="2" name="GND" type="power_in"/>
+        <pin num="3" name="VCC" type="power_in"/>
+        <pin num="4" name="RXD" type="output"/>
+        <pin num="5" name="VIO" type="power_in"/>
+        <pin num="6" name="EN" type="input"/>
+        <pin num="7" name="INH" type="open_emitter"/>
+        <pin num="8" name="~{FAULT}" type="output"/>
+        <pin num="9" name="WAKE" type="input"/>
+        <pin num="10" name="VSUP" type="power_in"/>
+        <pin num="11" name="NC" type="no_connect"/>
+        <pin num="12" name="CANL" type="bidirectional"/>
+        <pin num="13" name="CANH" type="bidirectional"/>
+        <pin num="14" name="~{STB}" type="input"/>
+      </pins>
+    </libpart>
+    <libpart lib="Power_Management" part="TPS2116DRL">
+      <description>2 Channnels Power Mux with Manual and Priority Switchover, 1.6-5.5V Input Voltage, 2.5A Output Current, Ron 40 mOhm, SOT-583-8</description>
+      <docs>https://www.ti.com/lit/ds/symlink/tps2116.pdf</docs>
+      <footprints>
+        <fp>SOT?5?3*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TPS2116DRL</field>
+        <field name="Footprint">Package_TO_SOT_SMD:SOT-583-8</field>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/tps2116.pdf</field>
+        <field name="Description">2 Channnels Power Mux with Manual and Priority Switchover, 1.6-5.5V Input Voltage, 2.5A Output Current, Ron 40 mOhm, SOT-583-8</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="power_in"/>
+        <pin num="2" name="VOUT" type="power_out"/>
+        <pin num="3" name="VIN1" type="power_in"/>
+        <pin num="4" name="PR1" type="input"/>
+        <pin num="5" name="MODE" type="input"/>
+        <pin num="6" name="VIN2" type="power_in"/>
+        <pin num="7" name="VOUT" type="power_out"/>
+        <pin num="8" name="ST" type="open_collector"/>
+      </pins>
+    </libpart>
+    <libpart lib="RF_Module" part="ESP32-S3-WROOM-1">
+      <description>RF Module, ESP32-S3 SoC, Wi-Fi 802.11b/g/n, Bluetooth, BLE, 32-bit, 3.3V, onboard antenna, SMD</description>
+      <docs>https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf</docs>
+      <footprints>
+        <fp>ESP32?S3?WROOM?1*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">ESP32-S3-WROOM-1</field>
+        <field name="Footprint">RF_Module:ESP32-S3-WROOM-1</field>
+        <field name="Datasheet">https://www.espressif.com/sites/default/files/documentation/esp32-s3-wroom-1_wroom-1u_datasheet_en.pdf</field>
+        <field name="Description">RF Module, ESP32-S3 SoC, Wi-Fi 802.11b/g/n, Bluetooth, BLE, 32-bit, 3.3V, onboard antenna, SMD</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="power_in"/>
+        <pin num="2" name="3V3" type="power_in"/>
+        <pin num="3" name="EN" type="input"/>
+        <pin num="4" name="IO4" type="bidirectional"/>
+        <pin num="5" name="IO5" type="bidirectional"/>
+        <pin num="6" name="IO6" type="bidirectional"/>
+        <pin num="7" name="IO7" type="bidirectional"/>
+        <pin num="8" name="IO15" type="bidirectional"/>
+        <pin num="9" name="IO16" type="bidirectional"/>
+        <pin num="10" name="IO17" type="bidirectional"/>
+        <pin num="11" name="IO18" type="bidirectional"/>
+        <pin num="12" name="IO8" type="bidirectional"/>
+        <pin num="13" name="USB_D-" type="bidirectional"/>
+        <pin num="14" name="USB_D+" type="bidirectional"/>
+        <pin num="15" name="IO3" type="bidirectional"/>
+        <pin num="16" name="IO46" type="bidirectional"/>
+        <pin num="17" name="IO9" type="bidirectional"/>
+        <pin num="18" name="IO10" type="bidirectional"/>
+        <pin num="19" name="IO11" type="bidirectional"/>
+        <pin num="20" name="IO12" type="bidirectional"/>
+        <pin num="21" name="IO13" type="bidirectional"/>
+        <pin num="22" name="IO14" type="bidirectional"/>
+        <pin num="23" name="IO21" type="bidirectional"/>
+        <pin num="24" name="IO47" type="bidirectional"/>
+        <pin num="25" name="IO48" type="bidirectional"/>
+        <pin num="26" name="IO45" type="bidirectional"/>
+        <pin num="27" name="IO0" type="bidirectional"/>
+        <pin num="28" name="IO35" type="bidirectional"/>
+        <pin num="29" name="IO36" type="bidirectional"/>
+        <pin num="30" name="IO37" type="bidirectional"/>
+        <pin num="31" name="IO38" type="bidirectional"/>
+        <pin num="32" name="IO39" type="bidirectional"/>
+        <pin num="33" name="IO40" type="bidirectional"/>
+        <pin num="34" name="IO41" type="bidirectional"/>
+        <pin num="35" name="IO42" type="bidirectional"/>
+        <pin num="36" name="RXD0" type="bidirectional"/>
+        <pin num="37" name="TXD0" type="bidirectional"/>
+        <pin num="38" name="IO2" type="bidirectional"/>
+        <pin num="39" name="IO1" type="bidirectional"/>
+        <pin num="40" name="GND" type="passive"/>
+        <pin num="41" name="GND" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Regulator_Switching" part="LM5164DDA">
+      <description>1A synchronous buck converter with ultra-low IQ, 6V - 100V input, adjustable output voltage, HSOP-8</description>
+      <docs>https://www.ti.com/lit/ds/symlink/lm5164.pdf?ts=1598311864250&amp;ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FLM5164%253FHQS%253DTI-null-null-octopart-df-pf-null-wwe</docs>
+      <footprints>
+        <fp>HSOP*1EP*3.9x4.9*P1.27mm*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LM5164DDA</field>
+        <field name="Footprint">Package_SO:HSOP-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.1mm_ThermalVias</field>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/lm5164.pdf?ts=1598311864250&amp;ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FLM5164%253FHQS%253DTI-null-null-octopart-df-pf-null-wwe</field>
+        <field name="Description">1A synchronous buck converter with ultra-low IQ, 6V - 100V input, adjustable output voltage, HSOP-8</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="power_in"/>
+        <pin num="2" name="VIN" type="power_in"/>
+        <pin num="3" name="EN/UVLO" type="input"/>
+        <pin num="4" name="RON" type="passive"/>
+        <pin num="5" name="FB" type="input"/>
+        <pin num="6" name="PGOOD" type="open_collector"/>
+        <pin num="7" name="BST" type="passive"/>
+        <pin num="8" name="SW" type="power_out"/>
+        <pin num="9" name="EP" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Switch" part="SW_Push">
+      <description>Push button switch, generic, two pins</description>
+      <fields>
+        <field name="Reference">SW</field>
+        <field name="Value">SW_Push</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Push button switch, generic, two pins</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Transistor_FET" part="Q_NMOS_GDS">
+      <description>N-MOSFET transistor, gate/drain/source</description>
+      <fields>
+        <field name="Reference">Q</field>
+        <field name="Value">Q_NMOS_GDS</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">N-MOSFET transistor, gate/drain/source</field>
+      </fields>
+      <pins>
+        <pin num="1" name="G" type="input"/>
+        <pin num="2" name="D" type="passive"/>
+        <pin num="3" name="S" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="AutoGauge">
+      <uri>${KIPRJMOD}/AutoGauge.kicad_sym</uri>
+    </library>
+    <library logical="Connector">
+      <uri>${KICAD10_SYMBOL_DIR}/Connector.kicad_sym</uri>
+    </library>
+    <library logical="Connector_Generic">
+      <uri>${KICAD10_SYMBOL_DIR}/Connector_Generic.kicad_sym</uri>
+    </library>
+    <library logical="Device">
+      <uri>${KICAD10_SYMBOL_DIR}/Device.kicad_sym</uri>
+    </library>
+    <library logical="Interface_CAN_LIN">
+      <uri>${KICAD10_SYMBOL_DIR}/Interface_CAN_LIN.kicad_sym</uri>
+    </library>
+    <library logical="Power_Management">
+      <uri>${KICAD10_SYMBOL_DIR}/Power_Management.kicad_sym</uri>
+    </library>
+    <library logical="RF_Module">
+      <uri>${KICAD10_SYMBOL_DIR}/RF_Module.kicad_sym</uri>
+    </library>
+    <library logical="Regulator_Switching">
+      <uri>${KICAD10_SYMBOL_DIR}/Regulator_Switching.kicad_sym</uri>
+    </library>
+    <library logical="Switch">
+      <uri>${KICAD10_SYMBOL_DIR}/Switch.kicad_sym</uri>
+    </library>
+    <library logical="Transistor_FET">
+      <uri>${KICAD10_SYMBOL_DIR}/Transistor_FET.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="3V3_SYS" class="Default">
+      <node ref="C211" pin="1" pintype="passive"/>
+      <node ref="C212" pin="1" pintype="passive"/>
+      <node ref="C214" pin="1" pintype="passive"/>
+      <node ref="C301" pin="1" pintype="passive"/>
+      <node ref="C302" pin="1" pintype="passive"/>
+      <node ref="C402" pin="1" pintype="passive"/>
+      <node ref="C601" pin="1" pintype="passive"/>
+      <node ref="L203" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="R212" pin="1" pintype="passive"/>
+      <node ref="R214" pin="1" pintype="passive"/>
+      <node ref="R301" pin="1" pintype="passive"/>
+      <node ref="R302" pin="1" pintype="passive"/>
+      <node ref="R401" pin="1" pintype="passive"/>
+      <node ref="R601" pin="1" pintype="passive"/>
+      <node ref="R602" pin="1" pintype="passive"/>
+      <node ref="R603" pin="1" pintype="passive"/>
+      <node ref="U301" pin="2" pinfunction="3V3_2" pintype="power_in"/>
+      <node ref="U401" pin="5" pinfunction="VIO_5" pintype="power_in"/>
+      <node ref="U601" pin="1" pinfunction="VDD_1" pintype="power_in"/>
+    </net>
+    <net code="2" name="5V_OBD" class="Default">
+      <node ref="C207" pin="1" pintype="passive"/>
+      <node ref="C208" pin="2" pintype="passive"/>
+      <node ref="C401" pin="1" pintype="passive"/>
+      <node ref="L202" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="R208" pin="1" pintype="passive"/>
+      <node ref="R211" pin="1" pintype="passive"/>
+      <node ref="R706" pin="1" pintype="passive"/>
+      <node ref="U401" pin="3" pinfunction="VCC_3" pintype="power_in"/>
+      <node ref="U701" pin="3" pinfunction="VIN1_3" pintype="power_in"/>
+      <node ref="U701" pin="5" pinfunction="MODE_5" pintype="input"/>
+    </net>
+    <net code="3" name="5V_SERVICE" class="Default">
+      <node ref="C210" pin="1" pintype="passive"/>
+      <node ref="C702" pin="1" pintype="passive"/>
+      <node ref="U203" pin="2" pinfunction="VIN_2" pintype="power_in"/>
+      <node ref="U203" pin="8" pinfunction="EN_8" pintype="input"/>
+      <node ref="U701" pin="2" pinfunction="VOUT_2" pintype="power_out"/>
+      <node ref="U701" pin="7" pinfunction="VOUT_7" pintype="power_out"/>
+    </net>
+    <net code="4" name="ALS_INT" class="Default">
+      <node ref="R603" pin="2" pintype="passive"/>
+      <node ref="U301" pin="9" pinfunction="IO16_9" pintype="bidirectional"/>
+      <node ref="U601" pin="5" pinfunction="INT_5" pintype="open_collector"/>
+    </net>
+    <net code="5" name="ALS_SCL" class="Default">
+      <node ref="R601" pin="2" pintype="passive"/>
+      <node ref="U301" pin="17" pinfunction="IO9_17" pintype="bidirectional"/>
+      <node ref="U601" pin="4" pinfunction="SCL_4" pintype="input"/>
+    </net>
+    <net code="6" name="ALS_SDA" class="Default">
+      <node ref="R602" pin="2" pintype="passive"/>
+      <node ref="U301" pin="12" pinfunction="IO8_12" pintype="bidirectional"/>
+      <node ref="U601" pin="6" pinfunction="SDA_6" pintype="bidirectional"/>
+    </net>
+    <net code="7" name="AON_PROTECTED" class="Default">
+      <node ref="C204" pin="1" pintype="passive"/>
+      <node ref="C205" pin="1" pintype="passive"/>
+      <node ref="C403" pin="1" pintype="passive"/>
+      <node ref="Q202" pin="3" pinfunction="S_3" pintype="passive"/>
+      <node ref="U201" pin="15" pinfunction="OUT_15" pintype="input"/>
+      <node ref="U202" pin="2" pinfunction="VIN_2" pintype="power_in"/>
+      <node ref="U401" pin="10" pinfunction="VSUP_10" pintype="power_in"/>
+      <node ref="U401" pin="9" pinfunction="WAKE_9" pintype="input"/>
+    </net>
+    <net code="8" name="BOOT_N" class="Default">
+      <node ref="R302" pin="2" pintype="passive"/>
+      <node ref="SW702" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="TP302" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="27" pinfunction="IO0_27" pintype="bidirectional"/>
+    </net>
+    <net code="9" name="BPLUS_CABLE_FUSED" class="Default">
+      <node ref="D201" pin="1" pinfunction="A1_1" pintype="passive"/>
+      <node ref="F100" pin="2" pintype="passive"/>
+      <node ref="J101" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
+      <node ref="Q201" pin="3" pinfunction="S_3" pintype="passive"/>
+      <node ref="U201" pin="2" pinfunction="A_2" pintype="input"/>
+    </net>
+    <net code="10" name="BUCK5_BST" class="Default">
+      <node ref="C206" pin="1" pintype="passive"/>
+      <node ref="U202" pin="7" pinfunction="BST_7" pintype="passive"/>
+    </net>
+    <net code="11" name="BUCK5_EN_HV" class="Default">
+      <node ref="C217" pin="1" pintype="passive"/>
+      <node ref="R217" pin="2" pintype="passive"/>
+      <node ref="U202" pin="3" pinfunction="EN/UVLO_3" pintype="input"/>
+    </net>
+    <net code="12" name="BUCK5_FB" class="Default">
+      <node ref="C209" pin="2" pintype="passive"/>
+      <node ref="R208" pin="2" pintype="passive"/>
+      <node ref="R209" pin="1" pintype="passive"/>
+      <node ref="U202" pin="5" pinfunction="FB_5" pintype="input"/>
+    </net>
+    <net code="13" name="BUCK5_PG" class="Default">
+      <node ref="R211" pin="2" pintype="passive"/>
+      <node ref="U202" pin="6" pinfunction="PGOOD_6" pintype="open_collector"/>
+    </net>
+    <net code="14" name="BUCK5_RIPPLE_A" class="Default">
+      <node ref="C208" pin="1" pintype="passive"/>
+      <node ref="C209" pin="1" pintype="passive"/>
+      <node ref="R210" pin="2" pintype="passive"/>
+    </net>
+    <net code="15" name="BUCK5_RON" class="Default">
+      <node ref="R207" pin="1" pintype="passive"/>
+      <node ref="U202" pin="4" pinfunction="RON_4" pintype="passive"/>
+    </net>
+    <net code="16" name="BUCK5_SW" class="Default">
+      <node ref="C206" pin="2" pintype="passive"/>
+      <node ref="L202" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="R210" pin="1" pintype="passive"/>
+      <node ref="U202" pin="8" pinfunction="SW_8" pintype="power_out"/>
+    </net>
+    <net code="17" name="BUCK33_FB" class="Default">
+      <node ref="C214" pin="2" pintype="passive"/>
+      <node ref="R212" pin="2" pintype="passive"/>
+      <node ref="R213" pin="1" pintype="passive"/>
+      <node ref="U203" pin="5" pinfunction="FB_5" pintype="input"/>
+    </net>
+    <net code="18" name="BUCK33_PG" class="Default">
+      <node ref="R214" pin="2" pintype="passive"/>
+      <node ref="U203" pin="9" pinfunction="PG_9" pintype="open_collector"/>
+    </net>
+    <net code="19" name="BUCK33_SS" class="Default">
+      <node ref="C213" pin="1" pintype="passive"/>
+      <node ref="U203" pin="6" pinfunction="SS_TR_6" pintype="input"/>
+    </net>
+    <net code="20" name="BUCK33_SW" class="Default">
+      <node ref="L203" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U203" pin="3" pinfunction="SW_3" pintype="output"/>
+    </net>
+    <net code="21" name="CANH_CABLE" class="Default">
+      <node ref="D401" pin="1" pinfunction="A1_1" pintype="passive"/>
+      <node ref="J100" pin="6" pinfunction="Pin_6_6" pintype="passive"/>
+      <node ref="J101" pin="4" pinfunction="Pin_4_4" pintype="passive"/>
+      <node ref="U401" pin="13" pinfunction="CANH_13" pintype="bidirectional"/>
+    </net>
+    <net code="22" name="CANL_CABLE" class="Default">
+      <node ref="D402" pin="1" pinfunction="A1_1" pintype="passive"/>
+      <node ref="J100" pin="14" pinfunction="Pin_14_14" pintype="passive"/>
+      <node ref="J101" pin="5" pinfunction="Pin_5_5" pintype="passive"/>
+      <node ref="U401" pin="12" pinfunction="CANL_12" pintype="bidirectional"/>
+    </net>
+    <net code="23" name="CAN_EN" class="Default">
+      <node ref="R402" pin="1" pintype="passive"/>
+      <node ref="U301" pin="6" pinfunction="IO6_6" pintype="bidirectional"/>
+      <node ref="U401" pin="6" pinfunction="EN_6" pintype="input"/>
+    </net>
+    <net code="24" name="CAN_INH_HV" class="Default">
+      <node ref="R215" pin="1" pintype="passive"/>
+      <node ref="R217" pin="1" pintype="passive"/>
+      <node ref="U401" pin="7" pinfunction="INH_7" pintype="open_emitter"/>
+    </net>
+    <net code="25" name="CAN_RXD" class="Default">
+      <node ref="U301" pin="5" pinfunction="IO5_5" pintype="bidirectional"/>
+      <node ref="U401" pin="4" pinfunction="RXD_4" pintype="output"/>
+    </net>
+    <net code="26" name="CAN_TXD" class="Default">
+      <node ref="R401" pin="2" pintype="passive"/>
+      <node ref="U301" pin="4" pinfunction="IO4_4" pintype="bidirectional"/>
+      <node ref="U401" pin="1" pinfunction="TXD_1" pintype="input"/>
+    </net>
+    <net code="27" name="CAN_nFAULT" class="Default">
+      <node ref="U301" pin="8" pinfunction="IO15_8" pintype="bidirectional"/>
+      <node ref="U401" pin="8" pinfunction="~{FAULT}_8" pintype="output"/>
+    </net>
+    <net code="28" name="CAN_nSTB" class="Default">
+      <node ref="R403" pin="1" pintype="passive"/>
+      <node ref="U301" pin="7" pinfunction="IO7_7" pintype="bidirectional"/>
+      <node ref="U401" pin="14" pinfunction="~{STB}_14" pintype="input"/>
+    </net>
+    <net code="29" name="DISP_CLK" class="Default">
+      <node ref="TP501" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="20" pinfunction="IO12_20" pintype="bidirectional"/>
+    </net>
+    <net code="30" name="DISP_CS" class="Default">
+      <node ref="TP502" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="18" pinfunction="IO10_18" pintype="bidirectional"/>
+    </net>
+    <net code="31" name="DISP_D0" class="Default">
+      <node ref="TP503" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="19" pinfunction="IO11_19" pintype="bidirectional"/>
+    </net>
+    <net code="32" name="DISP_D1" class="Default">
+      <node ref="TP504" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="21" pinfunction="IO13_21" pintype="bidirectional"/>
+    </net>
+    <net code="33" name="DISP_D2" class="Default">
+      <node ref="TP505" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="22" pinfunction="IO14_22" pintype="bidirectional"/>
+    </net>
+    <net code="34" name="DISP_D3" class="Default">
+      <node ref="TP506" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="23" pinfunction="IO21_23" pintype="bidirectional"/>
+    </net>
+    <net code="35" name="DISP_ENABLE" class="Default">
+      <node ref="TP508" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="25" pinfunction="IO48_25" pintype="bidirectional"/>
+    </net>
+    <net code="36" name="DISP_RESET" class="Default">
+      <node ref="TP507" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="10" pinfunction="IO17_10" pintype="bidirectional"/>
+    </net>
+    <net code="37" name="GND" class="Default">
+      <node ref="C201" pin="2" pintype="passive"/>
+      <node ref="C203" pin="2" pintype="passive"/>
+      <node ref="C204" pin="2" pintype="passive"/>
+      <node ref="C205" pin="2" pintype="passive"/>
+      <node ref="C207" pin="2" pintype="passive"/>
+      <node ref="C210" pin="2" pintype="passive"/>
+      <node ref="C211" pin="2" pintype="passive"/>
+      <node ref="C212" pin="2" pintype="passive"/>
+      <node ref="C213" pin="2" pintype="passive"/>
+      <node ref="C217" pin="2" pintype="passive"/>
+      <node ref="C301" pin="2" pintype="passive"/>
+      <node ref="C302" pin="2" pintype="passive"/>
+      <node ref="C303" pin="2" pintype="passive"/>
+      <node ref="C401" pin="2" pintype="passive"/>
+      <node ref="C402" pin="2" pintype="passive"/>
+      <node ref="C403" pin="2" pintype="passive"/>
+      <node ref="C601" pin="2" pintype="passive"/>
+      <node ref="C701" pin="2" pintype="passive"/>
+      <node ref="C702" pin="2" pintype="passive"/>
+      <node ref="D201" pin="2" pinfunction="A2_2" pintype="passive"/>
+      <node ref="D401" pin="2" pinfunction="A2_2" pintype="passive"/>
+      <node ref="D402" pin="2" pinfunction="A2_2" pintype="passive"/>
+      <node ref="J100" pin="4" pinfunction="Pin_4_4" pintype="passive"/>
+      <node ref="J101" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
+      <node ref="J701" pin="A1" pinfunction="GND_A1" pintype="passive"/>
+      <node ref="J701" pin="A12" pinfunction="GND_A12" pintype="passive"/>
+      <node ref="J701" pin="B1" pinfunction="GND_B1" pintype="passive"/>
+      <node ref="J701" pin="B12" pinfunction="GND_B12" pintype="passive"/>
+      <node ref="R101" pin="2" pintype="passive"/>
+      <node ref="R205" pin="2" pintype="passive"/>
+      <node ref="R206" pin="2" pintype="passive"/>
+      <node ref="R207" pin="2" pintype="passive"/>
+      <node ref="R209" pin="2" pintype="passive"/>
+      <node ref="R213" pin="2" pintype="passive"/>
+      <node ref="R216" pin="2" pintype="passive"/>
+      <node ref="R402" pin="2" pintype="passive"/>
+      <node ref="R403" pin="2" pintype="passive"/>
+      <node ref="R701" pin="2" pintype="passive"/>
+      <node ref="R702" pin="2" pintype="passive"/>
+      <node ref="R705" pin="2" pintype="passive"/>
+      <node ref="R707" pin="2" pintype="passive"/>
+      <node ref="SW701" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="SW702" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="TP305" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U201" pin="13" pinfunction="GND_13" pintype="power_in"/>
+      <node ref="U202" pin="1" pinfunction="GND_1" pintype="power_in"/>
+      <node ref="U202" pin="9" pinfunction="EP_9" pintype="passive"/>
+      <node ref="U203" pin="1" pinfunction="MODE_SYNC_1" pintype="input"/>
+      <node ref="U203" pin="4" pinfunction="GND_4" pintype="power_in"/>
+      <node ref="U203" pin="7" pinfunction="COMP_FSET_7" pintype="input"/>
+      <node ref="U301" pin="1" pinfunction="GND_1" pintype="power_in"/>
+      <node ref="U301" pin="40" pinfunction="GND_40" pintype="passive"/>
+      <node ref="U301" pin="41" pinfunction="GND_41" pintype="passive"/>
+      <node ref="U401" pin="2" pinfunction="GND_2" pintype="power_in"/>
+      <node ref="U601" pin="2" pinfunction="ADDR_2" pintype="input"/>
+      <node ref="U601" pin="3" pinfunction="GND_3" pintype="power_in"/>
+      <node ref="U701" pin="1" pinfunction="GND_1" pintype="power_in"/>
+    </net>
+    <net code="38" name="IDEAL_DIODE_GATE" class="Default">
+      <node ref="Q201" pin="1" pinfunction="G_1" pintype="input"/>
+      <node ref="U201" pin="1" pinfunction="DGATE_1" pintype="output"/>
+    </net>
+    <net code="39" name="LOAD_GATE" class="Default">
+      <node ref="Q202" pin="1" pinfunction="G_1" pintype="input"/>
+      <node ref="U201" pin="14" pinfunction="HGATE_14" pintype="output"/>
+    </net>
+    <net code="40" name="MCU_EN" class="Default">
+      <node ref="C303" pin="1" pintype="passive"/>
+      <node ref="R301" pin="2" pintype="passive"/>
+      <node ref="SW701" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="TP301" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="3" pinfunction="EN_3" pintype="input"/>
+    </net>
+    <net code="41" name="MUX_PR1" class="Default">
+      <node ref="R706" pin="2" pintype="passive"/>
+      <node ref="R707" pin="1" pintype="passive"/>
+      <node ref="U701" pin="4" pinfunction="PR1_4" pintype="input"/>
+    </net>
+    <net code="42" name="OBD_BATT_RAW" class="Default">
+      <node ref="F100" pin="1" pintype="passive"/>
+      <node ref="J100" pin="16" pinfunction="Pin_16_16" pintype="passive"/>
+    </net>
+    <net code="43" name="OBD_PRESENT_SAFE_TBD" class="Default">
+      <node ref="U301" pin="32" pinfunction="IO39_32" pintype="bidirectional"/>
+    </net>
+    <net code="44" name="OBD_SIGNAL_GND" class="Default">
+      <node ref="J100" pin="5" pinfunction="Pin_5_5" pintype="passive"/>
+      <node ref="J101" pin="3" pinfunction="Pin_3_3" pintype="passive"/>
+      <node ref="R101" pin="1" pintype="passive"/>
+    </net>
+    <net code="45" name="PROT_CAP" class="Default">
+      <node ref="C202" pin="1" pintype="passive"/>
+      <node ref="U201" pin="23" pinfunction="CAP_23" pintype="output"/>
+    </net>
+    <net code="46" name="PROT_CS_MINUS" class="Default">
+      <node ref="Q202" pin="2" pinfunction="D_2" pintype="passive"/>
+      <node ref="R201" pin="2" pintype="passive"/>
+      <node ref="U201" pin="19" pinfunction="CS_MINUS_19" pintype="input"/>
+    </net>
+    <net code="47" name="PROT_CS_PLUS" class="Default">
+      <node ref="R202" pin="2" pintype="passive"/>
+      <node ref="U201" pin="18" pinfunction="ISCP_18" pintype="input"/>
+      <node ref="U201" pin="20" pinfunction="CS_PLUS_20" pintype="input"/>
+    </net>
+    <net code="48" name="PROT_ILIM" class="Default">
+      <node ref="R206" pin="1" pintype="passive"/>
+      <node ref="U201" pin="11" pinfunction="ILIM_11" pintype="input"/>
+    </net>
+    <net code="49" name="PROT_MID" class="Default">
+      <node ref="C201" pin="1" pintype="passive"/>
+      <node ref="C202" pin="2" pintype="passive"/>
+      <node ref="Q201" pin="2" pinfunction="D_2" pintype="passive"/>
+      <node ref="R201" pin="1" pintype="passive"/>
+      <node ref="R202" pin="1" pintype="passive"/>
+      <node ref="U201" pin="16" pinfunction="SLEEP_OV_16" pintype="input"/>
+      <node ref="U201" pin="22" pinfunction="VS_22" pintype="power_in"/>
+      <node ref="U201" pin="24" pinfunction="C_24" pintype="input"/>
+      <node ref="U201" pin="6" pinfunction="EN_6" pintype="input"/>
+    </net>
+    <net code="50" name="PROT_OV" class="Default">
+      <node ref="R204" pin="2" pintype="passive"/>
+      <node ref="R205" pin="1" pintype="passive"/>
+      <node ref="U201" pin="5" pinfunction="OV_5" pintype="input"/>
+    </net>
+    <net code="51" name="PROT_SENSE_SW" class="Default">
+      <node ref="R203" pin="1" pintype="passive"/>
+      <node ref="U201" pin="3" pinfunction="SW_SENSE_3" pintype="passive"/>
+    </net>
+    <net code="52" name="PROT_SLEEP_HV" class="Default">
+      <node ref="R215" pin="2" pintype="passive"/>
+      <node ref="R216" pin="1" pintype="passive"/>
+      <node ref="U201" pin="7" pinfunction="SLEEP_7" pintype="input"/>
+    </net>
+    <net code="53" name="PROT_TMR" class="Default">
+      <node ref="C203" pin="1" pintype="passive"/>
+      <node ref="U201" pin="9" pinfunction="TMR_9" pintype="input"/>
+    </net>
+    <net code="54" name="PROT_UVLO" class="Default">
+      <node ref="R203" pin="2" pintype="passive"/>
+      <node ref="R204" pin="1" pintype="passive"/>
+      <node ref="U201" pin="4" pinfunction="UVLO_4" pintype="input"/>
+    </net>
+    <net code="55" name="TOUCH_INT" class="Default">
+      <node ref="TP511" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="11" pinfunction="IO18_11" pintype="bidirectional"/>
+    </net>
+    <net code="56" name="TOUCH_RESET" class="Default">
+      <node ref="TP512" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="24" pinfunction="IO47_24" pintype="bidirectional"/>
+    </net>
+    <net code="57" name="TOUCH_SCL_TBD_LEVEL" class="Default">
+      <node ref="TP509" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="38" pinfunction="IO2_38" pintype="bidirectional"/>
+    </net>
+    <net code="58" name="TOUCH_SDA_TBD_LEVEL" class="Default">
+      <node ref="TP510" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="39" pinfunction="IO1_39" pintype="bidirectional"/>
+    </net>
+    <net code="59" name="UART0_RX_TEST" class="Default">
+      <node ref="TP304" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="36" pinfunction="RXD0_36" pintype="bidirectional"/>
+    </net>
+    <net code="60" name="UART0_TX_TEST" class="Default">
+      <node ref="TP303" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U301" pin="37" pinfunction="TXD0_37" pintype="bidirectional"/>
+    </net>
+    <net code="61" name="USB_5V_PROTECTED_TBD" class="Default">
+      <node ref="C701" pin="1" pintype="passive"/>
+      <node ref="U701" pin="6" pinfunction="VIN2_6" pintype="power_in"/>
+    </net>
+    <net code="62" name="USB_CC1" class="Default">
+      <node ref="J701" pin="A5" pinfunction="CC1_A5" pintype="bidirectional"/>
+      <node ref="R701" pin="1" pintype="passive"/>
+    </net>
+    <net code="63" name="USB_CC2" class="Default">
+      <node ref="J701" pin="B5" pinfunction="CC2_B5" pintype="bidirectional"/>
+      <node ref="R702" pin="1" pintype="passive"/>
+    </net>
+    <net code="64" name="USB_DN_MCU" class="Default">
+      <node ref="R704" pin="2" pintype="passive"/>
+      <node ref="U301" pin="13" pinfunction="USB_D-_13" pintype="bidirectional"/>
+    </net>
+    <net code="65" name="USB_DN_PORT" class="Default">
+      <node ref="J701" pin="A7" pinfunction="D-_A7" pintype="bidirectional"/>
+      <node ref="J701" pin="B7" pinfunction="D-_B7" pintype="bidirectional"/>
+      <node ref="R704" pin="1" pintype="passive"/>
+    </net>
+    <net code="66" name="USB_DP_MCU" class="Default">
+      <node ref="R703" pin="2" pintype="passive"/>
+      <node ref="U301" pin="14" pinfunction="USB_D+_14" pintype="bidirectional"/>
+    </net>
+    <net code="67" name="USB_DP_PORT" class="Default">
+      <node ref="J701" pin="A6" pinfunction="D+_A6" pintype="bidirectional"/>
+      <node ref="J701" pin="B6" pinfunction="D+_B6" pintype="bidirectional"/>
+      <node ref="R703" pin="1" pintype="passive"/>
+    </net>
+    <net code="68" name="USB_PRESENT_SAFE_TBD" class="Default">
+      <node ref="U301" pin="31" pinfunction="IO38_31" pintype="bidirectional"/>
+    </net>
+    <net code="69" name="USB_SHIELD" class="Default">
+      <node ref="J701" pin="SH" pinfunction="SHIELD_SH" pintype="passive"/>
+      <node ref="R705" pin="1" pintype="passive"/>
+    </net>
+    <net code="70" name="USB_VBUS_RAW" class="Default">
+      <node ref="J701" pin="A4" pinfunction="VBUS_A4" pintype="passive"/>
+      <node ref="J701" pin="A9" pinfunction="VBUS_A9" pintype="passive"/>
+      <node ref="J701" pin="B4" pinfunction="VBUS_B4" pintype="passive"/>
+      <node ref="J701" pin="B9" pinfunction="VBUS_B9" pintype="passive"/>
+    </net>
+    <net code="71" name="unconnected-(J100-Pin_1-Pad1)" class="Default">
+      <node ref="J100" pin="1" pinfunction="Pin_1_1" pintype="passive+no_connect"/>
+    </net>
+    <net code="72" name="unconnected-(J100-Pin_2-Pad2)" class="Default">
+      <node ref="J100" pin="2" pinfunction="Pin_2_2" pintype="passive+no_connect"/>
+    </net>
+    <net code="73" name="unconnected-(J100-Pin_3-Pad3)" class="Default">
+      <node ref="J100" pin="3" pinfunction="Pin_3_3" pintype="passive+no_connect"/>
+    </net>
+    <net code="74" name="unconnected-(J100-Pin_7-Pad7)" class="Default">
+      <node ref="J100" pin="7" pinfunction="Pin_7_7" pintype="passive+no_connect"/>
+    </net>
+    <net code="75" name="unconnected-(J100-Pin_8-Pad8)" class="Default">
+      <node ref="J100" pin="8" pinfunction="Pin_8_8" pintype="passive+no_connect"/>
+    </net>
+    <net code="76" name="unconnected-(J100-Pin_9-Pad9)" class="Default">
+      <node ref="J100" pin="9" pinfunction="Pin_9_9" pintype="passive+no_connect"/>
+    </net>
+    <net code="77" name="unconnected-(J100-Pin_10-Pad10)" class="Default">
+      <node ref="J100" pin="10" pinfunction="Pin_10_10" pintype="passive+no_connect"/>
+    </net>
+    <net code="78" name="unconnected-(J100-Pin_11-Pad11)" class="Default">
+      <node ref="J100" pin="11" pinfunction="Pin_11_11" pintype="passive+no_connect"/>
+    </net>
+    <net code="79" name="unconnected-(J100-Pin_12-Pad12)" class="Default">
+      <node ref="J100" pin="12" pinfunction="Pin_12_12" pintype="passive+no_connect"/>
+    </net>
+    <net code="80" name="unconnected-(J100-Pin_13-Pad13)" class="Default">
+      <node ref="J100" pin="13" pinfunction="Pin_13_13" pintype="passive+no_connect"/>
+    </net>
+    <net code="81" name="unconnected-(J100-Pin_15-Pad15)" class="Default">
+      <node ref="J100" pin="15" pinfunction="Pin_15_15" pintype="passive+no_connect"/>
+    </net>
+    <net code="82" name="unconnected-(J101-Pin_6-Pad6)" class="Default">
+      <node ref="J101" pin="6" pinfunction="Pin_6_6" pintype="passive+no_connect"/>
+    </net>
+    <net code="83" name="unconnected-(J501-Pin_1-Pad1)" class="Default">
+      <node ref="J501" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
+    </net>
+    <net code="84" name="unconnected-(J501-Pin_2-Pad2)" class="Default">
+      <node ref="J501" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
+    </net>
+    <net code="85" name="unconnected-(J501-Pin_3-Pad3)" class="Default">
+      <node ref="J501" pin="3" pinfunction="Pin_3_3" pintype="passive"/>
+    </net>
+    <net code="86" name="unconnected-(J501-Pin_4-Pad4)" class="Default">
+      <node ref="J501" pin="4" pinfunction="Pin_4_4" pintype="passive"/>
+    </net>
+    <net code="87" name="unconnected-(J501-Pin_5-Pad5)" class="Default">
+      <node ref="J501" pin="5" pinfunction="Pin_5_5" pintype="passive"/>
+    </net>
+    <net code="88" name="unconnected-(J501-Pin_6-Pad6)" class="Default">
+      <node ref="J501" pin="6" pinfunction="Pin_6_6" pintype="passive"/>
+    </net>
+    <net code="89" name="unconnected-(J501-Pin_7-Pad7)" class="Default">
+      <node ref="J501" pin="7" pinfunction="Pin_7_7" pintype="passive"/>
+    </net>
+    <net code="90" name="unconnected-(J501-Pin_8-Pad8)" class="Default">
+      <node ref="J501" pin="8" pinfunction="Pin_8_8" pintype="passive"/>
+    </net>
+    <net code="91" name="unconnected-(J501-Pin_9-Pad9)" class="Default">
+      <node ref="J501" pin="9" pinfunction="Pin_9_9" pintype="passive"/>
+    </net>
+    <net code="92" name="unconnected-(J501-Pin_10-Pad10)" class="Default">
+      <node ref="J501" pin="10" pinfunction="Pin_10_10" pintype="passive"/>
+    </net>
+    <net code="93" name="unconnected-(J501-Pin_11-Pad11)" class="Default">
+      <node ref="J501" pin="11" pinfunction="Pin_11_11" pintype="passive"/>
+    </net>
+    <net code="94" name="unconnected-(J501-Pin_12-Pad12)" class="Default">
+      <node ref="J501" pin="12" pinfunction="Pin_12_12" pintype="passive"/>
+    </net>
+    <net code="95" name="unconnected-(J501-Pin_13-Pad13)" class="Default">
+      <node ref="J501" pin="13" pinfunction="Pin_13_13" pintype="passive"/>
+    </net>
+    <net code="96" name="unconnected-(J501-Pin_14-Pad14)" class="Default">
+      <node ref="J501" pin="14" pinfunction="Pin_14_14" pintype="passive"/>
+    </net>
+    <net code="97" name="unconnected-(J501-Pin_15-Pad15)" class="Default">
+      <node ref="J501" pin="15" pinfunction="Pin_15_15" pintype="passive"/>
+    </net>
+    <net code="98" name="unconnected-(J501-Pin_16-Pad16)" class="Default">
+      <node ref="J501" pin="16" pinfunction="Pin_16_16" pintype="passive"/>
+    </net>
+    <net code="99" name="unconnected-(J501-Pin_17-Pad17)" class="Default">
+      <node ref="J501" pin="17" pinfunction="Pin_17_17" pintype="passive"/>
+    </net>
+    <net code="100" name="unconnected-(J501-Pin_18-Pad18)" class="Default">
+      <node ref="J501" pin="18" pinfunction="Pin_18_18" pintype="passive"/>
+    </net>
+    <net code="101" name="unconnected-(J501-Pin_19-Pad19)" class="Default">
+      <node ref="J501" pin="19" pinfunction="Pin_19_19" pintype="passive"/>
+    </net>
+    <net code="102" name="unconnected-(J501-Pin_20-Pad20)" class="Default">
+      <node ref="J501" pin="20" pinfunction="Pin_20_20" pintype="passive"/>
+    </net>
+    <net code="103" name="unconnected-(J501-Pin_21-Pad21)" class="Default">
+      <node ref="J501" pin="21" pinfunction="Pin_21_21" pintype="passive"/>
+    </net>
+    <net code="104" name="unconnected-(J501-Pin_22-Pad22)" class="Default">
+      <node ref="J501" pin="22" pinfunction="Pin_22_22" pintype="passive"/>
+    </net>
+    <net code="105" name="unconnected-(J501-Pin_23-Pad23)" class="Default">
+      <node ref="J501" pin="23" pinfunction="Pin_23_23" pintype="passive"/>
+    </net>
+    <net code="106" name="unconnected-(J501-Pin_24-Pad24)" class="Default">
+      <node ref="J501" pin="24" pinfunction="Pin_24_24" pintype="passive"/>
+    </net>
+    <net code="107" name="unconnected-(J501-Pin_25-Pad25)" class="Default">
+      <node ref="J501" pin="25" pinfunction="Pin_25_25" pintype="passive"/>
+    </net>
+    <net code="108" name="unconnected-(J501-Pin_26-Pad26)" class="Default">
+      <node ref="J501" pin="26" pinfunction="Pin_26_26" pintype="passive"/>
+    </net>
+    <net code="109" name="unconnected-(J501-Pin_27-Pad27)" class="Default">
+      <node ref="J501" pin="27" pinfunction="Pin_27_27" pintype="passive"/>
+    </net>
+    <net code="110" name="unconnected-(J501-Pin_28-Pad28)" class="Default">
+      <node ref="J501" pin="28" pinfunction="Pin_28_28" pintype="passive"/>
+    </net>
+    <net code="111" name="unconnected-(J501-Pin_29-Pad29)" class="Default">
+      <node ref="J501" pin="29" pinfunction="Pin_29_29" pintype="passive"/>
+    </net>
+    <net code="112" name="unconnected-(J501-Pin_30-Pad30)" class="Default">
+      <node ref="J501" pin="30" pinfunction="Pin_30_30" pintype="passive"/>
+    </net>
+    <net code="113" name="unconnected-(J501-Pin_31-Pad31)" class="Default">
+      <node ref="J501" pin="31" pinfunction="Pin_31_31" pintype="passive"/>
+    </net>
+    <net code="114" name="unconnected-(J701-SBU1-PadA8)" class="Default">
+      <node ref="J701" pin="A8" pinfunction="SBU1_A8" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="115" name="unconnected-(J701-SBU2-PadB8)" class="Default">
+      <node ref="J701" pin="B8" pinfunction="SBU2_B8" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="116" name="unconnected-(U201-FLT-Pad12)" class="Default">
+      <node ref="U201" pin="12" pinfunction="FLT_12" pintype="open_collector+no_connect"/>
+    </net>
+    <net code="117" name="unconnected-(U201-IMON-Pad10)" class="Default">
+      <node ref="U201" pin="10" pinfunction="IMON_10" pintype="output+no_connect"/>
+    </net>
+    <net code="118" name="unconnected-(U201-NC-Pad8)" class="Default">
+      <node ref="U201" pin="8" pinfunction="NC_8" pintype="no_connect"/>
+    </net>
+    <net code="119" name="unconnected-(U201-NC-Pad17)" class="Default">
+      <node ref="U201" pin="17" pinfunction="NC_17" pintype="no_connect"/>
+    </net>
+    <net code="120" name="unconnected-(U201-NC-Pad21)" class="Default">
+      <node ref="U201" pin="21" pinfunction="NC_21" pintype="no_connect"/>
+    </net>
+    <net code="121" name="unconnected-(U301-IO3-Pad15)" class="Default">
+      <node ref="U301" pin="15" pinfunction="IO3_15" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="122" name="unconnected-(U301-IO35-Pad28)" class="Default">
+      <node ref="U301" pin="28" pinfunction="IO35_28" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="123" name="unconnected-(U301-IO36-Pad29)" class="Default">
+      <node ref="U301" pin="29" pinfunction="IO36_29" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="124" name="unconnected-(U301-IO37-Pad30)" class="Default">
+      <node ref="U301" pin="30" pinfunction="IO37_30" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="125" name="unconnected-(U301-IO40-Pad33)" class="Default">
+      <node ref="U301" pin="33" pinfunction="IO40_33" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="126" name="unconnected-(U301-IO41-Pad34)" class="Default">
+      <node ref="U301" pin="34" pinfunction="IO41_34" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="127" name="unconnected-(U301-IO42-Pad35)" class="Default">
+      <node ref="U301" pin="35" pinfunction="IO42_35" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="128" name="unconnected-(U301-IO45-Pad26)" class="Default">
+      <node ref="U301" pin="26" pinfunction="IO45_26" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="129" name="unconnected-(U301-IO46-Pad16)" class="Default">
+      <node ref="U301" pin="16" pinfunction="IO46_16" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="130" name="unconnected-(U401-NC-Pad11)" class="Default">
+      <node ref="U401" pin="11" pinfunction="NC_11" pintype="no_connect"/>
+    </net>
+    <net code="131" name="unconnected-(U701-ST-Pad8)" class="Default">
+      <node ref="U701" pin="8" pinfunction="ST_8" pintype="open_collector+no_connect"/>
+    </net>
+  </nets>
+</export>
