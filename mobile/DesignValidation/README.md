@@ -22,3 +22,5 @@ I quattro PNG sono rendering di SwiftUI ImageRenderer dei componenti reali `Simu
 Rendering ispezionati come immagini statiche per wrapping, sovrapposizioni e coerenza delle azioni. Testi e controlli si dispongono verticalmente; nessun pulsante essenziale viene nascosto in base alla dimensione. Il debug renderer è attivabile con `--design-snapshots` e scrive nel container locale dell’app, senza radio o rete. I PNG sono artefatti di questa verifica, non input del prodotto.
 
 Restano non eseguiti: collaudo interattivo VoiceOver/VoiceControl, misurazione dei target tramite Accessibility Inspector, gestures/reflow su tutti i runtime, fold iPhoneDuo e barre iOS27.1, tutte le schermate native Form/List. Queste limitazioni non vengono presentate come compliance raggiunta. CUA non espone Simulator.app in questa sessione.
+
+I PNG salvati fotografano APP-04; i nuovi accessi/pagine Bluetooth APP-07 e CloudKit APP-05/06 non sono inclusi in quei render. Usano componenti e controlli nativi coerenti, ma non viene estesa a tali schermate la verifica visiva precedente.

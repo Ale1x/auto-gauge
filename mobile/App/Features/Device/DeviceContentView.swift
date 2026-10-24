@@ -17,8 +17,10 @@ struct DeviceContentView: View {
                 NavigationLink(value: DeviceRoute.catalog) { DeviceSettingsRow(title: "Catalogo misure", detail: "Capability del simulatore", symbol: "list.bullet.rectangle") }
                 Divider()
                 NavigationLink(value: DeviceRoute.firmware) { DeviceSettingsRow(title: "Firmware", detail: "OTA reale non disponibile", symbol: "arrow.down.circle") }
+                Divider()
+                NavigationLink(value: DeviceRoute.bluetoothDevelopment) { DeviceSettingsRow(title: "Bluetooth sviluppo", detail: "Ricerca esplicita · sicurezza non qualificata", symbol: "antenna.radiowaves.left.and.right") }
             }.modifier(AppCardStyle())
-            Text("Più telefoni potranno essere autorizzati, con una sola connessione Bluetooth attiva alla volta. Il collegamento e l’autenticazione reali sono ancora da integrare.").font(.footnote).foregroundStyle(.secondary)
+            Text("Più telefoni potranno essere autorizzati, con una sola connessione Bluetooth attiva alla volta. La sezione Bluetooth di sviluppo è opt-in; autenticazione e server radio restano da qualificare.").font(.footnote).foregroundStyle(.secondary)
         }
         .padding(AppTheme.pageSpacing).frame(maxWidth: AppTheme.readableWidth).frame(maxWidth: .infinity)
     }

@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-10-24T12:31:57.819375+00:00",
+  "generated_utc": "2026-10-24T13:02:34.288215+00:00",
   "status": "ESP32S3_BUILD_SUCCESS_NO_DEVICE_RUN",
   "target": "esp32s3",
   "sdk_tag": "v6.1",
@@ -124,10 +124,13 @@
     ]
   },
   "compiled_core_sources": [
+    "firmware/src/admission.c",
     "firmware/src/can_policy.c",
     "firmware/src/config.c",
     "firmware/src/config_store.c",
     "firmware/src/connection.c",
+    "firmware/src/flash_history.c",
+    "firmware/src/flash_history_sim.c",
     "firmware/src/flash_sim.c",
     "firmware/src/history.c",
     "firmware/src/isotp_rx.c",
@@ -135,6 +138,12 @@
     "firmware/src/obd_decode.c",
     "firmware/src/scheduler.c",
     "firmware/src/session_clock.c"
+  ],
+  "compiled_shared_sources": [
+    "shared/c/ag_config_json.c",
+    "shared/c/ag_frame.c",
+    "shared/c/ag_rpc.c",
+    "shared/c/ag_stream.c"
   ],
   "linked_ag_symbols": [
     "ag_can_policy_init",

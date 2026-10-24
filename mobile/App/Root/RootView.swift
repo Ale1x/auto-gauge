@@ -3,6 +3,7 @@ import CloudKit
 
 struct RootView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.scenePhase) private var scenePhase
     @State private var selection = AppTab.device
     @State private var devicePath: [DeviceRoute] = []
     @State private var dashboardPath: [DashboardRoute] = []
@@ -26,6 +27,7 @@ struct RootView: View {
                 }
             }
         }
+        .onChange(of: scenePhase) { _, phase in if phase == .background { model.nativeBluetooth.stop() } }
         .tint(AppTheme.accent)
         .safeAreaInset(edge: .top, spacing: 0) { SimulationNotice() }
         .alert("Auto Gauge", isPresented: $model.alertPresented) {

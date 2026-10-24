@@ -35,3 +35,5 @@ Il quarto incremento collega configurazione e storici allo stesso endpoint simul
 Per i controlli portabili Python/C: `python3 scripts/check_host.py`. GitHub Actions li esegue su push/PR; la build mobile su runner macOS è avviabile manualmente. Configurazione Apple approvata e stato del provisioning: [shared/APPLE_CONFIGURATION.md](shared/APPLE_CONFIGURATION.md).
 
 CloudKit: adapter nativo e upload idempotente predisposti, testati con database finto. Il team gratuito non abilita CloudKit; servono membership Developer e provisioning prima delle prove live. Download/restore cloud, BLE reale, OTA e qualificazione hardware restano aperti. Nessuna iscrizione o spesa attivata.
+
+Gli incrementi successivi aggiungono recupero CloudKit paginato, CoreBluetooth di sviluppo limitato ahello, controller d’ammissione locale e codec C bounded. Il buffer persistente copy-on-write e la verifica OTA offline sono modelli testati, con limiti espliciti; non costituiscono backend flash o aggiornamento operativo della V1. Dettagli: [shared/VERIFICATION_V0.5.md](shared/VERIFICATION_V0.5.md).

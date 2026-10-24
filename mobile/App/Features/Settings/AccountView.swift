@@ -22,6 +22,13 @@ struct AccountView: View {
                 }
                 Text("Coda di questo account: \(cloud.pending) in attesa · \(cloud.uploaded) confermati").font(.subheadline)
             } footer: { Text("Le fixture restano sul telefono anche con iCloud attivo. L’ACK del gauge conferma il salvataggio locale, non la copia cloud. La sincronizzazione richiede un’azione esplicita.") }
+            Section {
+                AppActionButton(title: "Recupera o continua da iCloud", symbol: "icloud.and.arrow.down", disabled: !cloud.configured || cloud.busy || !accountAvailable || cloud.restoreFinished, action: { cloud.restore() })
+                AppActionButton(title: "Avvia nuova scansione iCloud", symbol: "arrow.clockwise.icloud", disabled: !cloud.configured || cloud.busy || !accountAvailable, action: { cloud.restore(restart: true) })
+                NavigationLink(value: AccountRoute.restoredHistory) { Label("Storici recuperati da iCloud", systemImage: "clock.arrow.circlepath") }
+                Text(cloud.restoreFinished ? "Scansione terminata · completezza non garantita" : (cloud.restoreHasCheckpoint ? "Checkpoint locale disponibile" : "Nessuna scansione terminata"))
+                    .font(.subheadline).foregroundStyle(.secondary)
+            } header: { Text("Recupero degli storici iCloud") } footer: { Text("Recupero separato dagli esempi. Ogni pagina viene salvata prima di avanzare; una nuova scansione conserva i record già recuperati. Nessun ACK viene inviato al gauge.") }
             Section("Collegamento al gauge") {
                 Label("Più telefoni · una connessione attiva", systemImage: "iphone.radiowaves.left.and.right")
                 Text("Più telefoni possono essere autorizzati e usati in momenti diversi. Cambiare o aggiungere telefono non richiede reset. L’autenticazione della sessione resta distinta dall’account iCloud.")
@@ -31,6 +38,9 @@ struct AccountView: View {
                 Text("Questa app non esegue reset reali.").font(.footnote).foregroundStyle(.secondary)
             }
         }.navigationTitle("Account")
+            .navigationDestination(for: AccountRoute.self) { route in
+                switch route { case .restoredHistory: CloudRestoredHistoryView() }
+            }
 
     }
     private var accountAvailable: Bool {

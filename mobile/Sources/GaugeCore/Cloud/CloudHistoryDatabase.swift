@@ -4,9 +4,10 @@ public enum CloudAccount: Equatable, Sendable {
     case available(context: String), noAccount, restricted, temporarilyUnavailable, notConfigured
 }
 public enum CloudSyncError: Error, LocalizedError {
-    case invalidData, conflict, accountChanged, unavailable, capacity, notLoaded, busy, simulatedData
+    case cursorExpired, invalidData, conflict, accountChanged, unavailable, capacity, notLoaded, busy, simulatedData
     public var errorDescription: String? {
         switch self {
+        case .cursorExpired: return "Il cursore iCloud non è più utilizzabile. Avvia una nuova scansione: gli storici recuperati saranno conservati."
         case .invalidData: return "Dati cloud locali non validi."
         case .conflict: return "Uno storico cloud con la stessa identità contiene dati diversi. La coda è conservata."
         case .accountChanged: return "Account iCloud cambiato: operazione interrotta. Le code restano separate per account."

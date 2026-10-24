@@ -55,6 +55,9 @@ def main():
     compiled = sorted({str(Path(item['file']).resolve().relative_to(ROOT))
                        for item in json.loads((build / 'compile_commands.json').read_text())
                        if str(Path(item['file']).resolve()).startswith(str(ROOT / 'firmware/src') + '/')})
+    compiled_shared = sorted({str(Path(item['file']).resolve().relative_to(ROOT))
+                       for item in json.loads((build / 'compile_commands.json').read_text())
+                       if str(Path(item['file']).resolve()).startswith(str(ROOT / 'shared/c') + '/')})
     report = dict(
         generated_utc=datetime.now(timezone.utc).isoformat(),
         status='ESP32S3_BUILD_SUCCESS_NO_DEVICE_RUN',
@@ -64,7 +67,7 @@ def main():
         python=run(args.idf_python, '--version'),
         configuration={key: config.get(key, 'UNSET') for key in keys},
         artifacts=artifacts, memory=size,
-        compiled_core_sources=compiled, linked_ag_symbols=ag_symbols,
+        compiled_core_sources=compiled, compiled_shared_sources=compiled_shared, linked_ag_symbols=ag_symbols,
         radio_init_symbols_present={name: any(line.split()[-1] == name for line in symbols.splitlines())
                                     for name in radio_names},
         main_sha256=digest(ROOT / 'firmware/idf/main/app_main.c'),

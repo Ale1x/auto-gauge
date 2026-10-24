@@ -9,6 +9,7 @@ struct DeviceNavigationView: View {
                 case .brightness: BrightnessView()
                 case .catalog: CatalogView()
                 case .firmware: FirmwareView()
+                case .bluetoothDevelopment: BluetoothDevelopmentView()
                 }
             }
         }

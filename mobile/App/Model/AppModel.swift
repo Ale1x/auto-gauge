@@ -6,6 +6,7 @@ import GaugeCore
 @Observable
 final class AppModel {
     let cloud = CloudAccountModel()
+    let nativeBluetooth = NativeBluetoothController()
     var editor: ConfigurationDraft
     var message: String?
     var logSessions: [ImportedLogSession] = []

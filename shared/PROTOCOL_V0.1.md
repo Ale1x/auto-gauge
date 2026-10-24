@@ -8,7 +8,7 @@ L'app configura il gauge, importa storici e prepara aggiornamenti; non offre una
 
 ## Configurazione logica
 
-`fixtures/config.valid.json` è l'esempio comune a modelli Swift e C. In questa iterazione il formato JSON è di scambio e di test host: non dichiara presente un parser JSON sul device.
+`fixtures/config.valid.json` è l'esempio comune a modelli Swift e C. Il parser C bounded è ora in `c/ag_config_json.c`, compilato anche con ESP-IDF ma non richiamato dal main inerte; `CONFIG_JSON_C.md` documenta il sottoinsieme supportato. Il parser non autorizza operazioni sul dispositivo.
 
 `fixtures/config.cases.json` contiene 22 casi con risultato strutturale atteso. `python3 scripts/check_shared_contract.py` li verifica, inclusi duplicati, limiti, interi veri (i booleani JSON non sono interi), rettangoli e versioni. Il test non prova che un PID sia supportato né autorizza un commit sul device.
 
@@ -27,7 +27,7 @@ L'app configura il gauge, importa storici e prepara aggiornamenti; non offre una
 
 La griglia normalizzata è una base di sviluppo per O-10, non una decisione sul modello definitivo di editor. L'attuale validazione verifica il riquadro: clipping sul cerchio, sovrapposizioni, font e soglie restano da definire. L'anteprima usa valori dimostrativi etichettati. PID ripetuti in dashboard diverse sono consentiti; il logger deduplica per sorgente/PID, non genera polling aggiuntivo.
 
-Validare prima in una configurazione candidata separata. Un errore conserva quella attiva. Un futuro commit dovrà confermare `applied_revision` dopo persistenza atomica verificata; ACK di ricezione e ACK di applicazione sono distinti. Sizing, CRC e formato persistente ancora da implementare.
+Validare prima in una configurazione candidata separata. Un errore conserva quella attiva. Un futuro commit dovrà confermare `applied_revision` dopo persistenza atomica verificata; ACK di ricezione e ACK di applicazione sono distinti. Il formato persistente a due slot è modellato in `firmware/include/ag_config_store.h` con CRC, marker e fault injection; backend flash reale, bootstrap e integrazione runtime restano da implementare/qualificare.
 
 ## Operazioni e stati da mantenere separati
 
@@ -38,7 +38,7 @@ Validare prima in una configurazione candidata separata. Un errore conserva quel
 | Config apply | Solo stato locale simulato | Sessione autenticata, revisione, commit atomico e conferma |
 | Log import | Storici dimostrativi | Chunk bounded, cursor, ACK, resume, deduplica e perdita esplicita |
 | OTA | Stato non disponibile | Firma/compatibilità, resume, verifica, rollback e recovery |
-| Account/cloud | Non configurato | Provider, login, retention e privacy da decidere |
+| Account/cloud | CloudKit scelto; adapter upload/restore implementato e testato con fakeDB | Membership, provisioning e test live; retention/privacy/cancellazione da finalizzare |
 
 Non pubblicizzare un GATT utilizzabile senza implementazione. UUID, framing, limiti MTU, messaggi d'errore wire e protocollo di autenticazione non sono congelati. Il contratto transport Swift e l'HAL firmware possono esistere senza un collegamento BLE reale. La sola connessione BLE non attribuisce proprietà e non autorizza configurazione/OTA.
 
@@ -57,3 +57,9 @@ Default TX bloccato. USB sola, standby e stato IGN ignoto bloccano richieste dia
 ## Riferimenti tecnici consultati
 
 [Apple CBCentralManager](https://developer.apple.com/documentation/CoreBluetooth/CBCentralManager), [ESP-IDF OTA](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-reference/system/ota.html), [ESP-IDF sicurezza](https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/security/security.html). Consultati il 24/10/2026. Le versioni stabili online possono evolvere: la release SDK effettiva va fissata prima della build device. Nessuna eFuse o chiave generata.
+
+## Stato implementazioni successivo
+
+La policy UX dei nuovi telefoni è approvata in DEC-014; controller C in `ag_admission`, senza binding radio qualificato. Profilo GATT candidato in `GATT_V0.1.md`/`gatt.profile.json`: adapter CoreBluetooth opt-in e solohello, con mutazioni native bloccate. Codec C request/reply in `RPC_C_V0.1.md`, stream in `C_STREAM_V0.1.md`; nessuno dei codec è un dispatcher autorizzato.
+
+Storico persistente COW simulato in `firmware/FLASH_HISTORY_MODEL.md`: recovery e sessioni testate, ma costoO(capacità) e bloccoREAD_ONLY dopo banco sporco lo rendono inidoneo al backendV1. Verifica pacchetto OTA firmato offline in `OTA_V0.1.md`: non installa immagini o programma eFuse. Questi avanzamenti non abilitano HAL/CAN/display né dimostrano standby o autonomia reale.

@@ -32,3 +32,6 @@ python3 mobile/scripts/generate_project.py
 ```
 
 Schema iniziale creato solo da una futura sync esplicita di dati reali: record `AGHistoryV1` nella private DB, campi schemaVersion(Int64), payload(Bytes), digest(String). [RecordSavePolicy Apple](https://developer.apple.com/documentation/cloudkit/ckmodifyrecordsoperation/savepolicy): il client usa `ifServerRecordUnchanged`; non forza overwrite su conflitti. Non occorrono indici query per fetch per recordID. Nessuna operazione schema/provisioning/upload è inclusa nella generazione o nei test fakeDB. Il progetto salvato resta unsigned/cloud disabilitato.
+
+
+APP-06 aggiunge query bounded di `AGHistoryV1` con predicate true e desiredKeys schemaVersion/payload/digest, cursor NSSecureCoding e cancellazione. Il container Development dovrà consentire query sul tipo; l’indice queryable del recordName richiesto dal servizio andrà verificato/configurato dal coordinatore in CloudKit Console una volta disponibile membership. Nessuno schema o indice remoto è stato creato. Un errore di schema/indice rimane visibile: il client non lo scambia per archivio vuoto o recupero completato. Le scansioni CKQuery non sono snapshot e non garantiscono completezza con dati che cambiano durante la query.

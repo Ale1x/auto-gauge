@@ -3,7 +3,7 @@ import CloudKit
 import GaugeCore
 
 /// Created only after explicit Development configuration/profile gating.
-actor NativeCloudHistoryDatabase: CloudHistoryDatabase {
+actor NativeCloudHistoryDatabase: CloudHistoryPullDatabase {
     private let container: CKContainer
     init(containerIdentifier: String) { container = CKContainer(identifier: containerIdentifier) }
     func account() async throws -> CloudAccount {
@@ -42,6 +42,16 @@ actor NativeCloudHistoryDatabase: CloudHistoryDatabase {
             try await requireAccount(context)
             guard let server = error.userInfo[CKRecordChangedErrorServerRecordKey] as? CKRecord else { throw CloudSyncError.conflict }
             try check(server, payload: payload)
+        }
+    }
+    func readHistory(context: String, cursor: Data?, limit: Int) async throws -> CloudHistoryPullPage {
+        try await requireAccount(context)
+        do {
+            let page = try await CloudRecordQuery.perform(database: container.privateCloudDatabase, cursor: cursor, limit: limit)
+            try await requireAccount(context)
+            return page
+        } catch let error as CKError where cursor != nil && (error.code == .invalidArguments || error.code == .changeTokenExpired) {
+            throw CloudSyncError.cursorExpired
         }
     }
     private func requireAccount(_ context: String) async throws {

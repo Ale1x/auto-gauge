@@ -1,0 +1,34 @@
+# FW-07 — review indipendente del controller di ammissione
+
+24 ottobre 2026. Esaminati `firmware/include/ag_admission.h`, `firmware/src/admission.c`, `firmware/tests/test_admission.c`, integrazione con `ag_connection`, README e proposta DEC-014. Nessun file firmware/shared/mobile modificato, nessun commit, radio o provisioning. FW-08 resta fuori dalla portata di questa review.
+
+**Esito: nessun nuovo difetto P0/P1/P2 riproducibile nei percorsi esaminati, sotto i contratti dichiarati di singolo owner task e hook fidati non rientranti.** È un controller host per l'ammissione, non una dimostrazione della sicurezza Bluetooth reale.
+
+## Verifica indipendente eseguita
+
+Build CMake Debug dedicata in `/tmp/auto-gauge-admission-review.foeFZA`, solo target `gauge_admission_tests`; CTest verbose limitato alla stessa suite. **1/1 suite passata, sei gruppi**, ASan/UBSan abilitati dal progetto, nessuna segnalazione. Non cambiati CMake o configurazioni globali.
+
+## Riscontri concreti
+
+| Confine | Esito della lettura e delle prove |
+|---|---|
+| Connessione e lease | `current` richiede link locale aperto, journal caricato, assenza manutenzione, contatore non nullo coincidente con admission e connection, boot ID coincidente. A→busyB→B→A e callback vecchi non trasferiscono autenticazione. Un tentativo concorrente non sostituisce il client attivo. |
+| Init e sostituzione verifier | `ag_admission_init` accetta soltanto connection inizializzata/idle con verifier assente e hook obbligatori; installa il bridge una volta. Tick controlla che verifier e context restino quelli previsti. La mancanza del restore journal non è aggirata dall'attach. |
+| Reinizializzazione | Il requisito `ag_connection_init` è **boot ID nuovo e unico a ogni inizializzazione**, anche nella stessa esecuzione se si ricrea il core. Il contatore non fa wrap. Riutilizzare lo stesso boot ID insieme a un contatore azzerato violerebbe il contratto e potrebbe far coincidere lease vecchi e nuovi: non considerarlo sicuro perché il numero è soltanto un identificatore, né riutilizzare i boot ID fissi delle fixture nel runtime. Non ho riprodotto un bypass entro il contratto. |
+| Bridge e proof | Il byte proof=1 è un marcatore interno, non una credenziale. Il bridge richiede `verification_in_progress`, lease corrente e client corrispondente; quel flag viene aperto solo dopo hook security e conferma bond, quindi richiuso subito dopo authenticate. Una chiamata diretta con proof remoto non autorizza. La sicurezza dipende dalla serializzazione: nessun altro task deve poter chiamare il core durante tale intervallo. |
+| Stato crittografico | Tutti i flag encrypted/MITM/SC/identity resolved/bonded e key_bits128 sono obbligatori; per nuovi client occorre anche prova fidata della passkey display usata nel tentativo corrente. `private_allowed` rilegge l'evidenza e chiude il link logico se viene meno, anziché affidarsi al precedente stato VERIFIED. Il getter generico `ag_connection_mutations_allowed` da solo non basta all'adapter. |
+| Entropia | Rejection sampling su uint32 uniforme: vengono accettati i4294000000 valori sotto la soglia, un multiplo di1000000; ciascuna passkey ha uguale numero di preimmagini. Otto estrazioni massime, nessun fallback fisso su errore/esaurimento. Formattazione000000…999999 a sei cifre; il test verifica leading zero e riuso del codice nello stesso tentativo. Uniformità matematica non qualifica la sorgente RNG dell'hook. |
+| Finestre e timeout | Nuovo client richiede evento menu locale qualificato, finestra attiva e budget disponibile. Un client riconosciuto resta unverified finché il link sicuro non è confermato. Finestra scaduta chiude il tentativo nuovo; timeout auth chiude ogni link non verificato. Differenze unsigned evitano somme di deadline; regressione temporale blocca il controller e cancella il tentativo. |
+| Cooldown | Tentativi contati per nuova connessione nella finestra; una richiesta oltre il budget chiude la finestra e avvia cooldown. Client riconosciuti possono riconnettersi nello slot libero anche durante cooldown. Una nuova azione locale può riaprire/resettere il budget quando consentito: non è un'apertura remota e non è una policy temporale di prodotto congelata. |
+| Reset, bond e downgrade | Reset/manutenzione/journal gate invalidano l'ammissione senza introdurre erase nel controller. Bond perso richiede classificazione UNKNOWN e normale nuovo pairing locale. Storage pieno/fallimento di confirm_bond resta errore. Repeat pairing viene respinto senza cancellare bond o sostituire il peer. Downgrade e hook falliti revocano accesso e chiudono il link logico. |
+| Segreti temporanei | Passkey nel controller azzerata con scrittura volatile su fine tentativo, errore, timeout e manutenzione; flag rimosso. Buffer display del chiamante, copie nello stack SMP e rendering devono essere cancellati dall'adapter: il solo wipe del campo C non li elimina. Nessuna passkey viene stampata nei test. |
+
+## Limiti obbligatori prima della radio reale
+
+1. **Hook non derivati da payload BLE.** Lookup, resolved identity, security state e confirm_bond devono riferirsi al peer reale e al lease corrente. Un booleano remoto o un MAC dichiarato non soddisfano il contratto. Occorre evidenza SC qualificata: il tipo C che richiede quel flag non dimostra che l'SDK lo fornisca correttamente.
+2. **Controllo e uso nello stesso dominio serializzato.** Chiamare `ag_admission_private_allowed` immediatamente prima di read privata, write, comando, notification o indication; svuotare/invalidate le operazioni pendenti al cambio lease/reset. Nessuna funzione del core crea un lock o protegge dall'uso concorrente dei propri campi.
+3. **Chiusura logica non è disconnessione radio.** `drop_link` chiude il modello `ag_connection`, non invia un comando GAP. L'adapter deve disconnettere il link fisico, mantenere un solo link nello stack e togliere display/passkey prima della nuova ammissione. Le funzioni host non possono impedire da sole che uno stack ignorato continui a trasmettere.
+4. **Parametri H e cache bond non qualificati.** Timeout, finestra, cooldown e numero tentativi sono configurazioni di sviluppo bounded. I test non dimostrano resistenza generale al denial of service, qualità dell'entropia, revoca o UX della cache finita; non introducono un N massimo di telefoni come requisito prodotto.
+5. **Radio ancora disabilitata.** Lo skeleton non chiama admission né inizializza BLE; `CONFIG_BT_ENABLED=n`, HAL BLE bloccata. Nessun pairing, bond, chiave o SMP reale è stato provato. Servono test con due telefoni, perdita bond, storage pieno, downgrade e callback tardivi sul backend effettivo; questo risultato non autorizza CAN né rende disponibile OTA firmata.
+
+Nessuna correzione firmware richiesta per chiudere questa review limitata. Il giudizio vale sul modello e sulle sue precondizioni esplicite, non è una certificazione del futuro adapter o del prodotto.

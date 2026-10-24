@@ -52,6 +52,7 @@ for mode in ('Debug', 'Release'):
         'PRODUCT_NAME': 'AutoGauge', 'PRODUCT_BUNDLE_IDENTIFIER': 'it.ale1x.autogauge',
         'GENERATE_INFOPLIST_FILE': 'YES', 'INFOPLIST_KEY_CFBundleDisplayName': 'Auto Gauge',
         'INFOPLIST_KEY_LSApplicationCategoryType': 'public.app-category.utilities',
+        'INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription': 'Auto Gauge usa Bluetooth solo su tua richiesta per cercare e collegare un gauge di sviluppo. La simulazione non richiede Bluetooth.',
         'INFOPLIST_KEY_UILaunchScreen_Generation': 'YES',
         'INFOPLIST_KEY_UIApplicationSceneManifest_Generation': 'YES',
         'TARGETED_DEVICE_FAMILY': '1', 'SUPPORTED_PLATFORMS': 'iphoneos iphonesimulator',

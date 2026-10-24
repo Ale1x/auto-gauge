@@ -92,3 +92,22 @@ La review indipendente [FW05_REVIEW.md](reviews/FW05_REVIEW.md) non ha trovato n
 APP-05 conclude adapter CloudKit nativo/upload immutabile e outbox locale: suite totale53testSwift,11cloud con fakeDB. La review separata ha portato alla correzione del callback account obsoleto; nessuna fixture caricata. Membership/profilo mancanti bloccano live; download/restore remoto non implementati.
 
 FW-06 aggiunge FlowControl CTS/overflow host per risposte Service01 con le stesse guardieTX e relativi test: suite totale7/7CTest, build target aggiornata riuscita. Non è un driver o una prova di trasmissione reale. DEC-014 approva la UX nuovi telefoni/codice locale, da implementare in sicurezza senza owner unico o dipendenza cloud. Base corrente v0.2.8.
+
+## Quinto incremento — senza membership Apple
+
+Il proprietario intende valutare l’abbonamento dopo il lavoro eseguibile localmente: nessun nuovo servizio/costo attivato. DEC-014 è applicata nel controller di ammissione; non implica radio qualificata.
+
+| Filone | Risultato implementato | Confine conservato |
+|---|---|---|
+| APP-06 | Restore CloudKit per account con page+checkpoint atomici; record e loss osservate convivono | Query non snapshot, limiti locali bounded; niente prova live |
+| APP-07 | Stream/RPC con deadline/generazioni e adapter CoreBluetooth opt-in | UI nativa solohello, nessuna mutazione privata o prova LESC;89testSwift con replay originale |
+| FW-07 | Ammissione locale/passkey per nuovi telefoni; riconosciuti e slot unico | Hook entropy/security/bond fidati; nessun binding radio attivo |
+| FW-08 | Storico COW simulato persistente, sessioni preservate, serial globale, overwrite/perdite e ACK non distruttivo | ModelloO(capacità), metà spazio, possibileREAD_ONLY dopo power loss; non backendV1 |
+| SH-03 | Parser config/RPC C, risposte tipizzate incluso logs.read e budget envelope; reassemblyC | Codec non è dispatcher/autorizzazione; stack da dimensionare |
+| OTA-01 | Verifica offline RSA3072-PSS, contesto hardware/capacità/replay e hash immagine | Nessuna installazione/verifica formatoESP/bootselection/eFuse |
+
+La verifica incrociata ha corretto la richiesta indebita diop nelle risposte legacy config: il nuovo pipefinto lo aggiungeva sempre e mascherava la divergenza col golden. Il replay usa ora tutti10scambi originali senza riscrivere fixture/server; il client mantiene il link soltanto su rifiuti applicativi completi e validi, senza trailingframe/partial. Vedi `reviews/BLUETOOTH_REVIEW.md` e `shared/VERIFICATION_V0.5.md`.
+
+Il sourcing hardware è stato ricontrollato con ricerca Gmail mirata12:46UTC: soltanto risposte già registrate, nessun nuovo dato tecnico trovato. Pannello/FPC/rail, protezioni e wake/IGN restano aperti. Repo privato già esistente: gli incrementi si pubblicano con commit/push normali, senza force o AppStore.
+
+Verifica finale del coordinatore:67testPython,89testSwift,9/9CTest e build iOSsim unsigned passati con `scripts/check_software.py`; progetto/risorse rigenerati identici. BuildtargetSDKv6.1 riuscita con14core+4condivise e maininerte. ReviewBluetooth aggiornata dopo l’interopfix:23/23test dedicati, incluse5regressioni golden/negative nuove.

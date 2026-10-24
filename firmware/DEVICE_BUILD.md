@@ -12,7 +12,8 @@
 | Immagine riportata da `esp-idf-size` | 170512 byte, prima del padding `.bin` |
 | Bootloader `.bin` | 21120 byte |
 | Tabella partizioni `.bin` | 3072 byte |
-| Sorgenti core cross-compilate | 11, elencate nel report |
+| Sorgenti core cross-compilate | 14, elencate nel report |
+| Sorgenti C condivise cross-compilate | `ag_config_json.c`, `ag_frame.c`, `ag_stream.c`, elencate separatamente |
 
 ## Cache e installazione mirata
 
@@ -64,7 +65,7 @@ Il report contiene versioni, hash SHA-256 dei binari, configurazione effettiva, 
 
 ## Interpretazione e limiti
 
-Questa è una build dello **skeleton inerte**, non un firmware operativo sul gauge. Le undici unità C superano la compilazione Xtensa, ma il linker elimina le funzioni non usate da `app_main`: nel binario restano soltanto `ag_can_policy_init`, `ag_can_tx_allowed`, `ag_hal_read_power` e `ag_session_clock_init` fra i simboli core. Le dimensioni quindi non comprendono l'uso reale di configurazione, decoder, ISO-TP, storico, connessione/reset e relativi buffer; mancano inoltre driver AMOLED/touch, asset, BLE autenticato, TWAI, flash log e OTA.
+Questa è una build dello **skeleton inerte**, non un firmware operativo sul gauge. Le quattordici unità C superano la compilazione Xtensa, ma il linker elimina le funzioni non usate da `app_main`: nel binario restano soltanto `ag_can_policy_init`, `ag_can_tx_allowed`, `ag_hal_read_power` e `ag_session_clock_init` fra i simboli core. Le dimensioni quindi non comprendono l'uso reale di configurazione, decoder, ISO-TP, storico, connessione/reset e relativi buffer; mancano inoltre driver AMOLED/touch, asset, BLE autenticato, TWAI, flash log e OTA.
 
 La configurazione di sviluppo resta quella SDK **2 MB, singola app factory, PSRAM disabilitata**, senza slot OTA o partizione log. Non è la mappa definitiva del candidato WROOM-N16R8 da 16 MiB/8 MiB, non dimostra che tutti i componenti finali entrino e non congela il sizing OTA da cui dipendono i 2 MiB approvati per i log. Secure boot/flash encryption non sono provisionati; l'immagine non è firmata o rilasciata come recovery di produzione.
 

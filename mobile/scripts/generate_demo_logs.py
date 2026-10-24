@@ -19,3 +19,7 @@ rpc = json.loads((ROOT/'shared/fixtures/rpc.exchanges.json').read_text())
 rpc_output = output.parent/'rpc-demo-fixture.json'
 rpc_output.write_text(json.dumps({key:rpc[key] for key in ('initial_configuration','history_source')},indent=2)+'\n')
 print(rpc_output)
+
+profile_output = output.parent/"gatt.profile.json"
+profile_output.write_bytes((ROOT/"shared/gatt.profile.json").read_bytes())
+print(profile_output)

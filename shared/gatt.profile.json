@@ -1,0 +1,18 @@
+{
+  "profile_version": 1,
+  "status": "DEVELOPMENT_CANDIDATE_NOT_RADIO_VALIDATED",
+  "service_uuid": "5c43dc0a-d3a8-49b1-819e-b12cccef1387",
+  "request_uuid": "b47d6b56-92f1-4dd4-bd53-9f85ad1dc603",
+  "response_uuid": "5769edda-82d7-44ae-85c2-d9fd81b5976b",
+  "request_write": "withResponse",
+  "response_delivery": "indication",
+  "maximum_active_connections": 1,
+  "maximum_pending_requests": 1,
+  "maximum_chunk_bytes": 512,
+  "maximum_payload_bytes": 4096,
+  "maximum_frame_bytes": 4112,
+  "frame_deadline_ms": 10000,
+  "request_deadline_ms": 30000,
+  "scan_deadline_ms": 10000,
+  "security": "LESC_MITM_128BIT_ENCRYPTED_WITH_LOCAL_NEW_PEER_ADMISSION"
+}
