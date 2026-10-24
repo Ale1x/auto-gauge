@@ -12,13 +12,13 @@ final class HistoryTimelineTests: XCTestCase {
     }
     func testSevenQualifiedFormulaBoundariesAndExactPayloadLengths() throws {
         let vectors: [(Int, String, Double)] = [(4,"00",0),(4,"ff",100),(5,"00",-40),(5,"ff",215),(12,"0000",0),(12,"ffff",16383.75),(12,"1a10",1668),(13,"ff",255),(15,"00",-40),(15,"ff",215),(16,"ffff",655.35),(17,"00",0),(17,"ff",100)]
-        XCTAssertEqual(HistoryPIDDefinition.qualified.count, 7)
+        XCTAssertEqual(HistoryPIDDefinition.qualified.count, 53)
         for (pid, raw, expected) in vectors {
             let decoder = try XCTUnwrap(HistoryPIDDefinition.find(pid))
             XCTAssertEqual(try XCTUnwrap(decoder.value(rawHex: raw)), expected, accuracy: 0.000001)
             XCTAssertNil(decoder.value(rawHex: raw + "00")); XCTAssertNil(decoder.value(rawHex: ""))
         }
-        XCTAssertNil(HistoryPIDDefinition.find(0x42)) // Wider firmware catalog does not imply this app has qualified it.
+        XCTAssertNil(HistoryPIDDefinition.find(0x14)) // Multi-value/O2 PIDs remain outside scalar coverage.
     }
     func testNonvalidStatusesNeverBecomeZeroAndRawRecordsStayUnmodified() throws {
         var rows = [try record(1, raw: "0000")]
@@ -34,8 +34,8 @@ final class HistoryTimelineTests: XCTestCase {
         XCTAssertEqual(try encoder.encode(input.records), before)
     }
     func testUnknownFormulaAndWrongRawSizeAreExplicitNotDecoded() throws {
-        let unknown = try session([record(1, pid: 0x42, raw: "03e8")])
-        let a = try HistoryTimelineProjector.project(unknown, pid: 0x42, ecu: 0x7e8)
+        let unknown = try session([record(1, pid: 0x14, raw: "03e8")])
+        let a = try HistoryTimelineProjector.project(unknown, pid: 0x14, ecu: 0x7e8)
         XCTAssertEqual(a.rows.first?.quality, .formulaUnavailable); XCTAssertTrue(a.chart.isEmpty)
         let malformed = try session([record(1, raw: "1a"),record(2, ms: 1, raw: "410c1a10")])
         let b = try HistoryTimelineProjector.project(malformed, pid: 12, ecu: 0x7e8)

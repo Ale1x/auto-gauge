@@ -12,7 +12,7 @@
 | Immagine riportata da `esp-idf-size` | 170512 byte, prima del padding `.bin` |
 | Bootloader `.bin` | 21120 byte |
 | Tabella partizioni `.bin` | 3072 byte |
-| Sorgenti core cross-compilate | 17, elencate nel report, inclusi journal storico e adapter endpoint |
+| Sorgenti core cross-compilate | 18, elencate nel report, inclusi journal storico, adapter endpoint e runtime |
 | Sorgenti C condivise cross-compilate | `ag_config_json.c`, `ag_frame.c`, `ag_stream.c`, `ag_rpc.c`, elencate separatamente |
 
 ## Cache e installazione mirata

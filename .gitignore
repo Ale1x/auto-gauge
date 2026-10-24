@@ -22,3 +22,6 @@ firmware/idf/sdkconfig.old
 firmware/ble_study/build/
 firmware/ble_study/sdkconfig
 firmware/ble_study/sdkconfig.old
+firmware/ota_study/build/
+firmware/ota_study/sdkconfig
+firmware/ota_study/sdkconfig.old

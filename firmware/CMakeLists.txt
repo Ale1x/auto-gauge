@@ -107,3 +107,13 @@ target_include_directories(gauge_journal_golden_tests PRIVATE "${CMAKE_CURRENT_B
 target_link_libraries(gauge_journal_golden_tests PRIVATE gauge_core)
 target_compile_options(gauge_journal_golden_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
 add_test(NAME gauge_journal_golden_tests COMMAND gauge_journal_golden_tests)
+
+target_sources(gauge_core PRIVATE src/runtime.c)
+add_executable(gauge_runtime_tests tests/test_runtime.c)
+target_link_libraries(gauge_runtime_tests PRIVATE gauge_core)
+target_compile_options(gauge_runtime_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_test(NAME gauge_runtime_tests COMMAND gauge_runtime_tests)
+add_executable(gauge_runtime_review_tests tests/test_runtime_review.c)
+target_link_libraries(gauge_runtime_review_tests PRIVATE gauge_core)
+target_compile_options(gauge_runtime_review_tests PRIVATE -Wall -Wextra -Wpedantic -Werror -UNDEBUG)
+add_test(NAME gauge_runtime_review_tests COMMAND gauge_runtime_review_tests)

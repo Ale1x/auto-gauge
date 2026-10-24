@@ -1,0 +1,79 @@
+{
+  "status": "COMPILE_LINK_ONLY_NOT_RUN",
+  "sdk_commit": "fff9895c82d744c7237be8847347bdd1b07c6643",
+  "configuration": {
+    "CONFIG_ESPTOOLPY_FLASHSIZE": "\"4MB\"",
+    "CONFIG_PARTITION_TABLE_TWO_OTA": "y",
+    "CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE": "y",
+    "CONFIG_BOOTLOADER_APP_ANTI_ROLLBACK": "n",
+    "CONFIG_SECURE_BOOT": "n",
+    "CONFIG_FLASH_ENCRYPTION_ENABLED": "n",
+    "CONFIG_BT_ENABLED": "n",
+    "CONFIG_ESP_WIFI_ENABLED": "y"
+  },
+  "radio_init_symbols_present": {
+    "esp_wifi_init": false,
+    "esp_bt_controller_init": false,
+    "nimble_port_init": false
+  },
+  "retained_symbols": [
+    "ag_ota_installer_init",
+    "ag_ota_installer_begin",
+    "ag_ota_installer_write",
+    "ag_ota_installer_finish",
+    "ag_ota_installer_select",
+    "ag_ota_installer_poll",
+    "ag_ota_installer_cancel",
+    "esp_ota_begin",
+    "esp_ota_write",
+    "esp_ota_end",
+    "esp_ota_set_boot_partition",
+    "esp_ota_abort",
+    "esp_partition_read",
+    "psa_hash_setup",
+    "psa_hash_update",
+    "psa_hash_finish"
+  ],
+  "main_instructions": [
+    "42011198:\t004136        \tentry\ta1, 32",
+    "4201119b:\tf01d      \tretw.n"
+  ],
+  "artifacts": {
+    "auto_gauge_ota_compile_study.elf": {
+      "bytes": 4123928,
+      "sha256": "d92848dfdb3105ba07c4a09452d24ebdd2d2984042d06a452b81c0cf3814a7e5"
+    },
+    "auto_gauge_ota_compile_study.bin": {
+      "bytes": 196688,
+      "sha256": "2fdf22ae3af7b555b2d52f4f1e4579d24a6161a5d0904f140bed9d8faa69be5a"
+    },
+    "partition_table/partition-table.bin": {
+      "bytes": 3072,
+      "sha256": "d1c0e9d02fa9d26cd2e1984e7b5dd20157204f501ddc83ce82229e5f3175ee8b"
+    }
+  },
+  "source_sha256": {
+    "firmware/ota_study/main/ota_installer.c": "01a390939290ad9906b5259fbdf621e76166ae0fbd1475d4f07dc2f37e4a4576",
+    "firmware/ota_study/main/ota_installer.h": "3c1e53c3e38eb1c5831840d08108855ffd9a3081f5c8dc2d9007f0fa7602a11e",
+    "firmware/ota_study/main/main.c": "155b18b25e8d023342ab6eeb3a340ab0f785bd4692185245386f881400e55b09",
+    "firmware/ota_study/main/CMakeLists.txt": "079f28383535f6f9c42606dfb03c8b90803487a2954f627ce076dead342adbc0",
+    "firmware/ota_study/sdkconfig.defaults": "4be1a237207480fbb5f1180418f0839ff12f3977bf08b17905e6d098a4e76c8d"
+  },
+  "actions": {
+    "build": "EXECUTED",
+    "device_execution": "NOT_EXECUTED",
+    "flash": "NOT_EXECUTED",
+    "boot_selection": "NOT_EXECUTED",
+    "efuse": "NOT_EXECUTED",
+    "radio": "NOT_EXECUTED"
+  },
+  "limitations": [
+    "Empty app_main; linked installer APIs would erase/write/select if called in future",
+    "4MB factory+two-OTA development table is not the product memory map or 2MiB log sizing",
+    "Mandatory trusted target manifest verifier/provisioned keys not implemented; no wire/RPC update service",
+    "No health confirmation, reboot, durable release-counter transaction or recovery after ambiguous selection",
+    "No Secure Boot/encryption provisioning, physical flash/brownout/wear/rollback qualification",
+    "SDK Wi-Fi capability flag may be enabled; initialization symbols absent and main never invokes them",
+    "Only SDK compile/link evidence; host harness uses explicit SDK/hash behavioral doubles"
+  ]
+}
