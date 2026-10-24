@@ -1,0 +1,588 @@
+                  SPECIFICATION
+                       FOR
+                   LCD MODULE
+
+        Customer :
+        CustomerP/N
+        Model No. :        ESHX0175Y003AMT003
+
+        Ve r s i o n   :              V0
+        Da t e         :          2024-10-11
+
+Final Approval by Customer
+
+LCM Machinery OK□               Checked By
+
+LCM Display OK  □               Checked By
+
+LCM NG □ LCM OK □              Approved By
+
+
+Confirmed :
+
+     DESIGN                 CHECK               APPROVAL
+Records of Revision 修改记录
+
+Rev        Date       Description   Page   Remarks
+版本号     修改日期               内容       页       注释
+
+V0      2024/10/11     首 次          16
+Table of Contents 目录
+ 1  General Description 规格简介..............................................................................................4
+ 2  Module Parameter 模组参数................................................................................................4
+ 3  Mechanical Drawings 结构图 ............................................................................................... 5
+ 4  Module Interface 模组接口定义 ........................................................................................... 6
+ 5  Application Circuit 应用电路................................................................................................ 6
+ 6  Absolute Maximum Ratings 绝对最大额定值 ..................................................................... 7
+ 7  Electrical Specification 电性规格 ........................................................................................ 8
+ 8  Initialization Code 初始化代码 ............................................................................................ 8
+ 9  Optical Specifications 光学规格 ........................................................................................... 8
+     9.1 Optical Specifications 光学规格 ..................................................................................
+     9.2 The power on/off sequence is illustrated below 电源启动/关闭顺序 ....................... 7
+     9.3 Definition of Contrast Ratio 对比度的定义.............................................................. 8
+     9.4 Definition of Viewing Angles 视角的定义 ............................................................. 8
+     9.5 Definition of Color Appearance 色域的定义.......................................................... 8
+     9.6 Definition of Surface Luminance, Uniformity and Transmittance ............................. 9
+     表面亮度、均匀性和透光率的定义.................................................................................. 9
+ 10 Quality Assurance 质量标准..............................................................................................14
+     10.1 Purpose 目的 ............................................................................................................. 9
+     10.2 Agreement Items 协议项目 ...................................................................................... 9
+     10.3 Standard of the Product Visual Inspection 产品外观检验标准............................... 9
+     10.4 Inspection Specification 检验标准 ......................................................................... 10
+     10.5 Classification of Defects 缺陷的分类 .................................................................... 14
+     10.6 Identification/marking criteria 识别/评分标准 ...................................................... 14
+     10.7 Packing 包装 ........................................................................................................... 14
+ 11 Reliability Specification 可靠性规范................................................................................ 14
+ 12 Precautions and Warranty 注意事项和保证 ..................................................................... 15
+     12.1 Safety 安全 ............................................................................................................. 15
+     12.2 Handling 处理 ......................................................................................................... 15
+     12.3 Operation 操作 ........................................................................................................ 15
+     12.4 Static Electricity 静电 ............................................................................................. 15
+     12.5 Limited Warranty 有限质量保证 ........................................................................... 15
+ 13 Packaging 包装 .................................................................................................................. 15
+ 14 Prior Consult Matter 免责声明.......................................................................................... 16
+  1    General Description 规格简介
+        1.75 inch 466x466 is a color active matrix AMOLED module
+        This module has a 1.75 inch diagonally measured active
+       area with 466x466 resolutions (466 horizontal by 466 vertical pixel arrays). Each pixel is
+  divided into RED,
+       GREEN, BLUE dots and this module can display 16.7M colors.
+        1.75 英寸 466x466 是一个彩色有源矩阵 AMOLED 模块。该模块有一个 1.75 英寸的对角
+  线测量的活动区域，分辨率为 466x466（466 水平和 466 垂直像素数组）。每个像素被分为红
+  色、绿色、蓝点，该模块可以显示 16.7M 的颜色。
+
+
+  2    Module Parameter 模组参数
+
+                  Features                                   Details                     Unit
+Display Size(Diagonal) 显示尺寸(对角线)              1.75                                       inch
+显示屏类型                                         AMOLED                                       -
+Display Mode 显示模式                             Transmissive OLED                            -
+Resolution 分辨率                                466RGB x 466                                 -
+Active Area 显示区                               Φ43.76                                     mm
+Module Outline 模组外形                           45.93(H) ×46.35(V)×0.8(T)                  mm
+Display Colors 显示颜色                           16.7M                                        -
+Interface 接口                                  MIPI/QSPI                                    -
+Driver IC 驱动 IC                               CO5300                                       -
+TP Viewing Area TP 视窗                         Φ44.16                                     mm
+TP Outline(assembly) TP 外形                    48.96(H) ×48.96(V)×1.1(T)                  mm
+TP IC                                         CST9217
+Luminance on surface 亮度                       700                                       cd/m²
+View Direction 视角方向                           All                                     Best image
+Contrast ratio 对比度                            100000:1
+Color gamut 色域                                130%
+PPI 图像点密集度                                    273                                          -
+Window effect 视窗效果                            无一体黑                                         -
+Cover plate surface effect 盖板表面效果             AF                                           -
+Operating Temperature 工作温度                    -20～70                                      ºC
+Storage Temperature 储存温度                      -30～80                                      ºC
+Weight 重量                                     TBD                                          g
+
+      Note 1: Excluding hooks, posts , FPC/FPC tail etc.
+
+
+
+
+  3    Mechanical Drawings 结构图
+    4   Module Interface 模组接口定义
+NO      SYMBOL          FUNCTION
+1         GND      Power Ground
+2        TP_INT    Touch panel interrupt output
+3        TP_RST    Touch panel reset
+4        TP_SDA    Touch panel I2C data
+5        TP_SCL    Touch panel I2C clock
+6        TP_3.3V   Connect to voltage source between 2.8V to 3.3V
+7         GND      Power Ground
+8        IOVCC     Power Supply for logic, VDDIO=1.8V~3.3V.
+9         VCI      Power Supply for logic,VDD=3.3V
+10       VBAT      Power Input for SIBO     VBAT=3.7~4.5V
+11       VCI_EN    Enable for VBAT
+12        GND      Power Ground
+                   MTP programming power supply pin. (8V typical)
+13      MTP PWR
+                   - Must be left open or connected to VSSD in normal condition.
+                   - This signal will reset the device and must be applied to properly initialize the chip.
+14       RESET
+                   Signal is active low.
+15        CSX      chip select
+16      SDI RDX    serial data input 0 / serial data output
+17        DCX      serial data input 1
+                   - SCL: A synchronous clock signal in SPI I/F.
+18      WRX SCL
+                   - If not used, please connect to VSSI
+19        D(1)     serial data input 3
+20        D(0)     serial data input 2
+                   Tearing effect output pin to synchronize MCU to frame writing, activated by S/W
+21         TE
+                   command
+22        GND      Power Ground
+23        D1P      MIPI-DSI Data differential signal input pins.
+24        D1N      MIPI-DSI Data differential signal input pins.
+25        GND      Power Ground
+26        CLKP     CLKP
+27       CLKN      CLKN
+28        GND      Power Ground
+29        D0P      MIPI-DSI Data differential signal input pins.
+30        D0N      MIPI-DSI Data differential signal input pins.
+31        GND      Power Ground
+       5.3 Application Circuit 应用电路（）
+
+
+
+
+ 6     Absolute Maximum Ratings 绝对最大额定值
+     VSS=0V, Ta=25ºC
+ Note 1: 90%RH max, If Ta is below 50ºC; 60%RH max, If Ta is over 60ºC.
+
+
+
+
+                   Item 项目                       Symbol     Min.最小        Max.最大      Unit 单位
+                         Power supply 电力供
+                                                  VDD          -0.3         +4.6        V
+Supply Voltage 电源电 应
+压                        Analog 模拟                  -            -            -         V
+                         IO                      IOVDD         -0.3          +4.6       V
+Input Voltage 输入电压                                 Vi          -0.3       IOVDD+0.3     V
+Storage temperature 储存温度                           Tstg        -30           +70        ºC
+Operating temperature 工作温度                         Top         -20           +60        ºC
+Storage humidity 存储湿度                              H stg       10           Note 1     %RH
+Operating humidity 操作湿度                            H op        10           Note 1     %RH
+     7     Electrical Specification 电性规格
+      DC Characteristics 直流特性
+
+
+
+
+                 Item 项目                    Symbol   Min.最小      Typ.中间    Max.最大     Unit 单位
+                           Powersupply
+                                            VDD         2.4        2.8       3.3        V
+                           电力供应
+Supply Voltage 电源电压
+                           Analog             VCI         2.4      2.8         3.3      V
+                           IO               IOVDD        1.65    1.8/2.8       3.3      V
+Logic Low input voltage 输入电压低                 VIL    -0.3IOVDD      -      0.3IOVDD     V
+Logic High input voltage 输入电压高                VIH     0.7IOVDD      -       IOVDD       V
+Logic Low output voltage 输出电压低                VOL          -        -      0.2IOVDD     V
+Logic High output voltage 输出电压高               VOH     0.8IOVDD      -           -       V
+                           Normal display
+                                             Ivdd        -         30         -         mA
+Current Consumption 电 正常的显示
+流消耗                        Standby mode
+                                             Ivdd        -         60         -         uA
+                           待机模式
+Frame Frequency 帧频                             fFR       -         60         -         Hz
+
+
+
+     8     Initialization Code 初始化代码
+
+
+
+
+     9     Optical Specifications 光学规格
+          9.1   Optical Specifications 光学规格
+         Ta=25ºC, VDD=2.8V, TN LC+ Polarizer
+                                   9.2     The power on/off sequence is illustrated below 电源启动/关闭顺序
+
+
+
+
+                                                                                               Specification 规范
+                                                 Item                  Symbol   Condition                            Unit
+                                                                                             Min.    Typ.    Max.
+                                                 项目                     标志        条件                                 单位
+                                                                                             最小      中间      最大
+                                             Luminance on
+                                                                         Lv     Normally             700       -     cd/m²
+                                   surface( I f =20mA) 表面亮度
+                                                                                 viewing
+                                                                                    angle    10000
+                                         Contrast ratio 对比度             CR                                     -       -
+                                                                                 X = Y =0º 0
+
+
+
+
+Backlight On (Transmissive Mode)
+                                                                        TR                     -      10      15
+                                     Response time 响应时间                                                               ms
+                                                                        TF          -          -      20      20
+                                                             Red        XR                   0.636   0.666   0.690     -
+                                                              红         YR                   0.303   0.333   0.363     -
+                                                            Green       XG                   0.186   0.226   0.266     -
+                                         Chromaticity         绿         YG                   0.679   0.719   0.759     -
+                                                                                    -
+                                   Transmissive 色度           Blue       XB                   0.118   0.138   0.158     -
+                                                              蓝         YB                   0.035   0.055   0.075     -
+                                                            White       XW                   0.280   0.300   0.320     -
+                                                              白         YW                   0.290   0.310   0.330     -
+                                                            Horizo      θX+                   75      85       -
+                                                              ntal      θX-       Center      75      85       -
+                                   Viewing Angle 视角                                                                  Deg.
+                                                                        θY+       CR≥10       75      85       -
+                                                            Vertical
+                                                                        θY-                   75      85       -
+
+                                          NTSC Ratio(Gamut)              -          -         80     100       -      %
+9.3   Definition of Contrast Ratio 对比度的定义
+      Contrast is measured perpendicular to display surface in reflective and transmissive mode. The
+measurement condition is:
+          Measuring Equipment 测量设备                          BM-7 or EQUI
+          Measuring Point Diameter 测点直径                       3mm//1mm
+          Measuring Point Location 测点位置                 Active Area centre point
+                                                          A: All Pixels white
+          Test pattern 测试模式
+                                                           B: All Pixel black
+          Contrast setting                                     Maximum
+
+
+      Definitions: CR (Contrast) = Luminance of White Pixel / Luminance of Black Pixel
+9.4   Definition of Viewing Angles 视角的定义
+
+
+
+
+      Measuring machine: LCD-5100 or EQUI
+9.5   Definition of Color Appearance 色域的定义
+      R,G,B and W are defined by (x, y) on the IE chromaticity diagram
+      NTSC=area of RGB triangle/area of NTSC triangleX100%
+      Measuring picture: Red, Green, Blue and White (Measuring machine: BM-7)
+9.6   Definition of Surface Luminance, Uniformity and Transmittance
+        表面亮度、均匀性和透光率的定义
+        Using the transmissive mode measurement approach, measure the white screen luminance of
+      the display panel and backlight.
+        9.6.1 Surface Luminance: LV = average (LP1:LP5)
+        9.6.2 Uniformity = Minimal (LP1:LP5) / Maximal (LP1:LP5) * 100%
+        9.6.3 Transmittance = LV on LCD / LV on Backlight * 100%
+      Note :Measuring machine:BM-7
+
+
+                                  3
+
+
+                             4     5     2
+
+
+                                  1
+
+
+
+
+10     Quality Assurance 质量标准
+      10.1   Purpose 目的
+      This standard for Quality Assurance assures the quality of LCD module products supplied to
+customer by HuaXin Technology Co.,Ltd.
+      10.2   Agreement Items 协议项目
+      HuaXin and customer shall negotiate if the following situation occurs:
+        10.2.1 Discrepancies between HuaXin’s QA standards and customer’s QA
+standards.
+        10.2.2 Additional requirement to be added in product specification.
+        10.2.3 Any other special problem.
+      10.3   Standard of the Product Visual Inspection 产品外观检验标准
+       10.3.1 Appearance inspection:
+        10.3.1.1 The inspection must be under illumination about 1000 – 1500 lx, and the distance
+of view must be at 30cm ± 2cm.
+        10.3.1.2 The viewing angle should be 45° from the vertical line without reflection light or
+follows customer's viewing angle specifications.
+         10.3.1.3 Definition of area: A Zone: Active Area, B Zone: Viewing Area.
+
+
+
+
+       10.3.2 Basic principle:A set of sample to indicate the limit of acceptable quality level must be
+  discussed by both HuaXin and customer when there is any dispute happened.
+  10.4     Inspection Specification 检验标准
+       Sampling plan according to GB/T2828.1-2012/ISO 2859-1：1999 and ANSI/ASQC
+       Z1.4-1993,normal level 2 and based on:
+       Major defect: AQL 0.4
+       Minor defect: AQL 1.0
+ No.            Item 项目                                      Criteria (Unit: mm) 标准
+
+
+          Black / White spot                                                          Area
+                                                     a                                            Acc. Qty
+          Foreign material                                             Size
+          (Round type)                                                        φ≤0.10               Ignore
+          Pinholes Stain                 b                               0.10<φ≤0.2                  2
+  01      Particles inside cell.                                              0.2<φ                  0
+          (Minor defect) 黑/白                                                                       N≦3
+          斑/异物                                                                Total              NO include
+          (圆类型)细胞内的针                φ= ( a + b) /2                                                φ 0.10
+          孔染色颗粒。(小瑕疵) Distance between 2
+                                    defects should more than10mm apart.
+
+                                                         W
+
+
+          Black and White line                       L                        L
+          Scratch
+          Foreign material                   Length                  Width             Acc. Qty
+  02      (Line type)
+                                               /                 W ≦ 0.03               Ignore
+          (Minor defect) 黑白
+                                             L≦3             0.05 ＜ W ≦ 0.08              2
+          线刮伤异物(类型)行
+                                               /                0.08 ＜ W                  0
+          (小瑕疵)
+                                                             Total                      N≦2
+                                    Distance between 2 defects should more than 10mm apart.
+                                    Scratches not viewable through the back of the display are
+                                    acceptable.
+No.         Item 项目                              Criteria (Unit: mm) 标准
+
+
+
+
+      Glass Crack
+03    (Minor defect) 玻璃裂
+      纹(小瑕疵)
+                              LCD with extensible crack line is unacceptable(When press the
+                              cracked LCD area, the line will expand, we define it is extensible
+                              crack line)
+      Glass Chipping Pad
+      Area: (Minor defect)
+      玻璃碎片面积:(轻微                              Length and Width       Acc. Qty
+
+      缺陷)                                      c ＜ 5.0, b< 0.4        Ignore
+04
+
+
+
+
+      Glass Chipping Rear
+      of                                      Length and Width       Acc. Qty
+
+      PadArea:(Minordefect                      c > 3.0, b< 1.0          1
+      ) 玻璃切屑垫区后方:                               c< 3.0, b< 1.0           2
+05    (小瑕疵)                                     c< 3.0, b< 0.5           4
+                                                     a<Glass Thickness
+
+
+
+
+      Glass Chipping Except
+      Pad Area: (Minor                        Length and Width       Acc. Qty
+      defect) 除垫区外的玻                            c ≤0.6, b< 5.0        Ignore
+      璃切屑:(小瑕疵)
+06                                                   a Glass Thickness
+No.            Item 项目                          Criteria (Unit: mm) 标准
+      Glass Corner
+      Chipping: (Minor                         Length and Width    Acc. Qty
+      defect) 玻璃切角:(小                           c < 2.0, b< 1.5      Ignore
+07    瑕疵)                                       c < 1.5, b< 2        Ignore
+                                                     a<Glass Thickness
+
+
+
+
+      Glass Burr:
+      (Minor defect) 玻璃
+      磨:(小瑕疵)                Glass burr don’t affect assemble and module dimension.
+08                                                 Length          Acc. Qty
+                                                   F < 0.5           Ignore
+
+
+
+
+      FPC Defect:
+      (Minor defect) FPC 缺
+                             9.1 Dent, pinhole width a<w/3.
+      陷:(小瑕疵)
+                             (w: circuitry width.)
+09         a                 9.2 Open circuit is unacceptable.
+       w                     9.3 No oxidation, contamination and distortion.
+
+
+               a
+
+
+
+      Screen deformation 屏   Test for insertion of plug gauge at highest warping point：
+      幕上的变形                  (3.1-6.0inches)
+10
+                             H≦0.3MM
+                             The client has special requirements,according to drawing
+
+
+                                                  Diameter         Acc. Qty
+      Bubble on Polarizer                          φ≤0.15            Ignore
+11    (Minor defect) 偏光片                        0.15 <φ≤0.25             2
+      上的气泡(小瑕疵)                                  0.25 <φ≤0.3             1
+                                                   0.3 < φ               0
+
+                                                  Diameter          Acc. Qty
+      Dent on Polarizer                            φ≤0.15            Ignore
+12    (Minor defect) 偏光片                        0.15 <φ≤0.25             2
+      上的凹痕(小瑕疵)                                 0.2 5<φ≤0.30             1
+                                                    0.3< φ               0
+No.            Item 项目                             Criteria (Unit: mm) 标准
+
+ 13    Bezel 边框                 13.1 No rust, distortion on the Bezel.
+                        D: Diameter W: width L: length
+                        14.1 Spot: D≤0.20 is acceptable
+                                   0.20<D≤0.3, acceptable QTY, 3
+                                       D>0.3 is unacceptable
+                        14.2 Dent（dot):
+                         D≤0.20 is acceptable
+                         0.20<D≤0.3, acceptable QTY, 3
+       Touch Panel 触控面板
+ 14                     D>0.30 is unacceptable
+                         2dots are acceptable and the distance between defects should
+                        more than 10 mm.
+                        Dent（line) According to the limit sample
+
+                                14.3 Scratch: W≤0.03, L≤10 is acceptable,
+                                               0.03<W≤0.10, L≤10 ,acceptable QTY, 3
+                                               W>0.10 is unacceptable.
+                                Distance between 2 defects should more than 10 mm.
+                                15.1 No distortion or contamination on PCB terminals.
+                                15.2 All components on PCB must same as documented on
+ 15    PCB
+                                the BOM/component layout.
+                                15.3 Follow IPC-A-600F.
+ 16    Soldering 焊接             Follow IPC-A-610C standard
+                                The below defects must be rejected.
+                                17.1 Missing vertical / horizontal segment,
+                                17.2 Abnormal Display.
+                                17.3 No function or no display.
+                                17.4 Current exceeds product specifications.
+                                17.5 LCD viewing angle defect.
+                                17.6 No Backlight.
+       Electrical Defect        17.7 Dark Backlight.
+ 17    (Major defect) 电气        17.8 Touch Panel no function.
+       缺陷(主要缺陷)                 17.9 Dark Dot –one Allowed.
+                                17.10 Bright Dot – one Allowed.
+                                Remark:
+                                1. A pixel defect is acceptable if one color is none functional and
+                                causes a bright dot. The display may have one case where one
+                                color is out and cause a dark dot.
+                                2. Bright dot caused by scratch and foreign object accords to
+                                item1.
+ 18    Light    leak 漏光         Yellow light   OK; White light,According to the limit sample
+Remark: Visual and cosmetic defects are rejectable only if these fall within the LCD viewing area.
+   10.5     Classification of Defects 缺陷的分类
+          Visual defects (Except no / wrong label) are treated as minor defect and electrical defect is
+   major.
+   10.6     Identification/marking criteria 识别/评分标准
+          Any unit with illegible / wrong /double or no marking/ label shall be rejected.
+   10.7     Packing 包装
+          10.7.1 There should be no damage of the outside carton box, each packaging box should has
+   label in the correct location per packing drawing requirement.
+          10.7.2 All direct package materials shall offer ESD protection.
+
+   11       Reliability Specification 可靠性规范
+                 Item                               Condition             Cycle Time     Quantity     Remark
+                 项目                                    条件                   周期时间            数量            备注
+Constant Temp. and Constant
+Humidity Operation Test 恒温恒湿                  +40 ± 3ºC,90 ± 3%RH            96hrs           --
+运行试验
+High Temp. Operation Test 高温操
+                                                    +70 ± 3ºC                96hrs           --
+作试验                                                                                                        *1
+Low Temp. Operation Test 低温操
+                                                     -20 ± 3ºC               96hrs           --
+作试验
+                                                -20 ± 3ºC (30min)
+Thermal Shock Test 热冲击试验                                                    10cycles         --
+                                                +70 ± 3ºC (30min)
+ESD Test(end product) ESD 测试               150pF, 330Ω, ±2KV,Contact
+                                                                            10times          --           *2, *3
+(最终产品)                                       150pF, 330Ω, ±6KV, Air
+                                            Frequency: 10Hz to 55Hz
+Vibration Test(for packaging) 振动                                                         One inner
+                                          to10Hz,Swing:1.5mm,time：            6hrs                         *4
+测试(包装)                                                                                      carton
+                                                 X,Y,Z each 2H.
+          Note 1. For humidity test, DI water should be used.
+                  Inspection Standard: Inspect after 1-2hrs storage at room temperature, the sample shall
+                  be free from the following defects:
+                       Air bubble in the LCD
+                       Seal Leakage
+                       Non-display
+                       Missing Segment
+                       Glass Crack
+                       IDD is greater than twice initial value.
+                       Others as per QA Inspection Criteria
+          Note 2. No defect is allowed after testing
+                  The End Product ESD value is only indicative and depends on customer ESD
+                  protection design for the whole system.
+          Note 3. ESD should be applied to LCD glass panel, not other areas (such as on IC and so on)
+                IDD should be within twice initial value.
+                In case of malfunction defect caused by ESD damage, if it would be recovered to
+                normal state after resetting, it would be judged as a good part.
+     Note 4.      Only upon request.
+
+12     Precautions and Warranty 注意事项和保证
+     12.1      Safety 安全
+      12.1.1 The liquid crystal in the LCD is poisonous. Do not put it in your mouth. If the liquid
+crystal touches your skin or clothes, wash it off immediately using soap and water.
+      12.1.2 Since the liquid crystal cells are made of glass, do not apply strong impact on them.
+Handle with care.
+     12.2      Handling 处理
+      12.2.1 Reverse and use within ratings in order to keep performance and prevent damage.
+      12.2.2 Do not wipe the polarizer with dry cloth, as it might cause scratch. If the surface of the
+LCD needs to be cleaned, wipe it swiftly with cotton or other soft cloth soaked with petroleum IPA,
+do not use other chemicals.
+     12.3      Operation 操作
+      12.3.1 Do not drive LCD with DC voltage
+      12.3.2 Response time will increase below lower temperature
+      12.3.3 Display may change color with different temperature
+      12.3.4 Mechanical disturbance during operation, such as pressing on the display area, may
+cause the segments to appear “fractured”.
+     12.4      Static Electricity 静电
+       12.4.1 CMOS LSIs are equipped in this unit, so care must be taken to avoid the electro-static
+charge, by ground human body, etc.
+       12.4.2 The normal static prevention measures should be observed for work clothes and
+benches.
+       12.4.3 The module should be kept into anti-static bags or other containers resistant to static
+for storage.
+     12.5      Limited Warranty 有限质量保证
+       12.5.1 Unless otherwise agreed between HuaXin and customer, HuaXin will replace or repair
+any of its LCD and LCM which HuaXin found to be defective electrically and visually when inspected
+in accordance with HuaXin Standards, for a period of one year from date of shipment.
+       12.5.2 The warranty liability of HuaXin is limited to repair and/or replacement. HuaXin will not
+be responsible for any consequential loss.
+       12.5.3 If possible, we suggest you use up all modules in six months. If the module storage
+time over twelve months, we suggest that recheck it before the module be used.
+
+13     Packaging 包装
+       TBD
+14     Prior Consult Matter 免责声明
+      1. For HuaXin standard products, we keep the right to change material, process for improving
+the product property without prior notice to our customer.
+      2. For OEM products, if any changes are needed which may affect the product property, we
+will consult with our customer in advance.
+      3. If you have special requirement about reliability condition, please let us know before you
+start the test on our samples.
+
+
+                                          Reference 参考
+
+
+         Item 项目                    Description 描述                        Revision 修订
+
+          CO5300                      IC Data sheet                             V0
+
+  Panel 1.75 寸 466X466           LCM assembly drawing                           V0
+
