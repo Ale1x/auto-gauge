@@ -245,7 +245,9 @@ def build_power():
     s.two('Device:C','C208','TBD RIPPLE CA',465,205,'BUCK5_RIPPLE_A','5V_OBD',status='OPEN TYPE3 LOOP')
     s.two('Device:C','C209','TBD RIPPLE CB',510,205,'BUCK5_RIPPLE_A','BUCK5_FB',status='OPEN TYPE3 LOOP')
     resistor(s,'R211','100k H',510,155,'5V_OBD','BUCK5_PG')
-    s.text('R208/R209 => 4.992 V ideal; R207 => about 303 kHz. Ripple injection / passives are NOT dimensioned.',315,235)
+    s.text('R208/R209 => 4.992V ideal, 4.839..5.145V with ref/divider corners before ripple error.',315,230)
+    s.text('R207 => about303kHz. R210/C208/C209 stay TBD; see BUCK5_FEEDBACK_REVIEW.md.',315,238)
+    s.text('12V-tuned ripple network fails 12mV screening near6V. Low-VIN option adds DC error.',315,246)
     s.part(BUCK33,'U203','TPS62811QWRWYRQ1 / 3V3 H',375,285,
            {'1':'GND','2':'5V_SERVICE','3':'BUCK33_SW','4':'GND','5':'BUCK33_FB','6':'BUCK33_SS','7':'GND','8':'5V_SERVICE','9':'BUCK33_PG'},
            mpn='TPS62811QWRWYRQ1',status='CANDIDATE / E46 INITIAL VALUES')

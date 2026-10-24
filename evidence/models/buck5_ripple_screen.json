@@ -1,0 +1,21 @@
+{
+  "status": "NO_CONFIGURATION_QUALIFIED",
+  "configurations": 2,
+  "operating_points": 16,
+  "corners_per_point": 64,
+  "source": "E04 LM5164-Q1 Rev.C; E52 SNVA874 March2019",
+  "ideal_divider_V": 4.992,
+  "divider_reference_tolerance_V": [
+    4.8390598019801985,
+    5.144635151515152
+  ],
+  "ca_min_nominal_F": 4.345991561181434e-10,
+  "cb_min_for_assumed_75us_F": 7.91139240506329e-11,
+  "limitations": [
+    "CCM ideal timing, not DEM/pulse-skipping or dropout",
+    "No process bound for on-time, no phase-margin calculation",
+    "Cout effective22uF and passive tolerances are assumptions",
+    "VIN40V is protected-node sensitivity, not a nominal24V requirement or a surge test",
+    "No selected MPN/footprints, source verification, simulation or bench test"
+  ]
+}

@@ -8,6 +8,10 @@
     "power_pin_not_driven": 5,
     "pin_not_connected": 31
   },
+  "erc_severities": {
+    "warning": 2,
+    "error": 36
+  },
   "erc_status": "OPEN FINDINGS REMAIN; NOT CLEAN / NOT WAIVED",
   "no_can_termination_120ohm": true,
   "no_reserved_memory_gpio_assigned": true,

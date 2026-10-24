@@ -47,3 +47,7 @@ python3 scripts/check_review_schematic.py
 Il generatore usa le librerie KiCad installate nel percorso indicato nello script. GliUUID e le sorgenti generate sono riproducibili a parità di script/librerie. Le date degli export e i metadatiPDF/netlist possono variare. Le modifiche manuali ai fogli generati vengono sostituite dalla rigenerazione: riportarle prima nello script. Nessuna automazione genera PCB o ordini.
 
 Prima di una revisione costruibile servono datasheet pannello corretto, chiusura potenza/protezioni/USB/wake, MPN/footprint e passivi reali, verifica completa della netlist e review indipendente. L’ERC pulito da solo non basta.
+
+## Approfondimento del buck 5 V
+
+`../BUCK5_FEEDBACK_REVIEW.md` e `../evidence/models/buck5_ripple_screen.*` confrontano due reti di feedback su 16 punti e 64 combinazioni di tolleranze per punto. La rete studiata per 12 V perde margine sul ripple verso 6 V; quella a ripple maggiore richiede di valutare l’errore DC. I passivi di feedback restano TBD. Il foglio 02 riporta ora questi limiti. L’archivio di revisione include analisi e relativo script; non contiene nuovi componenti approvati.

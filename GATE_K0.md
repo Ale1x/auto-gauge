@@ -105,3 +105,7 @@ Creati viaMCP progetto e fogli, poi generati in modo riproducibile con scripts/g
 ERC effettivo:36errori e2warning aperti, descritti in hardware/ERC_REVIEW.md.31pinFPC non assegnati;5power pin senza driverERC;2ingressi presenza non implementati. Non introdotte derogheERC per dichiarare il circuito valido. USBOVP/inrush è una funzione serie mancante, non un collegamento da ponticellare. Wake/protezioni/valoriTBD e pinout pannello impediscono uno schema definitivo o costruibile.
 
 La richiesta del proprietario cambia l’ordine di lavoro rispetto alle stop condition originali: esiste uno schema ingegneristico modificabile e reviewable mentre i blocker restano aperti. Nessuna provaHW, conformità o peer-review indipendente dichiarata. Il filePCB vuoto creato automaticamente dalMCP è stato rimosso: non è stato eseguito layout.
+
+## Screening successivo del buck 5 V
+
+BUCK5_FEEDBACK_REVIEW.md confronta due reti Type-3 mediante 16 punti e 64 combinazioni di tolleranze per punto, con equazioni E04 e vincoli di stabilità E52. Il circuito studiato per circa 20 mV di ripple a 12 V scende sotto 12 mV vicino a 6 V al buck. Una seconda rete conserva il margine nel modello ideale, introducendo maggiore errore DC. Nessuna rete qualificata né MPN nuovo selezionato: R210/C208/C209 restano TBD. Aggiornate le note del foglio 02 e il pacchetto di revisione; lo screening non cambia lo stato K0 né chiude il rischio di wake/fault recovery.

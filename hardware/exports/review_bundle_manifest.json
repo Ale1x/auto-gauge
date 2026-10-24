@@ -7,8 +7,8 @@
       "sha256": "a6f122478dd04028f50a7bd08bd4c5146ce195b409e38e079e7f6fec109b82f5"
     },
     "02_AUTOMOTIVE_POWER.kicad_sch": {
-      "bytes": 95471,
-      "sha256": "9763a59fb550e7c0d0a1f52407beb6e2f5394565a817b3c142b7f4d42c3d1483"
+      "bytes": 95852,
+      "sha256": "6b7b962d7e82749709989ca68684572619789b177ec91162c7689decde330d9b"
     },
     "03_MCU_MEMORY_BLE.kicad_sch": {
       "bytes": 40728,
@@ -35,12 +35,12 @@
       "sha256": "b125f8515c7d5cb712200e5c5d3a09aee44eef4928ba5dde18c49fa2a6993d4a"
     },
     "ERC_REVIEW.md": {
-      "bytes": 2219,
-      "sha256": "c6af7f973ad7851beb9062cd58931051eb2dbcaf65b759b050e0937669780192"
+      "bytes": 3127,
+      "sha256": "63d770a91709fea8d13c575ffbb11f608c31ff23e7a79871c05d024da8fd08c4"
     },
     "README.md": {
-      "bytes": 5497,
-      "sha256": "6942474f9893c8b5a7efd7e8499f1591155dbefcd94f77f250260bc626e52f73"
+      "bytes": 5994,
+      "sha256": "915b9355c2cb9f5b9bfadf36368d5d4882aecd84e89022a36fca60b33fbed771"
     },
     "auto_gauge.kicad_pro": {
       "bytes": 77,
@@ -52,51 +52,51 @@
     },
     "exports/auto_gauge.net.xml": {
       "bytes": 168093,
-      "sha256": "413bd98d689c8133eaa0e19f12cfd14190e8875065705d00327cb755da3f8177"
+      "sha256": "809d41393a73d603a51d57ca0559818eaaab92e308e3bcc3eed5331880c9aded"
     },
     "exports/auto_gauge_A0.pdf": {
-      "bytes": 423170,
-      "sha256": "0e5278f2439a719b6a0f1130be21942c30578ebe36a11232163bdb90087a124a"
+      "bytes": 423462,
+      "sha256": "a30926fdbd863caaf7bb35f1ab219daae64eb47f22cd6f3adb121222ea28ae20"
     },
     "exports/connectivity_audit.json": {
-      "bytes": 529,
-      "sha256": "c6d85b72f5b41de08619d174ee52e1bdab0ab4bac48337b920021a132e221411"
+      "bytes": 590,
+      "sha256": "bdc2f1083b009f49180549ee7fcb007b77c2b257a9f9365cdc5a041375690389"
     },
     "exports/erc.json": {
       "bytes": 25766,
-      "sha256": "22a1bdd00703c7f2a17f023acd1112ec73258abce917122d72256be253f30189"
+      "sha256": "3b25651e615b3a9dc91fff7bb3a16698e0b36dfa0817ac18964df6dd7316c57b"
     },
     "exports/svg/auto_gauge-01_OBD_INPUT.svg": {
       "bytes": 500340,
-      "sha256": "4416127fd3af309d432be389deefdddee5a4daf3e538c554b8531b01dcd9fefe"
+      "sha256": "401d84d3d8aa86749836ff25de9ef48e867e69913fe40c419f8da35cdac4a365"
     },
     "exports/svg/auto_gauge-02_AUTOMOTIVE_POWER.svg": {
-      "bytes": 1450486,
-      "sha256": "3b65dbebf87e0ece9c6a99737db561f3c8279a4a4dbad1b7da9964714dcc21a9"
+      "bytes": 1511662,
+      "sha256": "bbc9e70802401290560c9c10ef487345c35580d7b53bd6abc605d00491c81722"
     },
     "exports/svg/auto_gauge-03_MCU_MEMORY_BLE.svg": {
       "bytes": 727318,
-      "sha256": "a2cbdc0ac4eb9c2ca706462c8f4704658b7c9ff6ba6cf48bc8b215aea18e07e2"
+      "sha256": "211f9196a47d928e4a1fa95c087d94c5c0d8554cbeaba6dfd8c53afdba1c2cd0"
     },
     "exports/svg/auto_gauge-04_CAN_PHY.svg": {
       "bytes": 553552,
-      "sha256": "b2928f0436fc140f5a06b301051b0427134e180d5a97c0aa79074139a099074e"
+      "sha256": "820f3f0376f68c31c4b47f8b97bbc70e3e0191a09b592bbdcbdb8b1af3063d0b"
     },
     "exports/svg/auto_gauge-05_AMOLED_TOUCH.svg": {
       "bytes": 534470,
-      "sha256": "f8e617ad82db06339b9aa4e8cf20a9d31c9d16a7ab9ab8143104e0bcefe84d4c"
+      "sha256": "39e354e900e0a364e600e1b587284025aa6f6696525e5f61f50575fc7b98a0f6"
     },
     "exports/svg/auto_gauge-06_LIGHT_SENSOR.svg": {
       "bytes": 369868,
-      "sha256": "65355d2d61d0c8661f6be07a65671f880f5afa8e50fc0e6a8b2f829fe7258811"
+      "sha256": "1b8753eaf381037a9231252fa0cde430b44cee9c7fc909a25f8ceba74e4f73a8"
     },
     "exports/svg/auto_gauge-07_TEST_SERVICE.svg": {
       "bytes": 720468,
-      "sha256": "8c2d8ce18fd73dbaed056d733b1caa5c8329da3bdaaefae9af2616a99fb413f9"
+      "sha256": "22e22137a821e0715b8f5340df3e536cafbd600aa3ae1d112a9e202e53b32780"
     },
     "exports/svg/auto_gauge.svg": {
       "bytes": 361409,
-      "sha256": "e3684c5f02afd0fd4e420dda5d0284cb4b0f0bc9d0335c118df9b737d445a7be"
+      "sha256": "9b9709b017f48cc7251868a3bbd6ab7a12a513c342c38cf10f03d81ce9c36689"
     },
     "pin_matrix.csv": {
       "bytes": 20597,
@@ -109,6 +109,22 @@
     "sym-lib-table": {
       "bytes": 175,
       "sha256": "857d96750f22702019946311caee856c3256ad774d146cb41f39e23333dbac08"
+    },
+    "analysis/BUCK5_FEEDBACK_REVIEW.md": {
+      "bytes": 4441,
+      "sha256": "b0cdefb16c44f064aebbb779ca4683df22d8191c1f0926bd27744b1b475f3fe5"
+    },
+    "analysis/buck5_ripple_screen.csv": {
+      "bytes": 5172,
+      "sha256": "6ad0154ac3191c9f4e255c7efcf5f0ed3e21edd02f974925c10e7fe38a1445c9"
+    },
+    "analysis/buck5_ripple_screen.json": {
+      "bytes": 776,
+      "sha256": "2d8208298e2970cb830a40d533aa6141f11bc701cce78f614eef3e14e403d4c9"
+    },
+    "analysis/build_buck5_screen.py": {
+      "bytes": 9400,
+      "sha256": "1cc44f662a204f9e325c5de0723211340fe3d7d74a594878f8877be75bcd2d41"
     }
   }
 }

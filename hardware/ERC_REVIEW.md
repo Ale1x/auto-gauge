@@ -15,3 +15,9 @@ Eseguito su gerarchia completa con KiCad10.0.7. Risultato:38segnalazioni,36error
 I problemi iniziali di griglia del generatore sono stati corretti. Non risultano altre classi di errore nell’export corrente; questo non prova l’assenza di errori progettuali non rilevabili daERC.
 
 Nessun componente con valoreTBD è approvato per acquisto o popolamento. Le sole dichiarazioniPWR_FLAG presenti riguardano la sorgente esternaOBD e il suo ritorno, non le funzioni incomplete. La revisione indipendente resta da svolgere.
+
+## Limite riscontrato nel server MCP
+
+Il 24/10/2026 `run_erc` del server MCP installato ha restituito erroneamente 0 violazioni. Verificata la causa nel sorgente locale `python/kicad_interface.py`, funzione `_handle_run_erc`: legge soltanto `erc_data.get("violations", [])`, mentre KiCad 10.0.7 salva le segnalazioni in `sheets[].violations`. Il report CLI effettivo conferma 36 errori e 2 warning. Nessuna modifica al server condiviso o esclusione ERC eseguita.
+
+Per questo progetto fa fede `exports/erc.json`, letto gerarchicamente da `scripts/check_review_schematic.py`. Il controllo ora rifiuta report senza fogli e richiede la baseline A0 di 31 pin FPC aperti, 5 ingressi di alimentazione non pilotati e 2 etichette isolate. Quando questi circuiti saranno completati occorrerà aggiornare esplicitamente la baseline dopo avere esaminato il report completo. Un riepilogo MCP vuoto non costituisce PASS.

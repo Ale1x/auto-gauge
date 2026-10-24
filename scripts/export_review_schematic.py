@@ -17,6 +17,7 @@ def command(name,args):
     (OUT/(name+'-cli.log')).write_text(result.stdout+'\n'+result.stderr)
     result.check_returncode()
     print(name+': export completed')
+python('build_buck5_screen.py')
 python('generate_review_schematic.py')
 schematic=str(HW/'auto_gauge.kicad_sch')
 command('netlist',['sch','export','netlist','--format','kicadxml','--output',str(OUT/'auto_gauge.net.xml'),schematic])
@@ -26,9 +27,13 @@ command('svg',['sch','export','svg','--output',str(OUT/'svg')+'/',schematic])
 python('check_review_schematic.py')
 files=sorted([*HW.glob('*.kicad_sch'),HW/'auto_gauge.kicad_pro',HW/'AutoGauge.kicad_sym',HW/'sym-lib-table',HW/'README.md',HW/'ERC_REVIEW.md',HW/'pin_matrix.csv',HW/'schematic_bom_review.csv',OUT/'auto_gauge_A0.pdf',OUT/'auto_gauge.net.xml',OUT/'erc.json',OUT/'connectivity_audit.json',*sorted((OUT/'svg').glob('*.svg'))])
 manifest={str(p.relative_to(HW)):dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in files}
+support=[ROOT/'BUCK5_FEEDBACK_REVIEW.md',ROOT/'evidence/models/buck5_ripple_screen.csv',ROOT/'evidence/models/buck5_ripple_screen.json',ROOT/'scripts/build_buck5_screen.py']
+for p in support:
+    manifest['analysis/'+p.name]=dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())
 manifest_path=OUT/'review_bundle_manifest.json'
 manifest_path.write_text(json.dumps(dict(revision='A0',status='INCOMPLETE ENGINEERING REVIEW / OPEN BLOCKERS',files=manifest),indent=2)+'\n')
 archive=OUT/'auto_gauge_A0_review.zip'
 with zipfile.ZipFile(archive,'w',compression=zipfile.ZIP_DEFLATED) as z:
     for p in [*files,manifest_path]:z.write(p,'auto_gauge_A0/'+str(p.relative_to(HW)))
-print(f'Wrote review archive with {len(files)+1} files: {archive}')
+    for p in support:z.write(p,'auto_gauge_A0/analysis/'+p.name)
+print(f'Wrote review archive with {len(files)+len(support)+1} files: {archive}')
