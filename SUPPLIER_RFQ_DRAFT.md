@@ -8,7 +8,7 @@ JLCPCB elenca lavorazioni manuali e servizi OLED/flashing/test soggetti a valuta
 
 ## Testo da inviare dopo autorizzazione al contatto
 
-Richiediamo studio di fattibilità per cinque gauge OBD-II 12 V con un PCB custom, pannello AMOLED touch nudo 1,75″ su FPC, cavo CAN intrecciato lungo 2 m, plug J1962 Type A e connettore removibile lato gauge. Diametro esterno massimo dispositivo 44,45 mm; pannello e assemblaggio non ancora congelati. Nessun ordine in questa fase.
+Richiediamo studio di fattibilità per cinque gauge OBD-II 12 V con un PCB custom, pannello AMOLED touch nudo 1,75″ su FPC, cavo CAN intrecciato lungo 2 m, plug J1962 Type A e connettore removibile lato gauge. Diametro esterno leggermente maggiore di 44,45 mm autorizzato; ipotesi preliminare Ø52 mm, massimo finale da definire; pannello e assemblaggio non ancora congelati. Nessun ordine in questa fase.
 
 Confermare per iscritto:
 

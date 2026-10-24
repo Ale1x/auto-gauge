@@ -1,30 +1,34 @@
-# Studio meccanico K0 — preliminare, fit respinto
+# Studio meccanico K0 — revisione 0.2, diametro da congelare
 
-Vincolo: DEC-001, Ø esterno massimo 44,45 mm. Per dimensioni del candidato e disegno originale vedere E01 in evidence/SOURCES.md e la tavola evidence/panel-mechanical.png.
+Vincolo corrente: DEC-002 autorizza un piccolo aumento del diametro esterno rispetto a 44,45 mm. Il display resta nominalmente 1,75″. **Ø52 mm è un'ipotesi di studio, non un massimo approvato né un fit CAD.**
 
-| Quantità | Risultato | Tipo di dato |
-|---|---:|---|
-| 1,75 × 25,4 | 44,45 mm | conversione esatta |
-| Cover touch candidata | 48,96 mm | nominale datasheet, non misura di campione |
-| Superamento già senza case | 4,51 mm sul diametro | calcolo |
-| Ingombro massimo pannello senza cover | 46,35 mm | nominale datasheet |
-| Superamento senza cover | 1,90 mm | calcolo; togliere la cover non risolve |
-| Spazio radiale fra area attiva e limite esterno | (44,45 − 43,76)/2 = 0,345 mm | calcolo; non include bordo pannello/touch/case |
+Il precedente rifiuto del candidato E01 a Ø44,45 mm resta corretto storicamente ma non esclude più quel candidato dal nuovo studio. Fonti e disegno originale: evidence/SOURCES.md (E01), evidence/panel-mechanical.png. Dati nominali documentali, non misure di campione.
 
-Due disposizioni concettuali, stesso pannello e un solo PCB:
+## Sensibilità radiale
+
+Per la cover candidata nominale da 48,96 mm, il margine radiale lordo vale (D_case − 48,96)/2. È spazio per parete, tolleranze e gioco insieme, non tutto spazio libero.
+
+| Diametro esterno ipotetico | Margine radiale lordo | Residuo con parete ipotetica 1,0 mm e gioco radiale 0,3 mm | Esito del solo calcolo radiale |
+|---|---:|---:|---|
+| 44,45 mm, precedente limite | -2,255 mm | -3,555 mm | Non entra |
+| 50 mm | 0,52 mm | -0,78 mm | Insufficiente nelle ipotesi |
+| 51 mm | 1,02 mm | -0,28 mm | Insufficiente nelle ipotesi |
+| 52 mm | 1,52 mm | 0,22 mm | Candidato da approfondire |
+
+Diametro minimo aritmetico nelle sole ipotesi sopra: 48,96 + 2×(1,0 + 0,3) = **51,56 mm**. Il gioco 0,3 mm non è una tolleranza garantita: deve ancora assorbire variazioni del pannello/case e montaggio. La parete 1,0 mm non è dimensionata per alcun materiale/processo. Ø52 aumenta il diametro di 7,55 mm (circa 17%) rispetto al precedente limite. Questo non dimostra la fattibilità dell'assieme.
+
+## Due disposizioni da studiare con un solo PCB
 
 | Elemento | A: cavo posteriore assiale | B: cavo laterale/radiale |
 |---|---|---|
-| Display + touch | Stesso candidato fuori sagoma | Stesso candidato fuori sagoma |
-| PCB | Dietro pannello; Ø < 44,45 mm meno pareti/gioco, valore non congelabile | Idem; ulteriore area richiesta dalla presa laterale |
-| Connettore gauge | Presa posteriore, spazio condiviso con magnete | Presa nel fianco; sporgenza e plug accoppiato da includere nel drawing |
-| USB-C nascosta | Accesso posteriore dietro copertura rimovibile | Accesso laterale sotto tappo; contesa con presa cavo |
-| Magnete | Posteriore, possibile interferenza con presa | Posteriore, possibile maggiore area libera |
-| Sensore luce | Apertura frontale/periferica da verificare | Idem |
-| BLE | Antenna al margine, lontano da magnete e metallo; keep-out da datasheet | Idem; presa e cavo possono ridurre lo spazio RF |
-| Sezione/spessore | FPC, altezza componenti, piega e assemblaggio non definiti | Idem |
-| Esito a Ø44,45 mm | **Non fattibile con E01** | **Non fattibile con E01** |
+| Display + touch | E01 riammesso allo studio; fit completo non verificato | Idem |
+| PCB | Dietro pannello; diametro da ricavare da appoggi, FPC e pareti | Idem, con area per presa laterale |
+| Connettore gauge | Presa posteriore; contesa con magnete e supporto | Presa nel fianco; sporgenza del plug accoppiato da quotare |
+| USB-C nascosta | Accesso posteriore sotto copertura di servizio | Accesso laterale sotto tappo |
+| Magnete | Posteriore con spazio per presa; geometria TBD | Posteriore, area da confrontare con antenna |
+| Sensore luce | Apertura periferica: visibilità sopra il bordo display da verificare | Idem |
+| BLE | Antenna al margine, con keep-out verificato rispetto a pannello/metallo/magnete | Idem; presa laterale può sottrarre spazio RF |
+| Sezione/spessore | Componenti, piega FPC, presa e supporto determinano profondità TBD | Componenti, FPC e prese laterali determinano profondità TBD |
+| Esito a Ø52 ipotetico | Ammessa allo studio; nessun fit validato | Ammessa allo studio; nessun fit validato |
 
-Non sono due alternative approvate né un fit CAD. Non sono stati inventati quote di connettori, magnete o case. La quota dichiarata di 48,96 mm è sufficiente a respingere entrambe, indipendentemente dallo spessore. La rotazione di un oggetto non riduce il suo diametro d'inviluppo.
-
-Il task dei due disegni quotati resta BLOCCATO, non completato. Dopo un pannello conforme: acquisire DXF/STEP, tolleranze, FPC e raggio minimo, fissare inviluppi delle prese e del plug accoppiato, sezioni dell'assieme, RF keep-out, strain relief e metodo di montaggio magnetico; confrontare A/B in CAD prima di K1.
+Il task dei due disegni quotati resta DA COMPLETARE. Serve prima documentazione corretta del pannello e delle parti reali: DXF/STEP, tolleranze, FPC e raggio minimo, inviluppi prese/plug, sezioni, keep-out RF e strain relief. Nessuna quota di presa, magnete, PCB o spessore è stata inventata. Le incongruenze elettriche/termiche e il sourcing E01 restano aperti.

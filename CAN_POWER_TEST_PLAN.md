@@ -1,6 +1,6 @@
 # CAN, alimentazione e prove K0 — proposta non congelata
 
-Data 2026-10-24; requisiti SPEC v0.2 + DEC-001. Riferimenti E02–E09, E16–E17 in evidence/SOURCES.md. Nessuna misura hardware eseguita.
+Data 2026-10-24; requisiti SPEC v0.2 + DEC-001/DEC-002 (v0.2.2). Riferimenti E02–E09, E16–E17 in evidence/SOURCES.md. Nessuna misura hardware eseguita.
 
 ## CAN e cavo
 

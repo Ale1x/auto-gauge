@@ -18,6 +18,10 @@ assert all(r['stato'] for r in rows)
 assert round(1.75*25.4,2) == 44.45
 assert round(48.96-44.45,2) == 4.51
 assert round(46.35-44.45,2) == 1.90
+assert round(48.96 + 2*(1.0+0.3), 2) == 51.56
+assert round((52-48.96)/2-1.0-0.3, 2) == 0.22
+assert 'DEC-002' in trace
+assert 'v0.2.2' in trace
 assert round(100e-6*24*28,4) == 0.0672
 for name, info in json.loads((root/'evidence/manifest.json').read_text())['files'].items():
     assert hashlib.sha256((root/'evidence'/name).read_bytes()).hexdigest() == info['sha256']
