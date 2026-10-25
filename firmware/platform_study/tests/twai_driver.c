@@ -180,4 +180,38 @@ static void test_response_deadline_begins_at_completion(void){
     mock.us+=15000;tx_callback(true);mock.us+=1000;const uint8_t bitmap[8]={6,0x41,0,0,0x10,0,0,0};rx(bitmap,8,false,false);
     assert(ag_twai_port_poll(&port)==AG_TWAI_COMPLETED&&discovery.ecus[0].result==AG_DISCOVERY_ECU_COMPLETE);
 }
-int main(void){test_init_start_and_variants();test_runtime_completion_and_receive();test_revocation_hops_and_ambiguous_enqueue();test_fail_timeout_busoff_and_cleanup();test_rx_faults_and_no_early_response();test_flow_control_only_and_failure_cancels_rx();test_response_deadline_begins_at_completion();puts("PASS: 7 modern TWAI port groups; behavioral SDK, no physical CAN");return 0;}
+static void test_quiesce_and_resume_bound_core(void){
+    boot(false,500000);assert(ag_twai_port_start(&port)==AG_TWAI_OK);init_runtime(false,500000);
+    assert(ag_twai_port_send_runtime(&port,&runtime)==AG_TWAI_QUEUED);
+    assert(ag_twai_port_quiesce(&port)==AG_TWAI_BUSY&&port.pending&&port.runtime==&runtime);
+    tx_callback(true);assert(ag_twai_port_poll(&port)==AG_TWAI_COMPLETED);
+    assert(ag_twai_port_quiesce(&port)==AG_TWAI_OK&&!port.pending&&port.runtime==NULL&&port.discovery==NULL);
+    assert(runtime.scheduler.active_index==SIZE_MAX&&runtime.scheduler.pending_index==SIZE_MAX);
+    assert(mock.disable_calls==0&&mock.delete_calls==0&&mock.enable_calls==1);
+    mock.us=1000000;assert(ag_twai_port_send_runtime(&port,&runtime)==AG_TWAI_QUEUED);
+    assert(mock.transmit_calls==2&&port.runtime==&runtime);
+    tx_callback(true);assert(ag_twai_port_poll(&port)==AG_TWAI_COMPLETED);
+    mock.policy.ignition=AG_IGN_OFF;
+    assert(ag_twai_port_quiesce(&port)==AG_TWAI_OK&&port.runtime==NULL);
+    mock.us=999000;assert(ag_twai_port_quiesce(&port)==AG_TWAI_CLOCK_FAULT);
+    assert(ag_twai_port_quiesce(&port)==AG_TWAI_CLOCK_FAULT);
+}
+static void test_suspend_resume_no_fault_recovery(void){
+    start_runtime();assert(ag_twai_port_send_runtime(&port,&runtime)==AG_TWAI_QUEUED);
+    assert(ag_twai_port_suspend(&port)==AG_TWAI_BUSY&&mock.disable_calls==0);
+    tx_callback(true);assert(ag_twai_port_poll(&port)==AG_TWAI_COMPLETED);
+    assert(ag_twai_port_suspend(&port)==AG_TWAI_OK&&port.phase==AG_TWAI_SUSPENDED&&!port.enabled);
+    assert(port.runtime==NULL&&mock.disable_calls==1&&mock.delete_calls==0);
+    assert(ag_twai_port_poll(&port)==AG_TWAI_NOT_READY);
+    assert(ag_twai_port_resume(&port)==AG_TWAI_OK&&port.phase==AG_TWAI_RUNNING&&mock.enable_calls==2);
+    assert(ag_twai_port_suspend(&port)==AG_TWAI_OK&&mock.disable_calls==2);
+    mock.enable_rc=ESP_FAIL;
+    assert(ag_twai_port_resume(&port)==AG_TWAI_IO&&port.phase==AG_TWAI_FAULT);
+    unsigned calls=mock.enable_calls;assert(ag_twai_port_resume(&port)==AG_TWAI_IO&&mock.enable_calls==calls);
+    start_runtime();mock.disable_rc=ESP_FAIL;
+    assert(ag_twai_port_suspend(&port)==AG_TWAI_IO&&port.cleanup_unknown&&port.phase==AG_TWAI_FAULT);
+    calls=mock.disable_calls;assert(ag_twai_port_suspend(&port)==AG_TWAI_IO&&mock.disable_calls==calls);
+    start_runtime();assert(ag_twai_port_suspend(&port)==AG_TWAI_OK);mock.policy.ignition=AG_IGN_OFF;
+    assert(ag_twai_port_resume(&port)==AG_TWAI_DENIED&&mock.enable_calls==1);
+}
+int main(void){test_init_start_and_variants();test_runtime_completion_and_receive();test_revocation_hops_and_ambiguous_enqueue();test_fail_timeout_busoff_and_cleanup();test_rx_faults_and_no_early_response();test_flow_control_only_and_failure_cancels_rx();test_response_deadline_begins_at_completion();test_quiesce_and_resume_bound_core();test_suspend_resume_no_fault_recovery();puts("PASS: 9 modern TWAI port groups; behavioral SDK, no physical CAN");return 0;}

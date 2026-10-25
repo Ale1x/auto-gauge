@@ -171,7 +171,7 @@ public actor QualifiedGaugeTransport: GaugeSessionTransport {
         guard token == epoch else { throw GaugeLinkError.disconnected }
         let page = try await readLogPage(sessionID: sessionID, after: cursor, limit: limit, token: token)
         guard token == epoch else { throw GaugeLinkError.disconnected }
-        let ack = try await archive.importPage(deviceID: id, data: JSONEncoder().encode(page))
+        let ack = try await archive.importQualifiedPage(deviceID: id, data: JSONEncoder().encode(page))
         let receipt = try QualifiedHistoryImport(deviceID: id, page: page)
         do {
             try await sendAcknowledgement(ack, token: token)

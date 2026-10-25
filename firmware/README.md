@@ -1,24 +1,25 @@
 # Firmware Auto Gauge — base di sviluppo v0.1
 
-Nucleo C11 compilabile su host e skeleton ESP-IDF per il candidato ESP32-S3. Si può sviluppare e verificare la logica prima che pinout pannello, alimentazioni e rilevamento quadro siano risolti. Questa base non è un firmware funzionante sul gauge: nessun driver CAN, BLE, display, flash log o OTA è attivato.
+Nucleo C11 e applicazione ESP-IDF per il candidato ESP32-S3, sviluppabili prima della qualifica di pannello, alimentazioni e quadro. La build nativa compone gli adapter reali; senza profilo locale resta bloccata prima delle attivazioni. Non è una release qualificata per il gauge o per le due schede non identificate.
 
-## Stato sintetico corrente — V0.12
+## Stato sintetico corrente — V0.13
 
 | Modulo | Implementazione disponibile | Limite attuale |
 |---|---|---|
-| Configurazione/RPC | Parser strict, endpoint autorizzato, commit/readback e ricevuto/applicato distinti; catalogo `logs.sessions` | Main applicativo e provisioning iniziale ancora da comporre |
-| Storage | Config2slot, journal append-only e adapter ESP-IDF partition read/write/erase con bounds/readback/fault latch | Studio SDK inerte; recovery READ_ONLY/format/reset espliciti, nessuna qualifica flash fisica |
-| Diagnostica | 53decoder scalari, discovery bounded perECU/page,4variantiCAN e default proposti solo da PID usabili | Non copre tutti i PID Service01; niente auto-bitrate o ECU/veicolo qualificati |
-| TWAI | Adapter moderno ESP-IDF con guardie fresche, callback di completamento TX, ISRqueue bounded e failclosed | Pin/profilo locale obbligatori, nessuna trasmissione fisica; main non lo avvia |
-| Runtime | Polling/qualità/log autonomi,1Hz globale/PID, queue16; opt-in live senza logging dopo fault storage | Proprietario applicativo unico da integrare; contatori non-recorded solo diagnostici RAM |
-| UI gauge | Scene bounded, raw→valore con53decoder, tap/ciclo dashboard, power/ALS espliciti | Nessun pannello/touch/ALS/IGN fisico o font/render driver qualificato |
-| BLE/ammissione | Nclient sequenziali/1link, passkey locale e bridge NimBLE→RPC compilati | Main inerte, entropy/display/bond/reset/route OTA da integrare e qualificare |
-| OTA | Verifier reale Swift/PSA, sender/frame/installer, stato NVS/floor/health e bootstrap factory esplicito | Nessuna chiave prodotto o azione fisica; salute/maintenance/main/BLE ancora da comporre |
-| Reset/energia | Controller reset e guardie CAN failclosed | HAL fisiche/reset durabile di bond/config/log e strategie IGN/power ancora aperte |
+| Owner/main | `ag_application` compone discovery/config/runtime/journal/UI/RPC/boot; tre profili compilati | Default bloccato; banco volatile; nativo richiede profilo locale qualificato |
+| Configurazione/storage | Commit/readback, provisioning blank-only separato, journal e adapter partizioni reali | Nessun erase/default automatico; sizing V1 e fault fisici da qualificare |
+| Diagnostica | 53 decoder scalari e discovery per ECU/page su quattro varianti CAN | Non copre tutti i PID standard; nessuna compatibilità ECU fisica dimostrata |
+| TWAI | Guardie fresche, completion TX, ISR queue, quiesce/suspend/resume solo da stato sano | Pin e profilo locali; fault/ambiguità terminali, nessun recupero bus-off automatico |
+| Runtime | Polling/log autonomi, rate budget globale per PID conservato fra configurazioni | Prestazioni e tempi IO fisici non misurati; logging degradato opt-in esplicito |
+| UI gauge | Scene, tap e renderer RGB565 circolare con buffer per righe | Power/protocollo pannello, touch, ALS e IGN richiedono port qualificato |
+| BLE/OTA | Owner sul task host, endpoint RPC condiviso, route OTA esclusiva, trust/installer/NVS boot legati | Profilo assente rifiuta prima di attivare hardware; chiavi produzione non fornite |
+| Reset | Record NVS canonico, intent/fasi durabili e recovery locale dopo interruzione | Cancellazione credenziali persistenti/RAM/controller richiede hook qualificato; audit dedicato |
+| App | Recovery archivio→inbox e flusso import/verifica/upload/READY/select esplicito | Provider nativo/trust assenti di default; nessun cloud/radio live qualificato |
 
-Le sezioni FW-02… sotto conservano la cronologia e i limiti di ciascun incremento. I vecchi conteggi di7decoder o5test non descrivono lo stato corrente: verifica finale [V0.12](../shared/VERIFICATION_V0.12.md), backlog [SOFTWARE_COMPLETION](../docs/SOFTWARE_COMPLETION.md).
-
-Le scelte di strutture e capacità sono ipotesi di sviluppo, non nuovi requisiti approvati. Restano normative SPEC_V0.2.md e DECISIONS.md, inclusa DEC-011. Il contratto comune è [shared/PROTOCOL_V0.1.md](../shared/PROTOCOL_V0.1.md).
+[Applicazione](../docs/APPLICATION.md), [manutenzione](../docs/MAINTENANCE.md),
+[renderer](../docs/GAUGE_RENDERER.md), [consegna](../docs/SOFTWARE_DELIVERY.md).
+Le sezioni FW-02… e V0.12 sotto conservano la cronologia; i vecchi conteggi o
+main inerti riferiti a quegli incrementi non descrivono il target unificato V0.13.
 
 ## Compilazione e test host
 

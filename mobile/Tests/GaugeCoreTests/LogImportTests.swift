@@ -77,6 +77,7 @@ final class LogImportTests: XCTestCase {
         var sessions = await archive.sessions()
         XCTAssertTrue(sessions.isEmpty)
         storage.failsWrite = false
+        try await archive.reload() // Failed replacement requires reconciliation before retry.
         let ack = try await archive.importPage(deviceID: "demo", data: data)
         XCTAssertEqual(ack.acknowledgedThrough.value, 2)
         sessions = await archive.sessions()

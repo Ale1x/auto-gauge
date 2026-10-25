@@ -1,0 +1,3 @@
+# Apply together with sdkconfig.defaults in a separate disposable build/config.
+# This profile never enables physical peripherals, BLE or OTA operations.
+CONFIG_AG_SOFTWARE_BENCH=y

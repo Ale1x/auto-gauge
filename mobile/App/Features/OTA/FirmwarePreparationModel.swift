@@ -7,18 +7,25 @@ final class FirmwarePreparationModel {
     private(set) var snapshot = OTAPreparationSnapshot()
     private(set) var busy = false
     private(set) var notice: String?
+    private(set) var installationSnapshot = OTAInstallationSnapshot()
+    let installationAvailable: Bool
+    @ObservationIgnored private let installation: OTAInstallationController
     let trustAvailable: Bool
     @ObservationIgnored private let trust: OTAPreparationTrust?
     @ObservationIgnored private let preparation: OTAPackagePreparation
     @ObservationIgnored private var work: Task<Void, Never>?
     private var generation = 0
-    init(trust: OTAPreparationTrust? = nil) {
+    init(trust: OTAPreparationTrust? = nil, installation: OTAInstallationController = .init()) {
         self.trust = trust; trustAvailable = trust != nil
+        self.installation = installation; installationAvailable = installation.configured
         let file = URL.applicationSupportDirectory.appending(path: "AutoGauge/prepared-ota-v1.agop")
         preparation = OTAPackagePreparation(archiveURL: file)
     }
-    var canVerify: Bool { trustAvailable && snapshot.manifestFile != nil && snapshot.imageFile != nil && !busy }
-    var canSave: Bool { snapshot.verifiedManifest != nil && !busy }
+    var preparationLocked: Bool { busy || installationSnapshot.state != .idle }
+    var canVerify: Bool { trustAvailable && snapshot.manifestFile != nil && snapshot.imageFile != nil && !preparationLocked }
+    var canUpload: Bool { installationAvailable && snapshot.verifiedManifest != nil && !preparationLocked }
+    var canSelect: Bool { installationSnapshot.state == .ready && !busy }
+    var canSave: Bool { snapshot.verifiedManifest != nil && !preparationLocked }
     func importFile(_ url: URL, kind: OTAPreparationFileKind) {
         run(success: "File copiato nella preparazione locale. Verifica nuovamente il pacchetto.") { preparation in
             try await preparation.importFile(url, kind: kind)
@@ -38,6 +45,10 @@ final class FirmwarePreparationModel {
     func restore() async {
         guard !busy else { return }
         generation += 1; let token = generation; busy = true
+        let current = await installation.snapshot()
+        guard token == generation else { return }
+        installationSnapshot = current
+        guard current.state == .idle else { busy = false; return }
         let task = Task {
             do {
                 let restored = try await preparation.restore(trust: trust)
@@ -73,13 +84,73 @@ final class FirmwarePreparationModel {
             busy = false; work = nil
         }
     }
+    func upload() {
+        guard canUpload else { return }
+        performInstallation(selecting: false)
+    }
+    func selectInstalledFirmware() {
+        guard canSelect else { return }
+        performInstallation(selecting: true)
+    }
+    private func performInstallation(selecting: Bool) {
+        generation += 1; let token = generation
+        busy = true; notice = nil
+        let preparation = self.preparation; let installation = self.installation
+        installationSnapshot = .init(manifest: selecting ? installationSnapshot.manifest : snapshot.verifiedManifest,
+                                     state: selecting ? .selecting : .opening, progress: installationSnapshot.progress,
+                                     selectionMayHaveChanged: selecting)
+        work = Task { [self] in
+            do {
+                if selecting { try await installation.select() }
+                else {
+                    let candidate = try await preparation.verifiedCandidate()
+                    let id = UInt32.random(in: 1...UInt32.max)
+                    try await installation.upload(candidate, transferID: id) { [weak self] value in
+                        await self?.receiveProgress(value, token: token)
+                    }
+                }
+                guard token == generation else { return }
+                installationSnapshot = await installation.snapshot()
+                guard token == generation else { return }
+                notice = selecting ? "Selezione confermata dal gauge. Avvio e salute del nuovo firmware devono ancora essere verificati sul dispositivo." : "Trasferimento verificato dal gauge. Il firmware è pronto; selezionalo esplicitamente per il prossimo avvio."
+            } catch {
+                guard token == generation else { return }
+                installationSnapshot = await installation.snapshot()
+                guard token == generation else { return }
+                notice = installationSnapshot.state == .unknown ? "Esito non determinabile. Nessun nuovo invio o selezione automatica: riconcilia lo stato del gauge prima di un altro aggiornamento." : "Installazione non avviata: \(error.localizedDescription)"
+            }
+            if token == generation { busy = false; work = nil }
+        }
+    }
+    private func receiveProgress(_ value: OTAInstallationProgress, token: Int) {
+        guard token == generation else { return }
+        installationSnapshot = .init(manifest: installationSnapshot.manifest, state: .uploading, progress: value)
+    }
+    func cancelInstallation() {
+        generation += 1; let token = generation
+        let previous = work; previous?.cancel(); busy = true
+        work = Task {
+            await installation.cancel()
+            if let previous { await previous.value }
+            guard token == generation else { return }
+            installationSnapshot = await installation.snapshot()
+            guard token == generation else { return }
+            notice = "Operazione interrotta e collegamento chiuso. I byte già ricevuti non vengono annullati; nessun nuovo tentativo automatico."
+            busy = false; work = nil
+        }
+    }
+    func leave() {
+        if installationSnapshot.state == .opening || installationSnapshot.state == .uploading || installationSnapshot.state == .ready || installationSnapshot.state == .selecting {
+            cancelInstallation()
+        } else if busy { cancel() }
+    }
     func importFailed(_ error: Error) {
         let value = error as NSError
         guard !(value.domain == NSCocoaErrorDomain && value.code == NSUserCancelledError) else { return }
         notice = "Impossibile selezionare il file: \(error.localizedDescription)"
     }
     private func run(success: String, operation: @escaping @Sendable (OTAPackagePreparation) async throws -> OTAPreparationSnapshot) {
-        guard !busy else { return }
+        guard !preparationLocked else { return }
         generation += 1; let token = generation
         busy = true; notice = nil
         snapshot = .init(manifestFile: snapshot.manifestFile, imageFile: snapshot.imageFile)

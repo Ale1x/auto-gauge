@@ -25,6 +25,8 @@ assert 'CONFIG_BT_ENABLED=y' not in config
 assert 'CONFIG_SECURE_BOOT=y' not in config and 'CONFIG_FLASH_ENCRYPTION_ENABLED=y' not in config
 nm=subprocess.check_output([str(BIN/'xtensa-esp32s3-elf-nm'),'--defined-only',str(ELF)],text=True)
 required=['ag_partition_store_bind','ag_config_store_open','ag_config_store_restore','ag_config_store_commit',
+    'ag_config_store_provision_blank','ag_maintenance_provision_reset','ag_maintenance_store_bind',
+    'nvs_get_blob','nvs_set_blob','nvs_commit',
     'ag_config_store_get','ag_config_record_encode','ag_journal_open','ag_journal_bootstrap','ag_journal_begin_session',
     'ag_journal_append','ag_journal_window','ag_journal_acknowledge','esp_partition_read','esp_partition_write',
     'esp_partition_erase_range','esp_partition_find_err','esp_partition_verify','esp_flash_get_size',
@@ -40,6 +42,7 @@ assert main and not any(re.search(r'\bcall\w*\b',line) for line in main)
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 artifacts=[ELF,BUILD/'auto_gauge_platform_compile_study.bin',BUILD/'partition_table/partition-table.bin']
 sources=[HERE/'main/twai_port.c',HERE/'main/twai_port.h',HERE/'main/partition_io.c',HERE/'main/partition_io.h',HERE/'main/main.c',HERE/'main/CMakeLists.txt',
+    HERE/'main/maintenance_store.c',HERE/'main/maintenance_store.h',ROOT/'firmware/src/connection.c',ROOT/'firmware/include/ag_connection.h',
     HERE/'sdkconfig.defaults',HERE/'partitions.csv',ROOT/'firmware/src/config.c',ROOT/'firmware/src/config_store.c',
     ROOT/'firmware/src/history.c',ROOT/'firmware/src/journal_history.c',ROOT/'firmware/include/ag_config_store.h',
     ROOT/'firmware/include/ag_journal_history.h',

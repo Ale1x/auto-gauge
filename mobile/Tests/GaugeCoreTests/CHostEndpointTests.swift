@@ -120,6 +120,7 @@ final class CHostEndpointTests: XCTestCase {
         let operations = await hub.operations; XCTAssertEqual(Array(operations.dropFirst(before)), ["logs.read"])
         let unchanged = await archive.sessions(); XCTAssertTrue(unchanged.isEmpty)
         try FileManager.default.removeItem(at: file)
+        try await archive.reload()
         let result = try await transport.importHistoryPage(sessionID: XCTUnwrap(session), archive: archive, limit: 2)
         XCTAssertTrue(result.peerAcknowledged); XCTAssertEqual(result.acknowledgement.acknowledgedThrough.value, 4)
         let reopened = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: file)); try await reopened.reload()

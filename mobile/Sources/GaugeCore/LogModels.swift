@@ -10,7 +10,7 @@ public enum LogImportError: Error, LocalizedError {
         case .conflict: return "Una sequenza già importata contiene dati diversi. Nessuna modifica salvata."
         case .unexplainedGap: return "Mancano sequenze senza una perdita esplicitamente dichiarata."
         case .lossConflict: return "La perdita dichiarata contraddice record già importati."
-        case .capacity: return "L’archivio dimostrativo ha raggiunto il limite locale. Nessun nuovo ACK emesso."
+        case .capacity: return "L’archivio ha raggiunto il limite locale. Nessun nuovo ACK emesso."
         case .notLoaded: return "Ricarica correttamente l’archivio locale prima di importare."
         case .invalidArchive: return "L’archivio locale non è valido. Il contenuto precedente è stato conservato."
         }

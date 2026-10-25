@@ -43,8 +43,21 @@ public struct HistoricalLogAcknowledgement: Codable, Equatable, Sendable {
 }
 
 private struct HistoricalLogSnapshot: Codable, Equatable, Sendable {
-    var schemaVersion = 1
+    var schemaVersion = 2
     var sessions = [ImportedLogSession]()
+    var qualifiedPending = [CloudHistoryItem]()
+    enum CodingKeys: String, CodingKey { case schemaVersion, sessions, qualifiedPending }
+    init() {}
+    init(from decoder: Decoder) throws {
+        let fields = try decoder.container(keyedBy: CodingKeys.self)
+        let version = try fields.decode(Int.self, forKey: .schemaVersion)
+        guard version == 1 || version == 2 else { throw LogImportError.invalidArchive }
+        sessions = try fields.decode([ImportedLogSession].self, forKey: .sessions)
+        if version == 1 {
+            // Legacy archives carry no qualification provenance. Never promote them.
+            guard !fields.contains(.qualifiedPending) else { throw LogImportError.invalidArchive }
+        } else { qualifiedPending = try fields.decode([CloudHistoryItem].self, forKey: .qualifiedPending) }
+    }
 }
 
 /// One actor owns one archive file on one installation. No cross-process/file locking.
@@ -57,6 +70,8 @@ public actor LocalLogArchive {
     private let storage: any LogArchiveStorage
     private var snapshot = HistoricalLogSnapshot()
     private var ready = false
+    private var recovering = false
+    private var generation: UInt64 = 0
     public init(storage: any LogArchiveStorage) { self.storage = storage }
     public func sessions() -> [ImportedLogSession] { snapshot.sessions }
     public func isReady() -> Bool { ready }
@@ -64,21 +79,53 @@ public actor LocalLogArchive {
         snapshot.sessions.first(where: { $0.deviceID == deviceID && $0.sessionID.value == sessionID })?.acknowledgedThrough.value ?? 0
     }
     public func reload() throws {
+        generation &+= 1
         do {
+            var candidate = HistoricalLogSnapshot()
             if let data = try storage.read(maximumBytes: Self.maximumBytes) {
                 guard data.count <= Self.maximumBytes else { throw LogImportError.capacity }
                 try StrictLogJSON.check(data)
-                let candidate = try JSONDecoder().decode(HistoricalLogSnapshot.self, from: data)
+                candidate = try JSONDecoder().decode(HistoricalLogSnapshot.self, from: data)
                 try validateSnapshot(candidate)
-                snapshot = candidate
             }
-            ready = true
+            snapshot = candidate; ready = true
         } catch {
             ready = false
             throw error
         }
     }
     public func importPage(deviceID: String, data: Data) throws -> HistoricalLogAcknowledgement {
+        try commitPage(deviceID: deviceID, data: data, qualified: false)
+    }
+    /// Module-internal entry point used only after native session qualification.
+    /// Records, cursor and cloud delivery intent share one atomic snapshot write.
+    func importQualifiedPage(deviceID: String, data: Data) throws -> HistoricalLogAcknowledgement {
+        try commitPage(deviceID: deviceID, data: data, qualified: true)
+    }
+    public func pendingQualifiedCount() -> Int { snapshot.qualifiedPending.count }
+    /// Replay is idempotent. Inbox commits first; only then remove those exact
+    /// intents from the archive. A crash at any await leaves a recoverable copy.
+    public func recoverQualifiedImports(to inbox: QualifiedHistoryInbox) async throws {
+        guard ready else { throw LogImportError.notLoaded }
+        guard !recovering else { throw CloudSyncError.busy }
+        recovering = true; defer { recovering = false }
+        let token = generation
+        let pending = snapshot.qualifiedPending
+        // One inbox write per retained device/session, rather than per sample.
+        let groups = Dictionary(grouping: pending) { "\($0.deviceID.utf8.count):\($0.deviceID):\($0.sessionID.value)" }
+        for key in groups.keys.sorted() {
+            try Task.checkCancellation()
+            guard let items = groups[key] else { continue }
+            try await inbox.enqueue(QualifiedHistoryImport(recovering: items))
+            guard ready, token == generation else { throw LogImportError.notLoaded }
+        }
+        guard !pending.isEmpty else { return }
+        var candidate = snapshot
+        let identifiers = Set(pending.map(\.recordID))
+        candidate.qualifiedPending.removeAll { identifiers.contains($0.recordID) }
+        try persist(candidate)
+    }
+    private func commitPage(deviceID: String, data: Data, qualified: Bool) throws -> HistoricalLogAcknowledgement {
         guard ready else { throw LogImportError.notLoaded }
         guard validDeviceID(deviceID) else { throw LogImportError.invalidPage }
         let page = try HistoricalLogPage.decode(data)
@@ -113,15 +160,30 @@ public actor LocalLogArchive {
         session.lost = try mergedLosses(session.lost + page.lost)
         session.acknowledgedThrough = .init(cursor)
         candidate.sessions[index] = session
+        if qualified {
+            let receipt = try QualifiedHistoryImport(deviceID: deviceID, page: page)
+            for item in receipt.items {
+                if let previous = candidate.qualifiedPending.first(where: { $0.recordID == item.recordID }) {
+                    guard previous == item else { throw CloudSyncError.conflict }
+                } else { candidate.qualifiedPending.append(item) }
+            }
+        }
+        try persist(candidate)
+        return .init(sessionID: page.sessionID, acknowledgedThrough: .init(cursor), reportedLoss: page.lost)
+    }
+    private func persist(_ candidate: HistoricalLogSnapshot) throws {
         try validateSnapshot(candidate)
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.sortedKeys]
         let encoded = try encoder.encode(candidate)
         guard encoded.count <= Self.maximumBytes else { throw LogImportError.capacity }
         // Nothing mutates the active snapshot, and no ACK is returned, before write succeeds.
-        try storage.write(encoded)
-        snapshot = candidate
-        return .init(sessionID: page.sessionID, acknowledgedThrough: .init(cursor), reportedLoss: page.lost)
+        do { try storage.write(encoded); snapshot = candidate }
+        catch {
+            // A storage error may follow replacement. Reload before another
+            // mutation so an intent that reached disk cannot be overwritten.
+            ready = false; generation &+= 1; throw error
+        }
     }
     private func validDeviceID(_ value: String) -> Bool {
         (1...64).contains(value.unicodeScalars.count) && value.utf8.count <= 256
@@ -147,10 +209,21 @@ public actor LocalLogArchive {
         return result
     }
     private func validateSnapshot(_ value: HistoricalLogSnapshot) throws {
-        guard value.schemaVersion == 1, value.sessions.count <= Self.maximumSessions,
+        guard value.schemaVersion == 2, value.sessions.count <= Self.maximumSessions,
               value.sessions.reduce(0, { $0 + $1.records.count }) <= Self.maximumRecords,
               value.sessions.reduce(0, { $0 + $1.lost.count }) <= Self.maximumLossIntervals,
               Set(value.sessions.map(\.id)).count == value.sessions.count else { throw LogImportError.capacity }
+        guard value.qualifiedPending.count <= QualifiedHistoryInbox.maximumItems,
+              Set(value.qualifiedPending.map(\.recordID)).count == value.qualifiedPending.count else { throw LogImportError.capacity }
+        for item in value.qualifiedPending {
+            _ = try CloudHistoryItem.decode(item.payload())
+            guard let session = value.sessions.first(where: { $0.deviceID == item.deviceID && $0.sessionID == item.sessionID }) else { throw LogImportError.invalidArchive }
+            if let record = item.record {
+                guard session.records.contains(record) else { throw LogImportError.invalidArchive }
+            } else if let loss = item.loss {
+                guard session.lost.contains(where: { $0.first <= loss.first && $0.last >= loss.last }) else { throw LogImportError.invalidArchive }
+            } else { throw LogImportError.invalidArchive }
+        }
         for session in value.sessions {
             guard validDeviceID(session.deviceID), session.records.count <= Self.maximumRecords,
                   zip(session.records, session.records.dropFirst()).allSatisfy({ pair in pair.0.sequence < pair.1.sequence }),

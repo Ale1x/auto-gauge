@@ -173,3 +173,18 @@ FW-14 aggiunge endpoint AG con feed che stage soltanto, step separato, leaseobso
 Boot/floor/health con NVS e witness locale, factorybootstrap esplicito off perdefault, adapterpartizioni reale, discovery53PID/default, gaugeUI portabile e TWAI moderno con completion; runtime opt-in live-only dopo faultstorage senza retry. Catalogo sessions RPC+scannerjournal ordinato/read-only e source-aware sessioni app. APP14 importa/verifica/salva/riapre pacchetti OTA con trustlocale; APP15 inietta sessioni native soltanto con providerlocale, di defaultdenied, e predispone receipt/inboxcloud distinti dalle fixture.
 
 Chiusura:107Python,175Swift,23/23CTest passati; sim/deviceunsigned e4SDKcrossbuild riusciti. Cryptoportable reale ripetuta55vettori/13accettati. Corrette witnessmask, bindnamespaceimplicito, restore stale/cancelordering, connessioneA che poteva toccareB e timeoutTWAI a partire dall’enqueue. I nuovi percorsi non sono una qualifica fisica o un’applicazione main completa. [VERIFICATION_V0.12](shared/VERIFICATION_V0.12.md), [backlog aggiornato](docs/SOFTWARE_COMPLETION.md).
+
+## V0.13 — integrazione dopo l'handoff, 25 ottobre 2026
+
+Nuova autorizzazione owner: proseguire e completare autonomamente il software
+mentre è assente. Workstream mobile: APP15 intenti durabili/recovery+catalogoC e
+APP16 flusso OTA UI/service; firmware: owner/main e TWAI lifecycle; bridge/display:
+routeRPC/OTA, tick host e renderer; coordinatore: provisioning/reset NVS,
+composizione native, review/fix, tracciabilità e bundle riproducibile.
+
+Suite corrente109Python/25CTest/191Swift, tre profili SDK e build iOS unsigned;
+riepilogo e limiti in [VERIFICATION_V0.13](shared/VERIFICATION_V0.13.md).
+Il target native collega insieme gli adapter reali ma rifiuta prima dell'IO senza
+profilo locale. Non sono qualificate schede, trust, cache credenziali, cloud o
+prestazioni/consumi fisici;53PIDscalari non chiudono PR-003. Nessun test fisico,
+flash, acquisto o nuovo messaggio ai fornitori.

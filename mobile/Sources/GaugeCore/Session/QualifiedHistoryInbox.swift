@@ -57,7 +57,8 @@ public actor QualifiedHistoryInbox {
         try validate(candidate)
         let data = try JSONEncoder().encode(candidate)
         guard data.count <= Self.maximumBytes else { throw CloudSyncError.capacity }
-        try storage.write(data); snapshot = candidate
+        do { try storage.write(data); snapshot = candidate }
+        catch { loaded = false; generation &+= 1; throw error }
     }
     private func validate(_ candidate: QualifiedHistoryInboxSnapshot) throws {
         guard candidate.schemaVersion == 1, candidate.items.count <= Self.maximumItems,

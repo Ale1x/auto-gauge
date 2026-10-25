@@ -19,7 +19,7 @@ static void collect(ag_runtime_t *r,uint64_t now){
         if(!changed(&r->observed[i],m))continue;
         r->observed[i]=*m;
         if(r->logging_disabled){increment(r,&r->not_recorded);continue;}
-        size_t budget=i;for(size_t j=0;j<i;++j)if(r->scheduler.jobs[j].config.pid==m->pid){budget=j;break;}
+        size_t budget=m->pid;
         if(r->has_logged[budget]&&now-r->last_logged[budget]<1000){increment(r,&r->rate_limited);continue;}
         r->last_logged[budget]=now;r->has_logged[budget]=true;
         if(r->count==AG_RUNTIME_QUEUE){increment(r,&r->producer_dropped);continue;}
@@ -47,6 +47,14 @@ bool ag_runtime_init(ag_runtime_t *r,const ag_config_t *config,const ag_runtime_
             ||!ag_scheduler_add(&r->scheduler,&jobs[i].job,&jobs[i].capabilities))return false;
         r->observed[i]=r->scheduler.jobs[i].sample;}
     r->sink=*sink;memcpy(r->session_id,sid,16);r->initialized=true;return true;
+}
+bool ag_runtime_reconfigure(ag_runtime_t *r,const ag_config_t *config,const ag_runtime_job_t *jobs,size_t count){
+    if(r==NULL||!r->initialized||!r->started||r->fault)return false;
+    ag_runtime_t candidate;
+    if(!ag_runtime_init(&candidate,config,jobs,count,r->session_id,&r->sink))return false;
+    r->scheduler=candidate.scheduler;
+    memcpy(r->observed,candidate.observed,sizeof(r->observed));
+    return true;
 }
 bool ag_runtime_allow_degraded_logging(ag_runtime_t *r){
     if(r==NULL||!r->initialized||r->started||r->fault)return false;

@@ -9,9 +9,10 @@
  * populated from wire JSON. caller owns boot journal, admission and endpoint.
  * Callback context has static/program lifetime, including failed startup.
  * No callback may reenter start/close/send; tick may call send once.
- * Any fault is latched until reboot; no stop/restart API is implemented. */
+ * Any fault is latched until reboot. Permanent logical quiesce is supported;
+ * no controller deinit/restart or credential purge is implemented. */
 typedef enum { AG_NIMBLE_FAULT_STORE=1, AG_NIMBLE_FAULT_HOST_RESET,
-    AG_NIMBLE_FAULT_TERMINATE, AG_NIMBLE_FAULT_START, AG_NIMBLE_FAULT_TIMER } ag_nimble_fault_t;
+    AG_NIMBLE_FAULT_TERMINATE, AG_NIMBLE_FAULT_START, AG_NIMBLE_FAULT_TIMER, AG_NIMBLE_FAULT_OWNER } ag_nimble_fault_t;
 typedef struct {
     void *context;
     void (*fault)(void *,ag_nimble_fault_t);
@@ -27,6 +28,9 @@ typedef struct {
     bool (*receive)(void *,uint64_t generation,const uint8_t *,size_t,uint64_t now_ms);
     bool (*tick)(void *,uint64_t generation,uint64_t now_ms);
     void (*transmitted)(void *,uint64_t generation,bool confirmed);
+    /* Optional whole-application pump, NimBLE host timer even disconnected.
+     * False latches owner fault; never run concurrently from another task. */
+    bool (*owner_tick)(void *);
 } ag_nimble_callbacks_t;
 /* NVS must already be initialized, journal restored, qualified callbacks ready.
  * This function DOES start the radio if invoked. Compile-study app_main never
@@ -40,4 +44,11 @@ bool ag_nimble_advertise(void);
  * ACK (BLE_HS_EDONE), not just stack enqueue/status0. Guard checked per chunk. */
 bool ag_nimble_send(uint64_t generation,const uint8_t *,size_t);
 void ag_nimble_close(uint64_t generation);
+/* Host task only, trusted local maintenance. Permanently denies private IO and
+ * advertising, stops current advertising and requests bounded link teardown.
+ * True ONLY after no physical link is tracked and advertising actually stopped.
+ * False means in progress or fault; never evidence of credentials erased or
+ * controller power-down. Timer keeps running owner_tick for maintenance.
+ * May be called from owner_tick before entering application core (no reentry). */
+bool ag_nimble_transport_quiesce(void);
 #endif

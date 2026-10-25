@@ -281,6 +281,58 @@ static void test_simulated_adapter_bounds_and_program_rules(void) {
     assert(flash.bytes[0] == 0);
 }
 
+static void test_explicit_blank_provisioning_and_fault_recovery(void) {
+    ag_flash_sim_t baseline;
+    ag_flash_sim_init(&baseline);
+    ag_config_store_t store;
+    ag_pid_mask_t mask=capabilities();
+    ag_config_flash_io_t io=ag_flash_sim_io(&baseline);
+    const ag_config_t first=revision(1);
+    assert(ag_config_store_open(&store,&io,&mask)==AG_CONFIG_STORE_NO_VALID_CONFIG);
+    ag_flash_sim_reboot(&baseline);
+    assert(ag_config_store_provision_blank(&store,&first)==AG_CONFIG_STORE_OK);
+    assert(store.ready && store.active.revision==1 && store.generation==1);
+    assert(baseline.erases==0 && baseline.programs==2);
+    const size_t calls=baseline.operations;
+    size_t lengths[16]; ag_flash_sim_operation_t kinds[16];
+    memcpy(lengths,baseline.trace_lengths,sizeof(lengths));
+    memcpy(kinds,baseline.trace_operations,sizeof(kinds));
+    assert(calls<=16);
+    for(size_t call=1;call<=calls;++call) {
+        for(size_t cut=0;cut<=lengths[call-1];++cut) {
+            if(kinds[call-1]==AG_FLASH_SIM_READ && cut!=0 && cut+1!=lengths[call-1]
+                && cut!=lengths[call-1]) continue;
+            ag_flash_sim_t flash; ag_flash_sim_init(&flash); io=ag_flash_sim_io(&flash);
+            assert(ag_config_store_open(&store,&io,&mask)==AG_CONFIG_STORE_NO_VALID_CONFIG);
+            ag_flash_sim_fail_at(&flash,call,cut);
+            const ag_config_store_result_t result=ag_config_store_provision_blank(&store,&first);
+            const size_t writes=flash.programs;
+            assert(ag_config_store_provision_blank(&store,&first)==AG_CONFIG_STORE_INVALID);
+            assert(flash.programs==writes && flash.erases==0 && !flash.invalid_access);
+            ag_flash_sim_reboot(&flash);
+            const ag_config_store_result_t restored=ag_config_store_open(&store,&io,&mask);
+            assert(restored==AG_CONFIG_STORE_NO_VALID_CONFIG || restored==AG_CONFIG_STORE_OK);
+            if(result==AG_CONFIG_STORE_OK) assert(restored==AG_CONFIG_STORE_OK);
+            if(restored==AG_CONFIG_STORE_OK) assert(store.active.revision==1);
+            else {
+                bool blank=true;
+                for(size_t i=0;i<sizeof(flash.bytes);++i) blank=blank && flash.bytes[i]==0xff;
+                assert(ag_config_store_provision_blank(&store,&first)==
+                    (blank?AG_CONFIG_STORE_OK:AG_CONFIG_STORE_CONFLICT));
+            }
+        }
+    }
+    /* No valid record does not imply blank: reserved/inactive dirt is kept. */
+    for(unsigned slot=0;slot<2;++slot) {
+        ag_flash_sim_t flash; ag_flash_sim_init(&flash);
+        flash.bytes[slot*AG_CONFIG_SLOT_BYTES+3000]=0;
+        io=ag_flash_sim_io(&flash);
+        assert(ag_config_store_open(&store,&io,&mask)==AG_CONFIG_STORE_NO_VALID_CONFIG);
+        assert(ag_config_store_provision_blank(&store,&first)==AG_CONFIG_STORE_CONFLICT);
+        assert(flash.programs==0 && flash.erases==0);
+    }
+}
+
 int main(void) {
     test_canonical_golden_and_shared_config_cases();
     test_commit_alternates_inactive_and_rejects_stale();
@@ -290,7 +342,8 @@ int main(void) {
     test_conflict_revision_generation_and_capabilities();
     test_simulated_adapter_bounds_and_program_rules();
     test_committed_latest_corruption_remains_diagnostic();
-    printf("PASS: 8 config persistence groups; store=%zu sim=%zu bytes host; zero heap, no hardware IO\n",
+    test_explicit_blank_provisioning_and_fault_recovery();
+    printf("PASS: 9 config persistence groups; store=%zu sim=%zu bytes host; zero heap, no hardware IO\n",
            sizeof(ag_config_store_t), sizeof(ag_flash_sim_t));
     return 0;
 }

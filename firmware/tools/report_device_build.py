@@ -28,11 +28,12 @@ def main():
     args = parser.parse_args()
     build = args.build.resolve()
     sdk = args.sdk.resolve()
-    elf = build / 'auto_gauge_safe_skeleton.elf'
+    project = 'auto_gauge_application'
+    elf = build / f'{project}.elf'
     compiler = args.toolchain_bin / 'xtensa-esp32s3-elf-gcc'
     nm = args.toolchain_bin / 'xtensa-esp32s3-elf-nm'
     size = json.loads(run(args.idf_python, '-m', 'esp_idf_size', '--format', 'json2',
-                          build / 'auto_gauge_safe_skeleton.map'))
+                          build / f'{project}.map'))
     config = {}
     for line in (build / 'sdkconfig').read_text().splitlines():
         if line.startswith('CONFIG_') and '=' in line:
@@ -43,12 +44,12 @@ def main():
     keys = ['CONFIG_IDF_TARGET', 'CONFIG_ESPTOOLPY_FLASHSIZE', 'CONFIG_PARTITION_TABLE_FILENAME',
             'CONFIG_PARTITION_TABLE_SINGLE_APP', 'CONFIG_PARTITION_TABLE_TWO_OTA',
             'CONFIG_SPIRAM', 'CONFIG_BT_ENABLED', 'CONFIG_ESP_WIFI_ENABLED',
-            'CONFIG_SECURE_BOOT', 'CONFIG_FLASH_ENCRYPTION_ENABLED']
+            'CONFIG_SECURE_BOOT', 'CONFIG_FLASH_ENCRYPTION_ENABLED', 'CONFIG_AG_SOFTWARE_BENCH', 'CONFIG_AG_NATIVE_PROFILE']
     symbols = run(nm, '-g', '--defined-only', elf)
     ag_symbols = [line.split()[-1] for line in symbols.splitlines() if line.split()[-1].startswith('ag_')]
     radio_names = ['esp_wifi_init', 'esp_bt_controller_init', 'nimble_port_init']
     artifacts = {}
-    for relative in ['auto_gauge_safe_skeleton.bin', 'auto_gauge_safe_skeleton.elf',
+    for relative in [f'{project}.bin', f'{project}.elf',
                      'bootloader/bootloader.bin', 'partition_table/partition-table.bin']:
         path = build / relative
         artifacts[relative] = dict(bytes=path.stat().st_size, sha256=digest(path))
@@ -58,7 +59,16 @@ def main():
     compiled_shared = sorted({str(Path(item['file']).resolve().relative_to(ROOT))
                        for item in json.loads((build / 'compile_commands.json').read_text())
                        if str(Path(item['file']).resolve()).startswith(str(ROOT / 'shared/c') + '/')})
+    platform_prefixes = ('firmware/idf/main/', 'firmware/platform_study/main/',
+                         'firmware/ble_study/main/', 'firmware/ota_study/main/')
+    compiled_platform = sorted({str(Path(item['file']).resolve().relative_to(ROOT))
+        for item in json.loads((build / 'compile_commands.json').read_text())
+        if str(Path(item['file']).resolve()).startswith(str(ROOT) + '/')
+        and str(Path(item['file']).resolve().relative_to(ROOT)).startswith(platform_prefixes)})
+    bench = config.get('CONFIG_AG_SOFTWARE_BENCH') == 'y'
+    native = config.get('CONFIG_AG_NATIVE_PROFILE') == 'y'
     report = dict(
+        profile='UNIFIED_NATIVE_LOCAL_PROFILE_REQUIRED' if native else 'VOLATILE_SOFTWARE_BENCH' if bench else 'BLOCKED_NO_BOARD_PROFILE',
         generated_utc=datetime.now(timezone.utc).isoformat(),
         status='ESP32S3_BUILD_SUCCESS_NO_DEVICE_RUN',
         target='esp32s3', sdk_tag=run('git', '-C', sdk, 'describe', '--tags', '--exact-match'),
@@ -67,22 +77,34 @@ def main():
         python=run(args.idf_python, '--version'),
         configuration={key: config.get(key, 'UNSET') for key in keys},
         artifacts=artifacts, memory=size,
-        compiled_core_sources=compiled, compiled_shared_sources=compiled_shared, linked_ag_symbols=ag_symbols,
-        compiled_source_sha256={p:digest(ROOT/p) for p in compiled+compiled_shared},
+        compiled_core_sources=compiled, compiled_shared_sources=compiled_shared,
+        compiled_platform_sources=compiled_platform, linked_ag_symbols=ag_symbols,
+        compiled_source_sha256={p:digest(ROOT/p) for p in compiled+compiled_shared+compiled_platform},
+        input_header_sha256={str(p.relative_to(ROOT)):digest(p) for directory in
+            ([ROOT/'firmware/include',ROOT/'shared/c'] +
+             ([ROOT/'firmware/idf/main',ROOT/'firmware/platform_study/main',ROOT/'firmware/ble_study/main',ROOT/'firmware/ota_study/main'] if native else []))
+            for p in sorted(directory.glob('*.h'))},
         radio_init_symbols_present={name: any(line.split()[-1] == name for line in symbols.splitlines())
                                     for name in radio_names},
         main_sha256=digest(ROOT / 'firmware/idf/main/app_main.c'),
+        application_header_sha256=digest(ROOT / 'firmware/include/ag_application.h'),
+        profile_header_sha256=digest(ROOT / 'firmware/include/ag_bench_profile.h'),
+        build_script_sha256=digest(ROOT / 'firmware/idf/build.sh'),
         hal_sha256=digest(ROOT / 'firmware/idf/main/hal_unimplemented.c'),
         actions=dict(build='EXECUTED', size='EXECUTED', flash='NOT_EXECUTED',
                      efuse='NOT_EXECUTED', radio_or_hardware_test='NOT_EXECUTED'),
-        limitations=['Inert skeleton; many compiled core functions discarded by linker GC',
-                     'No panel driver/assets, operational BLE/TWAI, persistent logging or OTA image',
-                     'Factory single-app 2MB development configuration; not the candidate N16R8 memory map',
+        limitations=['Serialized application owner linked; default boot remains BLOCKED without a board profile',
+                     'Opt-in bench uses RAM flash, generated ECU responses and a row renderer sink; no physical peripherals',
+                     'Native variant links real BLE/TWAI/partition/reset/boot/OTA; weak local board profile defaults NULL so no activation',
+                     'Default and bench variants do not start native adapters',
+                     'No production boot-health evidence, credentials, keys or native radio qualification supplied',
+                     ('Development4MiB factory+two1MiBOTA/config8KiB/log256KiB map; not V1 sizing' if native
+                      else 'Factory single-app2MiB development configuration; not the candidate N16R8 memory map'),
                      'Secure boot/encryption not provisioned; binary is not a production/recovery release',
                      'SDK Wi-Fi capability flag is not proof of runtime radio initialization',
                      'No OTA/PSRAM sizing or hardware compatibility proven'])
     args.output.write_text(json.dumps(report, indent=2) + '\n')
-    print(f"Wrote {args.output}: bin={artifacts['auto_gauge_safe_skeleton.bin']['bytes']} bytes, image={size['total_size']} bytes")
+    print(f"Wrote {args.output}: bin={artifacts[f'{project}.bin']['bytes']} bytes, image={size['total_size']} bytes")
 
 
 if __name__ == '__main__':

@@ -21,7 +21,7 @@ static struct {
     struct os_mbuf outbound;
     test_gap_fn conn_callback;
     void *conn_argument;
-    unsigned faults[6],init_calls,deinit_calls,task_calls,task_delete_calls;
+    unsigned faults[7],init_calls,deinit_calls,task_calls,task_delete_calls;
     unsigned timer_init_calls,timer_stop_calls,timer_deinit_calls,timer_reset_calls;
     unsigned terminate_calls,connect_calls,disconnect_calls,clear_calls;
     unsigned receive_calls,transmit_ok,transmit_fail,indicate_calls,adv_stop_calls,inject_calls,adv_fields_calls,adv_start_calls;
@@ -116,7 +116,7 @@ BaseType_t xTaskCreatePinnedToCore(void (*fn)(void *),const char *name,uint32_t 
     ++mock.task_calls;if(mock.task_rc==pdPASS)*task=&mock;return mock.task_rc;
 }
 void vTaskDelete(TaskHandle_t task){assert(task==NULL);++mock.task_delete_calls;}
-static void hook_fault(void *ctx,ag_nimble_fault_t reason){assert(ctx==&mock&&reason>=1&&reason<=5);++mock.faults[reason];}
+static void hook_fault(void *ctx,ag_nimble_fault_t reason){assert(ctx==&mock&&reason>=1&&reason<=6);++mock.faults[reason];}
 static bool hook_adv(void *ctx){assert(ctx==&mock);return mock.allow_adv;}
 static bool hook_connect(void *ctx,uint16_t handle,uint64_t gen,const uint8_t client[16]){
     assert(ctx==&mock&&handle==mock.desc.conn_handle&&gen==server.generation&&client[15]==1);
@@ -401,10 +401,28 @@ static void test_advertising_failures(void){
     timer_event(NULL);assert(server.adv_stop_failed&&server.faulted&&mock.adv);
     assert(mock.faults[AG_NIMBLE_FAULT_TIMER]==1&&mock.faults[AG_NIMBLE_FAULT_START]==0&&mock.adv_stop_calls==1);
 }
+static void test_permanent_quiesce(void){
+    boot();assert(!ag_nimble_transport_quiesce());start();assert(!ag_nimble_transport_quiesce());
+    ble_hs_cfg.sync_cb();assert(mock.adv&&ag_nimble_transport_quiesce());
+    assert(server.quiescing&&!mock.adv&&!ag_nimble_advertise());
+    advance(100);assert(!mock.adv&&!server.faulted);
+    ready();void *old=mock.conn_argument;
+    assert(!ag_nimble_transport_quiesce()&&server.closing&&mock.disconnect_calls==1);
+    assert(!ag_nimble_send(server.generation,frame,sizeof(frame)));
+    assert(!ag_nimble_transport_quiesce()&&mock.terminate_calls==1);
+    disconnect_link(old);assert(ag_nimble_transport_quiesce());advance(100);assert(!mock.adv);
+    /* Even unsolicited late successful connects are tracked and closed. */
+    unsigned calls=mock.connect_calls;mock.present=true;
+    struct ble_gap_event event={.type=BLE_GAP_EVENT_CONNECT};event.connect.conn_handle=mock.desc.conn_handle;
+    assert(gap_event(&event,NULL)==0&&server.rejected&&server.closing&&mock.connect_calls==calls);
+    boot();start();ble_hs_cfg.sync_cb();mock.adv_stop_rc=99;
+    assert(!ag_nimble_transport_quiesce()&&server.faulted&&mock.adv&&server.adv_stop_failed);
+    assert(!ag_nimble_transport_quiesce()&&mock.adv_stop_calls==1);
+}
 int main(void){
     fill_frame();test_start_failure();test_termination_errors();test_successful_termination();
     test_timer_and_sync_faults();test_stale_generation();test_indication_chunks();
     test_private_guards();test_send_failure_and_timeouts();test_host_and_store_faults();test_bond_lookup();
-    test_early_rejected_connection_teardown();test_advertising_failures();
-    puts("PASS: 12 NimBLE lifecycle groups (behavioral SDK doubles; no radio/ABI qualification)");return 0;
+    test_early_rejected_connection_teardown();test_advertising_failures();test_permanent_quiesce();
+    puts("PASS: 13 NimBLE lifecycle groups (behavioral SDK doubles; no radio/ABI qualification)");return 0;
 }

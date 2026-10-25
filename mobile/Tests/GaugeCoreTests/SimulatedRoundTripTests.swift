@@ -224,6 +224,7 @@ final class SimulatedRoundTripTests: XCTestCase {
         do { _ = try await client.importHistoryPage(sessionID: fixture.historySource.sessionID, archive: archive, limit: 2); XCTFail("ACK after failed store") } catch { }
         var operations = await channel.sentOperations(); XCTAssertFalse(operations.contains("logs.ack"))
         storage.failWrite = false
+        try await archive.reload()
         let imported = try await client.importHistoryPage(sessionID: fixture.historySource.sessionID, archive: archive, limit: 2)
         XCTAssertTrue(imported.peerAcknowledged)
         XCTAssertEqual(imported.acknowledgement.acknowledgedThrough.value, 4)

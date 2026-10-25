@@ -12,7 +12,7 @@ This compiles **the actual, unmodified** `../main/nimble_transport.c` in the dri
 
 The driver includes production C so it can observe static state and inject callbacks. `boot()` clears the singleton to represent a new process/device boot between independent cases; it is not a production restart API. Task creation records and validates parameters without running a task. Calling `host_task()` explicitly exercises only the adapter's handling of unexpected return from a mocked host loop. Hook context is static, and tests honor the adapter's owner/reentry restrictions. Trusted security evidence is modeled input, not a cryptographic proof.
 
-Twelve transport groups exercise:
+Thirteen transport groups exercise:
 
 1. Task OOM returns NO_MEM, callout stop/deinit and SDK cleanup, including cleanup failure; fault blocks another start. Also initial SDK/GATT/callout failures and mandatory fault hook.
 2. Termination errors and EALREADY get at most three attempts, report fault once, and fail closed. Missing descriptor and ENOTCONN after descriptor disappearance clear local slot. TX failure and logical disconnect callbacks occur once.
@@ -29,7 +29,7 @@ Twelve transport groups exercise:
 
 `bridge_driver.c` reuses these SDK doubles and includes the same transport, while **linking unmodified `endpoint_bridge.c` and real core implementations separately**: connection, admission, config validator/store, history codec, device endpoint, JSON/RPC/frame/stream. Only physical storage is the existing flash simulator; history reads explicitly report unavailable in this fixture, so no history retrieval claim is made.
 
-Five bridge/core groups additionally establish:
+Eleven bridge/core groups additionally establish:
 
 1. An unknown peer without a local window is closed. With a local window, the actual admission RNG path produces `000042`, UI rendering succeeds before simulated SMP injection, verified SC evidence attaches the endpoint, and a framed authenticated hello is delivered with the original request ID.
 2. Config apply emits `received` with request ID91 and performs zero flash programs while that frame awaits final EDONE, including intervening status0 callbacks/ticks. Only the next tick after all chunks are acknowledged commits revision2, whose applied response keeps ID91. Readback and simulated reboot/restore recover the canonical record. The fixture labels persistence **volatile**, because a RAM flash model is not physical durability evidence.
@@ -38,3 +38,44 @@ Five bridge/core groups additionally establish:
 5. A simulated 40-second delay inside program IO can leave a committed revision2, but fresh post-IO time rejects the expired response and closes the link without a stale applied frame. The retained record must be re-read after a new qualified connection.
 
 No mock models power loss, actual bond-key storage, admission-window authorization, SMP methods, hardware IRQ/event races, task OOM in the real allocator, radio behavior or end-to-end iPhone persistence. The timer mock is driven explicitly; the SDK's scheduling and real timeout accuracy remain untested. There is no assertion that the production adapter is qualified for activation.
+
+
+Four OTA bridge groups additionally use the real framed endpoint and transfer
+owner, with explicit behavioral installer hooks (no cryptographic substitution
+claim):
+
+6. Only local idle arming selects OTA; JSON hello in OTA cannot attach RPC or
+   mutate configuration, binary OTA in RPC never reaches the transfer owner,
+   and a live link cannot switch route. Request IDs remain strictly sequential.
+7. A request staged while the previous indication awaits final EDONE cannot
+   execute yet. Local policy revocation closes the link, cancels exactly once,
+   reports closure, discards staged finish and isolates a later peer from old
+   confirmation callbacks.
+8. Failed cancellation is reported as cleanup UNKNOWN and blocks RPC rearm;
+   failed select retains possible boot-selection change and prevents cancellation
+   or fallback to RPC. No retry erases evidence of side effects.
+9. Missing local OTA permission closes after admission without calling installer;
+   simulated slow begin beyond deadline invokes bounded cleanup and emits no
+   stale ACK. The application route callback is mandatory and its revocation
+   also blocks ordinary RPC received→commit progression.
+
+The bridge requires real local application-mode and maintenance authorization;
+the test callbacks are fixture controls, never production trust provisioning.
+
+
+10. Binding to external application admission/RPC preserves the exact objects,
+    installs actual NimBLE trusted security hooks while idle and rejects aliasing
+    the bridge's own storage. With the application configured not to pump RPC,
+    repeated bridge ticks cannot commit before final indication EDONE. Disconnect
+    invalidates the same external admission and endpoint, not a duplicate copy.
+
+
+13. Transport permanent local quiesce denies private IO/advertising, stops active
+    advertising, waits for actual disconnect callback rather than terminate
+    acceptance, rejects unsolicited connects, and never reports quiet after a
+    failed advertising stop.
+
+11. Bridge deferred startup binds zero RPC storage while admission is initialized.
+    Owner ticks execute idle, initialize RPC on the same admission, then permit
+    advertising; false owner result faults once and closes the existing link.
+    Subsequent timer callbacks do not invoke the faulted application again.

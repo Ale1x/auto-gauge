@@ -99,3 +99,10 @@ Riverifica contatti E10/E11 il24/10/2026: [JLCPCB support](https://jlcpcb.com/he
 | E51 | [TI TUSB320](https://www.ti.com/lit/ds/symlink/tusb320.pdf) | Esempio di rilevamento dei livelli di correnteTypeC. Consultazione documentale, nessun controllerCC selezionato e nessuna conformitàUSB dichiarata. |
 
 | E52 | [TI SNVA874, marzo 2019](https://www.ti.com/lit/an/snva874/snva874.pdf) | Consultata il 24/10/2026. La stabilità della rete Type-3 dipende anche dal ripple di uscita sfasato, non solo dall’ampiezza del ripple iniettato. Screening locale in BUCK5_FEEDBACK_REVIEW.md; nessuna simulazione o misura. |
+
+## Huaxin — risposta acquisita il 25 ottobre 2026
+
+| ID | Fonte | Evidenza e limite |
+|---|---|---|
+| E53 | [Gmail Janie](https://mail.google.com/mail/u/?authuser=passarelli598%40gmail.com#all/1a16ea8142ede051), screenshot utente `../email-response/origin (3)` | Email24/10 ore18:04 Europe/Rome chiede contatto alternativo; screenshot WhatsApp conferma cinque ESHX on-cell, USD50+USD50 UPS, partenza2–3giorni dal pagamento. Timestamp WhatsApp non visibile; oneri importazione e revisione non chiariti. |
+| E54 | Originali utente `../email-response/`; [analisi e hash](HUAXIN_RESPONSE_2026-10-25.md) | Wiring V1 prima pagina e seconda bianca ispezionate, due sequenze display lette, tre foto FPC opzionali ispezionate, archivio touch elencato e INI letto. DWG non decodificato, BIN non analizzato, EXE non eseguito. Non chiude sequencing/correnti/temperature/livelli touch/connettore. |

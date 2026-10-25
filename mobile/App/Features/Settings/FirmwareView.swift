@@ -1,5 +1,8 @@
 import SwiftUI
 
 struct FirmwareView: View {
-    var body: some View { FirmwarePreparationView() }
+    @Environment(AppModel.self) private var model
+    var body: some View {
+        FirmwarePreparationView(trust: model.firmwareTrust, installation: model.firmwareInstallation)
+    }
 }

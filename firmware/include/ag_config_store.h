@@ -37,7 +37,7 @@ typedef struct {
     ag_config_t active;
     uint64_t generation;
     unsigned active_slot;
-    bool initialized, ready, writable, compatible;
+    bool initialized, ready, writable, compatible, provision_attempted;
 } ag_config_store_t;
 
 /* Canonical development record header+payload only; NO commit marker or IO.
@@ -48,6 +48,11 @@ ag_config_store_result_t ag_config_record_encode(const ag_config_t *, const ag_p
 ag_config_store_result_t ag_config_store_open(ag_config_store_t *, const ag_config_flash_io_t *,
                                               const ag_pid_mask_t *supported);
 ag_config_store_result_t ag_config_store_restore(ag_config_store_t *);
+/* Explicit LOCAL provisioning only, never automatic from open/RPC. Requires
+ * both slots entirely erased and a revision-1 candidate. No erase/overwrite.
+ * One attempt per open; after ambiguous IO reopen and reconcile, never retry
+ * the write blindly. Caller owns maintenance exclusion and power policy. */
+ag_config_store_result_t ag_config_store_provision_blank(ag_config_store_t *, const ag_config_t *);
 /* Diagnostic snapshot, not proof of operational readiness. READ_ONLY may expose
  * an older revision: an unreadable OR non-erased invalid slot might contain a
  * newer record. Fully erased inactive slots are healthy. Never auto-repair. Check

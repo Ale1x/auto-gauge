@@ -1,7 +1,7 @@
 import Foundation
 @testable import GaugeCore
 
-actor OTAPacketMockPipe: GaugePacketPipe {
+actor OTAPacketMockPipe: GaugeRPCExchangePipe {
     enum Fault: Sendable, CaseIterable {
         case wrongID, event, extraFrame, trailingPrefix, crc, payload, futureTime, staleTime
         case generationAfterWrite, maximumAfterWrite, emptyChunk, stalledReceive, stalledWrite, slowWrite, slowReceive, partialStall
@@ -12,6 +12,17 @@ actor OTAPacketMockPipe: GaugePacketPipe {
     private let fault: Fault?
     private let responseFragmentBytes: Int
     private var readyPauseAt: Int?
+    var begins = 0
+    var ends = 0
+    private var requestOpen = false
+    func beginRequest(generation: UInt64) throws {
+        guard generation == connection.generation, !requestOpen, incoming.isEmpty else { throw GaugeLinkError.busy }
+        requestOpen = true; begins += 1
+    }
+    func endRequest(generation: UInt64) throws {
+        guard generation == connection.generation, requestOpen, incoming.isEmpty, stream.bufferedBytes == 0 else { throw GaugeLinkError.invalidReply }
+        requestOpen = false; ends += 1
+    }
     var writes: [Data] = []
     var requests: [GaugeFrame] = []
     var disconnects: [UInt64] = []
@@ -32,7 +43,7 @@ actor OTAPacketMockPipe: GaugePacketPipe {
         return observed
     }
     func write(_ data: Data, generation: UInt64) async throws {
-        guard generation == connection.generation else { throw GaugeLinkError.disconnected }
+        guard generation == connection.generation, requestOpen else { throw GaugeLinkError.disconnected }
         writeEntered = true
         if fault == .stalledWrite { try await Task.sleep(for: .seconds(5)) }
         if fault == .slowWrite { try await Task.sleep(for: .milliseconds(100)) }

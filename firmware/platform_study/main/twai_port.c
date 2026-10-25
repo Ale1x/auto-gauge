@@ -235,6 +235,41 @@ ag_twai_result_t ag_twai_port_send_discovery(ag_twai_port_t *p,ag_discovery_t *s
 ag_twai_result_t ag_twai_port_send_runtime(ag_twai_port_t *p,ag_runtime_t *r){return send(p,NULL,r,false);}
 ag_twai_result_t ag_twai_port_send_flow_control(ag_twai_port_t *p,ag_runtime_t *r){return send(p,NULL,r,true);}
 ag_twai_result_t ag_twai_port_poll(ag_twai_port_t *p){ag_twai_result_t result=enter(p,true);if(result!=AG_TWAI_OK)return result;return leave(p,pump(p));}
+ag_twai_result_t ag_twai_port_quiesce(ag_twai_port_t *p){
+    ag_twai_result_t result=enter(p,false);if(result!=AG_TWAI_OK)return result;
+    if(p->pending)return leave(p,AG_TWAI_BUSY);
+    int64_t us=esp_timer_get_time();
+    if(us<0||(p->has_time&&(uint64_t)us/1000u<p->last_ms))return leave(p,fail(p,AG_TWAI_CLOCK_FAULT));
+    p->last_ms=(uint64_t)us/1000u;p->has_time=true;
+    if(atomic_load_explicit(&p->irq_fault,memory_order_acquire))return leave(p,fail(p,AG_TWAI_IO));
+    cancel_core(p);p->discovery=NULL;p->runtime=NULL;p->deferred_count=0;p->has_cf=false;
+    ag_twai_event_t event;
+    for(size_t n=0;n<AG_TWAI_EVENT_CAPACITY&&xQueueReceive(p->events,&event,0)==pdTRUE;++n){
+        if(event.kind==EVENT_BUS_OFF)return leave(p,fail(p,AG_TWAI_BUS_OFF));
+        if(event.kind!=EVENT_RX)return leave(p,fail(p,AG_TWAI_IO));
+        if(count_rx(p,false)!=AG_TWAI_OK)return leave(p,p->fault_reason);
+    }
+    return leave(p,AG_TWAI_OK);
+}
+ag_twai_result_t ag_twai_port_suspend(ag_twai_port_t *p){
+    ag_twai_result_t result=ag_twai_port_quiesce(p);if(result!=AG_TWAI_OK)return result;
+    result=enter(p,true);if(result!=AG_TWAI_OK)return result;
+    if(p->node==NULL||!p->enabled||p->disable_attempted)return leave(p,fail(p,AG_TWAI_IO));
+    p->disable_attempted=true;
+    if(twai_node_disable(p->node)!=ESP_OK){p->cleanup_unknown=true;return leave(p,fail(p,AG_TWAI_IO));}
+    p->enabled=false;p->phase=AG_TWAI_SUSPENDED;return leave(p,AG_TWAI_OK);
+}
+ag_twai_result_t ag_twai_port_resume(ag_twai_port_t *p){
+    ag_twai_result_t result=enter(p,false);if(result!=AG_TWAI_OK)return result;
+    if(p->phase!=AG_TWAI_SUSPENDED||p->enabled||p->pending||p->node==NULL||p->cleanup_unknown)return leave(p,AG_TWAI_NOT_READY);
+    ag_can_policy_t policy;result=guard(p,&policy,false);if(result!=AG_TWAI_OK)return leave(p,result);
+    /* A successful enable starts a new disable epoch. Set before SDK call so
+     * ambiguous enable failure is cleaned at most once, then remains faulted. */
+    p->disable_attempted=false;p->enabled=true;
+    if(twai_node_enable(p->node)!=ESP_OK)return leave(p,fail(p,AG_TWAI_IO));
+    result=guard(p,&policy,true);if(result!=AG_TWAI_OK)return leave(p,result);
+    p->phase=AG_TWAI_RUNNING;return leave(p,AG_TWAI_OK);
+}
 ag_twai_result_t ag_twai_port_close(ag_twai_port_t *p){
     if(p==NULL||!p->initialized)return AG_TWAI_INVALID;
     if(p->busy)return AG_TWAI_BUSY;

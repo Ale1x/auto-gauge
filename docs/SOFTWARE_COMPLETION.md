@@ -2,7 +2,17 @@
 
 24 ottobre 2026, baseline pubblicata V0.11 (`c6a562e`). Richiesta corrente: completare il software prima delle istruzioni per prove su due ESP32. Le due schede non sono ancora identificate e non si esegue flash. Questo inventario distingue codice ancora da scrivere, policy/configurazione da fornire e prove fisiche; nessuna voce è chiusa per il solo esito della CI.
 
-## Stato effettivo
+## Stato corrente — V0.13, 25 ottobre 2026
+
+La nuova richiesta autorizza di proseguire autonomamente il software mentre il proprietario è assente. Sono ora implementati recovery archivio/inbox APP15 con intenti nello stesso commit, interop catalogo Swift→C, flusso OTA APP16 con progresso/annulla e select separata, owner applicativo, renderer RGB565, provisioning blank-only e journal reset NVS. Il bridge condivide admission/RPC dell'app e sceglie localmente una route OTA esclusiva; il target nativo collega insieme gli adapter reali di storage/TWAI/NimBLE/OTA/boot. Nessun profilo scheda o trust di produzione è inventato: il getter locale predefinito restituisce NULL e rifiuta l'avvio prima dell'IO.
+
+Il vecchio crash window APP15 è chiuso per i nuovi import qualificati: record/cursore/intenti condividono una sostituzione atomica e recovery idempotente. Vecchi archivi v1 non acquisiscono retroattivamente provenienza qualificata. Il gate nativo app resta negato senza provider locale; la selezione OTA dall'esito incerto resta terminale.
+
+Restano dipendenze concrete: dati delle due schede e profilo elettrico/pannello/IGN, tempi e salute quantitativi qualificati, trust/chiavi/rotazione produzione, lifecycle per cancellare credenziali persistenti e cache host/controller preservando reset/trust/floor (audit `reviews/BLE_CREDENTIAL_RESET_AUDIT.md`), semantica dei PID standard oltre i53scalari e relativo modello multicomponente. Membership/provisioning CloudKit e prove fisiche sono esterni; nessuna spesa o operazione su dispositivo è autorizzata da questa fase. Non dichiarare «tutto il software/prodotto completato» finché queste integrazioni applicabili non sono risolte.
+
+I risultati e i comandi di consegna saranno riportati in `shared/VERIFICATION_V0.13.md` e `docs/SOFTWARE_DELIVERY.md`. Le sezioni seguenti sono una cronologia V0.11/V0.12, non una lista di funzionalità tutte ancora assenti.
+
+## Stato storico della baseline V0.11
 
 Il core non è un firmware operativo: `firmware/idf/main/app_main.c` inizializza un SID e verifica il blocco CAN, poi attende; `hal_unimplemented.c` restituisce NOT_IMPLEMENTED/BLOCKED per power, display, log, BLE, OTA e reset. Gli studi BLE/OTA hanno main vuoti. L'app ha editor/storici e CloudKit predisposti, ma `AppModel` istanzia esclusivamente `DevelopmentGaugeTransport`/fixture; il controller CoreBluetooth espone soltanto hello. I moduli OTA Swift non sono chiamati dalla UI `FirmwareView`, che mostra un pulsante disabilitato. Non si può descrivere questa situazione come «tutto il software completato».
 

@@ -43,7 +43,7 @@ static struct {
     uint8_t close_attempts;
     uint16_t handle,response_handle;
     uint8_t address_type;
-    bool started,synced,connected,closing,rejected,subscribed,awaiting,faulted,adv_stop_failed,termination_fault_reported,restart_advertise,terminate_requested;
+    bool started,synced,connected,closing,rejected,subscribed,awaiting,faulted,adv_stop_failed,termination_fault_reported,restart_advertise,terminate_requested,quiescing;
 } server;
 
 static uint64_t now_ms(void){return (uint64_t)esp_timer_get_time()/1000u;}
@@ -86,7 +86,7 @@ bool ag_nimble_security(uint64_t generation,ag_link_security_t *out){
 }
 static bool private_allowed(void){
     ag_link_security_t evidence;
-    return current(server.generation) && ag_nimble_security(server.generation,&evidence)
+    return !server.quiescing && current(server.generation) && ag_nimble_security(server.generation,&evidence)
         && server.hooks.authorize_private(server.hooks.context,server.generation);
 }
 static void clear_tx(bool notify){
@@ -159,6 +159,14 @@ void ag_nimble_close(uint64_t generation){
     server.hooks.disconnect(server.hooks.context,generation);
     try_terminate();
 }
+bool ag_nimble_transport_quiesce(void){
+    if(!server.started || !server.synced || server.faulted)return false;
+    server.quiescing=true;server.restart_advertise=false;
+    stop_advertising();
+    if(server.connected && !server.closing)ag_nimble_close(server.generation);
+    if(server.connected && server.closing)try_terminate();
+    return !server.faulted && !server.connected && !ble_gap_adv_active();
+}
 static bool arm_timer(void){
     if(ble_npl_callout_reset(&server.timer,ble_npl_time_ms_to_ticks32(100))==0)return true;
     fault(AG_NIMBLE_FAULT_TIMER);
@@ -217,7 +225,7 @@ static const struct ble_gatt_svc_def services[]={
         {0}}}, {0}};
 
 bool ag_nimble_advertise(void){
-    if(!server.started||!server.synced||server.connected||server.faulted||server.generation==UINT32_MAX
+    if(!server.started||!server.synced||server.connected||server.faulted||server.quiescing||server.generation==UINT32_MAX
         ||!server.hooks.advertise_allowed(server.hooks.context))return false;
     if(ble_gap_adv_active())return true;
     struct ble_hs_adv_fields fields={0};
@@ -233,11 +241,18 @@ bool ag_nimble_advertise(void){
 }
 static void timer_event(struct ble_npl_event *event){
     (void)event;
+    if(!server.faulted && server.hooks.owner_tick!=NULL && !server.hooks.owner_tick(server.hooks.context)){
+        fault(AG_NIMBLE_FAULT_OWNER);
+        if(server.connected && !server.closing)ag_nimble_close(server.generation);
+    }
     if(server.connected && server.closing)try_terminate();
-    if(!server.connected && server.restart_advertise){server.restart_advertise=false;(void)ag_nimble_advertise();}
+    if(!server.connected && !server.faulted && (server.restart_advertise || !ble_gap_adv_active())){
+        server.restart_advertise=false;(void)ag_nimble_advertise();
+    }
     if(server.connected && !server.closing){
         uint64_t now=now_ms();
         bool alive=server.hooks.tick(server.hooks.context,server.generation,now);
+        now=now_ms(); /* application/installer IO may have consumed time */
         ag_link_security_t evidence;
         if(!alive || (!ag_nimble_security(server.generation,&evidence)
             && now-server.connected_ms>=AG_GATT_REQUEST_MS)
@@ -245,7 +260,7 @@ static void timer_event(struct ble_npl_event *event){
             ag_nimble_close(server.generation);
         }
     }
-    if(server.faulted || !server.hooks.advertise_allowed(server.hooks.context))stop_advertising();
+    if(server.faulted || server.quiescing || !server.hooks.advertise_allowed(server.hooks.context))stop_advertising();
     if(server.started)(void)arm_timer();
 }
 static int gap_event(struct ble_gap_event *event,void *arg){
@@ -259,7 +274,7 @@ static int gap_event(struct ble_gap_event *event,void *arg){
     switch(event->type){
     case BLE_GAP_EVENT_CONNECT:
         if(event->connect.status!=0){(void)ag_nimble_advertise();return 0;}
-        if(server.faulted || !server.hooks.advertise_allowed(server.hooks.context) || server.connected || server.generation==UINT32_MAX){reject_connection(event->connect.conn_handle);return 0;}
+        if(server.faulted || server.quiescing || !server.hooks.advertise_allowed(server.hooks.context) || server.connected || server.generation==UINT32_MAX){reject_connection(event->connect.conn_handle);return 0;}
         server.connected=true;server.closing=false;server.rejected=false;server.subscribed=false;
         server.handle=event->connect.conn_handle;++server.generation;server.connected_ms=now_ms();
         if(ble_gap_set_event_cb(server.handle,gap_event,(void *)(uintptr_t)(uint32_t)server.generation)!=0){ag_nimble_close(server.generation);return 0;}

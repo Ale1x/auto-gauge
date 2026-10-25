@@ -75,6 +75,10 @@ final class CloudAccountModel {
             busy = false
         }
     }
+    /// Local recovery is account-neutral and does not contact CloudKit.
+    func recoverQualifiedImports(from archive: LocalLogArchive) async throws {
+        try await archive.recoverQualifiedImports(to: qualifiedInbox)
+    }
     /// Import only sealed qualified-device receipts; no arbitrary app logSessions.
     func queueQualifiedImport(_ receipt: QualifiedHistoryImport) async throws {
         try await qualifiedInbox.enqueue(receipt)

@@ -2,7 +2,7 @@ import Foundation
 
 /// Development-only exclusive OTA pipe session. No scan, pairing, routing or radio
 /// authorization is established here; native callers keep the mutation gate closed.
-public actor OTAPacketTransport: OTATransferTransport {
+public actor OTAPacketTransport: OTAInstallationSession {
     private let pipe: any GaugePacketPipe
     private let allowHostDevelopmentMutations: Bool
     private let frameTimeout: Duration
@@ -18,7 +18,7 @@ public actor OTAPacketTransport: OTATransferTransport {
         self.pipe = pipe; self.allowHostDevelopmentMutations = allowHostDevelopmentMutations
         self.frameTimeout = frameTimeout
     }
-    public func open() async throws {
+    public func open(expectedConnection: GaugePipeConnection? = nil) async throws {
         guard allowHostDevelopmentMutations else { throw OTATransferError.unqualified }
         guard frameTimeout > .zero, frameTimeout <= .seconds(15 * 60) else { throw OTATransferError.invalidTimeout }
         guard !busy else { throw OTATransferError.busy }
@@ -26,9 +26,11 @@ public actor OTAPacketTransport: OTATransferTransport {
         try Task.checkCancellation()
         opened = true; busy = true; defer { busy = false }
         let token = epoch
-        var observed: GaugePipeConnection?
+        var observed = expectedConnection
         do {
-            let ready = try await pipe.readyConnection(); observed = ready
+            let ready = try await pipe.readyConnection()
+            if let expectedConnection, ready != expectedConnection { throw OTATransferError.generationChanged }
+            observed = ready
             guard token == epoch, !closed else { throw OTATransferError.notReady }
             try Task.checkCancellation()
             guard ready.generation != 0, ready.maximumWriteBytes > 0 else { throw OTATransferError.notReady }
@@ -78,6 +80,10 @@ public actor OTAPacketTransport: OTATransferTransport {
             let fragmentBytes = min(connection.maximumWriteBytes, GaugeStreamReassembler.maximumChunkBytes)
             var offset = 0
             let pipe = self.pipe
+            if let exclusive = pipe as? any GaugeRPCExchangePipe {
+                try await Self.until(deadline) { try await exclusive.beginRequest(generation: generation) }
+                try check(token)
+            }
             while offset < packet.count {
                 try await confirm(connection, token: token, deadline: deadline)
                 let end = min(packet.count, offset + fragmentBytes)
@@ -106,6 +112,9 @@ public actor OTAPacketTransport: OTATransferTransport {
                 }
                 do { _ = try OTATransferCodec.decodeResponse(response.payload) }
                 catch { throw OTATransferError.invalidReply }
+                if let exclusive = pipe as? any GaugeRPCExchangePipe {
+                    try await Self.until(deadline) { try await exclusive.endRequest(generation: generation) }
+                }
                 try check(token)
                 return response.payload
             }

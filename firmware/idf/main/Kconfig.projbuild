@@ -1,0 +1,20 @@
+menu "Auto Gauge application profile"
+    config AG_SOFTWARE_BENCH
+        bool "Run volatile software bench (simulated CAN/display/storage)"
+        default n
+        help
+            Explicit development simulation. No GPIO, physical flash storage,
+            CAN bus, BLE, panel, touch, OTA selection or SDK mark-valid calls.
+            The default firmware remains blocked until a qualified board profile
+            is supplied. This is not a profile for either user's unknown ESP32.
+    config AG_NATIVE_PROFILE
+        bool "Link unified native adapters with a locally supplied board profile"
+        default n
+        depends on !AG_SOFTWARE_BENCH
+        help
+            Links partition/reset/boot/TWAI/NimBLE/OTA adapters in one image.
+            The weak board-profile getter returns NULL unless overridden by a
+            trusted local board definition. A NULL profile activates nothing.
+            Native build defaults supply secure NimBLE and development OTA map;
+            no GPIO, credentials, trust keys or production health is invented.
+endmenu

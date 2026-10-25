@@ -10,6 +10,9 @@ mobile/DerivedData/
 firmware/build/
 firmware/build-host/
 firmware/idf/build/
+firmware/idf/build-bench/
+firmware/idf/build-native/
+output/software/
 firmware/idf/sdkconfig
 firmware/idf/sdkconfig.old
 .env

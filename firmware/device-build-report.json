@@ -1,5 +1,6 @@
 {
-  "generated_utc": "2026-10-25T09:45:43.405302+00:00",
+  "profile": "BLOCKED_NO_BOARD_PROFILE",
+  "generated_utc": "2026-10-25T10:19:13.590738+00:00",
   "status": "ESP32S3_BUILD_SUCCESS_NO_DEVICE_RUN",
   "target": "esp32s3",
   "sdk_tag": "v6.1",
@@ -16,16 +17,18 @@
     "CONFIG_BT_ENABLED": "n",
     "CONFIG_ESP_WIFI_ENABLED": "y",
     "CONFIG_SECURE_BOOT": "n",
-    "CONFIG_FLASH_ENCRYPTION_ENABLED": "n"
+    "CONFIG_FLASH_ENCRYPTION_ENABLED": "n",
+    "CONFIG_AG_SOFTWARE_BENCH": "n",
+    "CONFIG_AG_NATIVE_PROFILE": "n"
   },
   "artifacts": {
-    "auto_gauge_safe_skeleton.bin": {
-      "bytes": 170624,
-      "sha256": "36e84cef6f93085ac31e057a1c51a3d1ff4485ac79fcedf5edc6cbcfd3c2e39d"
+    "auto_gauge_application.bin": {
+      "bytes": 201360,
+      "sha256": "26f8b3b7abf7d47b29ec98008b3729caa9549dd2c940692554342659360189db"
     },
-    "auto_gauge_safe_skeleton.elf": {
-      "bytes": 3783904,
-      "sha256": "63e1eeabd42611fccad62b7c23cb6930874ddca36d5920d81de0709d8b0cc7a5"
+    "auto_gauge_application.elf": {
+      "bytes": 4176552,
+      "sha256": "8b773e4c7c001221f77b6ab88eba794c8ff66a18d4198bc8964dc4d4bb23dac6"
     },
     "bootloader/bootloader.bin": {
       "bytes": 21120,
@@ -38,44 +41,44 @@
   },
   "memory": {
     "version": "1.2",
-    "total_size": 170512,
+    "total_size": 201244,
     "layout": [
       {
         "name": "Flash Code",
         "total": 0,
-        "used": 69458,
+        "used": 98030,
         "free": 0,
         "parts": {
           ".text": {
-            "size": 69458
+            "size": 98030
           }
         }
       },
       {
         "name": "DIRAM",
         "total": 341760,
-        "used": 48402,
-        "free": 293358,
+        "used": 65986,
+        "free": 275774,
         "parts": {
           ".text": {
-            "size": 33079
+            "size": 32935
+          },
+          ".bss": {
+            "size": 20352
           },
           ".data": {
             "size": 12699
-          },
-          ".bss": {
-            "size": 2624
           }
         }
       },
       {
         "name": "Flash Data",
         "total": 0,
-        "used": 38856,
+        "used": 41160,
         "free": 0,
         "parts": {
           ".rodata": {
-            "size": 38584
+            "size": 40888
           },
           ".appdesc": {
             "size": 256
@@ -125,6 +128,8 @@
   },
   "compiled_core_sources": [
     "firmware/src/admission.c",
+    "firmware/src/application.c",
+    "firmware/src/bench_profile.c",
     "firmware/src/boot_health.c",
     "firmware/src/can_policy.c",
     "firmware/src/config.c",
@@ -135,6 +140,7 @@
     "firmware/src/flash_history.c",
     "firmware/src/flash_history_sim.c",
     "firmware/src/flash_sim.c",
+    "firmware/src/gauge_renderer.c",
     "firmware/src/gauge_ui.c",
     "firmware/src/history.c",
     "firmware/src/isotp_rx.c",
@@ -152,24 +158,86 @@
     "shared/c/ag_rpc.c",
     "shared/c/ag_stream.c"
   ],
+  "compiled_platform_sources": [
+    "firmware/idf/main/app_main.c",
+    "firmware/idf/main/hal_unimplemented.c"
+  ],
   "linked_ag_symbols": [
+    "ag_admission_disconnect",
+    "ag_admission_private_allowed",
+    "ag_admission_tick",
+    "ag_application_init",
+    "ag_application_tick",
+    "ag_boot_health_floor",
+    "ag_boot_health_reconcile",
     "ag_can_policy_init",
+    "ag_can_profile_valid",
     "ag_can_tx_allowed",
-    "ag_hal_read_power",
-    "ag_session_clock_init"
+    "ag_config_commit_marker",
+    "ag_config_record_encode",
+    "ag_config_store_commit",
+    "ag_config_store_get",
+    "ag_config_store_restore",
+    "ag_config_validate",
+    "ag_connection_close",
+    "ag_connection_mutations_allowed",
+    "ag_device_endpoint_disconnect",
+    "ag_device_endpoint_init",
+    "ag_device_endpoint_step",
+    "ag_discovery_init",
+    "ag_discovery_tick",
+    "ag_discovery_usable",
+    "ag_frame_encode",
+    "ag_gauge_ui_init",
+    "ag_gauge_ui_project",
+    "ag_history_make_page",
+    "ag_history_snapshot_valid",
+    "ag_isotp_reset",
+    "ag_journal_append",
+    "ag_journal_begin_session",
+    "ag_journal_endpoint_read",
+    "ag_journal_endpoint_sessions",
+    "ag_journal_sessions",
+    "ag_journal_window",
+    "ag_measurement_unavailable",
+    "ag_obd_capabilities_init",
+    "ag_obd_parse_measurement",
+    "ag_obd_pid_implemented",
+    "ag_obd_usable_pids",
+    "ag_pid_mask_clear",
+    "ag_pid_mask_has",
+    "ag_pid_mask_set",
+    "ag_rpc_reply_encode",
+    "ag_runtime_allow_degraded_logging",
+    "ag_runtime_drain",
+    "ag_runtime_init",
+    "ag_runtime_journal_append",
+    "ag_runtime_journal_begin",
+    "ag_runtime_reconfigure",
+    "ag_runtime_start",
+    "ag_runtime_tick",
+    "ag_scheduler_add",
+    "ag_scheduler_init",
+    "ag_scheduler_tick",
+    "ag_stream_init",
+    "ag_stream_reset",
+    "ag_stream_tick"
   ],
   "compiled_source_sha256": {
     "firmware/src/admission.c": "326c3547fc827a688ab215d028620dce236a73cea30d39118eb9febf6ef5c695",
+    "firmware/src/application.c": "5c0f36f0dd6050bb9d36c2771ad6ba4082fbd201294d692e615a5c7ef62b8616",
+    "firmware/src/bench_profile.c": "bef80fa7e962d8d27d981bdd09a9b61c9acfc9012b30f5339d3aefd20cdabe09",
     "firmware/src/boot_health.c": "e2103ff361ca2513a190e32d43d26fb022805199d0856a0e9884e854c4e25e4e",
     "firmware/src/can_policy.c": "40120c3de2fe0a5ec85753f6cdf4850ae96117ced32aa75c218b07728028c069",
     "firmware/src/config.c": "d6b85899d939bc2bd5967f932d57e8e4c5c8d6993e1e2d91481e9fdd73df89c7",
-    "firmware/src/config_store.c": "57c424f5c74c6bbf9866d1d229fe9540fa0022a09383489ad41147b630aa77a1",
+    "firmware/src/config_store.c": "4c4bb5e0c112b8fd4ce3e76a1fb78df5fbe975e22ca25f3f6b41418ffb20ecfe",
     "firmware/src/connection.c": "e9ebf6b13e0db17cd02b29cac0fb0c9c760253c00cd1ae7a61a808e80d06ce91",
     "firmware/src/device_endpoint.c": "9d6a5f4110bfb3f49e255f77a0d3339edea9716089f9e0d84273db0eea623fba",
     "firmware/src/discovery.c": "d00f60e5f2391750a01cb2c81f6b8a60669055fa2975b8bbce5802fe8db3c594",
     "firmware/src/flash_history.c": "c826323d9d7d87b5038e0ce6904f07a5a063090f2a95b8ee442d4f2386c6c3ab",
     "firmware/src/flash_history_sim.c": "f041a971d8b43529f5aaf9303ee1c031fadfac97d58db5aa4baca092412e8b5e",
     "firmware/src/flash_sim.c": "4e708f5e014a79a910ff9577e8c4d528166a069833e8d03ad3c8cc02f2c63a46",
+    "firmware/src/gauge_renderer.c": "a5f24ffe926d83d4efc5dfcb070bf2ee2abd030132c11105bbf89adb6b2addff",
     "firmware/src/gauge_ui.c": "c40869a664ca7b4501e149383eeed4537818fc7b9e2b1ed4e23131a1a743bf94",
     "firmware/src/history.c": "3b73d636e5840569885fffa2b67fd0c8d03580a1bfdae694c443dc249c5ff99a",
     "firmware/src/isotp_rx.c": "295b8f11de1e8162d7dc51dca0e3ff6e40f4f4f0af5b8bd042e141f00eea77b4",
@@ -177,20 +245,53 @@
     "firmware/src/journal_history.c": "42086302b1a162de7f47b67393c104de3bfb918d13c6da6e6874ebb65b1356f2",
     "firmware/src/log_queue.c": "4d1f4e178df03b7d5b67bcdcc96bbcea55d9144402386948b8868ff7035391a6",
     "firmware/src/obd_decode.c": "cf15b52a06e727d9d0dd24711c80c17573487020dac54c847054dae3d1343550",
-    "firmware/src/runtime.c": "b37d56110456db3862a024cb20f826bb5f140dfcea70695c9e4e1e126f358b35",
+    "firmware/src/runtime.c": "2e10c85f9d559ef9cd918eb4c2c45c153cd1d80465cdafbc59a0722cdd691278",
     "firmware/src/scheduler.c": "33edb9a54bde4f5bed365c922f3b327e1064dca003190c80a500f925016276ab",
     "firmware/src/session_clock.c": "2ee8cfa1e3b6c14b240d2145dc1bb3a40e671f1d7a0d48cfcdbff3471a363f04",
     "shared/c/ag_config_json.c": "d10e2f24285148519f43fb31a8eef63def9ed9c6f3b2afd71414ce7ed6a7f62f",
     "shared/c/ag_frame.c": "e2d0e2786c0f36914e15e63307e9b4f1f8218f61a7a4d572965837d5c03e1299",
     "shared/c/ag_rpc.c": "f4c3fa9895939c17bbc80a58e4a460f7206d01c44d8c64b0dab19116f92ceb61",
-    "shared/c/ag_stream.c": "d4afa5f352faccd2580a02eef69d6845a0f1189a3d7d093878eeeadd9b218cbc"
+    "shared/c/ag_stream.c": "d4afa5f352faccd2580a02eef69d6845a0f1189a3d7d093878eeeadd9b218cbc",
+    "firmware/idf/main/app_main.c": "d3d5fe63ad0ade65ebe652c458525f8b1883811eba5ddcb611def95c6534bc44",
+    "firmware/idf/main/hal_unimplemented.c": "cfccabdb003a68407bac9c0528fc6922b049a2152ef01d3fc830bb07bba69de7"
+  },
+  "input_header_sha256": {
+    "firmware/include/ag_admission.h": "085268fc683c90a9b4f967494f8364d77c9c9aa6989519c5d7ee3cd70f6d0989",
+    "firmware/include/ag_application.h": "9585f930a18b70b50a970ad8ba0a48fb01d3352d9689f7dcaddc6436e05b94e1",
+    "firmware/include/ag_bench_profile.h": "a36ba78f44abf5c861852539daab63d82c513a49c80d3b0644172034cd0e0846",
+    "firmware/include/ag_boot_health.h": "efd1366c9b6047248d64824a1ea51af536f54568ae85a55d2bd21ebc8ed469bc",
+    "firmware/include/ag_config_store.h": "dd1515f16bf5434d7a48a19fa899ac5de1c2e46195c013d5d7ec9d53436bf823",
+    "firmware/include/ag_connection.h": "813af5ac578f45f90ca6e04d6f27496ff22a49b8827362725ad1ecb479396e52",
+    "firmware/include/ag_core.h": "f20dabeec509c8ebb7f5e0d69c74fd41a2056eee32f954175d5a49d48fbc6728",
+    "firmware/include/ag_device_endpoint.h": "e95c2d50c59363cd2fd142fb0daee36372102d7e2732f269c82937a93666ca40",
+    "firmware/include/ag_diagnostics.h": "d953fd5a629b5caeb06beb52689021482d6e4a87d8ed2f8b43b524840c5e0278",
+    "firmware/include/ag_discovery.h": "b88f1230d4ecf1b1f6a1a95a21f875d5ea8ef9e8672575c531cb12f4f7bf7b7c",
+    "firmware/include/ag_flash_history.h": "05701ec678d1390354cfc87f8da44241c2e5701352b0765cc4e4478c6b5c90b2",
+    "firmware/include/ag_flash_history_sim.h": "e4949e9f4e67ea75471e7d19879126ac04123bfed2cab757405d88c1b02f2c87",
+    "firmware/include/ag_flash_sim.h": "639b1926a69dc03850e4915bfcaa812b6c5ff74da064f6e25e1274531ed330fd",
+    "firmware/include/ag_gauge_renderer.h": "8cd0b5ef461bce8f195e3e667880cc359f2abb34a9d38176e6bff734a1ed2d3f",
+    "firmware/include/ag_gauge_ui.h": "0eee0053f4792ef0c49de2189defe8ad8aec31f750516e3f18a9f7a6424b3633",
+    "firmware/include/ag_hal.h": "c9a638db8da494c33f874d8b3c4b5454d8ed365c2eb1f9f5b267453f5b13cafd",
+    "firmware/include/ag_history.h": "d236ce1ba1473d4bb35c05b65c1fc63233e15f9b85e5b72d1639dffe9624ecb2",
+    "firmware/include/ag_journal_endpoint.h": "9b69ceb72d9ebf8340e7d4251b9a86cab076ac516abaa43587dca2ae1635c846",
+    "firmware/include/ag_journal_history.h": "f8d5492da655ccd98c75a5d171316604705603ed8e5365de104e6e010707db25",
+    "firmware/include/ag_runtime.h": "c51c7691ff3c6997ff51dc1e09e1085f2606d66231dc788319a9f44656d040bc",
+    "firmware/include/ota_framed_endpoint.h": "4fef039013a4373c4fc225b2bc4d76457a3d437c0d6989be49e8405e846f452c",
+    "firmware/include/ota_transfer.h": "76abb1b713f441c3ea3735368a90f2e9bc6d9131fb438644a66c41f10c3d832b",
+    "shared/c/ag_config_json.h": "b8c30415ae497d29ba08f1a9c99f9e3074a572590246840dce336edd2092c2cb",
+    "shared/c/ag_frame.h": "4f1280fd380cbb20e0a4525074450075021955c7c42a1c255c8bbf5a0ef60c04",
+    "shared/c/ag_rpc.h": "ed2e918ab4d6c059aacf04ea614726ed16f4c36cd691b81650e94c43df4cda35",
+    "shared/c/ag_stream.h": "a5f19dbd0174de031e532b2677bbcb2ad4cbf455dbd95ae18ab75d91c837a91e"
   },
   "radio_init_symbols_present": {
     "esp_wifi_init": false,
     "esp_bt_controller_init": false,
     "nimble_port_init": false
   },
-  "main_sha256": "c6403b15e74a49a651c39ddf4c55063d2d1e5c277a1f8b95edeb70c077258e23",
+  "main_sha256": "d3d5fe63ad0ade65ebe652c458525f8b1883811eba5ddcb611def95c6534bc44",
+  "application_header_sha256": "9585f930a18b70b50a970ad8ba0a48fb01d3352d9689f7dcaddc6436e05b94e1",
+  "profile_header_sha256": "a36ba78f44abf5c861852539daab63d82c513a49c80d3b0644172034cd0e0846",
+  "build_script_sha256": "f056cdb12d9b7ad654ed564d64691da8c8e31c030eaedb49f0b474268ba55d55",
   "hal_sha256": "cfccabdb003a68407bac9c0528fc6922b049a2152ef01d3fc830bb07bba69de7",
   "actions": {
     "build": "EXECUTED",
@@ -200,9 +301,12 @@
     "radio_or_hardware_test": "NOT_EXECUTED"
   },
   "limitations": [
-    "Inert skeleton; many compiled core functions discarded by linker GC",
-    "No panel driver/assets, operational BLE/TWAI, persistent logging or OTA image",
-    "Factory single-app 2MB development configuration; not the candidate N16R8 memory map",
+    "Serialized application owner linked; default boot remains BLOCKED without a board profile",
+    "Opt-in bench uses RAM flash, generated ECU responses and a row renderer sink; no physical peripherals",
+    "Native variant links real BLE/TWAI/partition/reset/boot/OTA; weak local board profile defaults NULL so no activation",
+    "Default and bench variants do not start native adapters",
+    "No production boot-health evidence, credentials, keys or native radio qualification supplied",
+    "Factory single-app2MiB development configuration; not the candidate N16R8 memory map",
     "Secure boot/encryption not provisioned; binary is not a production/recovery release",
     "SDK Wi-Fi capability flag is not proof of runtime radio initialization",
     "No OTA/PSRAM sizing or hardware compatibility proven"

@@ -28,6 +28,15 @@ final class OTAPacketTransportTests: XCTestCase {
         let invalidTimeout = OTAPacketTransport(pipe: pipe, allowHostDevelopmentMutations: true, frameTimeout: .zero)
         await expectFailure(.invalidTimeout) { try await invalidTimeout.open() }
     }
+    func testExpectedLeaseMismatchNeverDisconnectsNewerConnection() async throws {
+        let pipe = OTAPacketMockPipe(generation: 52)
+        let transport = OTAPacketTransport(pipe: pipe, allowHostDevelopmentMutations: true)
+        await expectFailure(.generationChanged) {
+            try await transport.open(expectedConnection: .init(generation: 51, maximumWriteBytes: 17))
+        }
+        let disconnects = await pipe.disconnects; XCTAssertEqual(disconnects, [51])
+        let writes = await pipe.writes; XCTAssertTrue(writes.isEmpty)
+    }
     func testFragmentedExchangeUsesMonotonicIDsAndActualWriteLimit() async throws {
         let pipe = OTAPacketMockPipe(maximumWriteBytes: 7, responseFragmentBytes: 1)
         let transport = OTAPacketTransport(pipe: pipe, allowHostDevelopmentMutations: true)
@@ -39,6 +48,8 @@ final class OTAPacketTransportTests: XCTestCase {
         let writes = await pipe.writes; let requests = await pipe.requests
         XCTAssertTrue(writes.allSatisfy { !$0.isEmpty && $0.count <= 7 })
         XCTAssertEqual(requests.map(\.requestID), [1, 2])
+        let begins = await pipe.begins; let ends = await pipe.ends
+        XCTAssertEqual(begins, 2); XCTAssertEqual(ends, 2)
         await transport.close()
         await expectFailure(.notReady) { try await transport.open() }
         let disconnected = await pipe.disconnects; XCTAssertEqual(disconnected, [51])

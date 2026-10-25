@@ -81,11 +81,11 @@
   "artifacts": {
     "auto_gauge_ota_compile_study.elf": {
       "bytes": 5474724,
-      "sha256": "9c823a1a47c08e8a5e1d03b2da8f69d2c1950f350b6ee29142a910d7cdc50890"
+      "sha256": "6088d0d06f26f63ad36e5a95f87701e0c7473f5ac5704bdd44eeec24cb30d87b"
     },
     "auto_gauge_ota_compile_study.bin": {
       "bytes": 265088,
-      "sha256": "a300f9880f444c7a0f88317d4ee65658236ccf7b954aff0b26a309c0d77c27ce"
+      "sha256": "90beff94a114ab4b3e09fb8ebeb10adaf39c4b154476865681175b56d4e1cdfb"
     },
     "partition_table/partition-table.bin": {
       "bytes": 3072,

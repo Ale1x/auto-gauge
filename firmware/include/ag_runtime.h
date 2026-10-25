@@ -17,8 +17,8 @@ typedef struct {
     ag_scheduler_t scheduler;
     ag_runtime_sink_t sink;
     ag_measurement_t observed[AG_POLL_JOB_CAPACITY];
-    uint64_t last_logged[AG_POLL_JOB_CAPACITY];
-    bool has_logged[AG_POLL_JOB_CAPACITY];
+    uint64_t last_logged[256];
+    bool has_logged[256];
     ag_history_record_t queue[AG_RUNTIME_QUEUE];
     uint8_t session_id[16];
     uint64_t last_ms,producer_dropped,rate_limited,persisted,not_recorded;
@@ -36,6 +36,10 @@ bool ag_runtime_init(ag_runtime_t *,const ag_config_t *,const ag_runtime_job_t *
  * invented persistence/sequence: not_recorded is volatile diagnostics only. */
 bool ag_runtime_allow_degraded_logging(ag_runtime_t *);
 bool ag_runtime_start(ag_runtime_t *);
+/* Caller has quiesced every transport reference to scheduler. Validates before
+ * mutation, keeps journal SID/queue/counters and per-PID rate budgets across
+ * removal/readdition. No new session or persistence callback. */
+bool ag_runtime_reconfigure(ag_runtime_t *,const ag_config_t *,const ag_runtime_job_t *,size_t);
 bool ag_runtime_tick(ag_runtime_t *,const ag_can_policy_t *,uint64_t);
 bool ag_runtime_prepare(ag_runtime_t *,const ag_can_policy_t *,uint64_t);
 bool ag_runtime_dispatch(ag_runtime_t *,const ag_can_policy_t *,uint64_t,ag_simulated_dispatch_t *);

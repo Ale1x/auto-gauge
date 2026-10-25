@@ -75,6 +75,16 @@ static ag_device_history_result_t history_read(void *v,const uint8_t sid[16],uin
     if(ag_history_export(&f->history,out)!=AG_HISTORY_OK)return AG_DEVICE_HISTORY_UNAVAILABLE;
     uint64_t latest=out->exhausted?UINT64_MAX:out->next_sequence-1;return after>latest?AG_DEVICE_HISTORY_CURSOR_AHEAD:AG_DEVICE_HISTORY_OK;
 }
+/* Enumerate only the currently retained fixture session; the sidecar command
+ * replaces it, so no historical catalog entry is fabricated. */
+static ag_device_history_result_t history_sessions(void *v,const uint8_t after[16],uint8_t limit,ag_history_sessions_page_t *out){
+    fixture_t *f=v;if(out==NULL || limit<1 || limit>AG_HISTORY_SESSIONS_MAX)return AG_DEVICE_HISTORY_UNAVAILABLE;
+    memset(out,0,sizeof(*out));
+    if(after==NULL || memcmp(f->history.session_id,after,16)>0){
+        memcpy(out->session_ids[0],f->history.session_id,16);out->count=1;
+    }
+    return AG_DEVICE_HISTORY_OK;
+}
 static bool connect_peer(fixture_t *f,uint8_t peer){
     if(f->endpoint.attached)(void)ag_device_endpoint_disconnect(&f->endpoint,&f->lease,now_ms());
     else if(f->admission.link_open)(void)ag_admission_disconnect(&f->admission,&f->lease,now_ms());
@@ -154,7 +164,7 @@ int main(int argc,char **argv){
     if(!ag_factory_reset_restore(&f->reset,&f->connection,NULL,true,&clean))return 3;
     ag_admission_config_t timing={600000,600000,1,10};ag_admission_hooks_t hooks={f,entropy,lookup,security,confirm_bond};
     if(!ag_admission_init(&f->admission,&f->connection,&timing,&hooks) || !seed_history(f,5))return 3;
-    ag_device_endpoint_options_t options={.history_context=f,.history_read=history_read,.device_id="SIMULATO-001",
+    ag_device_endpoint_options_t options={.history_context=f,.history_read=history_read,.history_sessions=history_sessions,.device_id="SIMULATO-001",
         .supported=supported,.config_persistence=store_path?AG_RPC_DURABLE:AG_RPC_VOLATILE,
         .frame_timeout_ms=10000,.request_timeout_ms=30000,.simulation=true};
     if(!ag_device_endpoint_init(&f->endpoint,&f->admission,&f->store,&options) || !connect_peer(f,1))return 3;

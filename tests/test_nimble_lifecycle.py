@@ -24,7 +24,7 @@ class NimBLELifecycleTests(unittest.TestCase):
                 '-o', str(executable)], check=True)
             result = subprocess.run([str(executable)], capture_output=True, text=True,
                 check=True, timeout=30)
-            self.assertIn('PASS: 12 NimBLE lifecycle groups', result.stdout)
+            self.assertIn('PASS: 13 NimBLE lifecycle groups', result.stdout)
 
     def test_bridge_with_real_core_and_failure_injection(self):
         compiler = shutil.which(os.environ.get('CC', 'cc'))
@@ -38,6 +38,7 @@ class NimBLELifecycleTests(unittest.TestCase):
                 'firmware/src/connection.c', 'firmware/src/admission.c',
                 'firmware/src/config_store.c', 'firmware/src/flash_sim.c',
                 'firmware/src/history.c', 'firmware/src/device_endpoint.c',
+                'firmware/src/ota_transfer.c', 'firmware/src/ota_framed_endpoint.c',
                 'shared/c/ag_frame.c', 'shared/c/ag_stream.c',
                 'shared/c/ag_rpc.c', 'shared/c/ag_config_json.c']
             subprocess.run([compiler, '-std=c11', '-Wall', '-Wextra', '-Wpedantic', '-Werror',
@@ -49,7 +50,7 @@ class NimBLELifecycleTests(unittest.TestCase):
             result = subprocess.run([str(executable)], capture_output=True, text=True,
                 timeout=30)
             self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
-            self.assertIn('PASS: 5 NimBLE bridge/core groups', result.stdout)
+            self.assertIn('PASS: 11 NimBLE bridge/core groups', result.stdout)
 
 
 if __name__ == '__main__':

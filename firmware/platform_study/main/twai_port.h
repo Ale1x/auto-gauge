@@ -16,7 +16,7 @@ typedef struct {
     void *policy_context;
     bool (*read_policy)(void *,ag_can_policy_t *);
 } ag_twai_port_config_t;
-typedef enum {AG_TWAI_INITIALIZED=0,AG_TWAI_RUNNING,AG_TWAI_FAULT,AG_TWAI_CLOSED} ag_twai_port_phase_t;
+typedef enum {AG_TWAI_INITIALIZED=0,AG_TWAI_RUNNING,AG_TWAI_FAULT,AG_TWAI_CLOSED,AG_TWAI_SUSPENDED} ag_twai_port_phase_t;
 typedef enum {AG_TWAI_TX_NONE=0,AG_TWAI_TX_QUEUED,AG_TWAI_TX_COMPLETE,AG_TWAI_TX_FAILED,AG_TWAI_TX_UNKNOWN} ag_twai_tx_state_t;
 typedef enum {AG_TWAI_OK=0,AG_TWAI_NO_WORK,AG_TWAI_QUEUED,AG_TWAI_COMPLETED,
     AG_TWAI_INVALID,AG_TWAI_NOT_READY,AG_TWAI_BUSY,AG_TWAI_DENIED,AG_TWAI_TIMEOUT,
@@ -59,6 +59,17 @@ ag_twai_result_t ag_twai_port_send_discovery(ag_twai_port_t *,ag_discovery_t *);
 ag_twai_result_t ag_twai_port_send_runtime(ag_twai_port_t *,ag_runtime_t *);
 ag_twai_result_t ag_twai_port_send_flow_control(ag_twai_port_t *,ag_runtime_t *);
 ag_twai_result_t ag_twai_port_poll(ag_twai_port_t *);
+/* No new TX. BUSY has no side effects when a SDK TX is still queued. Once
+ * idle, cancel response/FC state and detach cores, discard bounded old RX, keep
+ * driver enabled for later explicit sends. ISR callbacks retain only port, not
+ * core pointers; faults/clock regression remain terminal. Not node recovery. */
+ag_twai_result_t ag_twai_port_quiesce(ag_twai_port_t *);
+/* Explicit healthy idle lifecycle, not bus-off/fault recovery. Suspend disables
+ * SDK node/interrupts after detach; resume checks fresh qualified ON policy.
+ * BUSY does not mutate when queued TX exists. SDK errors latch terminal and
+ * never retry a possibly committed disable/enable. */
+ag_twai_result_t ag_twai_port_suspend(ag_twai_port_t *);
+ag_twai_result_t ag_twai_port_resume(ag_twai_port_t *);
 ag_twai_result_t ag_twai_port_close(ag_twai_port_t *);
 /* Clock is esp_timer_get_time()/1000 for both core handoffs and ISR observation.
  * Bound discovery/runtime must use this same boot epoch; never mixed sessions. */

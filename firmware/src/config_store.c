@@ -199,6 +199,36 @@ static bool target_matches_uncommitted(const ag_config_store_t *store, unsigned 
     return store->io.read(store->io.context, slot * AG_CONFIG_SLOT_BYTES, bytes, sizeof(bytes)) == sizeof(bytes)
         && memcmp(bytes, record, length) == 0 && all_ff(bytes + length, sizeof(bytes) - length);
 }
+ag_config_store_result_t ag_config_store_provision_blank(ag_config_store_t *store,
+                                                        const ag_config_t *candidate) {
+    if (store == NULL || !store->initialized || candidate == NULL || store->ready
+        || store->provision_attempted) return AG_CONFIG_STORE_INVALID;
+    const ag_config_t copy = *candidate;
+    if (copy.revision != 1) return AG_CONFIG_STORE_CONFIG_INVALID;
+    uint8_t record[AG_CONFIG_RECORD_MAX];
+    size_t length = 0;
+    const ag_config_store_result_t encoded = ag_config_record_encode(&copy, &store->supported,
+        1, record, sizeof(record), &length);
+    if (encoded != AG_CONFIG_STORE_OK) return encoded;
+    store->provision_attempted = true;
+    /* Read the whole media, including inactive/reserved bytes. Missing valid
+     * records is not evidence of erased storage. Never erase dirty/torn data. */
+    uint8_t bytes[AG_CONFIG_SLOT_BYTES];
+    for (unsigned slot = 0; slot < AG_CONFIG_SLOT_COUNT; ++slot) {
+        if (store->io.read(store->io.context, slot * AG_CONFIG_SLOT_BYTES,
+                           bytes, sizeof(bytes)) != sizeof(bytes)) return io_failure(store);
+        if (!all_ff(bytes, sizeof(bytes))) return AG_CONFIG_STORE_CONFLICT;
+    }
+    if (store->io.program(store->io.context, 0, record, length) != length
+        || !target_matches_uncommitted(store, 0, record, length)
+        || store->io.program(store->io.context, AG_CONFIG_COMMIT_OFFSET,
+                              ag_config_commit_marker, 4) != 4) return io_failure(store);
+    slot_info_t committed;
+    read_slot(store, 0, &committed);
+    if (!committed.valid || committed.io_error || committed.encoded_length != length
+        || memcmp(committed.encoded, record, length) != 0) return io_failure(store);
+    return ag_config_store_restore(store);
+}
 ag_config_store_result_t ag_config_store_commit(ag_config_store_t *store, uint32_t expected_revision,
                                                 const ag_config_t *candidate) {
     if (store == NULL || !store->initialized || candidate == NULL) return AG_CONFIG_STORE_INVALID;

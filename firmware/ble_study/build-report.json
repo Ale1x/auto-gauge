@@ -3,10 +3,11 @@
   "sdk_tag": "v6.1",
   "sdk_commit": "fff9895c82d744c7237be8847347bdd1b07c6643",
   "main_instructions": [
-    "42041cbc:\t004136        \tentry\ta1, 32",
-    "42041cbf:\tf01d      \tretw.n"
+    "42043180:\t004136        \tentry\ta1, 32",
+    "42043183:\tf01d      \tretw.n"
   ],
   "retained_symbols": [
+    "ag_nimble_transport_quiesce",
     "ag_nimble_transport_start",
     "ag_nimble_send",
     "ag_nimble_security",
@@ -16,6 +17,11 @@
     "ag_nimble_bridge_init",
     "ag_nimble_bridge_start",
     "ag_nimble_bridge_pairing_window",
+    "ag_nimble_bridge_init_bound",
+    "ag_nimble_bridge_prepare_ota",
+    "ag_nimble_bridge_prepare_rpc",
+    "ag_ot_endpoint_feed",
+    "ag_ot_owner_handle",
     "ag_device_endpoint_feed",
     "ble_gatts_indicate_custom",
     "nimble_port_init"
@@ -34,25 +40,29 @@
   },
   "artifacts": {
     "auto_gauge_ble_compile_study.elf": {
-      "bytes": 6230932,
-      "sha256": "87bd4e64e1cc49caf47455d0f8aae7e4995c70e6fd76b74192bc849a6a25ce66"
+      "bytes": 6284756,
+      "sha256": "1661d3f6f568e3ee403b8f2eb7fa21903d5073344ffaf6c9e19b40203ad56e2a"
     },
     "auto_gauge_ble_compile_study.bin": {
-      "bytes": 449920,
-      "sha256": "571eb446f3108ffcf3519f06d5faf3ad593883cf7911031237c9a82486a9abb7"
+      "bytes": 455648,
+      "sha256": "c6621f1f887b11a02533ccf92c1bff7d1dbe3c6c5e0cbf629aad2008174513f2"
     }
   },
   "source_sha256": {
-    "firmware/ble_study/main/nimble_transport.c": "3c6c0b85e8b8454bea0559c6cb0437773af8ceb57004d27ec2f6e6f87591a119",
-    "firmware/ble_study/main/endpoint_bridge.c": "7bf051eed53e5ce6da0d42df611161a3a6175cd6af17f274f8da596591ea7bfc",
+    "firmware/ble_study/main/nimble_transport.c": "d1a5f77df5360ad86bae6dc78618c9bbea15b36bb5c327070d6e4516fc658b77",
+    "firmware/ble_study/main/endpoint_bridge.c": "c22bdf8171f72c08230055e2019620c3b291c533b04ab968357c460546853fbc",
     "firmware/ble_study/main/main.c": "16b394daface6fb51e39a8229658ef1f4560d5f3675e57723904afdd562aaeb0",
-    "firmware/ble_study/main/nimble_transport.h": "78d8b6610ac51073295cef619233f73925112d6f9d59a597676659c743e6b9fc",
-    "firmware/ble_study/main/endpoint_bridge.h": "557a8efab2016e73663cd60358ec1eed6466b76c33be4652a51223a8156f6c04",
+    "firmware/ble_study/main/nimble_transport.h": "2718c033f24f9c1c3890f509a123d9aabd59c82215d830a69ef8b1fdf1119a33",
+    "firmware/ble_study/main/endpoint_bridge.h": "f93a413841780971fb51984008d72a66eaf0c8aca5b30288b34ca04b1b587784",
     "firmware/ble_study/main/gatt_profile.h": "a55b7471fd033226532dbc8992d192cef096ac076304bf1b057bb2decb1d7e7d",
     "shared/gatt.profile.json": "66e3051471f8470d67464e51bd2f479050860f6dc9387c968f66d42e3cca048f",
     "firmware/src/device_endpoint.c": "9d6a5f4110bfb3f49e255f77a0d3339edea9716089f9e0d84273db0eea623fba",
-    "firmware/src/config_store.c": "57c424f5c74c6bbf9866d1d229fe9540fa0022a09383489ad41147b630aa77a1",
+    "firmware/src/config_store.c": "4c4bb5e0c112b8fd4ce3e76a1fb78df5fbe975e22ca25f3f6b41418ffb20ecfe",
     "firmware/include/ag_device_endpoint.h": "e95c2d50c59363cd2fd142fb0daee36372102d7e2732f269c82937a93666ca40",
+    "firmware/include/ota_transfer.h": "76abb1b713f441c3ea3735368a90f2e9bc6d9131fb438644a66c41f10c3d832b",
+    "firmware/include/ota_framed_endpoint.h": "4fef039013a4373c4fc225b2bc4d76457a3d437c0d6989be49e8405e846f452c",
+    "firmware/src/ota_transfer.c": "769d36b64915bad0ebfec00babe5a37efbfd42361e1e185875066027e4e9a25e",
+    "firmware/src/ota_framed_endpoint.c": "9bc557b523f7e83abb381ac824479562adc1d22280bf7bc4544125fecb1a34ed",
     "shared/c/ag_rpc.c": "f4c3fa9895939c17bbc80a58e4a460f7206d01c44d8c64b0dab19116f92ceb61",
     "shared/c/ag_rpc.h": "ed2e918ab4d6c059aacf04ea614726ed16f4c36cd691b81650e94c43df4cda35"
   },
@@ -68,6 +78,8 @@
     "Hooks for qualified entropy, physical display/awake policy, restored reset journal and store are required",
     "No real ATT/SMP/iPhone/bond durability, timing, power or standby qualification",
     "8 bonds and 32768-byte host task stack are development bounds, not product N or measured sufficient stack",
-    "No production restart API; faults require explicit owner handling/reboot, never automatic erase"
+    "No production restart API; faults require explicit owner handling/reboot, never automatic erase",
+    "OTA requires an initialized cryptographic installer owner and fresh local maintenance policy; no wire mode switch",
+    "OTA endpoint is one session per bridge lifetime; unknown cleanup or possible selection change blocks RPC rearm"
   ]
 }

@@ -6,6 +6,8 @@ import GaugeCore
 @Observable
 final class AppModel {
     let cloud = CloudAccountModel()
+    let firmwareTrust: OTAPreparationTrust?
+    let firmwareInstallation: OTAInstallationController
     let nativeBluetooth = NativeBluetoothController()
     var editor: ConfigurationDraft
     var message: String?
@@ -22,6 +24,7 @@ final class AppModel {
     var gaugeNotice = "Nessun collegamento simulato attivo."
     private var started = false
     private var logArchive: LocalLogArchive
+    private let nativeLogArchive: LocalLogArchive
     private var storage: AtomicFileConfigurationStorage
     private var binding: GaugeSessionBinding
     private let simulatorBinding: GaugeSessionBinding
@@ -51,10 +54,15 @@ final class AppModel {
         get { message != nil }
         set { if !newValue { message = nil } }
     }
-    init(nativeQualificationProvider: any GaugeNativeQualificationProvider = UnqualifiedNativeGaugeProvider()) {
+    init(nativeQualificationProvider: any GaugeNativeQualificationProvider = UnqualifiedNativeGaugeProvider(),
+         firmwareTrust: OTAPreparationTrust? = nil,
+         otaInstallationProvider: (any OTAInstallationSessionProvider)? = nil) {
+        self.firmwareTrust = firmwareTrust
+        firmwareInstallation = OTAInstallationController(provider: otaInstallationProvider)
         self.nativeQualificationProvider = nativeQualificationProvider
         directory = URL.applicationSupportDirectory.appending(path: "AutoGauge")
         storage = .init(fileURL: directory.appending(path: "simulated-configuration-v1.json"))
+        nativeLogArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "native-histories-v1.json")))
         logArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "simulated-histories-v1.json")))
         do {
             editor = try ConfigurationDraft(configuration: DemoData.configuration, catalog: DemoData.catalog)
@@ -88,6 +96,12 @@ final class AppModel {
     func bootstrap() async {
         guard !started else { return }
         started = true
+        // Recover durable native intents even while the simulator is selected
+        // and without requiring the gauge or an iCloud account to be present.
+        do {
+            try await nativeLogArchive.reload()
+            try await cloud.recoverQualifiedImports(from: nativeLogArchive)
+        } catch { message = "Storici reali conservati; recupero della coda iCloud da ripetere: \(error.localizedDescription)" }
         await reloadLogs()
         await connectGauge()
         if logReady && logSessions.isEmpty { await syncSimulatedHistory() }
@@ -140,7 +154,7 @@ final class AppModel {
             binding = .qualifiedNative(native); nativePipeGeneration = pipeGeneration; storage = nextStorage; activeDraftKey = key; editor = nextEditor
             catalog = nextCatalog; gaugeSnapshot = snapshot; gaugeDeviceID = id
             gaugeConnected = true; gaugeNeedsRead = false; gaugeCommitState = .idle
-            logArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "native-histories-v1.json")))
+            logArchive = nativeLogArchive
             logSessions = []; logReady = false; lastLogAcknowledgement = nil; historySourceCursor = 0
             changingSession = false; gaugeBusy = false
             gaugeNotice = "Sessione locale qualificata per il gauge selezionato. Bozze e storici dimostrativi restano separati."
@@ -241,9 +255,12 @@ final class AppModel {
         let token = sessionEpoch; let archive = logArchive
         logBusy = true; defer { if token == sessionEpoch { logBusy = false } }
         do {
-            try await archive.reload(); let sessions = await archive.sessions()
+            try await archive.reload()
+            do { try await cloud.recoverQualifiedImports(from: archive) }
+            catch { if token == sessionEpoch { message = "Storico locale conservato; recupero della coda iCloud da ripetere: \(error.localizedDescription)" } }
+            let sessions = await archive.sessions(); let ready = await archive.isReady()
             guard token == sessionEpoch else { return }
-            logSessions = sessions; logReady = true
+            logSessions = sessions; logReady = ready
         } catch {
             guard token == sessionEpoch else { return }
             logReady = false; message = "Ricarica storico non riuscita. Nessun dato sovrascritto e nessun nuovo ACK. \(error.localizedDescription)"
@@ -262,11 +279,11 @@ final class AppModel {
             for _ in 0..<4 {
                 let source = sources[historySourceCursor % sources.count]; historySourceCursor = (historySourceCursor + 1) % sources.count
                 let imported = try await transport.importHistoryPage(sessionID: source, archive: archive, limit: 16)
-                // A committed receipt belongs to its captured device even if
-                // that connection ended while the archive write was pending.
-                if let receipt = imported.qualifiedImport {
-                    do { try await cloud.queueQualifiedImport(receipt) }
-                    catch { if token == sessionEpoch { message = "Storico locale conservato; coda iCloud non aggiornata: \(error.localizedDescription)" } }
+                // Transfer the archive's durable intents, including earlier
+                // interrupted imports, independently of the current UI lease.
+                if imported.qualifiedImport != nil {
+                    do { try await cloud.recoverQualifiedImports(from: archive) }
+                    catch { if token == sessionEpoch { message = "Storico locale conservato; coda iCloud da recuperare: \(error.localizedDescription)" } }
                 }
                 guard token == sessionEpoch else { return }
                 logSessions = await archive.sessions()

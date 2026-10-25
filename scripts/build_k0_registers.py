@@ -13,30 +13,30 @@ spec = (ROOT / 'SPEC_V0.2.md').read_text()
 pr = {
 1: ('T-004, T-008', '01_OBD_INPUT / 04_CAN_PHY / firmware', 'SCHEMA A0 / DA VERIFICARE', 'hardware/04_CAN_PHY.kicad_sch; E03/E07; nessun test hardware'),
 2: ('T-001, T-002, T-003', '02_AUTOMOTIVE_POWER', 'BLOCCATO', 'O-07; nessun dimensionamento protezioni'),
-3: ('T-008', 'firmware catalogo PID', 'PARZIALE SU HOST', 'DEC-003; firmware/src/obd_decode.c:7decoder/bitmap, ISO-TP RX simulato; discovery e catalogo completo aperti'),
+3: ('T-008', 'firmware catalogo PID', 'PARZIALE SU HOST', 'DEC-003;53decoder scalari e discovery bounded testati; adapter TWAI SDK compilato, copertura completa Service01 e prove ECU aperte'),
 4: ('T-008 + test allowlist negativi', 'firmware allowlist centrale', 'CORE HOST VERIFICATO; DRIVER APERTO', 'firmware/tests/test_core.c e test_diagnostics.c; Service01 fisso, nessun invio CAN reale'),
 5: ('T-005, T-006, T-007', 'banco e Polo effettiva', 'DA VERIFICARE', 'Nessun accesso alla vettura; nessun log'),
 6: ('T-005 + T-002', '04_CAN_PHY / power / stato IGN', 'BLOCCATO', 'HW-IGN / O-18; DEC-008:reset durante crank ammesso con ripartenza automatica'),
 7: ('T-006, T-007', 'power always-on / wake', 'BLOCCATO', 'DEC-005:100µA entro300s; wake/IGN e prova aperti'),
 8: ('recovery e matrice USB/OBD', '07_TEST_SERVICE', 'CASO USO APPROVATO; DA VERIFICARE', 'DEC-007:USB recovery senzaOBD; USB_RECOVERY_K0.md'),
 9: ('drawing + sourcing + T-010', '05_AMOLED_TOUCH', 'BLOCCATO', 'E01/E19–E22: PANEL_SOURCING_K0.md; fit e O-16 aperti'),
-10: ('T-010', 'touch / firmware UI', 'DA IMPLEMENTARE', 'SPEC §6.1; nessun prototipo'),
-11: ('T-010, T-011 + limiti 3x5', 'UI / validazione firmware-app', 'PARZIALE SU HOST', 'shared/fixtures/config.cases.json; testSwift/C limiti3x5; UIembedded non implementata'),
+10: ('T-010', 'touch / firmware UI', 'LOGICA E RENDERER HOST; TOUCH FISICO APERTO', 'ag_gauge_ui_tap e renderer RGB565 testati; pin/protocollo touch da qualificare'),
+11: ('T-010, T-011 + limiti 3x5', 'UI / validazione firmware-app', 'PARZIALE SU HOST', 'Fixture/testSwift/C limiti3x5, scene e renderer RGB565; qualifica pannello fisico aperta'),
 12: ('T-004, T-017', '01_OBD_INPUT / cavo / presa gauge', 'BLOCCATO', 'Coppia housing e terminali candidati documentati; cavo/OBD e pinout aperti; O-21'),
 13: ('fit quotato + prova montaggio/RF', 'case / magnete / PCB', 'BLOCCATO', 'DEC-002; MECHANICAL_K0.md; O-22'),
 14: ('T-012', '06_LIGHT_SENSOR / firmware / app', 'CANDIDATO', 'hardware/06_LIGHT_SENSOR.kicad_sch; E06; curva O-12 non fissata'),
 15: ('T-018', 'produzione', 'DA VERIFICARE', 'E10; richiesta inviata a JLCPCB, conferma assieme ancora aperta'),
 16: ('T-018', 'BOM / lotto 5', 'BLOCCATO', 'Nessun preventivo completo; O-19'),
 17: ('T-018 + accettazione assieme', 'produzione / istruzioni FPC-cavo', 'BLOCCATO', 'O-17; SUPPLIER_RFQ_DRAFT.md'),
-18: ('T-013', 'firmware autonomo / storage', 'DA IMPLEMENTARE', 'O-14 influenza storage, non autonomia UI'),
-19: ('T-015', 'BLE / bootloader / flash', 'CANDIDATO', 'E02/E08; BLE transport e rollback non implementati'),
-20: ('T-014 + test connessioni sequenziali/concorrenza', 'BLE sessioni / app', 'VINCOLO APPROVATO; IMPLEMENTAZIONE APERTA', 'DEC-011: N client in sequenza, 1 connessione attiva; nessun reset per cambiare telefono'),
-21: ('test app/account/offline', 'app Swift / CloudKit', 'PROVIDER APPROVATO; INTEGRAZIONE APERTA', 'DEC-012:iCloud+CloudKit senza account email separato; configurazione Apple/prove live ancora aperte'),
-22: ('T-016', 'storage / BLE log / app', 'PARZIALMENTE DEFINITO', 'DEC-004:buffer locale limitato; LOGGING_K0.md, retention aperta'),
+18: ('T-013', 'firmware autonomo / storage', 'OWNER INTEGRATO; PROFILO FISICO APERTO', 'ag_application + banco volatile e target SDK unificato; nessun boardprofile prodotto qualificato'),
+19: ('T-015', 'BLE / bootloader / flash', 'CATENA SOFTWARE IMPLEMENTATA; QUALIFICA APERTA', 'APP16, bridge RPC/OTA, installer e NVS boot health; trust produzione/provider nativo/prove fisiche aperti'),
+20: ('T-014 + test connessioni sequenziali/concorrenza', 'BLE sessioni / app', 'VINCOLO APPROVATO; IMPLEMENTAZIONE APERTA', 'Admission/bridge e lease sequenziali testati; gate nativo app predefinito negato, SMP/radio fisici non qualificati'),
+21: ('test app/account/offline', 'app Swift / CloudKit', 'PROVIDER APPROVATO; INTEGRAZIONE APERTA', 'iOS17/SwiftUI, identificatori Apple approvati, outbox/restore e recovery APP15 locali testati; membership/prove CloudKit live aperte'),
+22: ('T-016', 'storage / BLE log / app', 'IMPLEMENTATO SU HOST; SIZING/PROVE APERTI', 'Journal bounded, import Swift-C e intenti archivio-inbox atomici;2MiB condizionati a sizing OTA, nessuna retention fisica promessa'),
 23: ('T-011 + editor', 'schema config / UI / app', 'EDITOR PROVVISORIO IMPLEMENTATO', 'mobile/Sources/GaugeCore/Editing.swift; grigliaH, O-10 non congelata, nessuna UI live'),
 24: ('T-009', 'scheduler / CAN', 'PARZIALE SU HOST; PRESTAZIONI APERTE', 'firmware/src/scheduler.c; una transazione, timeout/round-robin; nessuna garanzia5Hz'),
-25: ('timeout/stale/error injection', 'firmware catalogo / UI', 'CORE HOST VERIFICATO; DISPLAY APERTO', 'firmware/tests/test_diagnostics.c; nessun vecchio valore attuale; renderer device assente'),
-26: ('discovery simulata + primo boot', 'firmware default dashboard', 'DA IMPLEMENTARE', 'O-24; no PID preteso supportato'),
+25: ('timeout/stale/error injection', 'firmware catalogo / UI', 'CORE HOST VERIFICATO; DISPLAY APERTO', 'Decoder/scene/renderer RGB565 testati per zero/stale/invalidi; output fisico e tempi pannello da qualificare'),
+26: ('discovery simulata + primo boot', 'firmware default dashboard', 'BUILDER IMPLEMENTATO; POLICY APERTA', 'ag_discovery_build_defaults usa solo capability usabili; O-24 resta policy prodotto, nessun bootstrap automatico'),
 }
 opened = {
 1: ('decisione owner + test T-008', 'firmware diagnostico', 'SCOPE CHIUSO', 'DEC-003:solo PID live Service01; verifica stack ancora necessaria'),
@@ -61,17 +61,17 @@ opened = {
 20: ('decisione destinazione prodotto', 'piano conformità', 'APERTA P1', 'Privato/commerciale non fissato'),
 21: ('drawing presa/plug + T-017', '01_OBD_INPUT / case', 'APERTA P1', 'MPN non selezionato'),
 22: ('drawing + prove tenuta/RF', 'magnete / antenna', 'APERTA P1', 'Nessun materiale o geometria selezionati'),
-23: ('requisiti app', 'iOS / account', 'APERTA P2', 'Versione iOS e login da decidere'),
+23: ('requisiti app', 'iOS / account', 'SCELTE CHIUSE; PROVE LIVE APERTE', 'iOS17, SwiftUI e iCloud/CloudKit DEC-012/013; membership/provisioning live non eseguiti'),
 24: ('decisione owner + test primo boot', 'dashboard default', 'APERTA P2', 'Solo PID scoperti supportati'),
 }
 
 def esc(s):
     return s.replace('|', '\\|').replace('\n', ' ')
 
-lines = ['# Tracciabilità K0 — revisione 0.7', '',
-         'Data 2026-10-24. Fonte normativa SPEC_V0.2.md + DECISIONS.md (requisiti risultanti v0.2.8).',
+lines = ['# Tracciabilità K0 — revisione 0.8', '',
+         'Aggiornamento software 2026-10-25. Fonte normativa SPEC_V0.2.md + DECISIONS.md (requisiti risultanti v0.2.8).',
          'Generato da scripts/build_k0_registers.py. Sheet implementati nella revisione A0 in hardware/ (DEC-009); progetto non definitivo, blocker aperti.',
-         '«CANDIDATO» non significa selezionato o validato. Nessun test T è stato eseguito.', '',
+         '«CANDIDATO» non significa selezionato o validato. Nessun test T fisico è stato eseguito; le verifiche software host/SDK sono distinte.', '',
          '| ID | Requisito / decisione | Origine | Verifica prevista | Componente / sheet correlato | Stato | Prova disponibile / mancante |',
          '|---|---|---|---|---|---|---|']
 reqs = re.findall(r'^\| (PR-\d{3}) \| F \| (.*?) \|$', spec, re.M)

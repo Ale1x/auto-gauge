@@ -21,4 +21,4 @@ class TWAIPortTests(unittest.TestCase):
             subprocess.run(cmd+['-o',str(binary)],check=True)
             result=subprocess.run([str(binary)],capture_output=True,text=True,timeout=30)
             self.assertEqual(result.returncode,0,result.stdout+result.stderr)
-            self.assertIn('PASS: 7 modern TWAI port groups',result.stdout)
+            self.assertIn('PASS: 9 modern TWAI port groups',result.stdout)

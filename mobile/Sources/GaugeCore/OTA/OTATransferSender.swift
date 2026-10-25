@@ -9,6 +9,7 @@ public actor OTATransferSender {
     private var busy = false
     private var generation: UInt64?
     private var transferID: UInt32 = 0
+    private var progressHandler: (@Sendable (OTAInstallationProgress) async -> Void)?
     public private(set) var state: OTATransferSenderState = .idle
     public private(set) var manifestBytesAcknowledged: UInt32 = 0
     public private(set) var imageBytesAcknowledged: UInt32 = 0
@@ -19,14 +20,16 @@ public actor OTATransferSender {
         self.transport = transport; self.allowHostDevelopmentMutations = allowHostDevelopmentMutations
         self.operationTimeout = operationTimeout
     }
-    public func upload(_ candidate: VerifiedOTACandidate, transferID: UInt32) async throws {
+    public func upload(_ candidate: VerifiedOTACandidate, transferID: UInt32,
+                       onProgress: @escaping @Sendable (OTAInstallationProgress) async -> Void = { _ in }) async throws {
         try preflight()
         guard state == .idle else { throw state == .unknown ? OTATransferError.outcomeUnknown : OTATransferError.notReady }
         guard transferID != 0, !candidate.envelopeSnapshot.isEmpty,
               candidate.envelopeSnapshot.count <= Int(OTATransferCodec.maximumManifestBytes),
               candidate.imageSnapshot.count == candidate.manifest.imageBytes else { throw OTATransferError.invalidPayload }
         try Task.checkCancellation()
-        busy = true; defer { busy = false }
+        busy = true; progressHandler = onProgress
+        defer { busy = false; progressHandler = nil }
         var attempted = false
         let deadline = ContinuousClock().now.advanced(by: operationTimeout)
         do {
@@ -106,6 +109,7 @@ public actor OTATransferSender {
               response.manifestOffset == manifestOffset, response.imageOffset == imageOffset,
               response.selectionMayHaveChanged == (request.opcode == .select) else { throw OTATransferError.invalidReply }
         manifestBytesAcknowledged = manifestOffset; imageBytesAcknowledged = imageOffset
+        await progressHandler?(.init(manifestAcknowledged: manifestOffset, imageAcknowledged: imageOffset))
     }
     private static func until<T: Sendable>(_ deadline: ContinuousClock.Instant,
                                            operation: @escaping @Sendable () async throws -> T) async throws -> T {
