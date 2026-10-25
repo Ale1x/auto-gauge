@@ -36,4 +36,4 @@ let package = Package(name: "AppModelHarness", platforms: [.macOS(.v14)], target
             result = subprocess.run(['swift', 'test', '--package-path', str(root)],
                                     capture_output=True, text=True, timeout=180)
             self.assertEqual(result.returncode, 0, (result.stdout + result.stderr)[-16000:])
-            self.assertIn('Executed 10 tests, with 0 failures', result.stdout + result.stderr)
+            self.assertIn('Executed 11 tests, with 0 failures', result.stdout + result.stderr)

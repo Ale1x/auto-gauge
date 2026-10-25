@@ -2,25 +2,28 @@ import SwiftUI
 
 struct BluetoothDevelopmentView: View {
     @Environment(AppModel.self) private var model
+    @State private var searched = false
     var body: some View {
         let bluetooth = model.nativeBluetooth
         List {
             Section {
-                Text("Accendi Auto Gauge e tienilo vicino al telefono.")
+                Label("Colleghiamo il tuo Auto Gauge", systemImage: "link.circle.fill").font(.headline)
+                Text("Accendi il dispositivo e tienilo vicino al telefono. Avvia la ricerca quando sei pronto.")
+                    .font(.subheadline).foregroundStyle(.secondary)
                 if bluetooth.isScanning { ProgressView("Cerco il tuo dispositivo…") }
                 else if bluetooth.isConnecting { ProgressView("Collegamento in corso…") }
-                else { Text(bluetooth.connectionStatusText).foregroundStyle(.secondary) }
+                else if searched || bluetooth.isReady { Text(bluetooth.connectionStatusText).font(.subheadline).foregroundStyle(.secondary) }
                 Button("Cerca dispositivo", systemImage: "magnifyingglass") {
-                    bluetooth.developmentEnabled = true
-                    bluetooth.beginScan()
-                }.disabled(bluetooth.isScanning || bluetooth.isConnecting || bluetooth.isReady)
-                if bluetooth.isScanning || bluetooth.isConnecting {
-                    Button("Annulla", role: .cancel, action: bluetooth.stop)
+                    searched = true
+                    bluetooth.developmentEnabled = true; bluetooth.beginScan()
                 }
+                .frame(minHeight: AppTheme.minimumTouch)
+                .disabled(bluetooth.isScanning || bluetooth.isConnecting || bluetooth.isReady)
+                if bluetooth.isScanning || bluetooth.isConnecting { Button("Annulla", role: .cancel, action: bluetooth.stop) }
             }
             Section("Dispositivi vicini") {
                 if bluetooth.candidates.isEmpty && !bluetooth.isScanning {
-                    Text("Nessun dispositivo trovato. Controlla che sia acceso e riprova.").foregroundStyle(.secondary)
+                    Text(searched ? "Nessun dispositivo trovato. Controlla che sia acceso e riprova." : "Il tuo Auto Gauge comparirà qui.").foregroundStyle(.secondary)
                 }
                 ForEach(bluetooth.candidates) { candidate in
                     Button { bluetooth.connect(candidate.id) } label: {
@@ -31,14 +34,13 @@ struct BluetoothDevelopmentView: View {
             }
             if bluetooth.isReady {
                 Section {
-                    Button("Usa questo dispositivo", systemImage: "checkmark.circle") {
-                        Task { await model.activateNativeGauge() }
-                    }.disabled(model.gaugeBusy || bluetooth.rpcBusy)
+                    Button("Usa questo dispositivo", systemImage: "checkmark.circle") { Task { await model.activateNativeGauge() } }
+                        .frame(minHeight: AppTheme.minimumTouch).disabled(model.gaugeBusy || bluetooth.rpcBusy)
                     if model.isNativeSession { Label("Dispositivo collegato", systemImage: "checkmark.circle.fill") }
                 }
             }
         }
-        .navigationTitle("Collega dispositivo")
+        .navigationTitle("Collega dispositivo").navigationBarTitleDisplayMode(.inline)
         .onDisappear { if !model.isNativeSession { bluetooth.stop() } }
     }
 }

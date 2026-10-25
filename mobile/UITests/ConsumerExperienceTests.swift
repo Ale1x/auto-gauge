@@ -10,11 +10,11 @@ final class ConsumerExperienceTests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.tabBars.buttons["Dispositivo"].waitForExistence(timeout: 15))
     }
-    private func capture(_ name: String) {
+    private func capture(_ name: String, requiresDemoBanner: Bool = true) {
         // Capture the final rendered frame after native navigation transitions.
         Thread.sleep(forTimeInterval: 0.7)
         let bannerExit = app.buttons["Esci dalla modalità demo"]
-        if name != "07-device-mode" && name != "demo-exit-failure" {
+        if requiresDemoBanner && name != "07-device-mode" && name != "demo-exit-failure" {
             XCTAssertTrue(bannerExit.waitForExistence(timeout: 5))
             if name != "44-remove-confirmation" { XCTAssertTrue(bannerExit.isHittable) }
             XCTAssertGreaterThanOrEqual(bannerExit.frame.minY, 0)
@@ -228,6 +228,103 @@ final class ConsumerExperienceTests: XCTestCase {
         capture("43-screens-large-text")
         app.buttons["screen.edit.1"].tap()
         XCTAssertTrue(app.navigationBars["Modifica schermata"].waitForExistence(timeout: 5))
+    }
+    func testRemainingPagesWalkthrough() {
+        capture("50-home")
+        app.staticTexts["Luminosità"].tap()
+        XCTAssertTrue(app.navigationBars["Luminosità"].waitForExistence(timeout: 5))
+        capture("51-brightness")
+        app.navigationBars.buttons.firstMatch.tap()
+        app.staticTexts["Misure disponibili"].tap()
+        XCTAssertTrue(app.navigationBars["Misure"].waitForExistence(timeout: 5))
+        capture("52-measures")
+        app.navigationBars.buttons.firstMatch.tap()
+        let updates = app.staticTexts["Aggiornamenti"]
+        if !updates.isHittable { app.swipeUp() }; updates.tap()
+        XCTAssertTrue(app.navigationBars["Aggiornamenti"].waitForExistence(timeout: 5))
+        capture("53-updates")
+        app.tabBars.buttons["Impostazioni"].tap()
+        capture("54-settings")
+        app.tabBars.buttons["Temi"].tap()
+        app.segmentedControls.buttons["La tua raccolta"].tap()
+        app.buttons["themes.create"].tap()
+        capture("55-theme-maker")
+        app.tabBars.buttons["Impostazioni"].tap()
+        app.switches["settings.demo"].switches.firstMatch.tap()
+        XCTAssertTrue(app.buttons["Cerca dispositivo"].waitForExistence(timeout: 10))
+        app.buttons["Cerca dispositivo"].tap()
+        XCTAssertTrue(app.navigationBars["Collega dispositivo"].waitForExistence(timeout: 5))
+        capture("57-connect", requiresDemoBanner: false)
+    }
+    func testFirstLaunchOnboardingAndReplay() {
+        app.terminate(); app.launchArguments = ["--uitesting-reset", "--uitesting-onboarding"]; app.launch()
+        let next = app.buttons["onboarding.next"]
+        XCTAssertTrue(next.waitForExistence(timeout: 10))
+        capture("60-onboarding-welcome", requiresDemoBanner: false)
+        next.tap()
+        let pixel = app.segmentedControls.buttons["Pixel"]
+        XCTAssertTrue(pixel.waitForExistence(timeout: 5)); pixel.tap()
+        XCTAssertTrue(pixel.isSelected)
+        capture("61-onboarding-style", requiresDemoBanner: false)
+        next.tap()
+        capture("62-onboarding-start", requiresDemoBanner: false)
+        app.buttons["onboarding.demo"].tap()
+        XCTAssertTrue(app.buttons["onboarding.demo"].waitForNonExistence(timeout: 10))
+        app.terminate(); app.launchArguments = ["--uitesting", "--uitesting-onboarding"]; app.launch()
+        XCTAssertTrue(app.tabBars.buttons["Impostazioni"].waitForExistence(timeout: 10))
+        XCTAssertFalse(next.exists)
+        app.tabBars.buttons["Impostazioni"].tap()
+        let replay = app.buttons["settings.onboarding"]
+        if !replay.isHittable { app.swipeUp() }; replay.tap()
+        XCTAssertTrue(next.waitForExistence(timeout: 5))
+        app.buttons["onboarding.skip"].tap()
+        XCTAssertTrue(next.waitForNonExistence(timeout: 5))
+        XCTAssertTrue(app.tabBars.buttons["Impostazioni"].isHittable)
+        // Finishing a replay must return home even when the mode stays the same.
+        if !replay.isHittable { app.swipeUp() }; replay.tap()
+        XCTAssertTrue(next.waitForExistence(timeout: 5)); next.tap(); next.tap()
+        app.buttons["onboarding.demo"].tap()
+        XCTAssertTrue(app.buttons["onboarding.demo"].waitForNonExistence(timeout: 10))
+        XCTAssertTrue(app.tabBars.buttons["Dispositivo"].isSelected)
+    }
+    func testOnboardingConnectionChoice() {
+        app.terminate(); app.launchArguments = ["--uitesting-reset", "--uitesting-onboarding"]; app.launch()
+        let next = app.buttons["onboarding.next"]
+        XCTAssertTrue(next.waitForExistence(timeout: 10)); next.tap(); next.tap()
+        app.buttons["onboarding.connect"].tap()
+        XCTAssertTrue(app.buttons["Cerca dispositivo"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["onboarding.connect"].waitForNonExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["Esci dalla modalità demo"].exists)
+    }
+    func testOnboardingLargeTextCanBeSkipped() {
+        app.terminate()
+        app.launchArguments = ["--uitesting-reset", "--uitesting-onboarding", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch()
+        let skip = app.buttons["onboarding.skip"]
+        XCTAssertTrue(skip.waitForExistence(timeout: 10))
+        capture("64-onboarding-large-text", requiresDemoBanner: false)
+        skip.tap()
+        XCTAssertTrue(skip.waitForNonExistence(timeout: 5))
+        XCTAssertTrue(app.tabBars.buttons["Dispositivo"].isHittable)
+    }
+    func testBrightnessSaveAndDiscard() {
+        app.staticTexts["Luminosità"].tap()
+        let manual = app.segmentedControls.buttons["Manuale"]
+        XCTAssertTrue(manual.waitForExistence(timeout: 5)); manual.tap()
+        let slider = app.sliders.firstMatch
+        XCTAssertTrue(slider.waitForExistence(timeout: 5)); slider.adjust(toNormalizedSliderPosition: 0.35)
+        let save = app.buttons["configuration.save"]
+        if !save.isHittable { app.swipeUp() }; save.tap()
+        XCTAssertTrue(app.staticTexts["Modifiche salvate"].waitForExistence(timeout: 10))
+        app.terminate(); app.launchArguments = ["--uitesting"]; app.launch()
+        app.staticTexts["Luminosità"].tap()
+        XCTAssertTrue(manual.isSelected)
+        XCTAssertTrue(slider.exists)
+        slider.adjust(toNormalizedSliderPosition: 0.6)
+        let discard = app.buttons["Annulla modifiche"]
+        if !discard.isHittable { app.swipeUp() }; discard.tap()
+        app.buttons["configuration.discard.confirm"].firstMatch.tap()
+        XCTAssertTrue(app.buttons["configuration.save"].waitForNonExistence(timeout: 5))
     }
     func testDemoUpdateCompletes() {
         let updates = app.buttons["Aggiornamenti"]

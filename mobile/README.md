@@ -8,6 +8,14 @@ La UI e le relative verifiche sono documentate in [DesignValidation/UX27](Design
 
 La revisione compatta della panoramica e delle azioni di Schermate è documentata in [DesignValidation/SCREENS27](DesignValidation/SCREENS27/README.md).
 
+Le altre pagine e il nuovo primo avvio sono documentati in [DesignValidation/EXPERIENCE27](DesignValidation/EXPERIENCE27/README.md).
+
+## Introduzione iniziale
+
+Il primo avvio propone tre passaggi brevi e saltabili. La prova degli stili è locale e non cambia il tema salvato o i diritti di acquisto. La scelta finale apre la modalità dispositivo oppure la demo, senza iniziare automaticamente la ricerca Bluetooth. `onboarding.completed.v1` ricorda il completamento; anche Salta conclude l’introduzione. Le installazioni precedenti senza indicatore la vedono una volta dopo questo aggiornamento.
+
+Il pulsante temporaneo **Impostazioni → Rivedi introduzione** riapre il percorso. Non cancella impostazioni o dati. I test UI ordinari evitano la presentazione automatica; i casi dedicati aggiungono `--uitesting-onboarding` per verificare primo avvio, completamento, ripetizione e scelta della modalità.
+
 ## Temi e acquisti
 
 Il catalogo include il tema originale gratuito e 59 temi a pagamento, fra interpretazioni sportive e creazioni originali, con prezzo iniziale approvato di 1,99 € per tema. Il creatore di colori è gratuito. Dieci famiglie grafiche comprendono sport, pixel/16 bit, arcade, terminale, synthwave, analogico, minimal, blueprint, endurance e rétro. I 60 temi complessivi si esplorano per categoria; la ricerca ha una pagina dedicata e la creazione vive nella raccolta personale. Colori e intestazioni dei temi cambiano solo il quadrante: sfondi e superfici dell’app mantengono la palette adattiva comune.

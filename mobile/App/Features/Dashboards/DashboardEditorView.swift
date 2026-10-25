@@ -15,12 +15,12 @@ struct DashboardEditorView: View {
         } else if let dashboard = model.configuration.dashboards.first(where: { $0.id == dashboardID }) {
             Form {
                 Section {
-                    GaugePreview(dashboard: dashboard, theme: model.displayTheme, interactive: true, selectedID: selectedID, onSelect: select, onMove: move)
-                        .frame(maxWidth: .infinity).padding(.vertical, 12)
-                    Text("Anteprima").font(.footnote.bold()).foregroundStyle(AppTheme.muted)
-                        .frame(maxWidth: .infinity)
-                    Text("Tocca una misura per selezionarla e trascinala nella posizione che preferisci. Puoi regolare posizione e dimensioni anche con i controlli sotto.")
-                        .font(.footnote).foregroundStyle(.secondary)
+                    VStack(alignment: .leading, spacing: AppTheme.spacing) {
+                        GaugePreview(dashboard: dashboard, theme: model.displayTheme, interactive: true, selectedID: selectedID, onSelect: select, onMove: move)
+                            .frame(maxWidth: 240).frame(maxWidth: .infinity)
+                        Text("Tocca una misura per selezionarla. Trascinala per spostarla.")
+                            .font(.subheadline).foregroundStyle(Color.secondary)
+                    }.padding(.vertical, AppTheme.smallSpacing)
                 }.listRowBackground(Color.clear)
                 let clipped = model.editor.clippedWidgetIDs(dashboardID: dashboardID)
                 if !clipped.isEmpty {
@@ -28,7 +28,7 @@ struct DashboardEditorView: View {
                         Label("Alcune misure escono dal display", systemImage: "exclamationmark.triangle")
                             .foregroundStyle(AppTheme.warning).font(.subheadline)
                         Text("Sposta o riduci le misure segnalate per renderle completamente visibili.")
-                            .font(.footnote).foregroundStyle(.secondary)
+                            .font(.footnote).foregroundStyle(Color.secondary)
                     }
                 }
                 Section("Misure della schermata") {
@@ -36,8 +36,8 @@ struct DashboardEditorView: View {
                         Button { select(widget.id) } label: {
                             HStack {
                                 VStack(alignment: .leading) {
-                                    Text(widget.pid.nameIT).foregroundStyle(.primary)
-                                    Text("\(GaugePreviewValue.value(for: widget.pid.pid)) \(widget.pid.unit)").font(.footnote).foregroundStyle(.secondary)
+                                    Text(widget.pid.nameIT).foregroundStyle(Color.primary)
+                                    Text("\(GaugePreviewValue.value(for: widget.pid.pid)) \(widget.pid.unit)").font(.footnote).foregroundStyle(Color.secondary)
                                 }
                                 Spacer()
                                 if clipped.contains(widget.id) { Image(systemName: "exclamationmark.triangle").foregroundStyle(AppTheme.warning).accessibilityLabel("Tagliata sul bordo circolare") }

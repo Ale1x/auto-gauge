@@ -6,7 +6,7 @@ struct FirmwareInstallationSection: View {
     @State private var confirmSelection = false
 
     var body: some View {
-        Section("Aggiorna il dispositivo") {
+        Section("3. Aggiorna il dispositivo") {
             if !model.installationAvailable {
                 Label("Installazione non disponibile", systemImage: "lock")
                 Text("L’app non è ancora configurata per aggiornare questo dispositivo. Nessuna installazione è stata avviata.")
@@ -46,7 +46,7 @@ struct FirmwareInstallationSection: View {
                 }
             }
         }
-        .confirmationDialog("Usare questa versione al prossimo avvio?", isPresented: $confirmSelection, titleVisibility: .visible) {
+        .alert("Usare questa versione al prossimo avvio?", isPresented: $confirmSelection) {
             Button("Usa al prossimo avvio", action: model.selectInstalledFirmware)
             Button("Mantieni la versione attuale", role: .cancel) { }
         } message: {

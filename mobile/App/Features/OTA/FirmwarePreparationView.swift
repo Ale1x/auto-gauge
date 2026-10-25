@@ -11,8 +11,8 @@ struct FirmwarePreparationView: View {
     }
     var body: some View {
         Form {
-            Section("Prepara l’aggiornamento") {
-                Text("Scegli i file dell’aggiornamento e controllali prima di inviarli al dispositivo.")
+            Section("Aggiornamento da file") {
+                Text("Scegli i file per il tuo dispositivo. Li controlleremo prima di procedere.")
                 if !model.trustAvailable {
                     Label("Verifica non ancora disponibile", systemImage: "lock.shield")
                     Text("Puoi scegliere i file, ma per ora non è possibile verificarli né installarli su questo dispositivo.")
@@ -20,9 +20,9 @@ struct FirmwarePreparationView: View {
                 }
             }
             FirmwarePackageFilesSection(snapshot: model.snapshot, busy: model.preparationLocked, chooseManifest: chooseManifest, chooseImage: chooseImage)
-            Section {
-                Button("Verifica aggiornamento", systemImage: "checkmark.shield", action: model.verify).frame(minHeight: AppTheme.minimumTouch).disabled(!model.canVerify)
-                Button("Conserva file verificati", systemImage: "square.and.arrow.down", action: model.save).frame(minHeight: AppTheme.minimumTouch).disabled(!model.canSave)
+            Section("2. Controlla i file") {
+                Button("Controlla i file", systemImage: "checkmark.shield", action: model.verify).frame(minHeight: AppTheme.minimumTouch).disabled(!model.canVerify)
+                Button("Conserva per dopo", systemImage: "square.and.arrow.down", action: model.save).frame(minHeight: AppTheme.minimumTouch).disabled(!model.canSave)
                 if model.busy && model.installationSnapshot.state == .idle {
                     ProgressView("Controllo dei file in corso…")
                     Button("Interrompi controllo", role: .cancel, action: model.cancel)
@@ -32,7 +32,7 @@ struct FirmwarePreparationView: View {
             if let manifest = model.snapshot.verifiedManifest { FirmwareVerifiedPackageSection(manifest: manifest) }
             FirmwareInstallationSection(model: model)
         }
-        .navigationTitle("Aggiornamento")
+        .navigationTitle("Aggiornamenti").navigationBarTitleDisplayMode(.inline)
         .fileImporter(isPresented: $showImporter, allowedContentTypes: [.data], allowsMultipleSelection: false, onCompletion: importCompleted)
         .task { await model.restore() }
         .onDisappear(perform: model.leave)

@@ -2,48 +2,42 @@ import SwiftUI
 
 struct DraftActionsView: View {
     @Environment(AppModel.self) private var model
-    @State private var showingRestoreConfirmation = false
-
+    @State private var showingConfirmation = false
+    @State private var restoring = false
     var body: some View {
         Section {
             if model.isSaving {
-                ProgressView("Salvataggio…")
-                    .frame(minHeight: AppTheme.minimumTouch)
+                ProgressView("Salvataggio…").frame(minHeight: AppTheme.minimumTouch)
             } else {
-                Label(model.saveStatusText, systemImage: model.hasPendingChanges ? "pencil.circle" : "checkmark.circle")
-                    .foregroundStyle(model.hasPendingChanges ? AppTheme.warning : AppTheme.accent)
-                    .fixedSize(horizontal: false, vertical: true)
+                Label(model.editor.hasChanges ? "Modifiche da salvare" : model.saveStatusText,
+                      systemImage: model.hasPendingChanges ? "pencil.circle" : "checkmark.circle")
+                    .foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
             }
-            Button(action: save) {
-                Label("Salva modifiche", systemImage: "checkmark")
-                    .frame(maxWidth: .infinity, minHeight: AppTheme.minimumTouch)
+            if model.hasPendingChanges {
+                Button { Task { await model.saveChanges() } } label: {
+                    Text("Salva modifiche").frame(maxWidth: .infinity, minHeight: AppTheme.minimumTouch)
+                }
+                .buttonStyle(.borderedProminent).foregroundStyle(AppTheme.canvas)
+                .accessibilityIdentifier("configuration.save").disabled(model.isSaving)
             }
-            .buttonStyle(.borderedProminent).foregroundStyle(AppTheme.canvas)
-            .accessibilityIdentifier("configuration.save")
-            .disabled(!model.hasPendingChanges || model.isSaving)
-            AppActionButton(title: "Annulla", symbol: "arrow.uturn.backward",
-                            disabled: !model.editor.hasChanges || model.isSaving,
-                            action: model.discardChanges)
+            if model.editor.hasChanges {
+                Button("Annulla modifiche", systemImage: "arrow.uturn.backward") { restoring = false; showingConfirmation = true }
+                    .frame(minHeight: AppTheme.minimumTouch).disabled(model.isSaving)
+            }
             Menu("Altre opzioni", systemImage: "ellipsis.circle") {
-                Button("Ripristina impostazioni iniziali", systemImage: "arrow.counterclockwise", role: .destructive,
-                       action: requestRestore)
-            }
-            .frame(minHeight: AppTheme.minimumTouch)
-            .disabled(model.isSaving)
-            .confirmationDialog("Ripristinare le impostazioni iniziali?", isPresented: $showingRestoreConfirmation,
-                                titleVisibility: .visible) {
+                Button("Ripristina impostazioni iniziali", systemImage: "arrow.counterclockwise", role: .destructive) { restoring = true; showingConfirmation = true }
+            }.frame(minHeight: AppTheme.minimumTouch).disabled(model.isSaving)
+        } header: { Text("Salvataggio") }
+          footer: { Text("Schermate e luminosità si salvano insieme.") }
+        .alert(restoring ? "Ripristinare le impostazioni iniziali?" : "Annullare le modifiche?", isPresented: $showingConfirmation) {
+            if restoring {
                 Button("Ripristina", role: .destructive, action: model.restoreDefaults)
-                Button("Annulla", role: .cancel) { }
-            } message: {
-                Text("Le modifiche correnti a schermate e luminosità saranno sostituite. Premi Salva modifiche per confermare il nuovo risultato.")
+            } else {
+                Button("Annulla modifiche", role: .destructive, action: model.discardChanges).accessibilityIdentifier("configuration.discard.confirm")
             }
-        } header: {
-            Text("Le tue modifiche")
-        } footer: {
-            Text("Schermate e luminosità si salvano insieme. Annulla torna all’ultimo salvataggio.")
+            Button("Continua a modificare", role: .cancel) { }
+        } message: {
+            Text(restoring ? "Schermate e luminosità saranno sostituite. Salva per confermare il risultato." : "Tornerai all’ultimo salvataggio di schermate e luminosità.")
         }
     }
-
-    private func save() { Task { await model.saveChanges() } }
-    private func requestRestore() { showingRestoreConfirmation = true }
 }

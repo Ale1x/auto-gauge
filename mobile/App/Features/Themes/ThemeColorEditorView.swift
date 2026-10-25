@@ -18,17 +18,19 @@ struct ThemeColorEditorView: View {
         Form {
             Section {
                 GaugePreview(dashboard: model.configuration.dashboards[0], theme: preview)
-                    .frame(maxWidth: .infinity).padding(.vertical, AppTheme.spacing)
+                    .frame(maxWidth: 240).frame(maxWidth: .infinity).padding(.vertical, AppTheme.smallSpacing)
             }.listRowBackground(Color.clear)
             Section("I tuoi colori") {
                 ColorPicker("Colore principale", selection: $accent, supportsOpacity: false)
                 ColorPicker("Colore secondario", selection: $secondary, supportsOpacity: false)
             }
             Section {
-                Button("Usa i miei colori", systemImage: "checkmark") {
+                Button {
                     model.themes.saveCustom(accent: hex(accent), secondary: hex(secondary), demo: model.isDemoMode)
+                } label: {
+                    Label("Usa i miei colori", systemImage: "checkmark").frame(maxWidth: .infinity, minHeight: AppTheme.minimumTouch)
                 }
-                .frame(minHeight: AppTheme.minimumTouch)
+                .buttonStyle(.borderedProminent).foregroundStyle(AppTheme.canvas)
                 .accessibilityIdentifier("theme.custom.save")
                 if model.displayTheme.id == "custom" {
                     Label("Il tuo tema è in uso", systemImage: "checkmark.circle").foregroundStyle(AppTheme.accent)

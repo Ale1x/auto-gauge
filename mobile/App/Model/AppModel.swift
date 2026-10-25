@@ -8,6 +8,9 @@ final class AppModel {
     let cloud = CloudAccountModel()
     let themes: ThemeLibrary
     var displayTheme: GaugeTheme { themes.selected(demo: isDemoMode) }
+    private(set) var onboardingCompleted: Bool
+    var onboardingPresented = false
+    private let automaticOnboardingEnabled: Bool
     private(set) var isDemoMode: Bool
     var appearance: AppAppearance { didSet { preferences.set(appearance.rawValue, forKey: "appearance") } }
     var backupEnabled: Bool { didSet { preferences.set(backupEnabled, forKey: isDemoMode ? "demo.backup.enabled" : "device.backup.enabled") } }
@@ -96,6 +99,8 @@ final class AppModel {
             if suppliedPreferences == nil { selectedPreferences.removePersistentDomain(forName: "AutoGauge.UITests") }
         }
         preferences = selectedPreferences
+        onboardingCompleted = selectedPreferences.bool(forKey: "onboarding.completed.v1")
+        automaticOnboardingEnabled = !testing || arguments.contains("--uitesting-onboarding")
         themes = ThemeLibrary(preferences: selectedPreferences)
         let initialDemoMode = selectedPreferences.object(forKey: "demo.enabled") == nil ? true : selectedPreferences.bool(forKey: "demo.enabled")
         isDemoMode = initialDemoMode
@@ -161,6 +166,15 @@ final class AppModel {
     subscript(geometryValueFor dashboardID: Int, widget widgetID: Int, field field: GeometryField) -> Double {
         get { Double(self[geometryUnitFor: dashboardID, widget: widgetID, field: field]) }
         set { self[geometryUnitFor: dashboardID, widget: widgetID, field: field] = Int(newValue.rounded()) }
+    }
+    func presentInitialOnboardingIfNeeded() {
+        guard automaticOnboardingEnabled, !onboardingCompleted else { return }
+        onboardingPresented = true
+    }
+    func completeOnboarding() {
+        onboardingCompleted = true
+        preferences.set(true, forKey: "onboarding.completed.v1")
+        onboardingPresented = false
     }
     func bootstrap() async {
         guard !started else { return }; started = true

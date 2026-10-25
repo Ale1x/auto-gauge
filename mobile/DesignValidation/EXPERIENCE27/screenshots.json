@@ -1,0 +1,135 @@
+[
+  {
+    "file": "after/62-onboarding-start.png",
+    "resultBundle": "/tmp/ag-experience-final2-ui.xcresult",
+    "test": "ConsumerExperienceTests/testFirstLaunchOnboardingAndReplay()",
+    "timestamp": 1792940681.609,
+    "source": "83148D5F-F286-4AE9-83AD-B3A26610F811.png"
+  },
+  {
+    "file": "after/61-onboarding-style.png",
+    "resultBundle": "/tmp/ag-experience-final2-ui.xcresult",
+    "test": "ConsumerExperienceTests/testFirstLaunchOnboardingAndReplay()",
+    "timestamp": 1792940680.449,
+    "source": "E9649167-0194-4177-A489-2B5D52C4D394.png"
+  },
+  {
+    "file": "after/60-onboarding-welcome.png",
+    "resultBundle": "/tmp/ag-experience-final2-ui.xcresult",
+    "test": "ConsumerExperienceTests/testFirstLaunchOnboardingAndReplay()",
+    "timestamp": 1792940676.139,
+    "source": "772E0143-8A36-4DF4-B6C2-4566CA603A52.png"
+  },
+  {
+    "file": "after/64-onboarding-large-text.png",
+    "resultBundle": "/tmp/ag-experience-final2-ui.xcresult",
+    "test": "ConsumerExperienceTests/testOnboardingLargeTextCanBeSkipped()",
+    "timestamp": 1792940786.235,
+    "source": "6394E82F-0B20-4BC3-B01F-FB46FCDCF708.png"
+  },
+  {
+    "file": "after/57-connect.png",
+    "resultBundle": "/tmp/ag-experience-final2-ui.xcresult",
+    "test": "ConsumerExperienceTests/testRemainingPagesWalkthrough()",
+    "timestamp": 1792940826.638,
+    "source": "8B6D9BDB-E6D0-45D9-BA0C-7930427723CC.png"
+  },
+  {
+    "file": "after/55-theme-maker.png",
+    "resultBundle": "/tmp/ag-experience-final2-ui.xcresult",
+    "test": "ConsumerExperienceTests/testRemainingPagesWalkthrough()",
+    "timestamp": 1792940819.614,
+    "source": "E4DE9A41-0D3A-4317-9BEA-11519540AD34.png"
+  },
+  {
+    "file": "after/54-settings.png",
+    "resultBundle": "/tmp/ag-experience-final2-ui.xcresult",
+    "test": "ConsumerExperienceTests/testRemainingPagesWalkthrough()",
+    "timestamp": 1792940812.758,
+    "source": "2AC193E6-9201-4C20-9B4B-B6B69BBE8D7B.png"
+  },
+  {
+    "file": "after/53-updates.png",
+    "resultBundle": "/tmp/ag-experience-final2-ui.xcresult",
+    "test": "ConsumerExperienceTests/testRemainingPagesWalkthrough()",
+    "timestamp": 1792940808.711,
+    "source": "6C3EDACA-8475-4982-A3C2-F0AC5972B354.png"
+  },
+  {
+    "file": "after/52-measures.png",
+    "resultBundle": "/tmp/ag-experience-final2-ui.xcresult",
+    "test": "ConsumerExperienceTests/testRemainingPagesWalkthrough()",
+    "timestamp": 1792940804.376,
+    "source": "676A5B9A-9B3D-4564-82B9-275BD2E2BD6D.png"
+  },
+  {
+    "file": "after/51-brightness.png",
+    "resultBundle": "/tmp/ag-experience-final2-ui.xcresult",
+    "test": "ConsumerExperienceTests/testRemainingPagesWalkthrough()",
+    "timestamp": 1792940800.261,
+    "source": "5568BB68-6FE8-46F1-ADED-5BA3EEBA5095.png"
+  },
+  {
+    "file": "dark/17-cluster-editor.png",
+    "resultBundle": "/tmp/ag-experience-dark-ui.xcresult",
+    "test": "ConsumerExperienceTests/testClusterGalleryAndEditor()",
+    "timestamp": 1792941074.049,
+    "source": "E810758C-C52C-466B-B42B-B3084F094AD9.png"
+  },
+  {
+    "file": "dark/62-onboarding-start.png",
+    "resultBundle": "/tmp/ag-experience-dark-ui.xcresult",
+    "test": "ConsumerExperienceTests/testFirstLaunchOnboardingAndReplay()",
+    "timestamp": 1792941095.822,
+    "source": "C11A2285-1E29-4860-B0D6-49A8314BC132.png"
+  },
+  {
+    "file": "dark/61-onboarding-style.png",
+    "resultBundle": "/tmp/ag-experience-dark-ui.xcresult",
+    "test": "ConsumerExperienceTests/testFirstLaunchOnboardingAndReplay()",
+    "timestamp": 1792941094.615,
+    "source": "F14A3120-25C8-4483-A7B8-E5069318B864.png"
+  },
+  {
+    "file": "dark/60-onboarding-welcome.png",
+    "resultBundle": "/tmp/ag-experience-dark-ui.xcresult",
+    "test": "ConsumerExperienceTests/testFirstLaunchOnboardingAndReplay()",
+    "timestamp": 1792941090.285,
+    "source": "D6EAC4E9-E8C2-43CA-B407-E2C7173BBD4A.png"
+  },
+  {
+    "file": "dark/54-settings.png",
+    "resultBundle": "/tmp/ag-experience-dark-ui.xcresult",
+    "test": "ConsumerExperienceTests/testRemainingPagesWalkthrough()",
+    "timestamp": 1792941157.081,
+    "source": "89704100-7D99-4151-98F3-62439FCC9AA3.png"
+  },
+  {
+    "file": "dark/51-brightness.png",
+    "resultBundle": "/tmp/ag-experience-dark-ui.xcresult",
+    "test": "ConsumerExperienceTests/testRemainingPagesWalkthrough()",
+    "timestamp": 1792941144.057,
+    "source": "B31D4204-9D52-4290-B498-55D3522B1313.png"
+  },
+  {
+    "file": "dark/50-home.png",
+    "resultBundle": "/tmp/ag-experience-dark-ui.xcresult",
+    "test": "ConsumerExperienceTests/testRemainingPagesWalkthrough()",
+    "timestamp": 1792941140.199,
+    "source": "343D1A3A-061B-47BD-AFFC-D67C3CA151A5.png"
+  },
+  {
+    "file": "after/17-cluster-editor.png",
+    "copyOf": "dark/17-cluster-editor.png"
+  },
+  {
+    "file": "after/50-home.png",
+    "source": "/tmp/ag-experience-home-final.png",
+    "capture": "simctl io screenshot",
+    "device": "C36AC983-5C80-4181-B850-5518082923A8",
+    "launchArguments": [
+      "--uitesting-reset"
+    ],
+    "note": "Final light appearance after semantic text-color correction; normal application launch restored afterwards."
+  }
+]

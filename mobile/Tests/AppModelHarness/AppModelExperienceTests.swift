@@ -162,4 +162,29 @@ extension AppModelExperienceTests {
         XCTAssertEqual(library.demoOwned, ["original"])
         XCTAssertEqual(library.selected(demo: false).id, "original")
     }
+    func testOnboardingCompletionPersistsWithoutChangingTheSavedExperience() async throws {
+        let (directory, preferences) = try context()
+        let model = AppModel(applicationSupportDirectory: directory, preferences: preferences, demoStepDelay: .zero)
+        await model.bootstrap()
+        model.configuration.brightness.manualPercent = 33
+        await model.saveChanges()
+        model.themes.saveCustom(accent: 0x123456, secondary: 0xabcdef, demo: true)
+        model.presentInitialOnboardingIfNeeded()
+        XCTAssertTrue(model.onboardingPresented)
+        model.completeOnboarding()
+        XCTAssertTrue(model.onboardingCompleted)
+        XCTAssertFalse(model.onboardingPresented)
+        let restarted = AppModel(applicationSupportDirectory: directory, preferences: preferences, demoStepDelay: .zero)
+        await restarted.bootstrap()
+        restarted.presentInitialOnboardingIfNeeded()
+        XCTAssertFalse(restarted.onboardingPresented)
+        XCTAssertTrue(restarted.onboardingCompleted)
+        XCTAssertTrue(restarted.isDemoMode)
+        XCTAssertEqual(restarted.configuration.brightness.manualPercent, 33)
+        XCTAssertEqual(restarted.displayTheme.accent, 0x123456)
+        restarted.onboardingPresented = true
+        restarted.completeOnboarding()
+        XCTAssertEqual(restarted.displayTheme.accent, 0x123456)
+    }
+
 }

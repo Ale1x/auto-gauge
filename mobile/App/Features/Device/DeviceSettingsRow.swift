@@ -5,12 +5,16 @@ struct DeviceSettingsRow: View {
     let detail: LocalizedStringResource
     let symbol: String
     var body: some View {
-        Label {
-            VStack(alignment: .leading, spacing: AppTheme.smallSpacing) {
-                Text(title).foregroundStyle(.primary)
-                Text(detail).font(.subheadline).foregroundStyle(.secondary)
-            }
-        } icon: { Image(systemName: symbol).foregroundStyle(AppTheme.accent).accessibilityHidden(true) }
+        HStack(spacing: AppTheme.spacing) {
+            Label {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title).foregroundStyle(Color.primary)
+                    Text(detail).font(.subheadline).foregroundStyle(Color.secondary)
+                }
+            } icon: { Image(systemName: symbol).foregroundStyle(AppTheme.accent).accessibilityHidden(true) }
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right").font(.subheadline).foregroundStyle(.tertiary).accessibilityHidden(true)
+        }
         .frame(maxWidth: .infinity, minHeight: AppTheme.minimumTouch, alignment: .leading)
         .padding(.vertical, AppTheme.smallSpacing)
     }

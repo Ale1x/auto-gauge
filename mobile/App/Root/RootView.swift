@@ -60,9 +60,14 @@ struct RootView: View {
                 else { await model.cloud.accountChanged() }
             }
         }
+        .fullScreenCover(isPresented: $model.onboardingPresented) {
+            OnboardingView { selection = .device; devicePath = [] }
+                .environment(model).preferredColorScheme(model.appearance.colorScheme)
+        }
         .task(id: model.isDemoMode) { await model.themes.start(demo: model.isDemoMode) }
         .task {
             await model.bootstrap()
+            model.presentInitialOnboardingIfNeeded()
             #if DEBUG
             if ProcessInfo.processInfo.arguments.contains(where: { ["--history-timeline", "--history-timeline-chart", "--history-timeline-table"].contains($0) }), !debugHistoryRouteApplied {
                 debugHistoryRouteApplied = true

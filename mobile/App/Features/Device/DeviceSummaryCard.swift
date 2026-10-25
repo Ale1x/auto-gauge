@@ -2,34 +2,51 @@ import SwiftUI
 
 struct DeviceSummaryCard: View {
     @Environment(AppModel.self) private var model
-    private var deviceName: some View {
-        Label("Auto Gauge", systemImage: "circle.hexagongrid.fill")
-            .font(.headline).foregroundStyle(AppTheme.accent)
-            .fixedSize(horizontal: false, vertical: true)
-    }
-    private var connectionStatus: some View {
-        Label(model.gaugeConnected ? "Collegato" : "Non collegato", systemImage: model.gaugeConnected ? "checkmark.circle.fill" : "circle")
-            .font(.caption).foregroundStyle(.secondary)
-            .fixedSize(horizontal: false, vertical: true)
-    }
+    private var hasDisplay: Bool { model.isDemoMode || model.isNativeSession }
     var body: some View {
         VStack(alignment: .leading, spacing: AppTheme.spacing) {
-            ViewThatFits(in: .horizontal) {
-                HStack { deviceName.fixedSize(); Spacer(); connectionStatus.fixedSize() }
-                VStack(alignment: .leading, spacing: AppTheme.smallSpacing) {
-                    deviceName
-                    connectionStatus
+            HStack(alignment: .top) {
+                Label(model.gaugeConnected ? "Collegato" : "Da collegare", systemImage: model.gaugeConnected ? "checkmark.circle.fill" : "link")
+                    .font(.headline).foregroundStyle(model.gaugeConnected ? AppTheme.accent : .primary)
+                Spacer()
+                if model.gaugeConnected {
+                    Menu {
+                        Button("Scollega dispositivo", systemImage: "link.badge.plus") { Task { await model.disconnectGauge() } }
+                    } label: {
+                        Label("Connessione", systemImage: "ellipsis").labelStyle(.iconOnly)
+                            .frame(minWidth: AppTheme.minimumTouch, minHeight: AppTheme.minimumTouch).contentShape(.rect)
+                    }.disabled(model.gaugeBusy)
                 }
             }
-            if (model.isDemoMode || model.isNativeSession), let dashboard = model.configuration.dashboards.first {
-                HStack { Spacer(); GaugePreview(dashboard: dashboard, theme: model.displayTheme).allowsHitTesting(false).accessibilityHidden(true); Spacer() }
-                Text("Anteprima del display").font(.subheadline).foregroundStyle(.secondary)
+            if hasDisplay, let dashboard = model.configuration.dashboards.first {
+                GaugePreview(dashboard: dashboard, theme: model.displayTheme)
+                    .frame(maxWidth: 220).frame(maxWidth: .infinity).accessibilityHidden(true)
+                HStack {
+                    Text("Anteprima · \(model.displayTheme.title)").font(.subheadline)
+                    Spacer()
+                    Text(model.configuration.dashboards.count == 1 ? "1 schermata" : "\(model.configuration.dashboards.count) schermate")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                }
+                if model.hasPendingChanges {
+                    Label("Hai modifiche da salvare", systemImage: "pencil.circle").font(.subheadline).foregroundStyle(.secondary)
+                }
+            } else {
+                Text("Accendi Auto Gauge e tienilo vicino al telefono. Ti aiuteremo a collegarlo.")
+                    .font(.subheadline).foregroundStyle(.secondary)
             }
-            if model.isDemoMode || model.isNativeSession {
-            NavigationLink(value: DeviceRoute.screens) {
-                Label("Personalizza il display", systemImage: "slider.horizontal.3")
-                    .frame(maxWidth: .infinity, minHeight: AppTheme.minimumTouch)
-            }.buttonStyle(.borderedProminent)
+            if model.gaugeBusy { ProgressView("Collegamento in corso…") }
+            if !model.gaugeConnected && model.isDemoMode {
+                Button("Ricollega", systemImage: "link") { Task { await model.connectGauge() } }
+                    .buttonStyle(.borderedProminent).foregroundStyle(AppTheme.canvas)
+                    .frame(minHeight: AppTheme.minimumTouch).disabled(model.gaugeBusy)
+            } else if !hasDisplay {
+                NavigationLink(value: DeviceRoute.bluetoothDevelopment) {
+                    Label("Cerca dispositivo", systemImage: "magnifyingglass").frame(maxWidth: .infinity, minHeight: AppTheme.minimumTouch)
+                }.buttonStyle(.borderedProminent).foregroundStyle(AppTheme.canvas)
+            } else {
+                NavigationLink(value: DeviceRoute.screens) {
+                    Text("Personalizza schermate").frame(maxWidth: .infinity, minHeight: AppTheme.minimumTouch)
+                }.buttonStyle(.borderedProminent).foregroundStyle(AppTheme.canvas)
             }
         }.modifier(AppCardStyle())
     }

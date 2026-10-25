@@ -6,21 +6,27 @@ struct FirmwarePackageFilesSection: View {
     let busy: Bool
     let chooseManifest: () -> Void
     let chooseImage: () -> Void
-
     var body: some View {
         Section {
-            LabeledContent("Informazioni aggiornamento", value: snapshot.manifestFile?.name ?? "Da scegliere")
-            Button("Scegli informazioni aggiornamento", systemImage: "doc.text", action: chooseManifest)
+            Button(action: chooseManifest) {
+                Label {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Informazioni aggiornamento").foregroundStyle(Color.primary)
+                        Text(snapshot.manifestFile?.name ?? "Scegli il file").font(.subheadline).foregroundStyle(Color.secondary)
+                    }
+                } icon: { Image(systemName: "doc.text") }
                 .frame(minHeight: AppTheme.minimumTouch)
-                .disabled(busy)
-            LabeledContent("File aggiornamento", value: snapshot.imageFile?.name ?? "Da scegliere")
-            Button("Scegli file aggiornamento", systemImage: "doc", action: chooseImage)
+            }.disabled(busy)
+            Button(action: chooseImage) {
+                Label {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("File aggiornamento").foregroundStyle(Color.primary)
+                        Text(snapshot.imageFile?.name ?? "Scegli il file").font(.subheadline).foregroundStyle(Color.secondary)
+                    }
+                } icon: { Image(systemName: "doc") }
                 .frame(minHeight: AppTheme.minimumTouch)
-                .disabled(busy)
-        } header: {
-            Text("File necessari")
-        } footer: {
-            Text("Scegli entrambi i file forniti per lo stesso aggiornamento. Verranno controllati prima di poterli usare.")
-        }
+            }.disabled(busy)
+        } header: { Text("1. Scegli i file") }
+          footer: { Text("Servono entrambi i file dello stesso aggiornamento.") }
     }
 }
