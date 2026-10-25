@@ -31,7 +31,7 @@ pr = {
 18: ('T-013', 'firmware autonomo / storage', 'OWNER INTEGRATO; PROFILO FISICO APERTO', 'ag_application + banco volatile e target SDK unificato; nessun boardprofile prodotto qualificato'),
 19: ('T-015', 'BLE / bootloader / flash', 'CATENA SOFTWARE IMPLEMENTATA; QUALIFICA APERTA', 'APP16, bridge RPC/OTA, installer e NVS boot health; trust produzione/provider nativo/prove fisiche aperti'),
 20: ('T-014 + test connessioni sequenziali/concorrenza', 'BLE sessioni / app', 'VINCOLO APPROVATO; IMPLEMENTAZIONE APERTA', 'Admission/bridge e lease sequenziali testati; gate nativo app predefinito negato, SMP/radio fisici non qualificati'),
-21: ('test app/account/offline', 'app Swift / CloudKit', 'PROVIDER APPROVATO; INTEGRAZIONE APERTA', 'iOS17/SwiftUI, identificatori Apple approvati, outbox/restore e recovery APP15 locali testati; membership/prove CloudKit live aperte'),
+21: ('test app/account/offline', 'app Swift / CloudKit', 'PROVIDER APPROVATO; INTEGRAZIONE APERTA', 'iOS27/SwiftUI (DEC-015), identificatori Apple approvati, outbox/restore e recovery APP15 locali testati; membership/prove CloudKit live aperte'),
 22: ('T-016', 'storage / BLE log / app', 'IMPLEMENTATO SU HOST; SIZING/PROVE APERTI', 'Journal bounded, import Swift-C e intenti archivio-inbox atomici;2MiB condizionati a sizing OTA, nessuna retention fisica promessa'),
 23: ('T-011 + editor', 'schema config / UI / app', 'EDITOR PROVVISORIO IMPLEMENTATO', 'mobile/Sources/GaugeCore/Editing.swift; grigliaH, O-10 non congelata, nessuna UI live'),
 24: ('T-009', 'scheduler / CAN', 'PARZIALE SU HOST; PRESTAZIONI APERTE', 'firmware/src/scheduler.c; una transazione, timeout/round-robin; nessuna garanzia5Hz'),
@@ -61,7 +61,7 @@ opened = {
 20: ('decisione destinazione prodotto', 'piano conformità', 'APERTA P1', 'Privato/commerciale non fissato'),
 21: ('drawing presa/plug + T-017', '01_OBD_INPUT / case', 'APERTA P1', 'MPN non selezionato'),
 22: ('drawing + prove tenuta/RF', 'magnete / antenna', 'APERTA P1', 'Nessun materiale o geometria selezionati'),
-23: ('requisiti app', 'iOS / account', 'SCELTE CHIUSE; PROVE LIVE APERTE', 'iOS17, SwiftUI e iCloud/CloudKit DEC-012/013; membership/provisioning live non eseguiti'),
+23: ('requisiti app', 'iOS / account', 'SCELTE CHIUSE; PROVE LIVE APERTE', 'iOS27 (DEC-015), SwiftUI e iCloud/CloudKit DEC-012/013; membership/provisioning live non eseguiti'),
 24: ('decisione owner + test primo boot', 'dashboard default', 'APERTA P2', 'Solo PID scoperti supportati'),
 }
 

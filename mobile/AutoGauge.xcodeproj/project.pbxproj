@@ -730,7 +730,7 @@
 "name" = "Debug";
 "buildSettings" = {
 "SDKROOT" = "iphoneos";
-"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
+"IPHONEOS_DEPLOYMENT_TARGET" = "27.0";
 "SWIFT_VERSION" = "6.0";
 "CLANG_ENABLE_MODULES" = "YES";
 "SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
@@ -761,7 +761,7 @@
 "name" = "Release";
 "buildSettings" = {
 "SDKROOT" = "iphoneos";
-"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
+"IPHONEOS_DEPLOYMENT_TARGET" = "27.0";
 "SWIFT_VERSION" = "6.0";
 "CLANG_ENABLE_MODULES" = "YES";
 "SWIFT_OPTIMIZATION_LEVEL" = "-O";

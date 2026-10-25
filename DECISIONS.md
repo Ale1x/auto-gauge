@@ -98,3 +98,7 @@ Origine: il proprietario approva «codice solo per nuovi telefoni» alla propost
 Il nuovo telefono richiede questo consenso locale e codice; i telefoni già riconosciuti si riconnettono senza ripeterlo. DEC-011 resta invariata: più telefoni sequenziali, una connessione attiva, nessun owner unico o reset per cambiare telefono. Il pairing non richiede iCloud o autorizzazione cloud. Il reset fisico USB/pulsanti resta manutenzione separata.
 
 Il flusso UX è fissato; tecnologia LE Secure Connections/passkey, cache dei bond, durata della finestra, rate limit, gesto menu e revoca sono dettagli da implementare/verificare in `shared/BLE_ADMISSION_PROPOSAL.md`. Non si attivano radio, chiavi o accesso alla vettura per effetto della decisione. Requisiti risultanti v0.2.8; SPEC originaria conservata invariata.
+
+## DEC-015 — 2026-10-25 — migrazione a iOS 27
+
+Origine: il proprietario chiede «Puoi migrare ad IOS 27». Il target minimo di app iPhone e package GaugeCore diventa iOS27.0; il generatore Xcode e la tracciabilità devono conservarlo. Si può usare direttamente la navigazione moderna senza fallback iOS17. Il deployment macOS del package per i test host rimane invariato, così come bundle/team/container e i gate di sicurezza BLE/OTA/cloud. La richiesta non avvia acquisti, provisioning o pubblicazione. Le evidenze precedenti con targetiOS17 restano snapshot storici.

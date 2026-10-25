@@ -57,3 +57,7 @@ La sezione precedente fotografa la baselineV0.11. Sono ora implementati e verifi
 Non sono ancora composti in un unico firmware applicativo/boardprofile. Restano reset durabile/provisioning e raccolta salute, route OTA autorizzata nel bridgeBLE, renderer e HAL fisiche, qualifica del provider nativo, copertura Service01 oltre53scalari, manutenzione journal e pacchetto per le schede. APP15 è predisposta con gate chiuso: risolvere la transazione/recovery archivio→inboxcloud prima di qualificarla per dati reali e aggiungere interop catalogo Swift→C. Nessun ordine, membership o flash è stato eseguito.
 
 La richiesta «completa tutto» rimane l’obiettivo generale; l’ultimo messaggio chiede di chiudere gli step in corso e consegnare un handoff pulito. Nessun completamento del prodotto viene dichiarato. Le due ESP32 dell’utente non sono identificate; userà una fase successiva per indicare i test.
+
+## Aggiornamento piattaforma mobile — 25 ottobre 2026
+
+DEC-015 porta il target minimo a iOS27.0, aggiornando app, package e generatore. I riferimenti iOS17 nelle baseline e nei report V0.1…V0.13 sono storici. Verifiche della migrazione in `mobile/IOS27_MIGRATION.md`.

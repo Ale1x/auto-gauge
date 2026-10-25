@@ -45,7 +45,7 @@ project_configs = []
 target_configs = []
 for mode in ('Debug', 'Release'):
     project_configs.append(obj('project-'+mode, isa='XCBuildConfiguration', name=mode, buildSettings={
-        'SDKROOT': 'iphoneos', 'IPHONEOS_DEPLOYMENT_TARGET': '17.0', 'SWIFT_VERSION': '6.0',
+        'SDKROOT': 'iphoneos', 'IPHONEOS_DEPLOYMENT_TARGET': '27.0', 'SWIFT_VERSION': '6.0',
         'CLANG_ENABLE_MODULES': 'YES', 'SWIFT_OPTIMIZATION_LEVEL': '-Onone' if mode == 'Debug' else '-O',
     }))
     target_configs.append(obj('target-'+mode, isa='XCBuildConfiguration', name=mode, buildSettings={

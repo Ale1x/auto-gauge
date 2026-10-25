@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "AutoGaugeMobile",
-    platforms: [.iOS(.v17), .macOS(.v13)],
+    platforms: [.iOS("27.0"), .macOS(.v13)],
     products: [.library(name: "GaugeCore", targets: ["GaugeCore"])],
     targets: [
         .target(name: "GaugeCore", resources: [.process("Resources")]),

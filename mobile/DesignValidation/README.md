@@ -26,3 +26,7 @@ Restano non eseguiti: collaudo interattivo VoiceOver/VoiceControl, misurazione d
 I PNG salvati fotografano APP-04; i nuovi accessi/pagine Bluetooth APP-07 e CloudKit APP-05/06 non sono inclusi in quei render. Usano componenti e controlli nativi coerenti, ma non viene estesa a tali schermate la verifica visiva precedente.
 
 La successiva [verifica APP-09](APP09/README.md) aggiunge screenshot reali del simulatore per grafico, filtri e tabella storici, senza estendere retroattivamente queste evidenze APP-04 alle altre schermate.
+
+## Migrazione successiva a iOS27
+
+DEC-015 porta il minimo corrente a iOS27.0 e rimuove il fallback tabItem. Le immagini e i risultati sopra restano acquisizioni del target/runtime precedenti: non sono una verifica visiva su iOS27.

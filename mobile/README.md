@@ -2,6 +2,10 @@
 
 App SwiftUI in italiano, con configurazione dashboard, anteprima statica, luminosità, catalogo PID e storici. Editor e importer comunicano con un **endpoint device in memoria tramite packet AG reali**, codificati/decodificati in entrambe le direzioni. Il flusso demo non usa radio, socket, vettura o OTA. Le sezioni Bluetooth di sviluppo e CloudKit sono separate e opt-in; il default resta locale/simulato e non carica fixture. Adapter compilati non equivalgono a radio, sicurezza o cloud qualificati. La simulazione del device è sempre indicata nella UI.
 
+## Target corrente
+
+Dal 25 ottobre 2026 il target minimo dell'app e del package GaugeCore è **iOS 27.0** (DEC-015), compilato con Xcode 27/Swift 6.4 e SDK iOS 27. La navigazione usa direttamente `Tab`, senza fallback iOS17. Le sezioni APP-04…APP-16 e le immagini conservano le verifiche storiche con target precedente; non dimostrano esecuzione sul runtime iOS27. Il generatore del progetto conserva il nuovo minimo anche nelle build cloud-development.
+
 ## Avvio e verifica
 
 Dalla radice del repository:
@@ -39,7 +43,7 @@ Il canale consente una sola connessione attiva e lega i pending a lease + reques
 
 Limiti1–3 dashboard e1–5 widget; ID stabili dopo rimozioni, geometrie su griglia intera0–10000. Selezione dalla lista o anteprima, trascinamento, slider e stepper coerenti con gli stessi metodi core. I riquadri che superano il bordo circolare producono un avviso senza cambiare la validazione rettangolare condivisa.
 
-Target **iOS17**, editor libero, font e disposizione sono ipotesi di sviluppo per O-10/O-23. Il modello non dichiara fit finale del pannello. Ai font di accessibilità la visualizzazione geometrica usa gli ID; lista e controlli conservano nomi, valori dimostrativi, selezione e funzioni con testo dinamico. Nessuna dashboard live sull’iPhone.
+Target minimo **iOS 27**, editor libero, font e disposizione sono ipotesi di sviluppo per O-10/O-23. Il modello non dichiara fit finale del pannello. Ai font di accessibilità la visualizzazione geometrica usa gli ID; lista e controlli conservano nomi, valori dimostrativi, selezione e funzioni con testo dinamico. Nessuna dashboard live sull’iPhone.
 
 ## Storici
 
