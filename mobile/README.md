@@ -12,7 +12,7 @@ Le altre pagine e il nuovo primo avvio sono documentati in [DesignValidation/EXP
 
 ## Introduzione iniziale
 
-Il primo avvio propone tre passaggi brevi e saltabili. La prova degli stili è locale e non cambia il tema salvato o i diritti di acquisto. La scelta finale apre la modalità dispositivo oppure la demo, senza iniziare automaticamente la ricerca Bluetooth. `onboarding.completed.v1` ricorda il completamento; anche Salta conclude l’introduzione. Le installazioni precedenti senza indicatore la vedono una volta dopo questo aggiornamento.
+Il primo avvio propone tre pagine illustrate, scorrevoli e saltabili: il display, gli stili e il collegamento. Le immagini sono incluse nell’app e disponibili offline; sono illustrazioni introduttive, mentre le anteprime effettive dei temi restano nel marketplace. L’introduzione non cambia il tema salvato o i diritti di acquisto. La scelta finale apre la modalità dispositivo oppure la demo, senza iniziare automaticamente la ricerca Bluetooth. `onboarding.completed.v1` ricorda il completamento; anche Salta conclude l’introduzione. Le installazioni precedenti senza indicatore la vedono una volta dopo questo aggiornamento.
 
 Il pulsante temporaneo **Impostazioni → Rivedi introduzione** riapre il percorso. Non cancella impostazioni o dati. I test UI ordinari evitano la presentazione automatica; i casi dedicati aggiungono `--uitesting-onboarding` per verificare primo avvio, completamento, ripetizione e scelta della modalità.
 

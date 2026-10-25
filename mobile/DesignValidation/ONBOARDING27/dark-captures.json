@@ -1,0 +1,59 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+        "deviceName" : "Auto Gauge UI checks • iOS 27",
+        "exportedFileName" : "6FE6C109-E83C-453F-A59C-E44EB4BA7575.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "62-onboarding-start_0_65CD14E9-710D-418F-B1C3-DE87C79D2E1D.png",
+        "timestamp" : 1792942160.157
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+        "deviceName" : "Auto Gauge UI checks • iOS 27",
+        "exportedFileName" : "4D9A5650-0E39-4D88-9FAE-0100288B5864.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "61-onboarding-style_0_ACEA3A42-E95F-4DFC-838A-4189280347EE.png",
+        "timestamp" : 1792942157.111
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+        "deviceName" : "Auto Gauge UI checks • iOS 27",
+        "exportedFileName" : "4EAB3FDF-5FBE-418B-AA99-77B4554A1D02.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "60-onboarding-welcome_0_3CDFAA3E-9C86-4CCA-9225-2BCA1E80E5DF.png",
+        "timestamp" : 1792942143.86
+      }
+    ],
+    "testIdentifier" : "ConsumerExperienceTests/testFirstLaunchOnboardingAndReplay()",
+    "testIdentifierURL" : "test://com.apple.xcode/AutoGauge/AutoGaugeUITests/ConsumerExperienceTests/testFirstLaunchOnboardingAndReplay"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+        "deviceName" : "Auto Gauge UI checks • iOS 27",
+        "exportedFileName" : "08FDAB8A-3A3E-4B44-87A6-55DA0C529016.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "66-onboarding-start-large-text_0_2C949868-457D-4911-96D0-E58DEFC2BADF.png",
+        "timestamp" : 1792942201.561
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+        "deviceName" : "Auto Gauge UI checks • iOS 27",
+        "exportedFileName" : "8D77133E-4262-4E3C-ABAB-6C365F8A1508.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "65-onboarding-style-large-text_0_BE26AF69-407A-4FC7-B62B-2B0D35A729BB.png",
+        "timestamp" : 1792942199.172
+      }
+    ],
+    "testIdentifier" : "ConsumerExperienceTests/testOnboardingLargeTextCanFinish()",
+    "testIdentifierURL" : "test://com.apple.xcode/AutoGauge/AutoGaugeUITests/ConsumerExperienceTests/testOnboardingLargeTextCanFinish"
+  }
+]

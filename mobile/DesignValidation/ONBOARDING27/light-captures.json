@@ -1,0 +1,50 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+        "deviceName" : "Auto Gauge UI checks • iOS 27",
+        "exportedFileName" : "C8DF64BA-403A-49FF-8902-FCB199E30630.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "62-onboarding-start_0_D059F3E3-16DB-4CD5-84C4-7F7A0D8447AC.png",
+        "timestamp" : 1792941893.217
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+        "deviceName" : "Auto Gauge UI checks • iOS 27",
+        "exportedFileName" : "025CC805-357C-4093-B3A9-D00C8731FD0A.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "61-onboarding-style_0_2736FC56-0353-443E-81CF-60F33265FC3F.png",
+        "timestamp" : 1792941889.968
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+        "deviceName" : "Auto Gauge UI checks • iOS 27",
+        "exportedFileName" : "4EB8C928-BC3C-4E97-8FCB-F162915650F3.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "60-onboarding-welcome_0_220697B1-CE20-47EC-A81B-BE99A2794FEA.png",
+        "timestamp" : 1792941876.92
+      }
+    ],
+    "testIdentifier" : "ConsumerExperienceTests/testFirstLaunchOnboardingAndReplay()",
+    "testIdentifierURL" : "test://com.apple.xcode/AutoGauge/AutoGaugeUITests/ConsumerExperienceTests/testFirstLaunchOnboardingAndReplay"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+        "deviceName" : "Auto Gauge UI checks • iOS 27",
+        "exportedFileName" : "57ACAE9A-83F5-4880-A6D8-97C3F857BAEB.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "64-onboarding-large-text_0_34E92881-132D-4744-9DD7-ED3715CD3F84.png",
+        "timestamp" : 1792941949.907
+      }
+    ],
+    "testIdentifier" : "ConsumerExperienceTests/testOnboardingLargeTextCanBeSkipped()",
+    "testIdentifierURL" : "test://com.apple.xcode/AutoGauge/AutoGaugeUITests/ConsumerExperienceTests/testOnboardingLargeTextCanBeSkipped"
+  }
+]

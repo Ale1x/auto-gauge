@@ -262,11 +262,14 @@ final class ConsumerExperienceTests: XCTestCase {
         XCTAssertTrue(next.waitForExistence(timeout: 10))
         capture("60-onboarding-welcome", requiresDemoBanner: false)
         next.tap()
-        let pixel = app.segmentedControls.buttons["Pixel"]
-        XCTAssertTrue(pixel.waitForExistence(timeout: 5)); pixel.tap()
-        XCTAssertTrue(pixel.isSelected)
+        XCTAssertTrue(app.staticTexts["onboarding.heading.1"].waitForExistence(timeout: 5))
+        app.buttons["onboarding.back"].tap()
+        XCTAssertTrue(app.staticTexts["onboarding.heading.0"].waitForExistence(timeout: 5))
+        app.swipeLeft()
+        XCTAssertTrue(app.staticTexts["onboarding.heading.1"].waitForExistence(timeout: 5))
         capture("61-onboarding-style", requiresDemoBanner: false)
         next.tap()
+        XCTAssertTrue(app.buttons["onboarding.connect"].waitForExistence(timeout: 5))
         capture("62-onboarding-start", requiresDemoBanner: false)
         app.buttons["onboarding.demo"].tap()
         XCTAssertTrue(app.buttons["onboarding.demo"].waitForNonExistence(timeout: 10))
@@ -306,6 +309,28 @@ final class ConsumerExperienceTests: XCTestCase {
         skip.tap()
         XCTAssertTrue(skip.waitForNonExistence(timeout: 5))
         XCTAssertTrue(app.tabBars.buttons["Dispositivo"].isHittable)
+    }
+    func testOnboardingLargeTextCanFinish() {
+        app.terminate()
+        app.launchArguments = ["--uitesting-reset", "--uitesting-onboarding", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch()
+        let next = app.buttons["onboarding.next"]
+        XCTAssertTrue(next.waitForExistence(timeout: 10))
+        XCTAssertTrue(next.isHittable)
+        next.tap()
+        XCTAssertTrue(app.staticTexts["onboarding.heading.1"].waitForExistence(timeout: 5))
+        XCTAssertTrue(next.isHittable)
+        capture("65-onboarding-style-large-text", requiresDemoBanner: false)
+        next.tap()
+        let demo = app.buttons["onboarding.demo"]
+        XCTAssertTrue(demo.waitForExistence(timeout: 5))
+        XCTAssertTrue(demo.isHittable)
+        XCTAssertTrue(app.buttons["onboarding.connect"].isHittable)
+        XCTAssertEqual(app.buttons["onboarding.connect"].label, "Collega Auto Gauge")
+        capture("66-onboarding-start-large-text", requiresDemoBanner: false)
+        demo.tap()
+        XCTAssertTrue(demo.waitForNonExistence(timeout: 10))
+        XCTAssertTrue(app.tabBars.buttons["Dispositivo"].isSelected)
     }
     func testBrightnessSaveAndDiscard() {
         app.staticTexts["Luminosità"].tap()
