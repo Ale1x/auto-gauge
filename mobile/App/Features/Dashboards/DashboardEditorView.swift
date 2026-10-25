@@ -62,9 +62,11 @@ struct DashboardEditorView: View {
                 }
                 if let selectedID, let widget = dashboard.widgets.first(where: { $0.id == selectedID }),
                    let rectangle = try? EditingRectangle(widget.frame) {
-                    Section("Posizione e dimensioni") {
-                        ForEach(GeometryField.allCases, id: \.self) { field in
-                            GeometryControlView(field: field, rectangle: rectangle, widgetID: selectedID, dashboardID: dashboardID)
+                    Section {
+                        DisclosureGroup("Regola posizione e dimensioni") {
+                            ForEach(GeometryField.allCases, id: \.self) { field in
+                                GeometryControlView(field: field, rectangle: rectangle, widgetID: selectedID, dashboardID: dashboardID)
+                            }
                         }
                     }
                 }

@@ -7,7 +7,7 @@ struct DeviceNavigationView: View {
             DeviceView().navigationDestination(for: DeviceRoute.self) { route in
                 Group {
                 switch route {
-                case .screens: DashboardListView()
+                case .screens: DashboardListView(showsHeading: false)
                 case .brightness: BrightnessView()
                 case .catalog: CatalogView()
                 case .firmware: FirmwareView()

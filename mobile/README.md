@@ -6,6 +6,8 @@ La modalità demo, inizialmente attiva, permette di provare tutte le funzioni se
 
 La UI e le relative verifiche sono documentate in [DesignValidation/UX27](DesignValidation/UX27/README.md). Il marketplace e la revisione delle superfici sono documentati in [DesignValidation/THEMES27](DesignValidation/THEMES27/README.md). Le sezioni APP e i dettagli di protocollo più sotto documentano anche l’evoluzione storica del progetto.
 
+La revisione compatta della panoramica e delle azioni di Schermate è documentata in [DesignValidation/SCREENS27](DesignValidation/SCREENS27/README.md).
+
 ## Temi e acquisti
 
 Il catalogo include il tema originale gratuito e 59 temi a pagamento, fra interpretazioni sportive e creazioni originali, con prezzo iniziale approvato di 1,99 € per tema. Il creatore di colori è gratuito. Dieci famiglie grafiche comprendono sport, pixel/16 bit, arcade, terminale, synthwave, analogico, minimal, blueprint, endurance e rétro. I 60 temi complessivi si esplorano per categoria; la ricerca ha una pagina dedicata e la creazione vive nella raccolta personale. Colori e intestazioni dei temi cambiano solo il quadrante: sfondi e superfici dell’app mantengono la palette adattiva comune.

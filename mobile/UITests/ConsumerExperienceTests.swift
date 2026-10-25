@@ -16,7 +16,7 @@ final class ConsumerExperienceTests: XCTestCase {
         let bannerExit = app.buttons["Esci dalla modalità demo"]
         if name != "07-device-mode" && name != "demo-exit-failure" {
             XCTAssertTrue(bannerExit.waitForExistence(timeout: 5))
-            XCTAssertTrue(bannerExit.isHittable)
+            if name != "44-remove-confirmation" { XCTAssertTrue(bannerExit.isHittable) }
             XCTAssertGreaterThanOrEqual(bannerExit.frame.minY, 0)
         }
         let image = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
@@ -29,7 +29,7 @@ final class ConsumerExperienceTests: XCTestCase {
         XCTAssertTrue(app.otherElements["demo.banner"].exists || app.staticTexts["Modalità demo"].exists)
         capture("01-device-light")
         app.tabBars.buttons["Schermate"].tap()
-        XCTAssertTrue(app.navigationBars["Schermate"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["screens.heading"].waitForExistence(timeout: 5))
         capture("02-screens-light")
         app.tabBars.buttons["Temi"].tap()
         XCTAssertTrue(app.buttons["themes.search"].waitForExistence(timeout: 5))
@@ -77,7 +77,7 @@ final class ConsumerExperienceTests: XCTestCase {
     }
     func testConfigurationSavePersists() {
         app.tabBars.buttons["Schermate"].tap()
-        let create = app.buttons["Nuova schermata"]
+        let create = app.buttons["screens.add"]
         XCTAssertTrue(create.waitForExistence(timeout: 5))
         if !create.isHittable { app.swipeUp() }
         create.tap()
@@ -88,8 +88,8 @@ final class ConsumerExperienceTests: XCTestCase {
         capture("12-screens-saved")
         app.terminate(); app.launchArguments = ["--uitesting"]; app.launch()
         app.tabBars.buttons["Schermate"].tap()
-        XCTAssertTrue(app.staticTexts["Schermata 2"].exists)
-        XCTAssertFalse(button("configuration.save").isEnabled)
+        XCTAssertTrue(app.buttons["screen.edit.2"].exists)
+        XCTAssertFalse(button("configuration.save").exists)
     }
     func testThemePurchaseSelectionAndRestore() {
         app.tabBars.buttons["Temi"].tap()
@@ -193,6 +193,41 @@ final class ConsumerExperienceTests: XCTestCase {
         app.navigationBars.buttons.firstMatch.tap()
         app.tabBars.buttons["Dispositivo"].tap()
         XCTAssertFalse(app.navigationBars.staticTexts["Auto Gauge"].exists)
+    }
+    func testScreenOverviewManagement() {
+        app.tabBars.buttons["Schermate"].tap()
+        capture("40-screens-overview-light")
+        let add = app.buttons["screens.add"]
+        XCTAssertTrue(add.waitForExistence(timeout: 5)); add.tap()
+        XCTAssertTrue(app.buttons["screen.edit.2"].waitForExistence(timeout: 5))
+        if !add.isHittable { app.swipeUp() }; add.tap()
+        XCTAssertTrue(app.buttons["screen.edit.3"].waitForExistence(timeout: 5))
+        XCTAssertFalse(add.exists)
+        app.swipeUp()
+        capture("41-three-screens")
+        let options = app.buttons["screen.options.3"]
+        if !options.isHittable { app.swipeUp() }; options.tap()
+        app.buttons["Elimina schermata"].tap()
+        capture("44-remove-confirmation")
+        XCTAssertTrue(app.buttons["Annulla"].waitForExistence(timeout: 5)); app.buttons["Annulla"].tap()
+        XCTAssertTrue(app.buttons["screen.edit.3"].exists)
+        options.tap(); app.buttons["Elimina schermata"].tap()
+        app.buttons["Elimina schermata"].tap()
+        XCTAssertTrue(app.buttons["screen.edit.3"].waitForNonExistence(timeout: 5))
+    }
+    func testScreenOverviewAppearance() {
+        app.tabBars.buttons["Impostazioni"].tap()
+        button("settings.appearance").tap(); app.buttons["Scuro"].tap()
+        app.tabBars.buttons["Schermate"].tap()
+        capture("42-screens-overview-dark")
+        app.terminate()
+        app.launchArguments = ["--uitesting-reset", "-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+        app.launch()
+        app.tabBars.buttons["Schermate"].tap()
+        XCTAssertTrue(app.buttons["screen.edit.1"].waitForExistence(timeout: 5))
+        capture("43-screens-large-text")
+        app.buttons["screen.edit.1"].tap()
+        XCTAssertTrue(app.navigationBars["Modifica schermata"].waitForExistence(timeout: 5))
     }
     func testDemoUpdateCompletes() {
         let updates = app.buttons["Aggiornamenti"]

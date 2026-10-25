@@ -18,7 +18,7 @@ struct DraftActionsView: View {
                 Label("Salva modifiche", systemImage: "checkmark")
                     .frame(maxWidth: .infinity, minHeight: AppTheme.minimumTouch)
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(.borderedProminent).foregroundStyle(AppTheme.canvas)
             .accessibilityIdentifier("configuration.save")
             .disabled(!model.hasPendingChanges || model.isSaving)
             AppActionButton(title: "Annulla", symbol: "arrow.uturn.backward",

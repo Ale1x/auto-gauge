@@ -1,0 +1,58 @@
+[
+  {
+    "file": "after/44-remove-confirmation.png",
+    "resultBundle": "/tmp/ag-screens-management.xcresult",
+    "test": "ConsumerExperienceTests/testScreenOverviewManagement()",
+    "source": "89771776-E149-4BFE-AE6D-C55E6569B158.png",
+    "timestamp": 1792939269.262
+  },
+  {
+    "file": "after/41-three-screens.png",
+    "resultBundle": "/tmp/ag-screens-management.xcresult",
+    "test": "ConsumerExperienceTests/testScreenOverviewManagement()",
+    "source": "D10D1E52-AB61-408F-B3D0-77F0A1CED807.png",
+    "timestamp": 1792939263.701
+  },
+  {
+    "file": "after/40-screens-overview-light.png",
+    "resultBundle": "/tmp/ag-screens-management.xcresult",
+    "test": "ConsumerExperienceTests/testScreenOverviewManagement()",
+    "source": "7E4FF500-9BC8-438F-9698-396081D111D9.png",
+    "timestamp": 1792939256.643
+  },
+  {
+    "file": "after/17-cluster-editor.png",
+    "resultBundle": "/tmp/ag-screens-regression.xcresult",
+    "test": "ConsumerExperienceTests/testClusterGalleryAndEditor()",
+    "source": "84562E84-6393-4772-A9C7-D0BB6D18E972.png",
+    "timestamp": 1792939339.163
+  },
+  {
+    "file": "after/16-cluster-gallery.png",
+    "resultBundle": "/tmp/ag-screens-regression.xcresult",
+    "test": "ConsumerExperienceTests/testClusterGalleryAndEditor()",
+    "source": "4FDACF9E-5D42-47C8-8550-63A8917D01AC.png",
+    "timestamp": 1792939335.571
+  },
+  {
+    "file": "after/12-screens-saved.png",
+    "resultBundle": "/tmp/ag-screens-regression.xcresult",
+    "test": "ConsumerExperienceTests/testConfigurationSavePersists()",
+    "source": "98CF1C92-50AF-43F9-960A-A67ACBF36516.png",
+    "timestamp": 1792939355.329
+  },
+  {
+    "file": "after/43-screens-large-text.png",
+    "resultBundle": "/tmp/ag-screens-regression.xcresult",
+    "test": "ConsumerExperienceTests/testScreenOverviewAppearance()",
+    "source": "9565A29E-221D-4B8B-B05D-CA6495F2E15E.png",
+    "timestamp": 1792939415.407
+  },
+  {
+    "file": "after/42-screens-overview-dark.png",
+    "resultBundle": "/tmp/ag-screens-regression.xcresult",
+    "test": "ConsumerExperienceTests/testScreenOverviewAppearance()",
+    "source": "606FC1A4-EE4D-43B0-A6F9-8F36FD13E99C.png",
+    "timestamp": 1792939405.269
+  }
+]
