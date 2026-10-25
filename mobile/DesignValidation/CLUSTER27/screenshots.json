@@ -1,0 +1,34 @@
+[
+  {
+    "test": "ConsumerExperienceTests/testAppearanceAndDeviceMode()",
+    "image": "07-device-mode.png"
+  },
+  {
+    "test": "ConsumerExperienceTests/testAppearanceAndDeviceMode()",
+    "image": "05-settings-dark.png"
+  },
+  {
+    "test": "ConsumerExperienceTests/testClusterGalleryAndEditor()",
+    "image": "17-cluster-editor.png"
+  },
+  {
+    "test": "ConsumerExperienceTests/testClusterGalleryAndEditor()",
+    "image": "16-cluster-gallery.png"
+  },
+  {
+    "test": "ConsumerExperienceTests/testDemoNavigationAndSingleBanner()",
+    "image": "01-device-light.png"
+  },
+  {
+    "test": "ConsumerExperienceTests/testLargeTextRemainsNavigable()",
+    "image": "14-settings-large-text.png"
+  },
+  {
+    "test": "ConsumerExperienceTests/testLargeTextRemainsNavigable()",
+    "image": "15-device-large-text-scrolled.png"
+  },
+  {
+    "test": "ConsumerExperienceTests/testLargeTextRemainsNavigable()",
+    "image": "13-device-large-text.png"
+  }
+]

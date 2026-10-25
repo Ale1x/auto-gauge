@@ -93,3 +93,28 @@ final class DemoExperienceTests: XCTestCase {
         await transport.disconnect()
     }
 }
+
+
+extension DemoExperienceTests {
+    func testClusterLayoutMatchesReferenceAndPreservesMeasures() throws {
+        XCTAssertTrue(GaugeClusterLayout.frames(count: 0).isEmpty)
+        XCTAssertTrue(GaugeClusterLayout.frames(count: 6).isEmpty)
+        var configuration = DemoData.configuration
+        let measures = configuration.dashboards[0].widgets.map(\.pid)
+        GaugeClusterLayout.apply(to: &configuration, dashboardID: 1)
+        XCTAssertEqual(configuration.dashboards[0].widgets.map(\.pid), measures)
+        XCTAssertEqual(configuration.dashboards[0].widgets[0].frame.y, 132.0 / 466, accuracy: 0.000001)
+        try ConfigurationValidator.validate(configuration, catalog: InMemoryGaugeEndpoint.catalog)
+        let reopened = try JSONDecoder().decode(GaugeConfiguration.self, from: JSONEncoder().encode(configuration))
+        XCTAssertEqual(GaugeClusterLayout.upgradingDefaultDemo(reopened), reopened)
+    }
+    func testClusterUpgradePreservesCustomPositionsAndBrightness() {
+        var configuration = DemoData.configuration
+        configuration.brightness.manualPercent = 31
+        let upgraded = GaugeClusterLayout.upgradingDefaultDemo(configuration)
+        XCTAssertEqual(upgraded.brightness.manualPercent, 31)
+        XCTAssertNotEqual(upgraded.dashboards[0].widgets[0].frame, configuration.dashboards[0].widgets[0].frame)
+        configuration.dashboards[0].widgets[0].frame.x = 0.3
+        XCTAssertEqual(GaugeClusterLayout.upgradingDefaultDemo(configuration), configuration)
+    }
+}

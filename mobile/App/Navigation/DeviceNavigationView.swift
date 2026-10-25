@@ -13,7 +13,7 @@ struct DeviceNavigationView: View {
                 case .firmware: FirmwareView()
                 case .bluetoothDevelopment: BluetoothDevelopmentView()
                 }
-                }
+                }.toolbarVisibility(.visible, for: .navigationBar)
             }
         }
     }

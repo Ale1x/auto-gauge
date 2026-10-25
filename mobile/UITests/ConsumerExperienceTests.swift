@@ -29,7 +29,7 @@ final class ConsumerExperienceTests: XCTestCase {
         XCTAssertTrue(app.otherElements["demo.banner"].exists || app.staticTexts["Modalità demo"].exists)
         capture("01-device-light")
         app.tabBars.buttons["Schermate"].tap()
-        XCTAssertTrue(app.navigationBars["Schermate del display"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Schermate"].waitForExistence(timeout: 5))
         capture("02-screens-light")
         app.tabBars.buttons["Viaggi"].tap()
         XCTAssertTrue(app.navigationBars["Viaggi"].waitForExistence(timeout: 5))
@@ -74,7 +74,9 @@ final class ConsumerExperienceTests: XCTestCase {
     func testConfigurationSavePersists() {
         app.tabBars.buttons["Schermate"].tap()
         let create = app.buttons["Nuova schermata"]
-        XCTAssertTrue(create.waitForExistence(timeout: 5)); create.tap()
+        XCTAssertTrue(create.waitForExistence(timeout: 5))
+        if !create.isHittable { app.swipeUp() }
+        create.tap()
         let save = button("configuration.save")
         if !save.isHittable { app.swipeUp() }
         XCTAssertTrue(save.isEnabled); save.tap()
@@ -120,6 +122,18 @@ final class ConsumerExperienceTests: XCTestCase {
         app.tabBars.buttons["Impostazioni"].tap()
         XCTAssertTrue(app.buttons["settings.appearance"].waitForExistence(timeout: 5))
         capture("14-settings-large-text")
+    }
+    func testClusterGalleryAndEditor() {
+        XCTAssertFalse(app.navigationBars.staticTexts["Auto Gauge"].exists)
+        app.tabBars.buttons["Schermate"].tap()
+        XCTAssertTrue(app.buttons["screen.edit.1"].waitForExistence(timeout: 5))
+        capture("16-cluster-gallery")
+        app.buttons["screen.edit.1"].tap()
+        XCTAssertTrue(app.navigationBars["Modifica schermata"].waitForExistence(timeout: 5))
+        capture("17-cluster-editor")
+        app.navigationBars.buttons.firstMatch.tap()
+        app.tabBars.buttons["Dispositivo"].tap()
+        XCTAssertFalse(app.navigationBars.staticTexts["Auto Gauge"].exists)
     }
     func testDemoUpdateCompletes() {
         let updates = app.buttons["Aggiornamenti"]

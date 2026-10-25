@@ -29,13 +29,16 @@ def render(value):
 
 source_files = sorted((ROOT/'App').rglob('*.swift'))
 source_refs = [obj('file:'+str(p.relative_to(ROOT)), isa='PBXFileReference', lastKnownFileType='sourcecode.swift', path=str(p.relative_to(ROOT)), sourceTree='<group>') for p in source_files]
+font_paths = [ROOT/'App/Resources/Fonts/Montserrat-Medium.ttf', ROOT/'App/Resources/Fonts/OFL.txt']
+font_refs = [obj('resource:'+p.name, isa='PBXFileReference', lastKnownFileType='file', path=str(p.relative_to(ROOT)), sourceTree='<group>') for p in font_paths]
+font_builds = [obj('resource-build:'+p.name, isa='PBXBuildFile', fileRef=ref) for p,ref in zip(font_paths,font_refs)]
 asset = obj('assets', isa='PBXFileReference', lastKnownFileType='folder.assetcatalog', path='App/Assets.xcassets', sourceTree='<group>')
 product = obj('app-product', isa='PBXFileReference', explicitFileType='wrapper.application', includeInIndex='0', path='AutoGauge.app', sourceTree='BUILT_PRODUCTS_DIR')
 test_files = sorted((ROOT/'UITests').glob('*.swift'))
 test_refs = [obj('test-file:'+p.name, isa='PBXFileReference', lastKnownFileType='sourcecode.swift', path=str(p.relative_to(ROOT)), sourceTree='<group>') for p in test_files]
 test_product = obj('test-product', isa='PBXFileReference', explicitFileType='wrapper.cfbundle', includeInIndex='0', path='AutoGaugeUITests.xctest', sourceTree='BUILT_PRODUCTS_DIR')
 products = obj('products', isa='PBXGroup', children=[product, test_product], name='Products', sourceTree='<group>')
-root_group = obj('root-group', isa='PBXGroup', children=[*source_refs, *test_refs, asset, products], sourceTree='<group>')
+root_group = obj('root-group', isa='PBXGroup', children=[*source_refs, *test_refs, *font_refs, asset, products], sourceTree='<group>')
 package = obj('package', isa='XCLocalSwiftPackageReference', relativePath='.')
 package_product = obj('package-product', isa='XCSwiftPackageProductDependency', package=package, productName='GaugeCore')
 app_sources = [obj('source:'+str(p.relative_to(ROOT)), isa='PBXBuildFile', fileRef=ref) for p,ref in zip(source_files,source_refs)]
@@ -43,7 +46,7 @@ asset_build = obj('asset-build', isa='PBXBuildFile', fileRef=asset)
 core_link = obj('core-link', isa='PBXBuildFile', productRef=package_product)
 sources = obj('sources', isa='PBXSourcesBuildPhase', buildActionMask='2147483647', files=app_sources, runOnlyForDeploymentPostprocessing='0')
 frameworks = obj('frameworks', isa='PBXFrameworksBuildPhase', buildActionMask='2147483647', files=[core_link], runOnlyForDeploymentPostprocessing='0')
-resources = obj('resources', isa='PBXResourcesBuildPhase', buildActionMask='2147483647', files=[asset_build], runOnlyForDeploymentPostprocessing='0')
+resources = obj('resources', isa='PBXResourcesBuildPhase', buildActionMask='2147483647', files=[asset_build, *font_builds], runOnlyForDeploymentPostprocessing='0')
 project_configs = []
 target_configs = []
 for mode in ('Debug', 'Release'):
@@ -53,7 +56,7 @@ for mode in ('Debug', 'Release'):
     }))
     target_configs.append(obj('target-'+mode, isa='XCBuildConfiguration', name=mode, buildSettings={
         'PRODUCT_NAME': 'AutoGauge', 'PRODUCT_BUNDLE_IDENTIFIER': 'it.ale1x.autogauge',
-        'GENERATE_INFOPLIST_FILE': 'YES', 'INFOPLIST_KEY_CFBundleDisplayName': 'Auto Gauge',
+        'GENERATE_INFOPLIST_FILE': 'YES', 'INFOPLIST_FILE': 'Config/AppInfo.plist', 'INFOPLIST_KEY_CFBundleDisplayName': 'Auto Gauge',
         'INFOPLIST_KEY_LSApplicationCategoryType': 'public.app-category.utilities',
         'INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription': 'Auto Gauge usa il Bluetooth per collegarsi al tuo dispositivo quando lo richiedi.',
         'INFOPLIST_KEY_UILaunchScreen_Generation': 'YES',

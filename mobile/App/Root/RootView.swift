@@ -4,6 +4,7 @@ import CloudKit
 struct RootView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.scenePhase) private var scenePhase
+    @State private var demoBannerHeight: CGFloat = 44
     @State private var selection = AppTab.device
     @State private var devicePath: [DeviceRoute] = []
     @State private var dashboardPath: [DashboardRoute] = []
@@ -11,20 +12,32 @@ struct RootView: View {
     @State private var pendingCloudAccountChange = false
     @State private var debugHistoryRouteApplied = false
     @State private var debugFirmwareRouteApplied = false
+    private var bannerInset: CGFloat { model.isDemoMode ? demoBannerHeight : 0 }
     var body: some View {
         @Bindable var model = model
-        VStack(spacing: 0) {
-            if model.isDemoMode { SimulationNotice().fixedSize(horizontal: false, vertical: true).layoutPriority(1) }
-            TabView(selection: $selection) {
-                Tab("Dispositivo", systemImage: "circle.hexagongrid", value: .device) { DeviceNavigationView(path: $devicePath) }
-                Tab("Schermate", systemImage: "rectangle.3.group", value: .dashboards) { DashboardNavigationView(path: $dashboardPath) }
-                Tab("Viaggi", systemImage: "clock.arrow.circlepath", value: .histories) { HistoryNavigationView(path: $historyPath) }
-                Tab("Impostazioni", systemImage: "gearshape", value: .account) { NavigationStack { AccountView() } }
+        TabView(selection: $selection) {
+            Tab("Dispositivo", systemImage: "circle.hexagongrid", value: .device) {
+                DeviceNavigationView(path: $devicePath).padding(.top, bannerInset)
             }
-            .frame(minHeight: 0, maxHeight: .infinity)
-            .clipped()
+            Tab("Schermate", systemImage: "rectangle.3.group", value: .dashboards) {
+                DashboardNavigationView(path: $dashboardPath).padding(.top, bannerInset)
+            }
+            Tab("Viaggi", systemImage: "clock.arrow.circlepath", value: .histories) {
+                HistoryNavigationView(path: $historyPath).padding(.top, bannerInset)
+            }
+            Tab("Impostazioni", systemImage: "gearshape", value: .account) {
+                NavigationStack { AccountView() }.padding(.top, bannerInset)
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        // Keep the native tab container full-screen so its home-indicator area
+        // remains continuous. Reserve only the measured notice inside each tab.
+        .overlay(alignment: .top) {
+            if model.isDemoMode {
+                SimulationNotice().fixedSize(horizontal: false, vertical: true)
+                    .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { demoBannerHeight = $0 }
+            }
+        }
+        .background(AppTheme.canvas.ignoresSafeArea())
         .preferredColorScheme(model.appearance.colorScheme)
         .onChange(of: model.isDemoMode) { _, enabled in
             selection = .device; devicePath = []; dashboardPath = []; historyPath = []

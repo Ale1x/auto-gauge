@@ -3,37 +3,46 @@ import GaugeCore
 
 struct GaugePreviewWidget: View {
     let widget: GaugeWidget
+    let primary: Bool
+    let interactive: Bool
+    let alternate: Bool
     let selected: Bool
     let canvasSize: Double
     let onSelect: (Int) -> Void
     let onMove: (Int, Int, Int) -> Void
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @ScaledMetric(relativeTo: .title2) private var valueSize: Double = 24
     @State private var dragOrigin: EditingRectangle?
-    var body: some View {
-        Button(action: select) {
-            VStack(spacing: 2) {
-                if dynamicTypeSize.isAccessibilitySize {
-                    Text(widget.pid.nameIT).font(.footnote).lineLimit(2).minimumScaleFactor(0.7)
-                } else {
-                    Text(exampleValue).font(.system(size: valueSize, design: .rounded)).monospacedDigit().minimumScaleFactor(0.5)
-                    Text(widget.pid.unit).font(.footnote).foregroundStyle(AppTheme.accent)
-                    Text(widget.pid.nameIT).font(.footnote).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.5)
-                }
+    private var scale: Double { canvasSize / 466 }
+    private var tint: Color { alternate ? Color(red: 154/255, green: 174/255, blue: 1) : Color(red: 82/255, green: 214/255, blue: 1) }
+    private var reading: some View {
+        VStack(spacing: 3 * scale) {
+            Text(primary ? widget.pid.nameIT.uppercased() : "\(widget.pid.nameIT.uppercased())  \(widget.pid.unit)")
+                .font(.custom("Montserrat-Medium", fixedSize: (primary ? 18 : 14) * scale))
+                .foregroundStyle(tint).lineLimit(1).minimumScaleFactor(0.6)
+            Text(exampleValue)
+                .font(.custom("Montserrat-Medium", fixedSize: (primary ? 80 : 32) * scale))
+                .foregroundStyle(Color(red: 242/255, green: 245/255, blue: 250/255))
+                .monospacedDigit().lineLimit(1).minimumScaleFactor(0.5)
+            if primary {
+                Text(widget.pid.unit)
+                    .font(.custom("Montserrat-Medium", fixedSize: 18 * scale))
+                    .foregroundStyle(Color(red: 134/255, green: 148/255, blue: 168/255))
             }
-            .frame(width: canvasSize * widget.frame.width, height: canvasSize * widget.frame.height)
-            .background(selected ? AppTheme.accent.opacity(0.12) : Color.clear)
-            .overlay { Rectangle().stroke(selected ? AppTheme.accent : Color.clear, lineWidth: 2) }
-            .overlay(alignment: .topTrailing) { if selected { Image(systemName: "checkmark.circle.fill").foregroundStyle(AppTheme.accent).accessibilityHidden(true) } }
-            .frame(minWidth: AppTheme.minimumTouch, minHeight: AppTheme.minimumTouch)
-            .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
-        .simultaneousGesture(DragGesture(minimumDistance: 8).onChanged(move).onEnded(endMove))
+        .frame(width: canvasSize * widget.frame.width, height: canvasSize * widget.frame.height)
+        .background(selected ? tint.opacity(0.1) : .clear)
+        .overlay { RoundedRectangle(cornerRadius: 4).stroke(selected ? tint : .clear, lineWidth: 1) }
+    }
+    var body: some View {
+        Group {
+            if interactive {
+                Button(action: select) { reading.frame(minWidth: AppTheme.minimumTouch, minHeight: AppTheme.minimumTouch).contentShape(.rect) }
+                    .buttonStyle(.plain)
+                    .simultaneousGesture(DragGesture(minimumDistance: 8).onChanged(move).onEnded(endMove))
+            } else { reading }
+        }
         .accessibilityLabel("\(widget.pid.nameIT), \(exampleValue) \(widget.pid.unit)")
         .accessibilityValue(selected ? "Misura selezionata" : "Non selezionata")
-        .accessibilityHint("Puoi regolare posizione e dimensioni anche nei controlli sotto l’anteprima.")
-        .accessibilityInputLabels([widget.pid.nameIT])
+        .accessibilityHint(interactive ? "Puoi regolare posizione e dimensioni anche nei controlli sotto l’anteprima." : "Anteprima del display")
     }
     private var exampleValue: String {
         GaugePreviewValue.value(for: widget.pid.pid)

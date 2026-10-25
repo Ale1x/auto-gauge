@@ -123,6 +123,15 @@ final class AppModel {
                 try demoStorage.write(data)
             }
         } catch { diagnosticDetail = String(describing: error); message = "Non è stato possibile aprire le impostazioni salvate. La copia precedente è conservata." }
+        if initialDemoMode {
+            let updated = GaugeClusterLayout.upgradingDefaultDemo(loaded.saved)
+            if updated != loaded.saved {
+                do {
+                    var candidate = loaded; candidate.working = updated
+                    try candidate.save(to: demoStorage, catalog: demoCatalog); loaded = candidate
+                } catch { diagnosticDetail = String(describing: error) }
+            }
+        }
         if initialDemoMode { editor = loaded }
         else {
             do { editor = try ConfigurationDraft(configuration: DemoData.configuration, catalog: InMemoryGaugeEndpoint.catalog) }
@@ -426,13 +435,23 @@ final class AppModel {
         catch { show(error, message: "Non è stato possibile aprire il salvataggio. Le tue modifiche sono conservate.") }
     }
     func restoreDefaults() {
-        do { let defaults = try GaugeConfigurationDefaults.make(catalog: catalog); edit { try $0.restore(defaults, catalog: catalog) }; saveStatusText = "Modifiche da salvare" }
+        do {
+            var defaults = try GaugeConfigurationDefaults.make(catalog: catalog)
+            for dashboard in defaults.dashboards { GaugeClusterLayout.apply(to: &defaults, dashboardID: dashboard.id) }
+            edit { try $0.restore(defaults, catalog: catalog) }; saveStatusText = "Modifiche da salvare"
+        }
         catch { show(error, message: "Collega il dispositivo per vedere le misure disponibili.") }
     }
     func restoreExample() { restoreDefaults() }
+    func useClusterLayout(dashboardID: Int) {
+        edit { GaugeClusterLayout.apply(to: &$0.working, dashboardID: dashboardID) }
+    }
     func addDashboard() {
         guard let pid = catalog.first else { message = "Nessuna misura disponibile."; return }
-        edit { _ = try $0.addDashboard(pid: pid) }
+        edit { draft in
+            let id = try draft.addDashboard(pid: pid)
+            GaugeClusterLayout.apply(to: &draft.working, dashboardID: id)
+        }
     }
     private func sameSettings(_ lhs: GaugeConfiguration, _ rhs: GaugeConfiguration) -> Bool {
         var first = lhs; var second = rhs; first.revision = 1; second.revision = 1
