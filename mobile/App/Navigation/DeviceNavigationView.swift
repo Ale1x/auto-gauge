@@ -15,6 +15,9 @@ struct DeviceNavigationView: View {
                 }
                 }.toolbarVisibility(.visible, for: .navigationBar)
             }
+            .navigationDestination(for: DashboardRoute.self) { route in
+                switch route { case .editor(let id): DashboardEditorView(dashboardID: id).toolbarVisibility(.visible, for: .navigationBar) }
+            }
         }
     }
 }

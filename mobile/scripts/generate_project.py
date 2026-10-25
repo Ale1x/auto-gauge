@@ -12,6 +12,7 @@ parser.add_argument('--cloud-development', action='store_true', help='Enable app
 options = parser.parse_args()
 ROOT = Path(__file__).resolve().parents[1]
 subprocess.run([sys.executable, str(ROOT/"scripts/generate_demo_logs.py")], check=True)
+subprocess.run([sys.executable, str(ROOT/"scripts/generate_theme_store.py")], check=True)
 objects = {}
 def uid(name):
     return hashlib.sha256(name.encode()).hexdigest()[:24].upper()

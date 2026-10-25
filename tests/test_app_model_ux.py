@@ -18,6 +18,8 @@ class AppModelUXTests(unittest.TestCase):
             app = root / 'App'; app.mkdir()
             for source in ['AppModel.swift', 'AppAppearance.swift', 'DemoFirmwareState.swift']:
                 (app / source).symlink_to(ROOT / 'mobile/App/Model' / source)
+            for source in ['ThemeLibrary.swift', 'ThemeStoreClient.swift']:
+                (app / source).symlink_to(ROOT / 'mobile/App/Themes' / source)
             for source in ['QualifiedSessionTestPipe.swift', 'QualifiedSessionTestProvider.swift', 'QualifiedSessionTestStorage.swift']:
                 (app / source).symlink_to(ROOT / 'mobile/Tests/GaugeCoreTests' / source)
             (app / 'AppModelDoubles.swift').symlink_to(ROOT / 'mobile/Tests/AppModelHarness/AppModelDoubles.swift')
@@ -34,4 +36,4 @@ let package = Package(name: "AppModelHarness", platforms: [.macOS(.v14)], target
             result = subprocess.run(['swift', 'test', '--package-path', str(root)],
                                     capture_output=True, text=True, timeout=180)
             self.assertEqual(result.returncode, 0, (result.stdout + result.stderr)[-16000:])
-            self.assertIn('Executed 8 tests, with 0 failures', result.stdout + result.stderr)
+            self.assertIn('Executed 10 tests, with 0 failures', result.stdout + result.stderr)

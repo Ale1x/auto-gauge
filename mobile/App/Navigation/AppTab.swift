@@ -1,1 +1,1 @@
-enum AppTab: Hashable { case device, dashboards, histories, account }
+enum AppTab: Hashable { case device, dashboards, themes, account }

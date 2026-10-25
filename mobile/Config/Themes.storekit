@@ -1,0 +1,901 @@
+{
+  "identifier": "A58F251A-550A-4F3A-829C-44832A85A833",
+  "nonRenewingSubscriptions": [],
+  "products": [
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "911255526263",
+      "localizations": [
+        {
+          "description": "Azzurro, blu e rosso. Il carattere delle tre strisce.",
+          "displayName": "BMW M Sport",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.bmw_m",
+      "referenceName": "BMW M Sport",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "628227112181",
+      "localizations": [
+        {
+          "description": "Argento e rosso su nero profondo.",
+          "displayName": "Mercedes-AMG",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.mercedes_amg",
+      "referenceName": "Mercedes-AMG",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "46629590931",
+      "localizations": [
+        {
+          "description": "Rosso intenso, bianco e dettagli essenziali.",
+          "displayName": "Audi RS",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.audi_rs",
+      "referenceName": "Audi RS",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "510529741471",
+      "localizations": [
+        {
+          "description": "Verde acido e nero, anima da pista.",
+          "displayName": "Porsche GT3 RS",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.porsche_gt3",
+      "referenceName": "Porsche GT3 RS",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "1009242232832",
+      "localizations": [
+        {
+          "description": "Rosso corsa e giallo, passione italiana.",
+          "displayName": "Ferrari Scuderia",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.ferrari_scuderia",
+      "referenceName": "Ferrari Scuderia",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "1077797486645",
+      "localizations": [
+        {
+          "description": "Arancio acceso e azzurro, senza compromessi.",
+          "displayName": "Lamborghini STO",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.lamborghini_sto",
+      "referenceName": "Lamborghini STO",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "317782362027",
+      "localizations": [
+        {
+          "description": "Verde, bianco e rosso per un classico sportivo.",
+          "displayName": "Alfa Romeo Quadrifoglio",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.alfa_quadrifoglio",
+      "referenceName": "Alfa Romeo Quadrifoglio",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "399899344829",
+      "localizations": [
+        {
+          "description": "Blu elettrico e bianco su fondo nero.",
+          "displayName": "Volkswagen R",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.volkswagen_r",
+      "referenceName": "Volkswagen R",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "43521707558",
+      "localizations": [
+        {
+          "description": "Azzurro ghiaccio e accenti rossi.",
+          "displayName": "Hyundai N",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.hyundai_n",
+      "referenceName": "Hyundai N",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "344711614711",
+      "localizations": [
+        {
+          "description": "Bianco e rosso, vocazione motorsport.",
+          "displayName": "Toyota GR",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.toyota_gr",
+      "referenceName": "Toyota GR",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "113057791313",
+      "localizations": [
+        {
+          "description": "Grafite, argento e rosso deciso.",
+          "displayName": "Nissan NISMO",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.nissan_nismo",
+      "referenceName": "Nissan NISMO",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "135372121899",
+      "localizations": [
+        {
+          "description": "Rosso e bianco, diretto e preciso.",
+          "displayName": "Honda Type R",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.honda_type_r",
+      "referenceName": "Honda Type R",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "473401543285",
+      "localizations": [
+        {
+          "description": "Rosso corsa e nero, piccolo formato grande carattere.",
+          "displayName": "MINI John Cooper Works",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.mini_jcw",
+      "referenceName": "MINI John Cooper Works",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "212305451063",
+      "localizations": [
+        {
+          "description": "Blu da corsa e bianco, leggero nell’aspetto.",
+          "displayName": "Alpine R",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.alpine_r",
+      "referenceName": "Alpine R",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "918761629323",
+      "localizations": [
+        {
+          "description": "Blu profondo e argento, sportività essenziale.",
+          "displayName": "Lexus F",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.lexus_f",
+      "referenceName": "Lexus F",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "1006612285754",
+      "localizations": [
+        {
+          "description": "Blu vivido e rosso, spirito racing.",
+          "displayName": "Ford Performance",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.ford_performance",
+      "referenceName": "Ford Performance",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "287360127962",
+      "localizations": [
+        {
+          "description": "Rame caldo e antracite, un carattere diverso.",
+          "displayName": "CUPRA VZ",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.cupra_vz",
+      "referenceName": "CUPRA VZ",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "994393154444",
+      "localizations": [
+        {
+          "description": "Giallo e rosso, energia compatta.",
+          "displayName": "Abarth",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.abarth",
+      "referenceName": "Abarth",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "638791175006",
+      "localizations": [
+        {
+          "description": "Papaya e azzurro per un look da circuito.",
+          "displayName": "McLaren Track",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.mclaren",
+      "referenceName": "McLaren Track",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "200034112793",
+      "localizations": [
+        {
+          "description": "Fucsia elettrico e numeri a pixel, come in sala giochi.",
+          "displayName": "Turbo 16",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.pixel_turbo",
+      "referenceName": "Turbo 16",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "922857541502",
+      "localizations": [
+        {
+          "description": "Verde e oro per una piccola avventura a 16 bit.",
+          "displayName": "Forest Quest",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.pixel_forest",
+      "referenceName": "Forest Quest",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "749163899504",
+      "localizations": [
+        {
+          "description": "Blocchi di ghiaccio e azzurro da corsa rétro.",
+          "displayName": "Ice Circuit",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.pixel_ice",
+      "referenceName": "Ice Circuit",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "443335338073",
+      "localizations": [
+        {
+          "description": "Arancio incandescente su una griglia di pixel.",
+          "displayName": "Lava Run",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.pixel_lava",
+      "referenceName": "Lava Run",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "934865020005",
+      "localizations": [
+        {
+          "description": "Cornice a scacchi e giallo da record.",
+          "displayName": "Bonus Stage",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.arcade_bonus",
+      "referenceName": "Bonus Stage",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "116251033656",
+      "localizations": [
+        {
+          "description": "Blu cobalto e rosa per la prossima partita.",
+          "displayName": "Cobalt Racer",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.arcade_cobalt",
+      "referenceName": "Cobalt Racer",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "530107861887",
+      "localizations": [
+        {
+          "description": "Rosa e menta, pixel e traiettorie.",
+          "displayName": "Candy Drift",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.arcade_candy",
+      "referenceName": "Candy Drift",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "989113852259",
+      "localizations": [
+        {
+          "description": "Viola lunare e dettagli color lime.",
+          "displayName": "Moon Patrol",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.arcade_moon",
+      "referenceName": "Moon Patrol",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "659576617416",
+      "localizations": [
+        {
+          "description": "Testo verde, righe sottili e spirito da terminale.",
+          "displayName": "Fosforo",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.terminal_phosphor",
+      "referenceName": "Fosforo",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "309521309349",
+      "localizations": [
+        {
+          "description": "Ambra calda e caratteri monospaziati.",
+          "displayName": "Amber Console",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.terminal_amber",
+      "referenceName": "Amber Console",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "753945886005",
+      "localizations": [
+        {
+          "description": "Una console azzurra, fredda ed essenziale.",
+          "displayName": "Ice Terminal",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.terminal_ice",
+      "referenceName": "Ice Terminal",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "488710681589",
+      "localizations": [
+        {
+          "description": "Viola tenue su uno schermo a fosfori.",
+          "displayName": "Lilac Shell",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.terminal_lilac",
+      "referenceName": "Lilac Shell",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "611240655204",
+      "localizations": [
+        {
+          "description": "Un sole all’orizzonte e una strada al neon.",
+          "displayName": "Sunset Drive",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.synth_sunset",
+      "referenceName": "Sunset Drive",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "634631018428",
+      "localizations": [
+        {
+          "description": "Blu notturno e linee rosa elettrico.",
+          "displayName": "Midnight Run",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.synth_midnight",
+      "referenceName": "Midnight Run",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "939373466295",
+      "localizations": [
+        {
+          "description": "Turchese e corallo, atmosfera anni Ottanta.",
+          "displayName": "Miami Coast",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.synth_miami",
+      "referenceName": "Miami Coast",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "546913517877",
+      "localizations": [
+        {
+          "description": "Un orizzonte viola e dettagli dorati.",
+          "displayName": "Violet Horizon",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.synth_violet",
+      "referenceName": "Violet Horizon",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "870283100787",
+      "localizations": [
+        {
+          "description": "Fondo avorio, scala graduata e caratteri classici.",
+          "displayName": "Heritage",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.analog_heritage",
+      "referenceName": "Heritage",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "436974163892",
+      "localizations": [
+        {
+          "description": "Quadrante blu e dettagli color champagne.",
+          "displayName": "Navy Club",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.analog_navy",
+      "referenceName": "Navy Club",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "462144695517",
+      "localizations": [
+        {
+          "description": "Avorio e rosso, ispirazione da cronografo.",
+          "displayName": "Racing Ivory",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.analog_racing",
+      "referenceName": "Racing Ivory",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "1040938464731",
+      "localizations": [
+        {
+          "description": "Verde profondo e oro per uno stile senza tempo.",
+          "displayName": "British Green",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.analog_british",
+      "referenceName": "British Green",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "403953401333",
+      "localizations": [
+        {
+          "description": "Bianco caldo e segni sottili, solo l’essenziale.",
+          "displayName": "Chalk",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.minimal_chalk",
+      "referenceName": "Chalk",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "1060253269830",
+      "localizations": [
+        {
+          "description": "Grafite, bianco e molto spazio per i numeri.",
+          "displayName": "Graphite",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.minimal_graphite",
+      "referenceName": "Graphite",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "556985441687",
+      "localizations": [
+        {
+          "description": "Toni della sabbia e dettagli color terracotta.",
+          "displayName": "Sand",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.minimal_sand",
+      "referenceName": "Sand",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "947918599099",
+      "localizations": [
+        {
+          "description": "Nero deciso e accenti color ghiaccio.",
+          "displayName": "Ink",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.minimal_ink",
+      "referenceName": "Ink",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "221563171366",
+      "localizations": [
+        {
+          "description": "Griglia tecnica blu e linee da progetto.",
+          "displayName": "Blueprint",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.blueprint_studio",
+      "referenceName": "Blueprint",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "989390251702",
+      "localizations": [
+        {
+          "description": "Carta scura e una maglia color ciano.",
+          "displayName": "Cyan Grid",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.blueprint_cyan",
+      "referenceName": "Cyan Grid",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "256361854597",
+      "localizations": [
+        {
+          "description": "Una griglia lunare, grigio e verde salvia.",
+          "displayName": "Lunar Plan",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.blueprint_lunar",
+      "referenceName": "Lunar Plan",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "49177999010",
+      "localizations": [
+        {
+          "description": "Rame e blu, segni sottili da laboratorio.",
+          "displayName": "Copper Plan",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.blueprint_copper",
+      "referenceName": "Copper Plan",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "216999472101",
+      "localizations": [
+        {
+          "description": "Segmenti luminosi e dettagli da muretto box.",
+          "displayName": "Pit Wall",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.endurance_pit",
+      "referenceName": "Pit Wall",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "373017354042",
+      "localizations": [
+        {
+          "description": "Accenti verde acido per la guida notturna.",
+          "displayName": "Night Stint",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.endurance_night",
+      "referenceName": "Night Stint",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "966748130621",
+      "localizations": [
+        {
+          "description": "Arancio netto e una cornice strumentale.",
+          "displayName": "Rescue",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.endurance_rescue",
+      "referenceName": "Rescue",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "497046255741",
+      "localizations": [
+        {
+          "description": "Ghiaccio e ardesia, stile da spedizione.",
+          "displayName": "Polar Expedition",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.endurance_polar",
+      "referenceName": "Polar Expedition",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "738169778134",
+      "localizations": [
+        {
+          "description": "Ambra, bande orizzontali e ricordi analogici.",
+          "displayName": "Cassette",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.retro_cassette",
+      "referenceName": "Cassette",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "963773557261",
+      "localizations": [
+        {
+          "description": "Argento e blu, come una radio d’epoca.",
+          "displayName": "Silver Radio",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.retro_silver",
+      "referenceName": "Silver Radio",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "763085582498",
+      "localizations": [
+        {
+          "description": "Verde petrolio e crema, gusto anni Ottanta.",
+          "displayName": "Teal Eighty",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.retro_teal",
+      "referenceName": "Teal Eighty",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "553834589621",
+      "localizations": [
+        {
+          "description": "Bordeaux e avorio, eleganza rétro.",
+          "displayName": "Burgundy",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.retro_burgundy",
+      "referenceName": "Burgundy",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "198620397586",
+      "localizations": [
+        {
+          "description": "Dune, pixel e colori da rally a 16 bit.",
+          "displayName": "Desert Rally",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.pixel_desert",
+      "referenceName": "Desert Rally",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "133500514308",
+      "localizations": [
+        {
+          "description": "Onde luminose e un orizzonte verde e viola.",
+          "displayName": "Aurora",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.synth_aurora",
+      "referenceName": "Aurora",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "729330184477",
+      "localizations": [
+        {
+          "description": "Rame e verde su una scala classica.",
+          "displayName": "Copper Club",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.analog_copper",
+      "referenceName": "Copper Club",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "1.99",
+      "familyShareable": false,
+      "internalID": "754388639169",
+      "localizations": [
+        {
+          "description": "Bianco morbido e accenti color cielo.",
+          "displayName": "Cloud",
+          "locale": "it_IT"
+        }
+      ],
+      "productID": "it.ale1x.autogauge.theme.minimal_cloud",
+      "referenceName": "Cloud",
+      "type": "NonConsumable"
+    }
+  ],
+  "settings": {
+    "_failTransactionsEnabled": false,
+    "_locale": "it_IT",
+    "_storefront": "ITA"
+  },
+  "subscriptionGroups": [],
+  "version": {
+    "major": 3,
+    "minor": 0
+  }
+}

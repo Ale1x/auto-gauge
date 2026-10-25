@@ -3,6 +3,7 @@ import GaugeCore
 
 struct GaugePreviewWidget: View {
     let widget: GaugeWidget
+    let theme: GaugeTheme
     let primary: Bool
     let interactive: Bool
     let alternate: Bool
@@ -12,20 +13,26 @@ struct GaugePreviewWidget: View {
     let onMove: (Int, Int, Int) -> Void
     @State private var dragOrigin: EditingRectangle?
     private var scale: Double { canvasSize / 466 }
-    private var tint: Color { alternate ? Color(red: 154/255, green: 174/255, blue: 1) : Color(red: 82/255, green: 214/255, blue: 1) }
+    private var tint: Color { Color(gaugeHex: alternate ? theme.secondary : theme.accent) }
     private var reading: some View {
         VStack(spacing: 3 * scale) {
             Text(primary ? widget.pid.nameIT.uppercased() : "\(widget.pid.nameIT.uppercased())  \(widget.pid.unit)")
-                .font(.custom("Montserrat-Medium", fixedSize: (primary ? 18 : 14) * scale))
+                .font(theme.previewFont(size: (primary ? 18 : 14) * scale))
                 .foregroundStyle(tint).lineLimit(1).minimumScaleFactor(0.6)
-            Text(exampleValue)
-                .font(.custom("Montserrat-Medium", fixedSize: (primary ? 80 : 32) * scale))
-                .foregroundStyle(Color(red: 242/255, green: 245/255, blue: 250/255))
-                .monospacedDigit().lineLimit(1).minimumScaleFactor(0.5)
+            if theme.visualStyle == .pixel || theme.visualStyle == .arcade {
+                PixelGaugeValue(value: exampleValue, color: tint)
+                    .frame(height: (primary ? 65 : 27) * scale)
+                    .padding(.vertical, 5 * scale)
+            } else {
+                Text(exampleValue)
+                    .font(theme.previewFont(size: (primary ? 80 : 32) * scale, number: true))
+                    .foregroundStyle(theme.visualStyle == .terminal ? tint : theme.previewForeground)
+                    .monospacedDigit().lineLimit(1).minimumScaleFactor(0.5)
+            }
             if primary {
                 Text(widget.pid.unit)
-                    .font(.custom("Montserrat-Medium", fixedSize: 18 * scale))
-                    .foregroundStyle(Color(red: 134/255, green: 148/255, blue: 168/255))
+                    .font(theme.previewFont(size: 18 * scale))
+                    .foregroundStyle(theme.previewForeground.opacity(0.6))
             }
         }
         .frame(width: canvasSize * widget.frame.width, height: canvasSize * widget.frame.height)

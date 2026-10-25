@@ -31,10 +31,11 @@ final class ConsumerExperienceTests: XCTestCase {
         app.tabBars.buttons["Schermate"].tap()
         XCTAssertTrue(app.navigationBars["Schermate"].waitForExistence(timeout: 5))
         capture("02-screens-light")
-        app.tabBars.buttons["Viaggi"].tap()
-        XCTAssertTrue(app.navigationBars["Viaggi"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.cells.count > 0)
-        capture("03-trips-light")
+        app.tabBars.buttons["Temi"].tap()
+        XCTAssertTrue(app.buttons["themes.search"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["theme.card.bmw_m"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.tabBars.buttons["Viaggi"].exists)
+        capture("03-themes-light")
         app.tabBars.buttons["Impostazioni"].tap()
         XCTAssertTrue(app.navigationBars["Impostazioni"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.buttons.matching(identifier: "Esci dalla modalità demo").count, 1)
@@ -62,9 +63,12 @@ final class ConsumerExperienceTests: XCTestCase {
         XCTAssertTrue(exitedDemo)
         XCTAssertTrue(app.buttons["Cerca dispositivo"].waitForExistence(timeout: 5))
         capture("07-device-mode")
-        app.tabBars.buttons["Viaggi"].tap()
-        XCTAssertFalse(app.staticTexts["Verso il lavoro"].exists)
-        XCTAssertTrue(app.staticTexts["I tuoi viaggi saranno qui"].exists)
+        app.tabBars.buttons["Temi"].tap()
+        let bmwPreview = app.buttons["theme.card.bmw_m"]
+        XCTAssertTrue(bmwPreview.waitForExistence(timeout: 8)); bmwPreview.tap()
+        XCTAssertTrue(app.buttons["Acquisti in arrivo"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["Acquisti in arrivo"].isEnabled)
+        app.navigationBars.buttons.firstMatch.tap()
         app.tabBars.buttons["Schermate"].tap()
         XCTAssertTrue(app.staticTexts["Collega il dispositivo"].exists)
         app.tabBars.buttons["Impostazioni"].tap()
@@ -87,20 +91,75 @@ final class ConsumerExperienceTests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Schermata 2"].exists)
         XCTAssertFalse(button("configuration.save").isEnabled)
     }
-    func testBackupAndTripDetails() {
-        app.tabBars.buttons["Viaggi"].tap()
-        let firstTrip = app.cells.containing(.staticText, identifier: "Verso il lavoro").firstMatch
-        if firstTrip.exists { firstTrip.tap() } else { app.cells.element(boundBy: 1).tap() }
-        XCTAssertTrue(app.navigationBars["Dettaglio viaggio"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.navigationBars["Dettaglio viaggio"].buttons.firstMatch.isHittable)
-        capture("09-trip-chart")
+    func testThemePurchaseSelectionAndRestore() {
+        app.tabBars.buttons["Temi"].tap()
+        let bmw = app.buttons["theme.card.bmw_m"]
+        XCTAssertTrue(bmw.waitForExistence(timeout: 5)); bmw.tap()
+        capture("19-bmw-theme-detail")
+        let buy = app.buttons["theme.buy"]
+        XCTAssertTrue(buy.waitForExistence(timeout: 5)); buy.tap()
+        app.buttons["Conferma acquisto"].tap()
+        let use = app.buttons["theme.use"]
+        XCTAssertTrue(use.waitForExistence(timeout: 5)); use.tap()
+        XCTAssertTrue(app.buttons["Tema in uso"].waitForExistence(timeout: 5))
+        app.terminate(); app.launchArguments = ["--uitesting"]; app.launch()
         app.tabBars.buttons["Impostazioni"].tap()
-        let sync = button("backup.sync")
-        XCTAssertTrue(sync.waitForExistence(timeout: 5)); sync.tap()
-        XCTAssertTrue(app.staticTexts["Copia di sicurezza aggiornata"].waitForExistence(timeout: 5))
-        button("backup.restore").tap()
-        XCTAssertTrue(app.staticTexts["Viaggi recuperati"].waitForExistence(timeout: 5))
-        capture("10-backup")
+        XCTAssertTrue(app.descendants(matching: .any)["settings.currentTheme"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.descendants(matching: .any)["settings.currentTheme"].value as? String, "BMW M Sport")
+        app.buttons["themes.restore"].tap()
+        XCTAssertTrue(app.staticTexts["La tua raccolta è aggiornata"].waitForExistence(timeout: 5))
+        capture("20-theme-owned")
+    }
+    func testMarketplaceAuditScreens() {
+        app.tabBars.buttons["Temi"].tap()
+        let bmw = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "BMW M Sport,")).firstMatch
+        XCTAssertTrue(bmw.waitForExistence(timeout: 8))
+        capture("30-marketplace-after")
+        bmw.tap()
+        XCTAssertTrue(app.navigationBars["Anteprima"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.tabBars.buttons["Temi"].exists)
+        capture("31-purchase-after")
+        app.navigationBars.buttons.firstMatch.tap()
+        app.tabBars.buttons["Impostazioni"].tap()
+        button("settings.appearance").tap(); app.buttons["Scuro"].tap()
+        app.tabBars.buttons["Temi"].tap()
+        XCTAssertTrue(bmw.waitForExistence(timeout: 8))
+        capture("32-marketplace-dark")
+        bmw.tap()
+        XCTAssertTrue(app.navigationBars["Anteprima"].waitForExistence(timeout: 5))
+        capture("33-purchase-dark")
+        app.navigationBars.buttons.firstMatch.tap()
+        app.buttons["themes.category.Pixel"].tap()
+        let pixel = app.buttons["theme.card.pixel_turbo"]
+        XCTAssertTrue(pixel.waitForExistence(timeout: 5))
+        capture("34-pixel-collection")
+        pixel.tap()
+        capture("35-pixel-detail")
+    }
+    func testCreateFreePersonalTheme() {
+        app.tabBars.buttons["Temi"].tap()
+        app.segmentedControls.buttons["La tua raccolta"].tap()
+        let create = app.buttons["themes.create"]
+        XCTAssertTrue(create.waitForExistence(timeout: 8)); create.tap()
+        XCTAssertTrue(app.navigationBars["Crea il tuo tema"].waitForExistence(timeout: 5))
+        let save = app.buttons["theme.custom.save"]
+        if !save.isHittable { app.swipeUp() }
+        XCTAssertTrue(save.waitForExistence(timeout: 5)); save.tap()
+        XCTAssertTrue(app.staticTexts["Il tuo tema è in uso"].waitForExistence(timeout: 5))
+        capture("22-custom-theme")
+        app.tabBars.buttons["Impostazioni"].tap()
+        XCTAssertEqual(app.descendants(matching: .any)["settings.currentTheme"].value as? String, "Il mio tema")
+    }
+    func testThemeSearchAndAudiPreview() {
+        app.tabBars.buttons["Temi"].tap()
+        app.buttons["themes.search"].tap()
+        let search = app.searchFields.firstMatch
+        XCTAssertTrue(search.waitForExistence(timeout: 5)); search.tap(); search.typeText("Audi\n")
+        let audi = app.buttons["theme.card.audi_rs"]
+        XCTAssertTrue(audi.waitForExistence(timeout: 5)); audi.tap()
+        XCTAssertTrue(app.navigationBars["Anteprima"].waitForExistence(timeout: 5))
+        capture("21-audi-theme-detail")
+        XCTAssertTrue(app.buttons["theme.buy"].exists)
     }
     func testAppearancePersistsAfterRelaunch() {
         app.tabBars.buttons["Impostazioni"].tap()

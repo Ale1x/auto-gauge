@@ -1,10 +1,18 @@
 # Auto Gauge per iPhone
 
-App SwiftUI in italiano con quattro sezioni: **Dispositivo, Schermate, Viaggi, Impostazioni**. Aspetto automatico, chiaro o scuro; un unico salvataggio per schermate e luminosità; viaggi con grafici e dettagli progressivi.
+App SwiftUI in italiano con quattro sezioni: **Dispositivo, Schermate, Temi, Impostazioni**. Aspetto automatico, chiaro o scuro; un unico salvataggio per schermate e luminosità; catalogo di temi sportivi e creazione gratuita dei propri colori.
 
-La modalità demo, inizialmente attiva, permette di provare tutte le funzioni senza hardware. È indicata da un solo banner superiore e si controlla dalle Impostazioni. Configurazione, due viaggi, backup e versione dell’aggiornamento demo persistono separatamente in `AutoGauge/demo/`; nessuna operazione demo usa radio, CloudKit, ricevute native qualificate o il provider OTA reale. La scheda del display è un’anteprima della configurazione, non una lettura live.
+La modalità demo, inizialmente attiva, permette di provare tutte le funzioni senza hardware. È indicata da un solo banner superiore e si controlla dalle Impostazioni. Configurazione, due viaggi, backup e versione dell’aggiornamento demo persistono separatamente in `AutoGauge/demo/`; nessuna operazione demo usa radio, CloudKit, ricevute native qualificate o il provider OTA reale. La scheda del display è un’anteprima della configurazione, non una lettura live. Lo storico resta conservato nel modello e nel protocollo, ma non occupa una scheda della navigazione corrente.
 
-La UI e le relative verifiche sono documentate in [DesignValidation/UX27](DesignValidation/UX27/README.md). Le sezioni APP e i dettagli di protocollo più sotto documentano anche l’evoluzione storica del progetto.
+La UI e le relative verifiche sono documentate in [DesignValidation/UX27](DesignValidation/UX27/README.md). Il marketplace e la revisione delle superfici sono documentati in [DesignValidation/THEMES27](DesignValidation/THEMES27/README.md). Le sezioni APP e i dettagli di protocollo più sotto documentano anche l’evoluzione storica del progetto.
+
+## Temi e acquisti
+
+Il catalogo include il tema originale gratuito e 59 temi a pagamento, fra interpretazioni sportive e creazioni originali, con prezzo iniziale approvato di 1,99 € per tema. Il creatore di colori è gratuito. Dieci famiglie grafiche comprendono sport, pixel/16 bit, arcade, terminale, synthwave, analogico, minimal, blueprint, endurance e rétro. I 60 temi complessivi si esplorano per categoria; la ricerca ha una pagina dedicata e la creazione vive nella raccolta personale. Colori e intestazioni dei temi cambiano solo il quadrante: sfondi e superfici dell’app mantengono la palette adattiva comune.
+
+La demo permette anteprima, aggiunta alla raccolta e selezione senza addebiti; proprietà e selezioni demo sono separate dallo stato reale. StoreKit gestisce prodotti non consumabili, transazioni verificate, ripristino e aggiornamenti dei diritti. Gli acquisti reali sono disabilitati da `AutoGaugeThemePurchasesEnabled = false`: prima di attivarli occorrono i prodotti App Store Connect e il supporto di consegna del tema al display reale, assente nell’attuale schema BLE. La selezione modifica ora le anteprime dell’app; non viene inviata al firmware come tema.
+
+`Config/Themes.storekit` è un catalogo locale per sviluppo, rigenerato da `scripts/generate_theme_store.py` (invocato dal generatore del progetto). Non viene attivato automaticamente nello schema. Per le verifiche StoreKit locali, selezionarlo nell’azione Run di uno schema di sviluppo e abilitare il gate solo in quella build; ripristinare il gate prima di distribuire. Il catalogo locale non crea prodotti su App Store Connect. Nessun logo ufficiale o affiliazione è dichiarato.
 
 ## Target corrente
 
@@ -27,7 +35,7 @@ Bundle approvato: `it.ale1x.autogauge`. La configurazione predefinita resta senz
 ## App e stato
 
 - `App/AutoGaugeApp.swift` è il solo entry point; `App/Model/AppModel.swift` coordina le azioni con @Observable/@MainActor.
-- `App/Features/` separa dispositivo, dashboard, impostazioni e storico; `App/Navigation/` mantiene destinazioni tipizzate e stato per scena.
+- `App/Features/` separa dispositivo, dashboard, temi, impostazioni e storico; `App/Navigation/` mantiene destinazioni tipizzate e stato per scena.
 - `App/Design/` e `App/Components/` raccolgono theme, colori adattivi e azioni con area minima44pt. L’aspetto Automatico segue il sistema; Chiaro e Scuro sono preferenze esplicite persistite.
 - `Sources/GaugeCore/` contiene configurazione/editor, framing, archivio storico e `Simulation/` con endpoint/canale in memoria. Il package è testabile su host senza SwiftUI.
 

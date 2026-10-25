@@ -6,6 +6,8 @@ import GaugeCore
 @Observable
 final class AppModel {
     let cloud = CloudAccountModel()
+    let themes: ThemeLibrary
+    var displayTheme: GaugeTheme { themes.selected(demo: isDemoMode) }
     private(set) var isDemoMode: Bool
     var appearance: AppAppearance { didSet { preferences.set(appearance.rawValue, forKey: "appearance") } }
     var backupEnabled: Bool { didSet { preferences.set(backupEnabled, forKey: isDemoMode ? "demo.backup.enabled" : "device.backup.enabled") } }
@@ -94,6 +96,7 @@ final class AppModel {
             if suppliedPreferences == nil { selectedPreferences.removePersistentDomain(forName: "AutoGauge.UITests") }
         }
         preferences = selectedPreferences
+        themes = ThemeLibrary(preferences: selectedPreferences)
         let initialDemoMode = selectedPreferences.object(forKey: "demo.enabled") == nil ? true : selectedPreferences.bool(forKey: "demo.enabled")
         isDemoMode = initialDemoMode
         appearance = AppAppearance(rawValue: selectedPreferences.string(forKey: "appearance") ?? "system") ?? .system

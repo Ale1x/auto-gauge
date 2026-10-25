@@ -22,7 +22,7 @@ struct DeviceSummaryCard: View {
                 }
             }
             if (model.isDemoMode || model.isNativeSession), let dashboard = model.configuration.dashboards.first {
-                HStack { Spacer(); GaugePreview(dashboard: dashboard, brand: model.isDemoMode ? "BMW" : "AUTO GAUGE").allowsHitTesting(false).accessibilityHidden(true); Spacer() }
+                HStack { Spacer(); GaugePreview(dashboard: dashboard, theme: model.displayTheme).allowsHitTesting(false).accessibilityHidden(true); Spacer() }
                 Text("Anteprima del display").font(.subheadline).foregroundStyle(.secondary)
             }
             if model.isDemoMode || model.isNativeSession {

@@ -130,3 +130,36 @@ private actor InstallationSpy: OTAInstallationSessionProvider {
         await model.restoreBackup(); XCTAssertEqual(model.cloud.calls, callsBefore)
     }
 }
+
+
+extension AppModelExperienceTests {
+    func testThemeDemoSelectionPersistsAndNeverGrantsNativeRights() async throws {
+        let (_, preferences) = try context()
+        let first = ThemeLibrary(preferences: preferences)
+        let bmw = try XCTUnwrap(GaugeThemeCatalog.find("bmw_m"))
+        await first.start(demo: true)
+        XCTAssertTrue(first.store.products.isEmpty)
+        XCTAssertFalse(first.owns(bmw, demo: false))
+        first.acquireDemo(bmw); first.choose(bmw, demo: true)
+        let reopened = ThemeLibrary(preferences: preferences)
+        XCTAssertEqual(reopened.selected(demo: true).id, bmw.id)
+        XCTAssertEqual(reopened.selected(demo: false).id, "original")
+        XCTAssertFalse(reopened.owns(bmw, demo: false))
+        await reopened.restore(demo: true)
+        XCTAssertTrue(reopened.owns(bmw, demo: true))
+        XCTAssertTrue(reopened.store.owned.isEmpty)
+        reopened.saveCustom(accent: 0xabcdef, secondary: 0x123456, demo: true)
+        let customized = ThemeLibrary(preferences: preferences)
+        XCTAssertEqual(customized.selected(demo: true).accent, 0xabcdef)
+        XCTAssertEqual(customized.selected(demo: false).id, "original")
+        XCTAssertTrue(customized.selected(demo: true).isFree)
+    }
+    func testThemeUnknownStoredGrantsCannotEnableProducts() throws {
+        let (_, preferences) = try context()
+        preferences.set(["invented"], forKey: "demo.themes.owned")
+        preferences.set("bmw_m", forKey: "device.themes.selected")
+        let library = ThemeLibrary(preferences: preferences)
+        XCTAssertEqual(library.demoOwned, ["original"])
+        XCTAssertEqual(library.selected(demo: false).id, "original")
+    }
+}

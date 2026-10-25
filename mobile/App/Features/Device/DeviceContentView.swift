@@ -10,7 +10,7 @@ struct DeviceContentView: View {
                 } else {
                     Text("IL TUO DISPLAY").font(.subheadline).foregroundStyle(.secondary)
                     Text("Ogni viaggio, a modo tuo.").font(.largeTitle).bold().fixedSize(horizontal: false, vertical: true)
-                    Text("Scegli cosa vedere in auto e ritrova i tuoi viaggi.").foregroundStyle(.secondary)
+                    Text("Scegli le misure e i colori del tuo display.").foregroundStyle(.secondary)
                 }
             }
             DeviceSummaryCard()

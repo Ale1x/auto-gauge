@@ -28,7 +28,7 @@ struct DashboardGalleryCard: View {
                     Button("Annulla", role: .cancel) { }
                 }
             }
-            GaugePreview(dashboard: dashboard, brand: model.isDemoMode ? "BMW" : "AUTO GAUGE")
+            GaugePreview(dashboard: dashboard, theme: model.displayTheme)
                 .frame(maxWidth: .infinity).accessibilityHidden(true)
             NavigationLink(value: DashboardRoute.editor(dashboard.id)) {
                 Label("Modifica schermata", systemImage: "slider.horizontal.3")

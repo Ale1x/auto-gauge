@@ -15,7 +15,7 @@ struct DashboardEditorView: View {
         } else if let dashboard = model.configuration.dashboards.first(where: { $0.id == dashboardID }) {
             Form {
                 Section {
-                    GaugePreview(dashboard: dashboard, brand: model.isDemoMode ? "BMW" : "AUTO GAUGE", interactive: true, selectedID: selectedID, onSelect: select, onMove: move)
+                    GaugePreview(dashboard: dashboard, theme: model.displayTheme, interactive: true, selectedID: selectedID, onSelect: select, onMove: move)
                         .frame(maxWidth: .infinity).padding(.vertical, 12)
                     Text("Anteprima").font(.footnote.bold()).foregroundStyle(AppTheme.muted)
                         .frame(maxWidth: .infinity)

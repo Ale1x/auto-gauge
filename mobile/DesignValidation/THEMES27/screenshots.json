@@ -1,0 +1,54 @@
+{
+  "resultBundle": "/tmp/ag-themes60-contrast-ui.xcresult",
+  "fullSuite": "/tmp/ag-themes60-ui.xcresult",
+  "screenshots": [
+    {
+      "name": "35-pixel-detail",
+      "file": "after/35-pixel-detail.png",
+      "test": "ConsumerExperienceTests/testMarketplaceAuditScreens()",
+      "device": "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+      "timestamp": 1792938001.781,
+      "source": "49FE3D43-ABDA-44A6-BD63-01BDC2E145D8.png"
+    },
+    {
+      "name": "34-pixel-collection",
+      "file": "after/34-pixel-collection.png",
+      "test": "ConsumerExperienceTests/testMarketplaceAuditScreens()",
+      "device": "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+      "timestamp": 1792937999.157,
+      "source": "723FCC3F-813D-4C9C-87E8-62A1B85DB1B1.png"
+    },
+    {
+      "name": "33-purchase-dark",
+      "file": "after/33-purchase-dark.png",
+      "test": "ConsumerExperienceTests/testMarketplaceAuditScreens()",
+      "device": "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+      "timestamp": 1792937994.962,
+      "source": "D58B8059-6FC7-468A-A23D-772EFDFB834A.png"
+    },
+    {
+      "name": "32-marketplace-dark",
+      "file": "after/32-marketplace-dark.png",
+      "test": "ConsumerExperienceTests/testMarketplaceAuditScreens()",
+      "device": "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+      "timestamp": 1792937991.274,
+      "source": "20ED0EA6-0FE0-4003-A58B-E2897054E822.png"
+    },
+    {
+      "name": "31-purchase-after",
+      "file": "after/31-purchase-after.png",
+      "test": "ConsumerExperienceTests/testMarketplaceAuditScreens()",
+      "device": "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+      "timestamp": 1792937979.42,
+      "source": "2EA820A0-D864-4D43-B012-D7F0BCD8115B.png"
+    },
+    {
+      "name": "30-marketplace-after",
+      "file": "after/30-marketplace-after.png",
+      "test": "ConsumerExperienceTests/testMarketplaceAuditScreens()",
+      "device": "204CCFD4-154F-4694-9BA2-DEF97C43B8ED",
+      "timestamp": 1792937975.565,
+      "source": "413B28E9-DC3E-4D0D-8571-134AB62A1C69.png"
+    }
+  ]
+}

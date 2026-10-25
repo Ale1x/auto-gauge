@@ -1,0 +1,882 @@
+[
+  {
+    "id": "original",
+    "title": "Originale",
+    "brand": "Auto Gauge",
+    "dialTitle": "AUTO GAUGE",
+    "summary": "Essenziale, leggibile, tuo.",
+    "accent": 5428991,
+    "secondary": 10137343,
+    "stripes": [
+      5428991,
+      8819880,
+      2437182
+    ]
+  },
+  {
+    "id": "bmw_m",
+    "title": "BMW M Sport",
+    "brand": "BMW",
+    "dialTitle": "BMW M",
+    "summary": "Azzurro, blu e rosso. Il carattere delle tre strisce.",
+    "accent": 5428991,
+    "secondary": 5338607,
+    "stripes": [
+      5428991,
+      5338607,
+      15684451
+    ]
+  },
+  {
+    "id": "mercedes_amg",
+    "title": "Mercedes-AMG",
+    "brand": "Mercedes",
+    "dialTitle": "AMG",
+    "summary": "Argento e rosso su nero profondo.",
+    "accent": 14146786,
+    "secondary": 15676491,
+    "stripes": [
+      14146786,
+      9278363,
+      15676491
+    ]
+  },
+  {
+    "id": "audi_rs",
+    "title": "Audi RS",
+    "brand": "Audi",
+    "dialTitle": "RS",
+    "summary": "Rosso intenso, bianco e dettagli essenziali.",
+    "accent": 15540281,
+    "secondary": 16053751,
+    "stripes": [
+      15540281,
+      15540281,
+      16053751
+    ]
+  },
+  {
+    "id": "porsche_gt3",
+    "title": "Porsche GT3 RS",
+    "brand": "Porsche",
+    "dialTitle": "GT3 RS",
+    "summary": "Verde acido e nero, anima da pista.",
+    "accent": 11988280,
+    "secondary": 15067358,
+    "stripes": [
+      11988280,
+      14215324,
+      3291435
+    ]
+  },
+  {
+    "id": "ferrari_scuderia",
+    "title": "Ferrari Scuderia",
+    "brand": "Ferrari",
+    "dialTitle": "SCUDERIA",
+    "summary": "Rosso corsa e giallo, passione italiana.",
+    "accent": 15676468,
+    "secondary": 16766012,
+    "stripes": [
+      15676468,
+      16777215,
+      16766012
+    ]
+  },
+  {
+    "id": "lamborghini_sto",
+    "title": "Lamborghini STO",
+    "brand": "Lamborghini",
+    "dialTitle": "STO",
+    "summary": "Arancio acceso e azzurro, senza compromessi.",
+    "accent": 16745526,
+    "secondary": 4767216,
+    "stripes": [
+      16745526,
+      4767216,
+      16745526
+    ]
+  },
+  {
+    "id": "alfa_quadrifoglio",
+    "title": "Alfa Romeo Quadrifoglio",
+    "brand": "Alfa Romeo",
+    "dialTitle": "QUADRIFOGLIO",
+    "summary": "Verde, bianco e rosso per un classico sportivo.",
+    "accent": 6867092,
+    "secondary": 16053751,
+    "stripes": [
+      6867092,
+      16053751,
+      15682387
+    ]
+  },
+  {
+    "id": "volkswagen_r",
+    "title": "Volkswagen R",
+    "brand": "Volkswagen",
+    "dialTitle": "R",
+    "summary": "Blu elettrico e bianco su fondo nero.",
+    "accent": 5868799,
+    "secondary": 16053751,
+    "stripes": [
+      5868799,
+      5868799,
+      16053751
+    ]
+  },
+  {
+    "id": "hyundai_n",
+    "title": "Hyundai N",
+    "brand": "Hyundai",
+    "dialTitle": "N",
+    "summary": "Azzurro ghiaccio e accenti rossi.",
+    "accent": 9884907,
+    "secondary": 15617369,
+    "stripes": [
+      9884907,
+      16053751,
+      15617369
+    ]
+  },
+  {
+    "id": "toyota_gr",
+    "title": "Toyota GR",
+    "brand": "Toyota",
+    "dialTitle": "GR",
+    "summary": "Bianco e rosso, vocazione motorsport.",
+    "accent": 16403792,
+    "secondary": 16053751,
+    "stripes": [
+      16403792,
+      16053751,
+      16403792
+    ]
+  },
+  {
+    "id": "nissan_nismo",
+    "title": "Nissan NISMO",
+    "brand": "Nissan",
+    "dialTitle": "NISMO",
+    "summary": "Grafite, argento e rosso deciso.",
+    "accent": 15613781,
+    "secondary": 12831443,
+    "stripes": [
+      12831443,
+      7371401,
+      15613781
+    ]
+  },
+  {
+    "id": "honda_type_r",
+    "title": "Honda Type R",
+    "brand": "Honda",
+    "dialTitle": "TYPE R",
+    "summary": "Rosso e bianco, diretto e preciso.",
+    "accent": 16398413,
+    "secondary": 16053751,
+    "stripes": [
+      16398413,
+      16053751,
+      16398413
+    ]
+  },
+  {
+    "id": "mini_jcw",
+    "title": "MINI John Cooper Works",
+    "brand": "MINI",
+    "dialTitle": "JCW",
+    "summary": "Rosso corsa e nero, piccolo formato grande carattere.",
+    "accent": 15944787,
+    "secondary": 14212837,
+    "stripes": [
+      15944787,
+      14212837,
+      15944787
+    ]
+  },
+  {
+    "id": "alpine_r",
+    "title": "Alpine R",
+    "brand": "Alpine",
+    "dialTitle": "ALPINE R",
+    "summary": "Blu da corsa e bianco, leggero nell’aspetto.",
+    "accent": 5085935,
+    "secondary": 15791610,
+    "stripes": [
+      5085935,
+      15791610,
+      5085935
+    ]
+  },
+  {
+    "id": "lexus_f",
+    "title": "Lexus F",
+    "brand": "Lexus",
+    "dialTitle": "F",
+    "summary": "Blu profondo e argento, sportività essenziale.",
+    "accent": 7051767,
+    "secondary": 13293025,
+    "stripes": [
+      7051767,
+      13293025,
+      7051767
+    ]
+  },
+  {
+    "id": "ford_performance",
+    "title": "Ford Performance",
+    "brand": "Ford",
+    "dialTitle": "PERFORMANCE",
+    "summary": "Blu vivido e rosso, spirito racing.",
+    "accent": 6003967,
+    "secondary": 15945307,
+    "stripes": [
+      6003967,
+      16053751,
+      15945307
+    ]
+  },
+  {
+    "id": "cupra_vz",
+    "title": "CUPRA VZ",
+    "brand": "CUPRA",
+    "dialTitle": "VZ",
+    "summary": "Rame caldo e antracite, un carattere diverso.",
+    "accent": 13672579,
+    "secondary": 14992044,
+    "stripes": [
+      13672579,
+      9071449,
+      14992044
+    ]
+  },
+  {
+    "id": "abarth",
+    "title": "Abarth",
+    "brand": "Abarth",
+    "dialTitle": "ABARTH",
+    "summary": "Giallo e rosso, energia compatta.",
+    "accent": 16769372,
+    "secondary": 16078160,
+    "stripes": [
+      16769372,
+      16078160,
+      16769372
+    ]
+  },
+  {
+    "id": "mclaren",
+    "title": "McLaren Track",
+    "brand": "McLaren",
+    "dialTitle": "TRACK",
+    "summary": "Papaya e azzurro per un look da circuito.",
+    "accent": 16750651,
+    "secondary": 6736107,
+    "stripes": [
+      16750651,
+      6736107,
+      16750651
+    ]
+  },
+  {
+    "id": "pixel_turbo",
+    "title": "Turbo 16",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "16 BIT",
+    "summary": "Fucsia elettrico e numeri a pixel, come in sala giochi.",
+    "accent": 16739290,
+    "secondary": 7403519,
+    "stripes": [
+      16739290,
+      7403519,
+      16739290
+    ],
+    "style": "pixel"
+  },
+  {
+    "id": "pixel_forest",
+    "title": "Forest Quest",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "QUEST",
+    "summary": "Verde e oro per una piccola avventura a 16 bit.",
+    "accent": 9234842,
+    "secondary": 16768115,
+    "stripes": [
+      9234842,
+      16768115,
+      9234842
+    ],
+    "style": "pixel"
+  },
+  {
+    "id": "pixel_ice",
+    "title": "Ice Circuit",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "ICE RUN",
+    "summary": "Blocchi di ghiaccio e azzurro da corsa rétro.",
+    "accent": 9366271,
+    "secondary": 13285631,
+    "stripes": [
+      9366271,
+      13285631,
+      9366271
+    ],
+    "style": "pixel"
+  },
+  {
+    "id": "pixel_lava",
+    "title": "Lava Run",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "LAVA RUN",
+    "summary": "Arancio incandescente su una griglia di pixel.",
+    "accent": 16752740,
+    "secondary": 16768878,
+    "stripes": [
+      16752740,
+      16768878,
+      16752740
+    ],
+    "style": "pixel"
+  },
+  {
+    "id": "arcade_bonus",
+    "title": "Bonus Stage",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "BONUS",
+    "summary": "Cornice a scacchi e giallo da record.",
+    "accent": 16770669,
+    "secondary": 7533507,
+    "stripes": [
+      16770669,
+      7533507,
+      16770669
+    ],
+    "style": "arcade"
+  },
+  {
+    "id": "arcade_cobalt",
+    "title": "Cobalt Racer",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "PLAYER 1",
+    "summary": "Blu cobalto e rosa per la prossima partita.",
+    "accent": 8300287,
+    "secondary": 16747465,
+    "stripes": [
+      8300287,
+      16747465,
+      8300287
+    ],
+    "style": "arcade"
+  },
+  {
+    "id": "arcade_candy",
+    "title": "Candy Drift",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "DRIFT",
+    "summary": "Rosa e menta, pixel e traiettorie.",
+    "accent": 16752602,
+    "secondary": 9565141,
+    "stripes": [
+      16752602,
+      9565141,
+      16752602
+    ],
+    "style": "arcade"
+  },
+  {
+    "id": "arcade_moon",
+    "title": "Moon Patrol",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "MOON",
+    "summary": "Viola lunare e dettagli color lime.",
+    "accent": 12755711,
+    "secondary": 15204229,
+    "stripes": [
+      12755711,
+      15204229,
+      12755711
+    ],
+    "style": "arcade"
+  },
+  {
+    "id": "terminal_phosphor",
+    "title": "Fosforo",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "READY",
+    "summary": "Testo verde, righe sottili e spirito da terminale.",
+    "accent": 8518561,
+    "secondary": 4642172,
+    "stripes": [
+      8518561,
+      4642172,
+      8518561
+    ],
+    "style": "terminal"
+  },
+  {
+    "id": "terminal_amber",
+    "title": "Amber Console",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "SYSTEM",
+    "summary": "Ambra calda e caratteri monospaziati.",
+    "accent": 16761194,
+    "secondary": 16769185,
+    "stripes": [
+      16761194,
+      16769185,
+      16761194
+    ],
+    "style": "terminal"
+  },
+  {
+    "id": "terminal_ice",
+    "title": "Ice Terminal",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "ONLINE",
+    "summary": "Una console azzurra, fredda ed essenziale.",
+    "accent": 8971519,
+    "secondary": 13956607,
+    "stripes": [
+      8971519,
+      13956607,
+      8971519
+    ],
+    "style": "terminal"
+  },
+  {
+    "id": "terminal_lilac",
+    "title": "Lilac Shell",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "SHELL",
+    "summary": "Viola tenue su uno schermo a fosfori.",
+    "accent": 13480447,
+    "secondary": 15720191,
+    "stripes": [
+      13480447,
+      15720191,
+      13480447
+    ],
+    "style": "terminal"
+  },
+  {
+    "id": "synth_sunset",
+    "title": "Sunset Drive",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "SUNSET",
+    "summary": "Un sole all’orizzonte e una strada al neon.",
+    "accent": 16744648,
+    "secondary": 7334399,
+    "stripes": [
+      16744648,
+      7334399,
+      16744648
+    ],
+    "style": "synthwave"
+  },
+  {
+    "id": "synth_midnight",
+    "title": "Midnight Run",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "MIDNIGHT",
+    "summary": "Blu notturno e linee rosa elettrico.",
+    "accent": 9742079,
+    "secondary": 16739784,
+    "stripes": [
+      9742079,
+      16739784,
+      9742079
+    ],
+    "style": "synthwave"
+  },
+  {
+    "id": "synth_miami",
+    "title": "Miami Coast",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "MIAMI",
+    "summary": "Turchese e corallo, atmosfera anni Ottanta.",
+    "accent": 7795685,
+    "secondary": 16750220,
+    "stripes": [
+      7795685,
+      16750220,
+      7795685
+    ],
+    "style": "synthwave"
+  },
+  {
+    "id": "synth_violet",
+    "title": "Violet Horizon",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "HORIZON",
+    "summary": "Un orizzonte viola e dettagli dorati.",
+    "accent": 13933311,
+    "secondary": 16765308,
+    "stripes": [
+      13933311,
+      16765308,
+      13933311
+    ],
+    "style": "synthwave"
+  },
+  {
+    "id": "analog_heritage",
+    "title": "Heritage",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "HERITAGE",
+    "summary": "Fondo avorio, scala graduata e caratteri classici.",
+    "accent": 9913896,
+    "secondary": 3433301,
+    "stripes": [
+      9913896,
+      3433301,
+      9913896
+    ],
+    "style": "analog"
+  },
+  {
+    "id": "analog_navy",
+    "title": "Navy Club",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "NAVY",
+    "summary": "Quadrante blu e dettagli color champagne.",
+    "accent": 15780998,
+    "secondary": 10207970,
+    "stripes": [
+      15780998,
+      10207970,
+      15780998
+    ],
+    "style": "analog"
+  },
+  {
+    "id": "analog_racing",
+    "title": "Racing Ivory",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "RACING",
+    "summary": "Avorio e rosso, ispirazione da cronografo.",
+    "accent": 10890550,
+    "secondary": 4020333,
+    "stripes": [
+      10890550,
+      4020333,
+      10890550
+    ],
+    "style": "analog"
+  },
+  {
+    "id": "analog_british",
+    "title": "British Green",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "CLUB",
+    "summary": "Verde profondo e oro per uno stile senza tempo.",
+    "accent": 14992510,
+    "secondary": 10669232,
+    "stripes": [
+      14992510,
+      10669232,
+      14992510
+    ],
+    "style": "analog"
+  },
+  {
+    "id": "minimal_chalk",
+    "title": "Chalk",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "CHALK",
+    "summary": "Bianco caldo e segni sottili, solo l’essenziale.",
+    "accent": 2970972,
+    "secondary": 7170165,
+    "stripes": [
+      2970972,
+      7170165,
+      2970972
+    ],
+    "style": "minimal"
+  },
+  {
+    "id": "minimal_graphite",
+    "title": "Graphite",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "GRAPHITE",
+    "summary": "Grafite, bianco e molto spazio per i numeri.",
+    "accent": 15133165,
+    "secondary": 10989757,
+    "stripes": [
+      15133165,
+      10989757,
+      15133165
+    ],
+    "style": "minimal"
+  },
+  {
+    "id": "minimal_sand",
+    "title": "Sand",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "SAND",
+    "summary": "Toni della sabbia e dettagli color terracotta.",
+    "accent": 8802620,
+    "secondary": 7107937,
+    "stripes": [
+      8802620,
+      7107937,
+      8802620
+    ],
+    "style": "minimal"
+  },
+  {
+    "id": "minimal_ink",
+    "title": "Ink",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "INK",
+    "summary": "Nero deciso e accenti color ghiaccio.",
+    "accent": 10931427,
+    "secondary": 13752543,
+    "stripes": [
+      10931427,
+      13752543,
+      10931427
+    ],
+    "style": "minimal"
+  },
+  {
+    "id": "blueprint_studio",
+    "title": "Blueprint",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "STUDIO",
+    "summary": "Griglia tecnica blu e linee da progetto.",
+    "accent": 10348287,
+    "secondary": 13759231,
+    "stripes": [
+      10348287,
+      13759231,
+      10348287
+    ],
+    "style": "blueprint"
+  },
+  {
+    "id": "blueprint_cyan",
+    "title": "Cyan Grid",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "GRID",
+    "summary": "Carta scura e una maglia color ciano.",
+    "accent": 7202270,
+    "secondary": 10865407,
+    "stripes": [
+      7202270,
+      10865407,
+      7202270
+    ],
+    "style": "blueprint"
+  },
+  {
+    "id": "blueprint_lunar",
+    "title": "Lunar Plan",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "LUNAR",
+    "summary": "Una griglia lunare, grigio e verde salvia.",
+    "accent": 12178620,
+    "secondary": 14671827,
+    "stripes": [
+      12178620,
+      14671827,
+      12178620
+    ],
+    "style": "blueprint"
+  },
+  {
+    "id": "blueprint_copper",
+    "title": "Copper Plan",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "COPPER",
+    "summary": "Rame e blu, segni sottili da laboratorio.",
+    "accent": 16759697,
+    "secondary": 10210541,
+    "stripes": [
+      16759697,
+      10210541,
+      16759697
+    ],
+    "style": "blueprint"
+  },
+  {
+    "id": "endurance_pit",
+    "title": "Pit Wall",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "PIT WALL",
+    "summary": "Segmenti luminosi e dettagli da muretto box.",
+    "accent": 16764772,
+    "secondary": 9951727,
+    "stripes": [
+      16764772,
+      9951727,
+      16764772
+    ],
+    "style": "endurance"
+  },
+  {
+    "id": "endurance_night",
+    "title": "Night Stint",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "STINT",
+    "summary": "Accenti verde acido per la guida notturna.",
+    "accent": 14024575,
+    "secondary": 9946345,
+    "stripes": [
+      14024575,
+      9946345,
+      14024575
+    ],
+    "style": "endurance"
+  },
+  {
+    "id": "endurance_rescue",
+    "title": "Rescue",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "RESCUE",
+    "summary": "Arancio netto e una cornice strumentale.",
+    "accent": 16755826,
+    "secondary": 14738922,
+    "stripes": [
+      16755826,
+      14738922,
+      16755826
+    ],
+    "style": "endurance"
+  },
+  {
+    "id": "endurance_polar",
+    "title": "Polar Expedition",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "POLAR",
+    "summary": "Ghiaccio e ardesia, stile da spedizione.",
+    "accent": 10808063,
+    "secondary": 12900338,
+    "stripes": [
+      10808063,
+      12900338,
+      10808063
+    ],
+    "style": "endurance"
+  },
+  {
+    "id": "retro_cassette",
+    "title": "Cassette",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "SIDE A",
+    "summary": "Ambra, bande orizzontali e ricordi analogici.",
+    "accent": 16763779,
+    "secondary": 16227212,
+    "stripes": [
+      16763779,
+      16227212,
+      16763779
+    ],
+    "style": "retro"
+  },
+  {
+    "id": "retro_silver",
+    "title": "Silver Radio",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "STEREO",
+    "summary": "Argento e blu, come una radio d’epoca.",
+    "accent": 12441324,
+    "secondary": 15908471,
+    "stripes": [
+      12441324,
+      15908471,
+      12441324
+    ],
+    "style": "retro"
+  },
+  {
+    "id": "retro_teal",
+    "title": "Teal Eighty",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "EIGHTY",
+    "summary": "Verde petrolio e crema, gusto anni Ottanta.",
+    "accent": 9756621,
+    "secondary": 15916454,
+    "stripes": [
+      9756621,
+      15916454,
+      9756621
+    ],
+    "style": "retro"
+  },
+  {
+    "id": "retro_burgundy",
+    "title": "Burgundy",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "VINTAGE",
+    "summary": "Bordeaux e avorio, eleganza rétro.",
+    "accent": 15911100,
+    "secondary": 16768158,
+    "stripes": [
+      15911100,
+      16768158,
+      15911100
+    ],
+    "style": "retro"
+  },
+  {
+    "id": "pixel_desert",
+    "title": "Desert Rally",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "RALLY",
+    "summary": "Dune, pixel e colori da rally a 16 bit.",
+    "accent": 16765322,
+    "secondary": 11133904,
+    "stripes": [
+      16765322,
+      11133904,
+      16765322
+    ],
+    "style": "pixel"
+  },
+  {
+    "id": "synth_aurora",
+    "title": "Aurora",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "AURORA",
+    "summary": "Onde luminose e un orizzonte verde e viola.",
+    "accent": 10223572,
+    "secondary": 12689919,
+    "stripes": [
+      10223572,
+      12689919,
+      10223572
+    ],
+    "style": "synthwave"
+  },
+  {
+    "id": "analog_copper",
+    "title": "Copper Club",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "COPPER",
+    "summary": "Rame e verde su una scala classica.",
+    "accent": 15250579,
+    "secondary": 10471865,
+    "stripes": [
+      15250579,
+      10471865,
+      15250579
+    ],
+    "style": "analog"
+  },
+  {
+    "id": "minimal_cloud",
+    "title": "Cloud",
+    "brand": "Auto Gauge Studio",
+    "dialTitle": "CLOUD",
+    "summary": "Bianco morbido e accenti color cielo.",
+    "accent": 3955061,
+    "secondary": 8809358,
+    "stripes": [
+      3955061,
+      8809358,
+      3955061
+    ],
+    "style": "minimal"
+  }
+]

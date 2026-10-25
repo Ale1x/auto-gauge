@@ -22,8 +22,8 @@ struct RootView: View {
             Tab("Schermate", systemImage: "rectangle.3.group", value: .dashboards) {
                 DashboardNavigationView(path: $dashboardPath).padding(.top, bannerInset)
             }
-            Tab("Viaggi", systemImage: "clock.arrow.circlepath", value: .histories) {
-                HistoryNavigationView(path: $historyPath).padding(.top, bannerInset)
+            Tab("Temi", systemImage: "paintpalette", value: .themes) {
+                ThemeNavigationView().padding(.top, bannerInset)
             }
             Tab("Impostazioni", systemImage: "gearshape", value: .account) {
                 NavigationStack { AccountView() }.padding(.top, bannerInset)
@@ -60,12 +60,13 @@ struct RootView: View {
                 else { await model.cloud.accountChanged() }
             }
         }
+        .task(id: model.isDemoMode) { await model.themes.start(demo: model.isDemoMode) }
         .task {
             await model.bootstrap()
             #if DEBUG
             if ProcessInfo.processInfo.arguments.contains(where: { ["--history-timeline", "--history-timeline-chart", "--history-timeline-table"].contains($0) }), !debugHistoryRouteApplied {
                 debugHistoryRouteApplied = true
-                selection = .histories; historyPath = [.timeline(nil)]
+                selection = .themes
             }
             if ProcessInfo.processInfo.arguments.contains("--firmware-preparation"), !debugFirmwareRouteApplied {
                 debugFirmwareRouteApplied = true

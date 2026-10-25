@@ -15,29 +15,17 @@ struct AccountView: View {
                     }
                 }.accessibilityIdentifier("settings.appearance")
             }
-            Section {
-                Toggle("Backup iCloud", isOn: $model.backupEnabled)
-                    .accessibilityIdentifier("settings.backup")
-                    .disabled(!model.isDemoMode && !model.cloud.configured)
-                Label(!model.isDemoMode && !model.cloud.configured ? "Il backup iCloud non è disponibile in questa versione. I viaggi restano sul telefono." : model.backupStatusText, systemImage: "icloud")
-                    .font(.subheadline).foregroundStyle(.secondary)
-                if let date = model.lastBackupDate {
-                    LabeledContent("Ultimo backup") {
-                        Text(date, format: .dateTime.day().month(.abbreviated).hour().minute())
-                    }.font(.subheadline)
-                }
-                Button { synchronize() } label: {
-                    Label("Sincronizza", systemImage: "arrow.triangle.2.circlepath.icloud")
-                        .frame(minHeight: AppTheme.minimumTouch)
-                }.disabled(!model.backupEnabled || model.backupBusy || (!model.isDemoMode && !model.cloud.configured))
-                    .accessibilityIdentifier("backup.sync")
-                Button { restore() } label: {
-                    Label("Recupera viaggi", systemImage: "icloud.and.arrow.down")
-                        .frame(minHeight: AppTheme.minimumTouch)
-                }.disabled(!model.backupEnabled || model.backupBusy || (!model.isDemoMode && !model.cloud.configured))
-                    .accessibilityIdentifier("backup.restore")
-                if model.backupBusy { ProgressView("Aggiornamento del backup") }
-            } header: { Text("I tuoi viaggi al sicuro") }
+            Section("La tua raccolta") {
+                LabeledContent("Tema in uso", value: model.displayTheme.title)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Tema in uso")
+                    .accessibilityValue(model.displayTheme.title)
+                    .accessibilityIdentifier("settings.currentTheme")
+                Button("Ripristina acquisti", systemImage: "arrow.clockwise") {
+                    Task { await model.themes.restore(demo: model.isDemoMode) }
+                }.accessibilityIdentifier("themes.restore")
+                if let notice = model.themes.notice { Text(notice).font(.subheadline).foregroundStyle(.secondary) }
+            }
             Section {
                 Toggle("Modalità demo", isOn: $demoEnabled)
                     .accessibilityIdentifier("settings.demo")
@@ -53,8 +41,6 @@ struct AccountView: View {
         .onChange(of: model.isDemoMode) { _, enabled in demoEnabled = enabled }
     }
 
-    private func synchronize() { Task { await model.synchronizeBackup() } }
-    private func restore() { Task { await model.restoreBackup() } }
     private func changeMode(_ enabled: Bool) {
         guard enabled != model.isDemoMode, !changingMode else { return }
         changingMode = true
