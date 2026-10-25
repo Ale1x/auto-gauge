@@ -3,19 +3,17 @@ import GaugeCore
 
 struct HistoricalRecordRow: View {
     let record: HistoricalLogRecord
+
     var body: some View {
-        VStack(alignment: .leading, spacing: AppTheme.smallSpacing) {
-            Text("Sequenza \(record.sequence.decimal)").font(.headline).monospacedDigit()
-            Label(record.status.titleIT, systemImage: record.status == .valid ? "checkmark.circle" : "exclamationmark.circle")
-                .foregroundStyle(record.status == .valid ? AppTheme.accent : AppTheme.warning)
-            Text(record.relativeTimeIT).monospacedDigit().foregroundStyle(.secondary)
-            Text("Service 01 · PID \(String(record.pid, radix: 16).uppercased()) · ECU 0x\(String(record.ecuSource, radix: 16).uppercased())")
-                .font(.footnote).monospaced().foregroundStyle(.secondary)
-            if record.status == .valid {
-                Text("Bytes OBD: \(record.rawHex)").font(.footnote).monospaced().textSelection(.enabled)
+        LabeledContent {
+            if let value = HistoryPresentation.value(record) {
+                Text("\(value, format: .number.precision(.fractionLength(0...1))) \(HistoryPIDDefinition.find(record.pid)?.unit ?? "")")
+                    .monospacedDigit()
             } else {
-                Text("—").font(.title2).accessibilityLabel("Dato non disponibile")
+                Text("Dato non disponibile").foregroundStyle(.secondary)
             }
-        }.padding(.vertical, AppTheme.smallSpacing).accessibilityElement(children: .combine)
+        } label: { Text(HistoryPresentation.measure(record.pid)) }
+        .padding(.vertical, AppTheme.smallSpacing)
+        .accessibilityElement(children: .combine)
     }
 }

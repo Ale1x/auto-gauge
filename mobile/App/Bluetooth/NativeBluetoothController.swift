@@ -34,6 +34,15 @@ final class NativeBluetoothController: NSObject, @preconcurrency CBCentralManage
     private var rpc: GaugeRPCClient?
     private var qualifiedClaim = false
     var onSessionInvalidated: (@MainActor (UInt64) -> Void)?
+    var connectionStatusText: String {
+        switch central?.state {
+        case .unauthorized: return "Consenti l’accesso al Bluetooth nelle impostazioni del telefono."
+        case .poweredOff: return "Attiva il Bluetooth sul telefono per continuare."
+        case .unsupported: return "Questo telefono non supporta il collegamento."
+        case .resetting: return "Il Bluetooth si sta riavviando. Attendi un momento."
+        default: return isReady ? "Dispositivo trovato. Puoi collegarlo qui sotto." : "Tocca Cerca dispositivo per iniziare."
+        }
+    }
     func isCurrentConnection(_ lease: UInt64) -> Bool { isReady && generation == lease }
     func qualifiedPacketPipe() async throws -> any GaugePacketPipe {
         guard rpc == nil, !rpcBusy, !qualifiedClaim else { throw GaugeLinkError.busy }

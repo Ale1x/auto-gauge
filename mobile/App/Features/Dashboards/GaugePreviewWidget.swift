@@ -14,7 +14,7 @@ struct GaugePreviewWidget: View {
         Button(action: select) {
             VStack(spacing: 2) {
                 if dynamicTypeSize.isAccessibilitySize {
-                    Text("\(widget.id)").font(.title3).monospacedDigit()
+                    Text(widget.pid.nameIT).font(.footnote).lineLimit(2).minimumScaleFactor(0.7)
                 } else {
                     Text(exampleValue).font(.system(size: valueSize, design: .rounded)).monospacedDigit().minimumScaleFactor(0.5)
                     Text(widget.pid.unit).font(.footnote).foregroundStyle(AppTheme.accent)
@@ -30,7 +30,7 @@ struct GaugePreviewWidget: View {
         }
         .buttonStyle(.plain)
         .simultaneousGesture(DragGesture(minimumDistance: 8).onChanged(move).onEnded(endMove))
-        .accessibilityLabel("\(widget.pid.nameIT), valore dimostrativo \(exampleValue) \(widget.pid.unit)")
+        .accessibilityLabel("\(widget.pid.nameIT), \(exampleValue) \(widget.pid.unit)")
         .accessibilityValue(selected ? "Misura selezionata" : "Non selezionata")
         .accessibilityHint("Puoi regolare posizione e dimensioni anche nei controlli sotto l’anteprima.")
         .accessibilityInputLabels([widget.pid.nameIT])

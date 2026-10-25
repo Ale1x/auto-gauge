@@ -31,8 +31,11 @@ source_files = sorted((ROOT/'App').rglob('*.swift'))
 source_refs = [obj('file:'+str(p.relative_to(ROOT)), isa='PBXFileReference', lastKnownFileType='sourcecode.swift', path=str(p.relative_to(ROOT)), sourceTree='<group>') for p in source_files]
 asset = obj('assets', isa='PBXFileReference', lastKnownFileType='folder.assetcatalog', path='App/Assets.xcassets', sourceTree='<group>')
 product = obj('app-product', isa='PBXFileReference', explicitFileType='wrapper.application', includeInIndex='0', path='AutoGauge.app', sourceTree='BUILT_PRODUCTS_DIR')
-products = obj('products', isa='PBXGroup', children=[product], name='Products', sourceTree='<group>')
-root_group = obj('root-group', isa='PBXGroup', children=[*source_refs, asset, products], sourceTree='<group>')
+test_files = sorted((ROOT/'UITests').glob('*.swift'))
+test_refs = [obj('test-file:'+p.name, isa='PBXFileReference', lastKnownFileType='sourcecode.swift', path=str(p.relative_to(ROOT)), sourceTree='<group>') for p in test_files]
+test_product = obj('test-product', isa='PBXFileReference', explicitFileType='wrapper.cfbundle', includeInIndex='0', path='AutoGaugeUITests.xctest', sourceTree='BUILT_PRODUCTS_DIR')
+products = obj('products', isa='PBXGroup', children=[product, test_product], name='Products', sourceTree='<group>')
+root_group = obj('root-group', isa='PBXGroup', children=[*source_refs, *test_refs, asset, products], sourceTree='<group>')
 package = obj('package', isa='XCLocalSwiftPackageReference', relativePath='.')
 package_product = obj('package-product', isa='XCSwiftPackageProductDependency', package=package, productName='GaugeCore')
 app_sources = [obj('source:'+str(p.relative_to(ROOT)), isa='PBXBuildFile', fileRef=ref) for p,ref in zip(source_files,source_refs)]
@@ -52,7 +55,7 @@ for mode in ('Debug', 'Release'):
         'PRODUCT_NAME': 'AutoGauge', 'PRODUCT_BUNDLE_IDENTIFIER': 'it.ale1x.autogauge',
         'GENERATE_INFOPLIST_FILE': 'YES', 'INFOPLIST_KEY_CFBundleDisplayName': 'Auto Gauge',
         'INFOPLIST_KEY_LSApplicationCategoryType': 'public.app-category.utilities',
-        'INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription': 'Auto Gauge usa Bluetooth solo su tua richiesta per cercare e collegare un gauge di sviluppo. La simulazione non richiede Bluetooth.',
+        'INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription': 'Auto Gauge usa il Bluetooth per collegarsi al tuo dispositivo quando lo richiedi.',
         'INFOPLIST_KEY_UILaunchScreen_Generation': 'YES',
         'INFOPLIST_KEY_UIApplicationSceneManifest_Generation': 'YES',
         'TARGETED_DEVICE_FAMILY': '1', 'SUPPORTED_PLATFORMS': 'iphoneos iphonesimulator',
@@ -64,14 +67,20 @@ for mode in ('Debug', 'Release'):
 project_list = obj('project-configs', isa='XCConfigurationList', buildConfigurations=project_configs, defaultConfigurationIsVisible='0', defaultConfigurationName='Release')
 target_list = obj('target-configs', isa='XCConfigurationList', buildConfigurations=target_configs, defaultConfigurationIsVisible='0', defaultConfigurationName='Release')
 target = obj('app-target', isa='PBXNativeTarget', buildConfigurationList=target_list, buildPhases=[sources,frameworks,resources], buildRules=[], dependencies=[], name='AutoGauge', productName='AutoGauge', productReference=product, productType='com.apple.product-type.application', packageProductDependencies=[package_product])
-project = obj('project', isa='PBXProject', attributes={'BuildIndependentTargetsInParallel':'YES','LastUpgradeCheck':'2700'}, buildConfigurationList=project_list, compatibilityVersion='Xcode 14.0', developmentRegion='it', knownRegions=['it','Base'], mainGroup=root_group, productRefGroup=products, projectDirPath='', projectRoot='', targets=[target], packageReferences=[package])
+test_sources = obj('test-sources', isa='PBXSourcesBuildPhase', buildActionMask='2147483647', files=[obj('test-build:'+p.name, isa='PBXBuildFile', fileRef=ref) for p,ref in zip(test_files,test_refs)], runOnlyForDeploymentPostprocessing='0')
+test_configs = [obj('test-'+mode, isa='XCBuildConfiguration', name=mode, buildSettings={'PRODUCT_NAME':'AutoGaugeUITests', 'PRODUCT_BUNDLE_IDENTIFIER':'it.ale1x.autogauge.uitests', 'GENERATE_INFOPLIST_FILE':'YES', 'TEST_TARGET_NAME':'AutoGauge', 'CODE_SIGNING_ALLOWED':'NO', 'SUPPORTED_PLATFORMS':'iphonesimulator', 'SDKROOT':'iphonesimulator', 'TARGETED_DEVICE_FAMILY':'1'}) for mode in ('Debug','Release')]
+test_list = obj('test-configs', isa='XCConfigurationList', buildConfigurations=test_configs, defaultConfigurationIsVisible='0', defaultConfigurationName='Release')
+proxy = obj('test-proxy', isa='PBXContainerItemProxy', containerPortal=uid('project'), proxyType='1', remoteGlobalIDString=target, remoteInfo='AutoGauge')
+dependency = obj('test-dependency', isa='PBXTargetDependency', target=target, targetProxy=proxy)
+test_target = obj('test-target', isa='PBXNativeTarget', buildConfigurationList=test_list, buildPhases=[test_sources], buildRules=[], dependencies=[dependency], name='AutoGaugeUITests', productName='AutoGaugeUITests', productReference=test_product, productType='com.apple.product-type.bundle.ui-testing')
+project = obj('project', isa='PBXProject', attributes={'BuildIndependentTargetsInParallel':'YES','LastUpgradeCheck':'2700'}, buildConfigurationList=project_list, compatibilityVersion='Xcode 14.0', developmentRegion='it', knownRegions=['it','Base'], mainGroup=root_group, productRefGroup=products, projectDirPath='', projectRoot='', targets=[target,test_target], packageReferences=[package])
 folder = ROOT/'AutoGauge.xcodeproj'
 (folder/'xcshareddata/xcschemes').mkdir(parents=True, exist_ok=True)
 (folder/'project.pbxproj').write_text('// !$*UTF8*$!\n' + render({'archiveVersion':'1','classes':{},'objectVersion':'56','objects':objects,'rootObject':project}) + '\n')
 (folder/'xcshareddata/xcschemes/AutoGauge.xcscheme').write_text(f'''<?xml version="1.0" encoding="UTF-8"?>
 <Scheme LastUpgradeVersion="2700" version="1.3">
  <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES"><BuildActionEntries><BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{target}" BuildableName="AutoGauge.app" BlueprintName="AutoGauge" ReferencedContainer="container:AutoGauge.xcodeproj"/></BuildActionEntry></BuildActionEntries></BuildAction>
- <TestAction buildConfiguration="Debug" shouldUseLaunchSchemeArgsEnv="YES"/>
+ <TestAction buildConfiguration="Debug" shouldUseLaunchSchemeArgsEnv="YES"><Testables><TestableReference skipped="NO"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{test_target}" BuildableName="AutoGaugeUITests.xctest" BlueprintName="AutoGaugeUITests" ReferencedContainer="container:AutoGauge.xcodeproj"/></TestableReference></Testables></TestAction>
  <LaunchAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" launchStyle="0" useCustomWorkingDirectory="NO" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" debugServiceExtension="internal" allowLocationSimulation="YES"><BuildableProductRunnable runnableDebuggingMode="0"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{target}" BuildableName="AutoGauge.app" BlueprintName="AutoGauge" ReferencedContainer="container:AutoGauge.xcodeproj"/></BuildableProductRunnable></LaunchAction>
  <ProfileAction buildConfiguration="Release" shouldUseLaunchSchemeArgsEnv="YES" savedToolIdentifier="" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES"/>
  <AnalyzeAction buildConfiguration="Debug"/>

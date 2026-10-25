@@ -1,1 +1,2 @@
-enum HistoryRoute: Hashable { case session(String), timeline(String?) }
+enum HistoryRoute: Hashable { case recovered
+    case session(String), timeline(String?) }

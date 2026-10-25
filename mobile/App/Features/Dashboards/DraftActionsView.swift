@@ -2,19 +2,48 @@ import SwiftUI
 
 struct DraftActionsView: View {
     @Environment(AppModel.self) private var model
+    @State private var showingRestoreConfirmation = false
+
     var body: some View {
         Section {
-            Label(model.editor.hasChanges ? "Modifiche non salvate sul telefono" : "Bozza salvata sul telefono", systemImage: model.editor.hasChanges ? "pencil.circle" : "checkmark.circle")
-                .foregroundStyle(model.editor.hasChanges ? AppTheme.warning : AppTheme.accent)
-            LabeledContent("Revisione locale", value: "\(model.savedRevision)").monospacedDigit()
-            AppActionButton(title: "Salva bozza sul telefono", symbol: "square.and.arrow.down", disabled: !model.editor.hasChanges, action: save)
-            AppActionButton(title: "Annulla modifiche locali", symbol: "arrow.uturn.backward", disabled: !model.editor.hasChanges, action: model.cancelEdits)
-            AppActionButton(title: "Ricarica bozza salvata", symbol: "arrow.clockwise", action: model.reloadSaved)
-            AppActionButton(title: "Ripristina esempio nella bozza", symbol: "rectangle.stack.badge.plus", action: model.restoreExample)
-        } header: { Text("Su questo telefono") } footer: {
-            Text("Salva include dashboard e luminosità solo sul telefono. Annulla ripristina l’ultimo salvataggio. Nessuna di queste azioni applica la bozza al gauge.")
+            if model.isSaving {
+                ProgressView("Salvataggio…")
+                    .frame(minHeight: AppTheme.minimumTouch)
+            } else {
+                Label(model.saveStatusText, systemImage: model.hasPendingChanges ? "pencil.circle" : "checkmark.circle")
+                    .foregroundStyle(model.hasPendingChanges ? AppTheme.warning : AppTheme.accent)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Button(action: save) {
+                Label("Salva modifiche", systemImage: "checkmark")
+                    .frame(maxWidth: .infinity, minHeight: AppTheme.minimumTouch)
+            }
+            .buttonStyle(.borderedProminent)
+            .accessibilityIdentifier("configuration.save")
+            .disabled(!model.hasPendingChanges || model.isSaving)
+            AppActionButton(title: "Annulla", symbol: "arrow.uturn.backward",
+                            disabled: !model.editor.hasChanges || model.isSaving,
+                            action: model.discardChanges)
+            Menu("Altre opzioni", systemImage: "ellipsis.circle") {
+                Button("Ripristina impostazioni iniziali", systemImage: "arrow.counterclockwise", role: .destructive,
+                       action: requestRestore)
+            }
+            .frame(minHeight: AppTheme.minimumTouch)
+            .disabled(model.isSaving)
+            .confirmationDialog("Ripristinare le impostazioni iniziali?", isPresented: $showingRestoreConfirmation,
+                                titleVisibility: .visible) {
+                Button("Ripristina", role: .destructive, action: model.restoreDefaults)
+                Button("Annulla", role: .cancel) { }
+            } message: {
+                Text("Le modifiche correnti a schermate e luminosità saranno sostituite. Premi Salva modifiche per confermare il nuovo risultato.")
+            }
+        } header: {
+            Text("Le tue modifiche")
+        } footer: {
+            Text("Schermate e luminosità si salvano insieme. Annulla torna all’ultimo salvataggio.")
         }
-        Section("Gauge simulato") { SimulatedGaugeCard() }
     }
-    private func save() { Task { await model.save() } }
+
+    private func save() { Task { await model.saveChanges() } }
+    private func requestRestore() { showingRestoreConfirmation = true }
 }

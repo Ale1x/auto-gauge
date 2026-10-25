@@ -3,11 +3,18 @@ import SwiftUI
 struct SimulationNotice: View {
     @Environment(AppModel.self) private var model
     var body: some View {
-        Label(model.isNativeSession ? "Gauge selezionato · archivio reale separato" : "Simulazione · nessun dispositivo reale", systemImage: model.isNativeSession ? "circle.hexagongrid" : "testtube.2")
-            .font(.footnote).fixedSize(horizontal: false, vertical: true)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, AppTheme.spacing).padding(.vertical, AppTheme.smallSpacing)
-            .background(AppTheme.panel)
-            .accessibilityElement(children: .combine)
+        HStack(spacing: AppTheme.smallSpacing) {
+            Label("Modalità demo", systemImage: "sparkles")
+                .font(.subheadline.weight(.medium))
+            Spacer()
+            Button("Esci") { Task { await model.setDemoMode(false) } }
+                .font(.subheadline.weight(.semibold))
+                .frame(minHeight: AppTheme.minimumTouch)
+                .accessibilityLabel("Esci dalla modalità demo")
+        }
+        .padding(.horizontal, AppTheme.spacing)
+        .foregroundStyle(AppTheme.accent)
+        .background(AppTheme.panel)
+        .accessibilityIdentifier("demo.banner")
     }
 }

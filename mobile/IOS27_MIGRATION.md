@@ -21,4 +21,9 @@ Xcode27.0 (27A266a), AppleSwift6.4, SDK iPhoneOS/Simulator27.0:
 Log locali: `/tmp/ag-ios27-swift.log`, `/tmp/ag-ios27-sim.log`, `/tmp/ag-ios27-device.log`.
 Prodotti locali: `/tmp/ag-ios27-sim/Build/Products/Debug-iphonesimulator/AutoGauge.app` e `/tmp/ag-ios27-device/Build/Products/Debug-iphoneos/AutoGauge.app`.
 
-I runtime Simulator installati sono iOS26.4/26.5: nessuna esecuzione su iOS27 è stata dichiarata o tentata su un runtime incompatibile. Nessun download runtime, installazione su iPhone, provisioning, firma iOS, cloud/radio live o pubblicazione eseguiti. Il precedente bundle output/software con delivered_commit22e621c resta una consegna V0.13 con targetiOS17; per produrre una nuova consegna iOS27 usare `python3 scripts/build_software_bundle.py --output /percorso/vuoto`.
+Al termine della sola migrazione, prima della revisione UX, i runtime Simulator installati erano iOS26.4/26.5: nessuna esecuzione su iOS27 è stata dichiarata o tentata su un runtime incompatibile. Nessun download runtime, installazione su iPhone, provisioning, firma iOS, cloud/radio live o pubblicazione eseguiti. Il precedente bundle output/software con delivered_commit22e621c resta una consegna V0.13 con targetiOS17; per produrre una nuova consegna iOS27 usare `python3 scripts/build_software_bundle.py --output /percorso/vuoto`.
+
+
+## Aggiornamento successivo — revisione UX e runtime installato
+
+Il runtime **iOS 27.0 (24A434)** è stato scaricato e installato. La revisione UX è stata eseguita sul simulatore iPhone 13 Pro Max: 7 prove UI passate, oltre a 196 prove GaugeCore e 8 prove del modello app. Temi automatico/chiaro/scuro, demo completa e salvataggio semplificato sono descritti in [DesignValidation/UX27](DesignValidation/UX27/README.md), con le immagini finali. Le limitazioni e i risultati del precedente passaggio di sola migrazione rimangono una registrazione storica.

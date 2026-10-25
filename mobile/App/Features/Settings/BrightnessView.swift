@@ -3,23 +3,42 @@ import GaugeCore
 
 struct BrightnessView: View {
     @Environment(AppModel.self) private var model
+
     var body: some View {
         @Bindable var model = model
-        Form {
-            Section("Modalità") {
-                Picker("Controllo luminosità", selection: $model.configuration.brightness.mode) {
-                    ForEach(BrightnessMode.allCases, id: \.self) { mode in Text(mode.nameIT).tag(mode) }
-                }.pickerStyle(.automatic)
+        Group {
+            if !model.isDemoMode && !model.isNativeSession {
+                ContentUnavailableView("Collega il dispositivo", systemImage: "link",
+                                       description: Text("Collega Auto Gauge dalla scheda Dispositivo per regolare la luminosità del display."))
+            } else {
+                Form {
+                    Section {
+                        Picker("Luminosità", selection: $model.configuration.brightness.mode) {
+                            ForEach(BrightnessMode.allCases, id: \.self) { mode in
+                                Text(mode.nameIT).tag(mode)
+                            }
+                        }
+                        .accessibilityIdentifier("settings.brightness.mode")
+                    } footer: {
+                        Text(model.configuration.brightness.mode == .automatic
+                             ? "Il display si adatta alla luce dell’ambiente."
+                             : "Scegli la luminosità che preferisci per il display.")
+                    }
+                    if model.configuration.brightness.mode == .manual {
+                        Section("Livello di luminosità") {
+                            LabeledContent("Luminosità", value: "\(model.configuration.brightness.manualPercent)%")
+                                .monospacedDigit()
+                            Slider(value: $model.manualBrightness, in: 0...100, step: 1)
+                                .frame(minHeight: AppTheme.minimumTouch)
+                                .accessibilityLabel("Luminosità del display")
+                                .accessibilityValue("\(model.configuration.brightness.manualPercent) per cento")
+                        }
+                    }
+                    DraftActionsView()
+                }
+                .disabled(model.isSaving)
             }
-            Section {
-                LabeledContent("Livello manuale", value: "\(model.configuration.brightness.manualPercent)%").monospacedDigit()
-                Slider(value: $model.manualBrightness, in: 0...100, step: 1)
-                    .frame(minHeight: AppTheme.minimumTouch)
-                    .accessibilityLabel("Luminosità manuale").accessibilityValue("\(model.configuration.brightness.manualPercent) per cento")
-            } header: { Text("Valore manuale") } footer: {
-                Text("In automatica il gauge userà il sensore ambiente. Il valore manuale viene conservato; curva e limiti reali del display sono da validare.")
-            }
-            DraftActionsView()
-        }.navigationTitle("Luminosità")
+        }
+        .navigationTitle("Luminosità")
     }
 }

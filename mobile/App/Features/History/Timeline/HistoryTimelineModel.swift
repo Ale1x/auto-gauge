@@ -41,7 +41,7 @@ final class HistoryTimelineModel {
             switch input {
             case .gauge(let imported, let ready):
                 sessions = try HistoryTimelineSession.imported(imported)
-                notice = ready ? nil : "Ultima copia locale disponibile: la ricarica dell’archivio non è stata verificata. Torna agli storici per ricaricarla."
+                notice = ready ? nil : "I viaggi non sono aggiornati. Torna all’elenco e riprova."
             case .cloud(let items): sessions = try HistoryTimelineSession.cloud(items); notice = nil
             }
             if !sessions.contains(where: { $0.id == sessionSelection }) {
@@ -52,7 +52,7 @@ final class HistoryTimelineModel {
             updateOptions()
         } catch {
             cancel(); sessions = []; projection = nil; tableRows = []; pidChoices = []; ecuChoices = []
-            notice = "Archivio non analizzabile. Nessun dato originale è stato modificato. \(error.localizedDescription)"
+            notice = "Non riusciamo ad aprire questo viaggio. Riprova ad aggiornare."
         }
     }
     private func updateOptions() {
@@ -78,7 +78,7 @@ final class HistoryTimelineModel {
                 self.projection = result; self.preparing = false; self.updateRows()
             } catch {
                 guard let self, !Task.isCancelled, self.generation == token else { return }
-                self.preparing = false; self.notice = "Analisi non disponibile: \(error.localizedDescription)"
+                self.preparing = false; self.notice = "Il grafico non è disponibile. Riprova tra poco."
             }
         }
     }
@@ -90,9 +90,8 @@ final class HistoryTimelineModel {
         let start = page * Self.rowsPerPage
         tableRows = Array(rows.dropFirst(start).prefix(Self.rowsPerPage))
     }
-    static func pidTitle(_ pid: Int) -> String {
-        let hex = String(pid, radix: 16).uppercased()
-        return HistoryPIDDefinition.find(pid).map { "\($0.nameIT) · PID \(hex)" } ?? "PID \(hex) · formula non disponibile nell’app"
+    func readingTitle(_ source: UInt32) -> String {
+        let index = ecuChoices.firstIndex(of: source).map { $0 + 1 } ?? 1
+        return "Lettura \(index)"
     }
-    static func ecuTitle(_ ecu: UInt32) -> String { "ECU 0x" + String(ecu, radix: 16).uppercased() }
 }

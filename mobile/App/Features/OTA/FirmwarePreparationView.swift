@@ -11,28 +11,28 @@ struct FirmwarePreparationView: View {
     }
     var body: some View {
         Form {
-            Section("Preparazione locale") {
-                Text("Prepara e controlla un pacchetto firmware prima del trasferimento al gauge.")
+            Section("Prepara l’aggiornamento") {
+                Text("Scegli i file dell’aggiornamento e controllali prima di inviarli al dispositivo.")
                 if !model.trustAvailable {
-                    Label("Profilo fidato non configurato", systemImage: "lock.shield")
-                    Text("Puoi selezionare i file. La verifica sarà disponibile quando l’app avrà le informazioni fidate del gauge. La selezione dei file non autorizza l’installazione.")
+                    Label("Verifica non ancora disponibile", systemImage: "lock.shield")
+                    Text("Puoi scegliere i file, ma per ora non è possibile verificarli né installarli su questo dispositivo.")
                         .font(.callout).foregroundStyle(.secondary)
                 }
             }
             FirmwarePackageFilesSection(snapshot: model.snapshot, busy: model.preparationLocked, chooseManifest: chooseManifest, chooseImage: chooseImage)
             Section {
-                Button("Verifica pacchetto", systemImage: "checkmark.shield", action: model.verify).disabled(!model.canVerify)
-                Button("Salva preparazione verificata", systemImage: "square.and.arrow.down", action: model.save).disabled(!model.canSave)
+                Button("Verifica aggiornamento", systemImage: "checkmark.shield", action: model.verify).frame(minHeight: AppTheme.minimumTouch).disabled(!model.canVerify)
+                Button("Conserva file verificati", systemImage: "square.and.arrow.down", action: model.save).frame(minHeight: AppTheme.minimumTouch).disabled(!model.canSave)
                 if model.busy && model.installationSnapshot.state == .idle {
-                    ProgressView("Preparazione in corso")
-                    Button("Annulla operazione", role: .cancel, action: model.cancel)
+                    ProgressView("Controllo dei file in corso…")
+                    Button("Interrompi controllo", role: .cancel, action: model.cancel)
                 }
                 if let notice = model.notice { Text(notice).font(.callout).accessibilityAddTraits(.updatesFrequently) }
             }
             if let manifest = model.snapshot.verifiedManifest { FirmwareVerifiedPackageSection(manifest: manifest) }
             FirmwareInstallationSection(model: model)
         }
-        .navigationTitle("Firmware")
+        .navigationTitle("Aggiornamento")
         .fileImporter(isPresented: $showImporter, allowedContentTypes: [.data], allowsMultipleSelection: false, onCompletion: importCompleted)
         .task { await model.restore() }
         .onDisappear(perform: model.leave)

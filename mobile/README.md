@@ -1,6 +1,10 @@
-# Auto Gauge per iPhone — sviluppo simulato
+# Auto Gauge per iPhone
 
-App SwiftUI in italiano, con configurazione dashboard, anteprima statica, luminosità, catalogo PID e storici. Editor e importer comunicano con un **endpoint device in memoria tramite packet AG reali**, codificati/decodificati in entrambe le direzioni. Il flusso demo non usa radio, socket, vettura o OTA. Le sezioni Bluetooth di sviluppo e CloudKit sono separate e opt-in; il default resta locale/simulato e non carica fixture. Adapter compilati non equivalgono a radio, sicurezza o cloud qualificati. La simulazione del device è sempre indicata nella UI.
+App SwiftUI in italiano con quattro sezioni: **Dispositivo, Schermate, Viaggi, Impostazioni**. Aspetto automatico, chiaro o scuro; un unico salvataggio per schermate e luminosità; viaggi con grafici e dettagli progressivi.
+
+La modalità demo, inizialmente attiva, permette di provare tutte le funzioni senza hardware. È indicata da un solo banner superiore e si controlla dalle Impostazioni. Configurazione, due viaggi, backup e versione dell’aggiornamento demo persistono separatamente in `AutoGauge/demo/`; nessuna operazione demo usa radio, CloudKit, ricevute native qualificate o il provider OTA reale. La scheda del display è un’anteprima della configurazione, non una lettura live.
+
+La UI e le relative verifiche sono documentate in [DesignValidation/UX27](DesignValidation/UX27/README.md). Le sezioni APP e i dettagli di protocollo più sotto documentano anche l’evoluzione storica del progetto.
 
 ## Target corrente
 
@@ -24,12 +28,12 @@ Bundle approvato: `it.ale1x.autogauge`. La configurazione predefinita resta senz
 
 - `App/AutoGaugeApp.swift` è il solo entry point; `App/Model/AppModel.swift` coordina le azioni con @Observable/@MainActor.
 - `App/Features/` separa dispositivo, dashboard, impostazioni e storico; `App/Navigation/` mantiene destinazioni tipizzate e stato per scena.
-- `App/Design/` e `App/Components/` raccolgono theme, colori adattivi e azioni con area minima44pt. L’app segue l’aspetto del sistema, senza forzare dark mode.
+- `App/Design/` e `App/Components/` raccolgono theme, colori adattivi e azioni con area minima44pt. L’aspetto Automatico segue il sistema; Chiaro e Scuro sono preferenze esplicite persistite.
 - `Sources/GaugeCore/` contiene configurazione/editor, framing, archivio storico e `Simulation/` con endpoint/canale in memoria. Il package è testabile su host senza SwiftUI.
 
-La UI distingue **tre stati**: bozza di lavoro/salvataggio sul telefono, ultimo snapshot letto dal gauge simulato e applicazione volatile confermata dal simulatore. Leggere il gauge non sovrascrive la bozza; `Usa lo snapshot nella bozza` è esplicito e non salva automaticamente. `Salva bozza sul telefono` non invia alcun comando al device. `Applica al gauge simulato` usa la revisione letta dal device, indipendente dal contatore dei salvataggi locali.
+La UI espone **Salva modifiche**. Il modello conserva separatamente bozza, salvataggio locale e conferma del dispositivo. Quando il dispositivo reale è scollegato, il salvataggio resta sul telefono e indica che il display deve essere aggiornato. Alla riconnessione il confronto con la configurazione letta ricostruisce le modifiche pendenti; un esito sconosciuto richiede lettura/riconciliazione senza ripetizione cieca della scrittura.
 
-Annulla ripristina l’ultimo salvataggio locale. Ripristina esempio modifica soltanto la bozza. File locale scritto con sostituzione atomica; errori di ricarica non sovrascrivono il salvataggio. La prima apertura può migrare il precedente UserDefaults della simulazione.
+Annulla torna all’ultimo salvataggio locale. Il ripristino delle impostazioni iniziali, nel menu con conferma, usa solo misure disponibili e richiede poi Salva modifiche. Le scritture locali sono atomiche. La prima apertura migra l’eventuale precedente configurazione demo locale.
 
 ## Roundtrip configurazione e connessioni
 
@@ -43,23 +47,23 @@ Il canale consente una sola connessione attiva e lega i pending a lease + reques
 
 Limiti1–3 dashboard e1–5 widget; ID stabili dopo rimozioni, geometrie su griglia intera0–10000. Selezione dalla lista o anteprima, trascinamento, slider e stepper coerenti con gli stessi metodi core. I riquadri che superano il bordo circolare producono un avviso senza cambiare la validazione rettangolare condivisa.
 
-Target minimo **iOS 27**, editor libero, font e disposizione sono ipotesi di sviluppo per O-10/O-23. Il modello non dichiara fit finale del pannello. Ai font di accessibilità la visualizzazione geometrica usa gli ID; lista e controlli conservano nomi, valori dimostrativi, selezione e funzioni con testo dinamico. Nessuna dashboard live sull’iPhone.
+Target minimo **iOS 27**, editor libero, font e disposizione sono ipotesi di sviluppo per O-10/O-23. Il modello non dichiara fit finale del pannello. Ai font di accessibilità lista e controlli conservano nomi, selezione e funzioni con testo dinamico; i controlli di posizione e dimensione sono espressi in percentuale. Nessuna dashboard live sull’iPhone.
 
 ## Storici
 
-L’app importa pagine dal ring volatile del gauge simulato attraverso `logs.read`, salva prima sul telefono e invia `logs.ack` solo dopo write riuscita. L’ACK non elimina il buffer sorgente per altri telefoni. Ogni installazione ha un proprio cursore device/session; si riparte dal cursore locale per il resume. Il mock iniziale contiene sequenze3–6 e segnala esattamente la perdita1–2 a un telefono con cursore0.
+L’app importa pagine dal ring volatile del gauge simulato attraverso `logs.read`, salva prima sul telefono e invia `logs.ack` solo dopo write riuscita. L’ACK non elimina il buffer sorgente per altri telefoni. Ogni installazione ha un proprio cursore device/session; si riparte dal cursore locale per il resume. Le fixture storiche del protocollo includono sequenze3–6 e perdita1–2 per le regressioni. La UI demo corrente usa due viaggi separati, con 960 letture e quattro misure.
 
-`LogModels.swift` conserva sequenze/tempi uint64 come stringhe decimali canoniche, anche oltre2^53 e fino aUInt64.max, senza Double. Pagine con record/status/raw incoerenti, chiavi duplicate/sconosciute, primitive fuori tipo o gap non dichiarati vengono rifiutate. Gli stati non disponibili mostrano `—`; i validi mostrano bytes raw senza inventare un decoder. Nessuna data assoluta viene ricostruita senza un’ancora affidabile.
+`LogModels.swift` conserva sequenze/tempi uint64 come stringhe decimali canoniche, anche oltre2^53 e fino aUInt64.max, senza Double. Pagine con record/status/raw incoerenti, chiavi duplicate/sconosciute, primitive fuori tipo o gap non dichiarati vengono rifiutate. Gli stati non disponibili mostrano `—`; i validi sono visualizzati mediante i decoder delle misure supportate, senza esporre i byte del protocollo. Nessuna data assoluta viene ricostruita senza un’ancora affidabile.
 
 `LocalLogArchive` prepara snapshot candidati e li rende attivi soltanto dopo sostituzione atomica del file. Duplicati identici sono idempotenti; conflitti o errori storage preservano lo snapshot e non producono ACK nuovo. Se un ACK verso il simulatore fallisce dopo la write locale, il salvataggio rimane valido e la mancata conferma è dichiarata.
 
 Limiti **del prototipo**, non retention di prodotto/cloud:512KiB di file,1024record complessivi,16sessioni e128intervalli coalescenti; pagina4096byte/max16record/max16intervalli. A pieno si rifiuta la nuova pagina senza eviction. Una sola istanza actor per file, nessun coordinamento fra processi. Atomicità file non significa durabilità a ogni power loss o policy finale di protezione/backup iOS.
 
-Le fixture aggiuntive sono importabili con un pulsante distinto. Le risorse demo derivano da `shared/fixtures/` tramite `generate_demo_logs.py`; non vengono caricate sul cloud.
+Il pulsante Aggiorna viaggi aggiorna la demo senza duplicare i dati. Le risorse demo derivano da `shared/fixtures/` tramite `generate_demo_logs.py`; non vengono caricate sul cloud.
 
 ## iCloud e manutenzione
 
-DEC-012 sceglie account iCloud del telefono e CloudKit senza account email separato. L’adapter nativo APP-05 usa la banca dati privata Development: verifica account e sincronizzazione sono azioni esplicite distinte. Una verifica account riuscita non equivale a backup. Configurazione e blocco Apple Developer Program sono descritti in [Config/README.md](Config/README.md).
+DEC-012 sceglie account iCloud del telefono e CloudKit senza account email separato. L’adapter nativo APP-05 usa la banca dati privata Development: l’azione Sincronizza verifica l’account e poi aggiorna la copia; Recupera viaggi verifica l’account e recupera i dati. Una verifica account riuscita non equivale a backup. Configurazione e blocco Apple Developer Program sono descritti in [Config/README.md](Config/README.md).
 
 La build predefinita unsigned e tutte le build simulatore non costruiscono CKContainer. Il factory reale richiede flag esplicito e un profilo Development incorporato, non scaduto, con Team/app/container/servizio CloudKit approvati; il controllo del template non sostituisce la verifica della firma/provisioning da parte di iOS. I dettagli tecnici Apple restano nella configurazione, fuori dalla UI.
 

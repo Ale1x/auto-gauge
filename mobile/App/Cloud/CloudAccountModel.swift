@@ -7,7 +7,10 @@ import GaugeCore
 final class CloudAccountModel {
     var account: CloudAccount = .notConfigured
     var notice = "iCloud non configurato per questa installazione."
+    private(set) var diagnosticDetail: String?
     var busy = false
+    private(set) var lastOperationSucceeded = false
+    private(set) var lastSynchronizationDate: Date?
     var pending = 0
     var uploaded = 0
     var restoredItems: [CloudHistoryItem] = []
@@ -38,7 +41,7 @@ final class CloudAccountModel {
     }
     func verify() {
         guard let database, !busy else { return }
-        busy = true; epoch += 1; let token = epoch
+        busy = true; diagnosticDetail = nil; lastOperationSucceeded = false; epoch += 1; let token = epoch
         operation = Task {
             do {
                 let result = try await database.account()
@@ -65,11 +68,13 @@ final class CloudAccountModel {
                 let restored = await restoreStore.progress()
                 guard token == epoch else { return }
                 show(restored)
-                notice = "Account verificato. Nessun dato è stato caricato."
+                lastOperationSucceeded = true
+                notice = "Account verificato. Puoi aggiornare la copia di sicurezza."
             } catch {
                 guard token == epoch else { return }
+                diagnosticDetail = String(describing: error)
                 clearProjection()
-                account = .temporarilyUnavailable; notice = error.localizedDescription
+                account = .temporarilyUnavailable; notice = "Non è stato possibile aggiornare iCloud. I dati già salvati sono conservati. Riprova."
             }
             guard token == epoch else { return }
             busy = false
@@ -86,17 +91,19 @@ final class CloudAccountModel {
     /// Explicit account action. Simulator histories have no inbox enqueue path.
     func synchronize() {
         guard let database, !busy, case .available = account else { return }
-        busy = true; epoch += 1; let token = epoch
+        busy = true; diagnosticDetail = nil; lastOperationSucceeded = false; epoch += 1; let token = epoch
         operation = Task {
             do {
                 try await qualifiedInbox.move(to: outbox)
                 let status = try await outbox.synchronize(database: database)
                 guard token == epoch else { return }
                 pending = status.pending; uploaded = status.uploaded
-                notice = status.uploaded > 0 ? "Coda reale confermata su iCloud: \(status.uploaded) elementi. Gli storici simulati sono esclusi." : "Nessuno storico reale da sincronizzare. I dati simulati restano sul telefono."
+                lastOperationSucceeded = true; lastSynchronizationDate = .now
+                notice = status.uploaded > 0 ? "Copia di sicurezza aggiornata." : "Non ci sono nuovi viaggi da salvare."
             } catch {
                 guard token == epoch else { return }
-                notice = error.localizedDescription
+                diagnosticDetail = String(describing: error)
+                notice = "Non è stato possibile aggiornare iCloud. I dati già salvati sono conservati. Riprova."
             }
             guard token == epoch else { return }
             busy = false
@@ -104,7 +111,7 @@ final class CloudAccountModel {
     }
     func restore(restart: Bool = false) {
         guard let database, !busy, case .available = account else { return }
-        busy = true; epoch += 1; let token = epoch
+        busy = true; diagnosticDetail = nil; lastOperationSucceeded = false; epoch += 1; let token = epoch
         operation = Task {
             do {
                 if restart {
@@ -114,13 +121,14 @@ final class CloudAccountModel {
                 }
                 let progress = try await restoreStore.restore(database: database)
                 guard token == epoch else { return }
-                show(progress)
-                notice = progress.scanFinished ? "Scansione iCloud terminata. L’indice può aggiornarsi in ritardo: non è una fotografia completa del cloud. Puoi avviare una nuova scansione." : "Recupero parziale salvato. Continua dal checkpoint per leggere altre pagine."
+                show(progress); lastOperationSucceeded = true
+                notice = progress.scanFinished ? "Ricerca completata. Puoi controllare nuovamente se mancano viaggi recenti." : "Alcuni viaggi sono stati recuperati. Premi Recupera viaggi per continuare."
             } catch {
                 guard token == epoch else { return }
+                diagnosticDetail = String(describing: error)
                 let progress = await restoreStore.progress()
                 guard token == epoch else { return }
-                show(progress); notice = error.localizedDescription
+                show(progress); notice = "Non è stato possibile aggiornare iCloud. I dati già salvati sono conservati. Riprova."
             }
             guard token == epoch else { return }
             busy = false
@@ -134,15 +142,15 @@ final class CloudAccountModel {
         restoredItems = progress.items; restoreFinished = progress.scanFinished; restoreHasCheckpoint = progress.hasCheckpoint
     }
     func cancel() {
-        epoch += 1; operation?.cancel(); operation = nil; busy = false
-        notice = "Operazione annullata. La coda locale resta conservata; una risposta cloud persa verrà verificata al prossimo tentativo."
+        epoch += 1; operation?.cancel(); operation = nil; busy = false; lastOperationSucceeded = false
+        notice = "Operazione annullata. I viaggi salvati sono conservati."
     }
     func accountChanged() async {
         epoch += 1; let token = epoch
         operation?.cancel(); operation = nil; busy = false
-        clearProjection()
+        clearProjection(); lastSynchronizationDate = nil; lastOperationSucceeded = false
         account = configured ? .temporarilyUnavailable : .notConfigured
-        notice = "Account cambiato. Verifica nuovamente iCloud; le code di altri account restano separate."
+        notice = "Il tuo account iCloud è cambiato. Premi Sincronizza per verificarlo."
         await outbox.invalidateAccount()
         guard token == epoch else { return }
         await restoreStore.invalidateAccount()

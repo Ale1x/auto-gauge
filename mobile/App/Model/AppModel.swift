@@ -6,6 +6,30 @@ import GaugeCore
 @Observable
 final class AppModel {
     let cloud = CloudAccountModel()
+    private(set) var isDemoMode: Bool
+    var appearance: AppAppearance { didSet { preferences.set(appearance.rawValue, forKey: "appearance") } }
+    var backupEnabled: Bool { didSet { preferences.set(backupEnabled, forKey: isDemoMode ? "demo.backup.enabled" : "device.backup.enabled") } }
+    private(set) var backupBusy = false
+    private(set) var backupStatusText = "Tutto pronto"
+    private(set) var lastBackupDate: Date?
+    private(set) var isSaving = false
+    private(set) var saveStatusText = "Tutte le modifiche sono salvate"
+    private(set) var demoFirmwareState: DemoFirmwareState = .idle
+    private(set) var demoFirmwareProgress = 0.0
+    private(set) var firmwareCurrentVersion = "0.13.0"
+    private(set) var firmwareAvailableVersion: String? = "0.14.0"
+    private(set) var firmwareStatusText = "Controlla se ci sono aggiornamenti"
+    private(set) var diagnosticDetail: String?
+    private let preferences: UserDefaults
+    private let demoStore: DemoExperienceStore
+    private let demoLogArchive: LocalLogArchive
+    private let demoStepDelay: Duration
+    private var firmwareGeneration = 0
+    private var firmwareWork: Task<Void, Never>?
+    private var backupWork: Task<Void, Never>?
+    private var backupGeneration = 0
+    private var pendingDeviceUpdate = false
+    var hasPendingChanges: Bool { editor.hasChanges || pendingDeviceUpdate }
     let firmwareTrust: OTAPreparationTrust?
     let firmwareInstallation: OTAInstallationController
     let nativeBluetooth = NativeBluetoothController()
@@ -21,7 +45,7 @@ final class AppModel {
     var gaugeNeedsRead = true
     var gaugeSnapshot: GaugeConfiguration?
     var gaugeCommitState: GaugeCommitState = .idle
-    var gaugeNotice = "Nessun collegamento simulato attivo."
+    var gaugeNotice = "Collega il tuo Auto Gauge"
     private var started = false
     private var logArchive: LocalLogArchive
     private let nativeLogArchive: LocalLogArchive
@@ -37,8 +61,8 @@ final class AppModel {
     private var retainedDrafts: [String: ConfigurationDraft] = [:]
     private var historySourceCursor = 0
     var gaugeDeviceID: String?
-    var isNativeSession: Bool { binding.isNative }
-    var sourceTitle: String { isNativeSession ? "Gauge selezionato" : "Gauge simulato" }
+    var isNativeSession: Bool { !isDemoMode && binding.isNative }
+    var sourceTitle: String { "Auto Gauge" }
     private var transport: any GaugeSessionTransport { binding.transport }
     var configuration: GaugeConfiguration {
         get { editor.working }
@@ -56,29 +80,62 @@ final class AppModel {
     }
     init(nativeQualificationProvider: any GaugeNativeQualificationProvider = UnqualifiedNativeGaugeProvider(),
          firmwareTrust: OTAPreparationTrust? = nil,
-         otaInstallationProvider: (any OTAInstallationSessionProvider)? = nil) {
+         otaInstallationProvider: (any OTAInstallationSessionProvider)? = nil,
+         applicationSupportDirectory: URL? = nil, preferences suppliedPreferences: UserDefaults? = nil,
+         demoStepDelay: Duration = .milliseconds(75)) {
+        let arguments = ProcessInfo.processInfo.arguments
+        let testing = arguments.contains("--uitesting-reset") || arguments.contains("--uitesting")
+        let selectedPreferences = suppliedPreferences ?? (testing ? UserDefaults(suiteName: "AutoGauge.UITests") : nil) ?? .standard
+        let base = applicationSupportDirectory ?? URL.applicationSupportDirectory.appending(path: "AutoGauge")
+        let selectedDirectory = testing && applicationSupportDirectory == nil ? base.appending(path: "uitests") : base
+        if testing && arguments.contains("--uitesting-reset") {
+            // This path is dedicated to UI tests; never remove normal user data.
+            if applicationSupportDirectory == nil { try? FileManager.default.removeItem(at: selectedDirectory) }
+            if suppliedPreferences == nil { selectedPreferences.removePersistentDomain(forName: "AutoGauge.UITests") }
+        }
+        preferences = selectedPreferences
+        let initialDemoMode = selectedPreferences.object(forKey: "demo.enabled") == nil ? true : selectedPreferences.bool(forKey: "demo.enabled")
+        isDemoMode = initialDemoMode
+        appearance = AppAppearance(rawValue: selectedPreferences.string(forKey: "appearance") ?? "system") ?? .system
+        backupEnabled = selectedPreferences.object(forKey: initialDemoMode ? "demo.backup.enabled" : "device.backup.enabled") == nil ? initialDemoMode : selectedPreferences.bool(forKey: initialDemoMode ? "demo.backup.enabled" : "device.backup.enabled")
+        self.demoStepDelay = demoStepDelay
         self.firmwareTrust = firmwareTrust
         firmwareInstallation = OTAInstallationController(provider: otaInstallationProvider)
         self.nativeQualificationProvider = nativeQualificationProvider
-        directory = URL.applicationSupportDirectory.appending(path: "AutoGauge")
-        storage = .init(fileURL: directory.appending(path: "simulated-configuration-v1.json"))
-        nativeLogArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "native-histories-v1.json")))
-        logArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "simulated-histories-v1.json")))
+        directory = selectedDirectory
+        let demoDirectory = selectedDirectory.appending(path: "demo")
+        demoStore = DemoExperienceStore(directory: demoDirectory)
+        demoLogArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: demoDirectory.appending(path: "histories-v1.json")))
+        nativeLogArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: selectedDirectory.appending(path: "native-histories-v1.json")))
+        logArchive = initialDemoMode ? demoLogArchive : nativeLogArchive
+        let demoStorage = AtomicFileConfigurationStorage(fileURL: demoDirectory.appending(path: "configuration-v1.json"))
+        storage = demoStorage
+        let demoCatalog = GaugeConfigurationDefaults.namedCatalog(InMemoryGaugeEndpoint.catalog)
+        var loaded: ConfigurationDraft
+        do { loaded = try ConfigurationDraft(configuration: DemoData.configuration, catalog: InMemoryGaugeEndpoint.catalog) }
+        catch { fatalError("Configurazione iniziale non valida") }
         do {
-            editor = try ConfigurationDraft(configuration: DemoData.configuration, catalog: DemoData.catalog)
-            let fixture = try DemoGaugeFixture.load()
-            let transport = DevelopmentGaugeTransport(pipe: InMemoryGaugePacketPipe(channel: try InMemoryGaugeEndpoint(configuration: fixture.configuration, historySource: fixture.historySource), clientID: "IPHONE-SIM-A"))
-            simulatorBinding = .simulator(transport, sessions: [fixture.historySource.sessionID])
-            binding = simulatorBinding
-        } catch { fatalError("Fixture dimostrative incorporate non valide: \(error)") }
-        do {
-            if let data = try storage.read() {
-                editor = try ConfigurationDraft(configuration: JSONDecoder().decode(GaugeConfiguration.self, from: data), catalog: InMemoryGaugeEndpoint.catalog)
-            } else if let legacy = UserDefaults.standard.data(forKey: "auto-gauge.simulated-configuration.v1") {
-                let migrated = try ConfigurationDraft(configuration: JSONDecoder().decode(GaugeConfiguration.self, from: legacy), catalog: InMemoryGaugeEndpoint.catalog)
-                try storage.write(legacy); editor = migrated
+            // The persisted configuration is loaded BEFORE the sample endpoint.
+            if let data = try demoStorage.read() {
+                loaded = try ConfigurationDraft(configuration: GaugeConfigurationDefaults.normalizedLabels(JSONDecoder().decode(GaugeConfiguration.self, from: data), catalog: demoCatalog), catalog: demoCatalog)
+            } else if !testing, let data = try AtomicFileConfigurationStorage(fileURL: selectedDirectory.appending(path: "simulated-configuration-v1.json")).read() {
+                loaded = try ConfigurationDraft(configuration: GaugeConfigurationDefaults.normalizedLabels(JSONDecoder().decode(GaugeConfiguration.self, from: data), catalog: demoCatalog), catalog: demoCatalog)
+                try demoStorage.write(data)
             }
-        } catch { message = "Bozza locale non leggibile: è stato caricato l’esempio senza sovrascrivere il salvataggio. \(error.localizedDescription)" }
+        } catch { diagnosticDetail = String(describing: error); message = "Non è stato possibile aprire le impostazioni salvate. La copia precedente è conservata." }
+        if initialDemoMode { editor = loaded }
+        else {
+            do { editor = try ConfigurationDraft(configuration: DemoData.configuration, catalog: InMemoryGaugeEndpoint.catalog) }
+            catch { fatalError("Configurazione iniziale non valida") }
+            storage = .init(fileURL: selectedDirectory.appending(path: "unselected/configuration-v1.json"))
+            activeDraftKey = "unselected"
+        }
+        do {
+            let fixture = try DemoGaugeFixture.load()
+            let endpoint = try InMemoryGaugeEndpoint(configuration: loaded.saved, historySource: fixture.historySource)
+            let transport = DevelopmentGaugeTransport(pipe: InMemoryGaugePacketPipe(channel: endpoint, clientID: "IPHONE-DEMO"))
+            simulatorBinding = .simulator(transport, sessions: [fixture.historySource.sessionID]); binding = simulatorBinding
+        } catch { fatalError("Contenuti iniziali non validi") }
         nativeBluetooth.onSessionInvalidated = { [weak self] generation in Task { await self?.nativeSessionEnded(generation: generation) } }
     }
     subscript(geometryUnitFor dashboardID: Int, widget widgetID: Int, field field: GeometryField) -> Int {
@@ -94,21 +151,14 @@ final class AppModel {
         set { self[geometryUnitFor: dashboardID, widget: widgetID, field: field] = Int(newValue.rounded()) }
     }
     func bootstrap() async {
-        guard !started else { return }
-        started = true
-        // Recover durable native intents even while the simulator is selected
-        // and without requiring the gauge or an iCloud account to be present.
-        do {
-            try await nativeLogArchive.reload()
-            try await cloud.recoverQualifiedImports(from: nativeLogArchive)
-        } catch { message = "Storici reali conservati; recupero della coda iCloud da ripetere: \(error.localizedDescription)" }
-        await reloadLogs()
-        await connectGauge()
-        if logReady && logSessions.isEmpty { await syncSimulatedHistory() }
+        guard !started else { return }; started = true
+        if isDemoMode {
+            await loadDemoPreferences(); await reloadLogs(); await connectGauge(); await refreshHistory()
+        } else { await reloadLogs() }
     }
     func connectGauge() async {
         guard !gaugeBusy else { return }
-        if isNativeSession { gaugeNotice = "Seleziona e qualifica una nuova connessione nella sezione Bluetooth."; return }
+        guard isDemoMode else { gaugeNotice = "Collega il tuo dispositivo per continuare."; return }
         let token = sessionEpoch; let transport = self.transport
         gaugeBusy = true; defer { if token == sessionEpoch { gaugeBusy = false } }
         do {
@@ -117,14 +167,15 @@ final class AppModel {
             let snapshot = try await transport.configuration()
             let id = try await transport.deviceIdentifier()
             guard token == sessionEpoch else { return }
-            catalog = nextCatalog; gaugeSnapshot = snapshot; gaugeDeviceID = id
+            catalog = GaugeConfigurationDefaults.namedCatalog(nextCatalog); gaugeSnapshot = snapshot; gaugeDeviceID = id
             gaugeConnected = true; gaugeNeedsRead = false
             gaugeCommitState = await transport.commitState()
             guard token == sessionEpoch else { return }
-            gaugeNotice = "Collegato al simulatore locale. La bozza del telefono è conservata."
+            gaugeNotice = "Auto Gauge collegato"
         } catch { await refreshLinkAfterError(error, transport: transport, token: token) }
     }
     func activateNativeGauge() async {
+        guard !isDemoMode else { return }
         guard !gaugeBusy, !logBusy, !changingSession else { return }
         let token = sessionEpoch; gaugeBusy = true
         defer { if token == sessionEpoch { gaugeBusy = false } }
@@ -152,54 +203,73 @@ final class AppModel {
             guard token == sessionEpoch, nativeBluetooth.isCurrentConnection(pipeGeneration) else { changingSession = false; await native.disconnect(); return }
             sessionEpoch += 1; let installed = sessionEpoch
             binding = .qualifiedNative(native); nativePipeGeneration = pipeGeneration; storage = nextStorage; activeDraftKey = key; editor = nextEditor
-            catalog = nextCatalog; gaugeSnapshot = snapshot; gaugeDeviceID = id
+            catalog = GaugeConfigurationDefaults.namedCatalog(nextCatalog); gaugeSnapshot = snapshot; gaugeDeviceID = id
+            pendingDeviceUpdate = !sameSettings(nextEditor.saved, snapshot)
+            saveStatusText = nextEditor.hasChanges ? "Modifiche da salvare" : pendingDeviceUpdate ? "Modifiche salvate sul telefono" : "Modifiche salvate"
             gaugeConnected = true; gaugeNeedsRead = false; gaugeCommitState = .idle
             logArchive = nativeLogArchive
             logSessions = []; logReady = false; lastLogAcknowledgement = nil; historySourceCursor = 0
             changingSession = false; gaugeBusy = false
-            gaugeNotice = "Sessione locale qualificata per il gauge selezionato. Bozze e storici dimostrativi restano separati."
+            gaugeNotice = "Auto Gauge collegato"
             await reloadLogs()
             guard installed == sessionEpoch else { return }
         } catch {
             changingSession = false
             await candidate?.disconnect()
             guard token == sessionEpoch else { return }
-            gaugeNotice = error.localizedDescription; message = error.localizedDescription
+            show(error, message: "Non è stato possibile collegare il dispositivo. Riprova dopo aver controllato il dispositivo."); gaugeNotice = "Collegamento non disponibile"
         }
     }
-    func useSimulator() async {
-        guard !gaugeBusy, !logBusy, !changingSession else { return }
+    func useSimulator() async { await setDemoMode(true) }
+    func setDemoMode(_ enabled: Bool) async {
+        guard enabled != isDemoMode, !changingSession else { return }
         changingSession = true; sessionEpoch += 1
+        if !isDemoMode { cloud.cancel() }
+        backupGeneration += 1; backupWork?.cancel(); backupWork = nil
+        cancelFirmwareUpdate(); firmwareGeneration += 1
+        let old = transport
+        await firmwareInstallation.cancel()
+        await old.disconnect(); nativeBluetooth.stop()
         retainedDrafts[activeDraftKey] = editor
-        await transport.disconnect()
-        binding = simulatorBinding; nativePipeGeneration = nil; activeDraftKey = "simulation"
-        storage = .init(fileURL: directory.appending(path: "simulated-configuration-v1.json"))
-        if let retained = retainedDrafts[activeDraftKey] { editor = retained }
-        catalog = DemoData.catalog; gaugeSnapshot = nil; gaugeDeviceID = nil
-        gaugeConnected = false; gaugeNeedsRead = true; gaugeCommitState = .idle
-        logArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "simulated-histories-v1.json")))
+        isDemoMode = enabled; preferences.set(enabled, forKey: "demo.enabled")
+        binding = simulatorBinding; nativePipeGeneration = nil
+        gaugeConnected = false; gaugeBusy = false; logBusy = false; isSaving = false; backupBusy = false; pendingDeviceUpdate = false
+        gaugeNeedsRead = true; gaugeSnapshot = nil; gaugeDeviceID = nil; gaugeCommitState = .idle
         logSessions = []; logReady = false; lastLogAcknowledgement = nil; historySourceCursor = 0
-        changingSession = false
-        await reloadLogs(); await connectGauge()
+        catalog = GaugeConfigurationDefaults.namedCatalog(InMemoryGaugeEndpoint.catalog); activeDraftKey = enabled ? "simulation" : "unselected"
+        if enabled {
+            storage = .init(fileURL: directory.appending(path: "demo/configuration-v1.json")); logArchive = demoLogArchive
+            do { try editor.reload(from: storage, catalog: catalog) } catch { show(error, message: "Non è stato possibile aprire le impostazioni salvate.") }
+        } else {
+            storage = .init(fileURL: directory.appending(path: "unselected/configuration-v1.json")); logArchive = nativeLogArchive
+            do { editor = try ConfigurationDraft(configuration: DemoData.configuration, catalog: catalog) } catch { diagnosticDetail = String(describing: error) }
+        }
+        backupEnabled = preferences.object(forKey: enabled ? "demo.backup.enabled" : "device.backup.enabled") == nil ? enabled : preferences.bool(forKey: enabled ? "demo.backup.enabled" : "device.backup.enabled")
+        backupStatusText = enabled ? "Tutto pronto" : "Il backup iCloud non è disponibile in questa versione"
+        lastBackupDate = nil; changingSession = false
+        if enabled { await loadDemoPreferences(); await connectGauge() }
+        await reloadLogs()
+        if enabled { await refreshHistory() }
+        gaugeNotice = enabled ? "Auto Gauge collegato" : "Collega il tuo dispositivo per continuare."
     }
     private func nativeSessionEnded(generation: UInt64) async {
         guard isNativeSession, nativePipeGeneration == generation, !changingSession else { return }
         nativePipeGeneration = nil; sessionEpoch += 1; let token = sessionEpoch
         gaugeConnected = false; gaugeNeedsRead = true
-        gaugeBusy = false; logBusy = false
+        gaugeBusy = false; logBusy = false; isSaving = false
         let transport = self.transport
         await transport.disconnect()
         let state = await transport.commitState()
         guard token == sessionEpoch else { return }
         gaugeCommitState = state
-        gaugeNotice = "Gauge disconnesso. Bozza e archivio locale conservati; riconnetti e rileggi prima di applicare."
+        gaugeNotice = "Dispositivo scollegato. Le impostazioni e i viaggi sono conservati."
     }
     func disconnectGauge() async {
         sessionEpoch += 1; let token = sessionEpoch; let transport = self.transport
-        gaugeConnected = false; gaugeNeedsRead = true; gaugeBusy = false
+        gaugeConnected = false; gaugeNeedsRead = true; gaugeBusy = false; logBusy = false; isSaving = false
         await transport.disconnect()
         guard token == sessionEpoch else { return }
-        gaugeNotice = "Sessione scollegata. Un altro telefono può essere usato senza reset."
+        gaugeNotice = "Dispositivo scollegato"
     }
     func readGauge() async {
         guard gaugeConnected, !gaugeBusy else { return }
@@ -209,16 +279,18 @@ final class AppModel {
             let nextCatalog = try await transport.supportedPIDs()
             let snapshot = try await transport.configuration()
             guard token == sessionEpoch else { return }
-            catalog = nextCatalog; gaugeSnapshot = snapshot; gaugeNeedsRead = false
+            catalog = GaugeConfigurationDefaults.namedCatalog(nextCatalog); gaugeSnapshot = snapshot; gaugeNeedsRead = false
             gaugeCommitState = await transport.commitState()
             guard token == sessionEpoch else { return }
-            gaugeNotice = "Snapshot aggiornato dal dispositivo selezionato; bozza locale conservata."
+            pendingDeviceUpdate = !sameSettings(editor.saved, snapshot)
+            saveStatusText = editor.hasChanges ? "Modifiche da salvare" : pendingDeviceUpdate ? "Modifiche salvate sul telefono" : "Modifiche salvate"
+            gaugeNotice = "Impostazioni aggiornate"
         } catch { await refreshLinkAfterError(error, transport: transport, token: token) }
     }
     func useGaugeSnapshot() {
         guard let gaugeSnapshot, !gaugeNeedsRead else { return }
         edit { try $0.restore(gaugeSnapshot, catalog: catalog) }
-        gaugeNotice = "Snapshot copiato nella bozza. Il salvataggio sul telefono resta separato."
+        gaugeNotice = "Impostazioni caricate. Puoi modificarle e salvarle."
     }
     func validateOnGauge() async {
         guard gaugeConnected, !gaugeBusy else { return }
@@ -227,7 +299,7 @@ final class AppModel {
         do {
             try await transport.validateDraft(editor.working)
             guard token == sessionEpoch else { return }
-            gaugeNotice = "Bozza validata; nessuna applicazione e nessun salvataggio eseguiti."
+            gaugeNotice = "Le impostazioni sono pronte per essere salvate."
         } catch { await refreshLinkAfterError(error, transport: transport, token: token) }
     }
     func applyToGauge() async {
@@ -240,7 +312,7 @@ final class AppModel {
             })
             guard token == sessionEpoch else { return }
             gaugeSnapshot = snapshot; gaugeNeedsRead = false
-            gaugeNotice = isNativeSession ? "Applicazione confermata dal gauge. La bozza del telefono non è stata salvata automaticamente." : "Applicazione confermata in RAM simulata. La bozza del telefono non è stata salvata automaticamente."
+            gaugeNotice = "Impostazioni aggiornate"
         } catch { await refreshLinkAfterError(error, transport: transport, token: token) }
     }
     private func receiveGaugePhase(_ phase: GaugeCommitState, token: Int) { if token == sessionEpoch { gaugeCommitState = phase } }
@@ -248,7 +320,7 @@ final class AppModel {
         let connected = await transport.isConnected(); let needsRead = await transport.requiresRead(); let state = await transport.commitState()
         guard token == sessionEpoch else { return }
         gaugeConnected = connected; gaugeNeedsRead = needsRead; gaugeCommitState = state
-        gaugeNotice = error.localizedDescription; message = error.localizedDescription
+        show(error, message: "Non è stato possibile collegare il dispositivo. Riprova dopo aver controllato il dispositivo."); gaugeNotice = "Collegamento non disponibile"
     }
     func reloadLogs() async {
         guard !logBusy else { return }
@@ -256,18 +328,20 @@ final class AppModel {
         logBusy = true; defer { if token == sessionEpoch { logBusy = false } }
         do {
             try await archive.reload()
-            do { try await cloud.recoverQualifiedImports(from: archive) }
-            catch { if token == sessionEpoch { message = "Storico locale conservato; recupero della coda iCloud da ripetere: \(error.localizedDescription)" } }
+            do { if !isDemoMode { try await cloud.recoverQualifiedImports(from: archive) } }
+            catch { if token == sessionEpoch { show(error, message: "I viaggi sono sul telefono. La copia di sicurezza sarà aggiornata al prossimo tentativo.") } }
             let sessions = await archive.sessions(); let ready = await archive.isReady()
             guard token == sessionEpoch else { return }
             logSessions = sessions; logReady = ready
         } catch {
             guard token == sessionEpoch else { return }
-            logReady = false; message = "Ricarica storico non riuscita. Nessun dato sovrascritto e nessun nuovo ACK. \(error.localizedDescription)"
+            logReady = false; show(error, message: "Non è stato possibile aprire i viaggi salvati. I dati precedenti sono conservati.")
         }
     }
     func syncSimulatedHistory() async { await syncGaugeHistory() }
     func syncGaugeHistory() async {
+        if isDemoMode { await refreshHistory(); return }
+        guard isNativeSession else { return }
         guard logReady, !logBusy, gaugeConnected, !gaugeBusy else { return }
         let token = sessionEpoch; let binding = self.binding; let transport = binding.transport; let archive = logArchive
         logBusy = true; gaugeBusy = true
@@ -275,7 +349,7 @@ final class AppModel {
         do {
             let sources = try await binding.historySessionIDs()
             guard token == sessionEpoch else { return }
-            guard !sources.isEmpty else { lastLogAcknowledgement = "Nessuna sessione dichiarata dal gauge."; return }
+            guard !sources.isEmpty else { lastLogAcknowledgement = "Non ci sono nuovi viaggi"; return }
             for _ in 0..<4 {
                 let source = sources[historySourceCursor % sources.count]; historySourceCursor = (historySourceCursor + 1) % sources.count
                 let imported = try await transport.importHistoryPage(sessionID: source, archive: archive, limit: 16)
@@ -283,13 +357,13 @@ final class AppModel {
                 // interrupted imports, independently of the current UI lease.
                 if imported.qualifiedImport != nil {
                     do { try await cloud.recoverQualifiedImports(from: archive) }
-                    catch { if token == sessionEpoch { message = "Storico locale conservato; coda iCloud da recuperare: \(error.localizedDescription)" } }
+                    catch { if token == sessionEpoch { show(error, message: "I viaggi sono salvati sul telefono. La copia di sicurezza resta da aggiornare.") } }
                 }
                 guard token == sessionEpoch else { return }
                 logSessions = await archive.sessions()
                 guard token == sessionEpoch else { return }
-                lastLogAcknowledgement = "Cursore locale \(imported.acknowledgement.acknowledgedThrough.decimal) · \(imported.peerAcknowledged ? "conferma ricevuta" : "conferma non recapitata")"
-                if let warning = imported.warning { message = warning; break }
+                lastLogAcknowledgement = imported.peerAcknowledged ? "Viaggi aggiornati" : "Viaggi salvati sul telefono"
+                if imported.warning != nil { message = "I viaggi sono salvati. Ricollega il dispositivo per completare l’aggiornamento."; break }
             }
         } catch {
             let sessions = await archive.sessions()
@@ -298,38 +372,245 @@ final class AppModel {
             await refreshLinkAfterError(error, transport: transport, token: token)
         }
     }
-    func importDemoLogs() async {
-        guard !isNativeSession, logReady, !logBusy else { return }
-        logBusy = true
-        defer { logBusy = false }
-        do {
-            let demo = try DemoLogImport.load()
-            for page in demo.pages {
-                let ack = try await logArchive.importPage(deviceID: demo.deviceID, data: page)
-                lastLogAcknowledgement = "Fixture locale · cursore \(ack.acknowledgedThrough.decimal) · nessun ACK al simulatore"
-                logSessions = await logArchive.sessions()
-            }
-        } catch { message = "Pagina fixture rifiutata senza nuovo ACK. \(error.localizedDescription)" }
-    }
+    func importDemoLogs() async { if isDemoMode { await refreshHistory() } }
     func edit(_ operation: (inout ConfigurationDraft) throws -> Void) {
         var candidate = editor
         do { try operation(&candidate); editor = candidate }
-        catch { message = error.localizedDescription }
+        catch { show(error, message: "Non è stato possibile modificare questa impostazione.") }
     }
-    func save() async {
+    func save() async { await saveChanges() }
+    func saveChanges() async {
+        guard !isSaving, hasPendingChanges else { return }
+        guard isDemoMode || isNativeSession else { message = "Collega il dispositivo prima di salvare le modifiche."; return }
+        let token = sessionEpoch; let source = transport
+        var savedOnPhone = !editor.hasChanges
+        isSaving = true; saveStatusText = "Salvataggio in corso…"
+        defer { if token == sessionEpoch { isSaving = false } }
         do {
-            try editor.save(to: storage, catalog: catalog)
-            message = "Bozza salvata solo su questo iPhone, revisione locale \(editor.saved.revision). Nessuna applicazione al gauge."
-        } catch { message = error.localizedDescription }
+            if editor.hasChanges { try editor.save(to: storage, catalog: catalog) }
+            savedOnPhone = true; pendingDeviceUpdate = true
+            saveStatusText = "Modifiche salvate. Collega il dispositivo per aggiornarlo."
+            // Unknown delivery is reconciled by reading, never by repeating a
+            // mutation. New editing is persisted before comparing that read.
+            if !isDemoMode && gaugeCommitState == .unknown {
+                if gaugeConnected { await readGauge() }
+                guard token == sessionEpoch else { return }
+                if let observed = gaugeSnapshot, !gaugeNeedsRead, sameSettings(observed, editor.saved) {
+                    pendingDeviceUpdate = false; saveStatusText = editor.hasChanges ? "Modifiche da salvare" : "Modifiche salvate"
+                }
+                return
+            }
+            if isDemoMode && !gaugeConnected { await connectGauge() }
+            guard token == sessionEpoch, canApplyToGauge else { return }
+            let applied = try await source.applyDraft(editor.saved, onPhase: { _ in })
+            guard token == sessionEpoch else { return }
+            gaugeSnapshot = applied; gaugeCommitState = await source.commitState()
+            guard token == sessionEpoch else { return }
+            pendingDeviceUpdate = false
+            saveStatusText = editor.hasChanges ? "Modifiche da salvare" : "Modifiche salvate"
+            gaugeNotice = "Le impostazioni sono aggiornate."
+        } catch {
+            guard token == sessionEpoch else { return }
+            diagnosticDetail = String(describing: error)
+            let state = await source.commitState()
+            guard token == sessionEpoch else { return }
+            gaugeCommitState = state; gaugeNeedsRead = await source.requiresRead()
+            saveStatusText = savedOnPhone ? "Modifiche salvate sul telefono. Verifica il collegamento." : "Salvataggio non riuscito"
+            if !savedOnPhone { message = "Non è stato possibile salvare le modifiche. Puoi riprovare: le tue modifiche sono conservate." }
+        }
     }
-    func cancelEdits() { editor.cancel() }
+    func discardChanges() { editor.cancel(); saveStatusText = "Modifiche annullate" }
+    func cancelEdits() { discardChanges() }
     func reloadSaved() {
         do { try editor.reload(from: storage, catalog: catalog) }
-        catch { message = "Ricarica non riuscita: bozza corrente conservata. \(error.localizedDescription)" }
+        catch { show(error, message: "Non è stato possibile aprire il salvataggio. Le tue modifiche sono conservate.") }
     }
-    func restoreExample() { edit { try $0.restore(DemoData.configuration, catalog: catalog) } }
+    func restoreDefaults() {
+        do { let defaults = try GaugeConfigurationDefaults.make(catalog: catalog); edit { try $0.restore(defaults, catalog: catalog) }; saveStatusText = "Modifiche da salvare" }
+        catch { show(error, message: "Collega il dispositivo per vedere le misure disponibili.") }
+    }
+    func restoreExample() { restoreDefaults() }
     func addDashboard() {
-        guard let pid = catalog.first else { message = "Nessuna misura disponibile per una nuova dashboard."; return }
+        guard let pid = catalog.first else { message = "Nessuna misura disponibile."; return }
         edit { _ = try $0.addDashboard(pid: pid) }
+    }
+    private func sameSettings(_ lhs: GaugeConfiguration, _ rhs: GaugeConfiguration) -> Bool {
+        var first = lhs; var second = rhs; first.revision = 1; second.revision = 1
+        let encoder = JSONEncoder(); encoder.outputFormatting = [.sortedKeys]
+        guard let left = try? encoder.encode(first), let right = try? encoder.encode(second) else { return false }
+        return left == right
+    }
+    private func show(_ error: Error, message text: String) { diagnosticDetail = String(describing: error); message = text }
+}
+
+extension AppModel {
+    func historyTitle(for session: ImportedLogSession) -> String {
+        if isDemoMode, let value = try? DemoJourneyFixture.trips.first(where: { $0.sessionID == session.sessionID }) { return value.title }
+        let position = logSessions.firstIndex(where: { $0.id == session.id }).map { $0 + 1 } ?? 1
+        return "Viaggio \(position)"
+    }
+    func historyDate(for session: ImportedLogSession) -> Date? {
+        guard isDemoMode else { return nil }
+        return try? DemoJourneyFixture.trips.first(where: { $0.sessionID == session.sessionID })?.date
+    }
+    func refreshHistory() async {
+        guard isDemoMode else { await syncGaugeHistory(); return }
+        guard !logBusy else { return }
+        let token = sessionEpoch; let archive = demoLogArchive
+        logBusy = true; defer { if token == sessionEpoch { logBusy = false } }
+        do {
+            if !(await archive.isReady()) { try await archive.reload() }
+            for trip in try DemoJourneyFixture.trips {
+                for page in try DemoJourneyFixture.pages(for: trip) {
+                    guard token == sessionEpoch, isDemoMode else { return }
+                    _ = try await archive.importPage(deviceID: DemoJourneyFixture.deviceID, data: page)
+                }
+            }
+            let sessions = await archive.sessions()
+            guard token == sessionEpoch, isDemoMode else { return }
+            logSessions = sessions; logReady = true; lastLogAcknowledgement = "Viaggi aggiornati"
+        } catch {
+            guard token == sessionEpoch else { return }
+            show(error, message: "Non è stato possibile aggiornare i viaggi. La copia precedente è conservata.")
+        }
+    }
+    private func loadDemoPreferences() async {
+        let token = sessionEpoch
+        do {
+            let version = try await demoStore.firmwareVersion()
+            let backup = try await demoStore.backupSnapshot()
+            guard token == sessionEpoch, isDemoMode else { return }
+            firmwareCurrentVersion = version
+            firmwareAvailableVersion = version == "0.14.0" ? nil : "0.14.0"
+            demoFirmwareState = version == "0.14.0" ? .completed : .idle
+            firmwareStatusText = version == "0.14.0" ? "Il dispositivo è aggiornato" : "È disponibile un aggiornamento"
+            lastBackupDate = backup.lastBackupDate
+            backupStatusText = backup.lastBackupDate == nil ? "Pronto per la prima copia di sicurezza" : "Copia di sicurezza disponibile"
+        } catch { guard token == sessionEpoch else { return }; show(error, message: "Non è stato possibile aprire tutte le impostazioni. I salvataggi sono conservati.") }
+    }
+    func synchronizeBackup() async { await runBackupAction(restoring: false) }
+    func restoreBackup() async { await runBackupAction(restoring: true) }
+    private func runBackupAction(restoring: Bool) async {
+        guard backupWork == nil else { return }
+        backupGeneration += 1; let token = backupGeneration
+        let task = Task { [self] in
+            if restoring { await performRestoreBackup() } else { await performSynchronizeBackup() }
+        }
+        backupWork = task
+        await withTaskCancellationHandler { await task.value } onCancel: { task.cancel() }
+        if token == backupGeneration { backupWork = nil }
+    }
+    private func performSynchronizeBackup() async {
+        guard !backupBusy else { return }
+        guard backupEnabled else { backupStatusText = "Attiva la copia di sicurezza per continuare"; return }
+        guard isDemoMode else { await performCloudBackup(restoring: false); return }
+        let token = sessionEpoch; let sessions = logSessions
+        backupBusy = true; defer { if token == sessionEpoch { backupBusy = false } }
+        do {
+            let result = try await demoStore.synchronize(sessions)
+            guard token == sessionEpoch, isDemoMode else { return }
+            lastBackupDate = result.lastBackupDate; backupStatusText = "Copia di sicurezza aggiornata"
+        } catch { guard token == sessionEpoch else { return }; diagnosticDetail = String(describing: error); backupStatusText = "Non è stato possibile aggiornare la copia. Riprova." }
+    }
+    private func performRestoreBackup() async {
+        guard !backupBusy else { return }
+        guard isDemoMode else { await performCloudBackup(restoring: true); return }
+        let token = sessionEpoch; let archive = demoLogArchive
+        backupBusy = true; defer { if token == sessionEpoch { backupBusy = false } }
+        do {
+            if !(await archive.isReady()) { try await archive.reload() }
+            let result = try await demoStore.restore(into: archive)
+            let sessions = await archive.sessions()
+            guard token == sessionEpoch, isDemoMode else { return }
+            logSessions = sessions; logReady = true; lastBackupDate = result.lastBackupDate
+            backupStatusText = result.lastBackupDate == nil ? "Non c’è ancora una copia da recuperare" : "Viaggi recuperati"
+        } catch { guard token == sessionEpoch else { return }; diagnosticDetail = String(describing: error); backupStatusText = "Non è stato possibile recuperare i viaggi. La copia è conservata." }
+    }
+    private func performCloudBackup(restoring: Bool) async {
+        guard cloud.configured else { backupStatusText = "Il backup iCloud non è disponibile in questa versione"; return }
+        guard !backupBusy, !cloud.busy else { return }
+        let token = sessionEpoch; backupBusy = true
+        defer { if token == sessionEpoch { backupBusy = false } }
+        backupStatusText = "Verifica dell’account in corso…"
+        cloud.verify()
+        guard await waitForCloud(token: token), !isDemoMode else { return }
+        guard case .available = cloud.account else { backupStatusText = "Accedi a iCloud nelle impostazioni del telefono per continuare"; return }
+        backupStatusText = restoring ? "Recupero dei viaggi in corso…" : "Aggiornamento della copia di sicurezza…"
+        if restoring { cloud.restore(restart: cloud.restoreFinished) } else { cloud.synchronize() }
+        guard await waitForCloud(token: token), !isDemoMode else { return }
+        backupStatusText = cloud.notice
+        if cloud.lastOperationSucceeded, !restoring { lastBackupDate = cloud.lastSynchronizationDate }
+    }
+    private func waitForCloud(token: Int) async -> Bool {
+        let deadline = ContinuousClock().now.advanced(by: .seconds(30))
+        while cloud.busy {
+            guard token == sessionEpoch, !isDemoMode, !Task.isCancelled else { return false }
+            guard ContinuousClock().now < deadline else {
+                cloud.cancel(); backupStatusText = "La connessione è lenta. Puoi riprovare più tardi."; return false
+            }
+            do { try await Task.sleep(for: .milliseconds(100)) }
+            catch { if token == sessionEpoch { cloud.cancel() }; return false }
+        }
+        return token == sessionEpoch && !isDemoMode && !Task.isCancelled
+    }
+    func checkFirmwareUpdate() async {
+        guard isDemoMode, firmwareWork == nil else { return }
+        await runFirmwareOperation(state: .checking, steps: 4)
+    }
+    func downloadFirmwareUpdate() async {
+        guard isDemoMode, firmwareWork == nil, firmwareAvailableVersion != nil,
+              demoFirmwareState == .available || demoFirmwareState == .idle else { return }
+        await runFirmwareOperation(state: .downloading, steps: 20)
+    }
+    func installFirmwareUpdate() async {
+        guard isDemoMode, firmwareWork == nil, demoFirmwareState == .downloaded else { return }
+        await runFirmwareOperation(state: .installing, steps: 20)
+    }
+    func cancelFirmwareUpdate() {
+        firmwareGeneration += 1; firmwareWork?.cancel(); firmwareWork = nil
+        if demoFirmwareState == .checking || demoFirmwareState == .downloading || demoFirmwareState == .installing {
+            demoFirmwareState = demoFirmwareState == .installing ? .downloaded : .available
+            demoFirmwareProgress = 0; firmwareStatusText = "Operazione annullata"
+        }
+    }
+    private func runFirmwareOperation(state: DemoFirmwareState, steps: Int) async {
+        firmwareGeneration += 1; let token = firmwareGeneration; let source = sessionEpoch
+        demoFirmwareState = state; demoFirmwareProgress = 0
+        firmwareStatusText = state == .checking ? "Ricerca aggiornamenti…" : state == .downloading ? "Download in corso…" : "Installazione in corso…"
+        let task = Task { [self] in
+            do {
+                for step in 1...steps {
+                    try await Task.sleep(for: demoStepDelay)
+                    try Task.checkCancellation()
+                    guard token == firmwareGeneration, source == sessionEpoch, isDemoMode else { return }
+                    demoFirmwareProgress = Double(step) / Double(steps)
+                }
+                try Task.checkCancellation()
+                guard token == firmwareGeneration, source == sessionEpoch, isDemoMode else { return }
+                switch state {
+                case .checking:
+                    firmwareAvailableVersion = firmwareCurrentVersion == "0.14.0" ? nil : "0.14.0"
+                    demoFirmwareState = firmwareAvailableVersion == nil ? .completed : .available
+                    firmwareStatusText = firmwareAvailableVersion == nil ? "Il dispositivo è aggiornato" : "Aggiornamento disponibile"
+                case .downloading:
+                    demoFirmwareState = .downloaded; firmwareStatusText = "Aggiornamento pronto per essere installato"
+                case .installing:
+                    try await demoStore.installFirmwareVersion("0.14.0")
+                    guard token == firmwareGeneration, source == sessionEpoch, isDemoMode else { return }
+                    firmwareCurrentVersion = "0.14.0"; firmwareAvailableVersion = nil
+                    demoFirmwareState = .completed; firmwareStatusText = "Aggiornamento completato"
+                default: break
+                }
+                guard token == firmwareGeneration, source == sessionEpoch, isDemoMode else { return }
+                firmwareWork = nil
+            } catch {
+                guard token == firmwareGeneration, source == sessionEpoch else { return }
+                diagnosticDetail = String(describing: error)
+                demoFirmwareState = state == .installing ? .downloaded : .available
+                firmwareStatusText = "Operazione non completata. Puoi riprovare."; firmwareWork = nil
+            }
+        }
+        firmwareWork = task
+        await withTaskCancellationHandler { await task.value } onCancel: { task.cancel() }
     }
 }

@@ -20,6 +20,6 @@ struct GaugePreview: View {
         .aspectRatio(1, contentMode: .fit).frame(maxWidth: AppTheme.previewMaximumWidth)
         .environment(\.colorScheme, .dark)
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Anteprima statica di \(dashboard.name), con valori dimostrativi")
+        .accessibilityLabel("Anteprima della schermata")
     }
 }

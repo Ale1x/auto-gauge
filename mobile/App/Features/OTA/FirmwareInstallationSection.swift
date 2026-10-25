@@ -4,50 +4,60 @@ import GaugeCore
 struct FirmwareInstallationSection: View {
     let model: FirmwarePreparationModel
     @State private var confirmSelection = false
+
     var body: some View {
-        Section("Installazione sul gauge") {
+        Section("Aggiorna il dispositivo") {
             if !model.installationAvailable {
-                Label("Gauge non pronto per l’aggiornamento", systemImage: "lock")
-                Text("Il trasferimento sarà disponibile dopo la configurazione di una connessione autorizzata e del profilo fidato del gauge.")
+                Label("Installazione non disponibile", systemImage: "lock")
+                Text("L’app non è ancora configurata per aggiornare questo dispositivo. Nessuna installazione è stata avviata.")
                     .font(.callout).foregroundStyle(.secondary)
             } else {
-                Button("Trasferisci pacchetto verificato", systemImage: "arrow.up.circle", action: model.upload)
+                Button("Trasferisci aggiornamento", systemImage: "arrow.up.circle", action: model.upload)
+                    .frame(minHeight: AppTheme.minimumTouch)
                     .disabled(!model.canUpload)
                 if let manifest = model.installationSnapshot.manifest {
-                    LabeledContent("Pacchetto dell’operazione", value: manifest.firmwareVersion)
+                    LabeledContent("Versione selezionata", value: manifest.firmwareVersion)
                     ProgressView(value: Double(model.installationSnapshot.progress.imageAcknowledged), total: Double(max(1, manifest.imageBytes))) {
-                        Text("Immagine confermata dal gauge")
+                        Text("Trasferimento al dispositivo")
                     } currentValueLabel: {
-                        Text("\(model.installationSnapshot.progress.imageAcknowledged) di \(manifest.imageBytes) byte")
+                        Text(progressPercentage)
                     }
                 }
                 switch model.installationSnapshot.state {
                 case .idle: EmptyView()
-                case .opening: ProgressView("Preparazione della connessione autorizzata")
-                case .uploading: Text("Trasferimento in corso")
+                case .opening: ProgressView("Collegamento al dispositivo…")
+                case .uploading: Text("Invio dell’aggiornamento in corso…")
                 case .ready:
-                    Label("Pronto per il prossimo avvio", systemImage: "checkmark.circle")
-                    Button("Seleziona firmware per il prossimo avvio", systemImage: "power", action: askSelection)
+                    Label("File trasferito e controllato", systemImage: "checkmark.circle")
+                    Button("Usa al prossimo avvio", systemImage: "power", action: askSelection)
+                        .frame(minHeight: AppTheme.minimumTouch)
                         .disabled(!model.canSelect)
-                case .selecting: ProgressView("Conferma selezione in corso")
+                case .selecting: ProgressView("Conferma dell’aggiornamento…")
                 case .selected:
-                    Label("Selezione confermata", systemImage: "checkmark.circle")
-                    Text("L’avvio e la salute del nuovo firmware richiedono ancora una verifica sul gauge.")
+                    Label("Versione scelta per il prossimo avvio", systemImage: "checkmark.circle")
+                    Text("Il corretto avvio della nuova versione deve ancora essere confermato sul dispositivo.")
                 case .unknown:
-                    Label("Esito da verificare sul gauge", systemImage: "exclamationmark.triangle")
-                    Text("Non ripetere l’operazione: lo stato deve essere riconciliato prima di un altro aggiornamento.")
+                    Label("Controlla lo stato del dispositivo", systemImage: "exclamationmark.triangle")
+                    Text("L’esito non è ancora confermato. Non avviare un altro aggiornamento prima di controllare il dispositivo.")
                 }
                 if model.installationSnapshot.state == .opening || model.installationSnapshot.state == .uploading || model.installationSnapshot.state == .ready || model.installationSnapshot.state == .selecting {
-                    Button("Interrompi e chiudi collegamento", role: .cancel, action: model.cancelInstallation)
+                    Button("Interrompi aggiornamento", role: .cancel, action: model.cancelInstallation)
+                        .frame(minHeight: AppTheme.minimumTouch)
                 }
             }
         }
-        .confirmationDialog("Selezionare questo firmware per il prossimo avvio?", isPresented: $confirmSelection, titleVisibility: .visible) {
-            Button("Seleziona firmware", action: model.selectInstalledFirmware)
-            Button("Mantieni il firmware attuale", role: .cancel) { }
+        .confirmationDialog("Usare questa versione al prossimo avvio?", isPresented: $confirmSelection, titleVisibility: .visible) {
+            Button("Usa al prossimo avvio", action: model.selectInstalledFirmware)
+            Button("Mantieni la versione attuale", role: .cancel) { }
         } message: {
-            Text("Il trasferimento è terminato. Questa azione cambia separatamente la scelta del firmware per il prossimo avvio.")
+            Text("Il file è stato trasferito e controllato. Conferma per scegliere la nuova versione al prossimo avvio del dispositivo.")
         }
+    }
+
+    private var progressPercentage: String {
+        guard let manifest = model.installationSnapshot.manifest, manifest.imageBytes > 0 else { return "0%" }
+        let progress = Double(model.installationSnapshot.progress.imageAcknowledged) / Double(manifest.imageBytes)
+        return progress.formatted(.percent.precision(.fractionLength(0)))
     }
     private func askSelection() { confirmSelection = true }
 }

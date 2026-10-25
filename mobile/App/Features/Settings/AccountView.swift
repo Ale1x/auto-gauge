@@ -1,54 +1,67 @@
 import SwiftUI
-import CloudKit
 
 struct AccountView: View {
     @Environment(AppModel.self) private var model
-    private var cloud: CloudAccountModel { model.cloud }
-    var body: some View {
-        Form {
-            Section {
-                Label("Account iCloud del telefono", systemImage: "icloud").font(.headline)
-                Text("La sincronizzazione userà CloudKit con l’account iCloud già presente sul telefono, senza un account email separato.")
-                Label(cloud.accountTitle, systemImage: cloud.configured ? "icloud" : "icloud.slash").foregroundStyle(.secondary)
-                Text(cloud.notice)
-                    .font(.subheadline).foregroundStyle(.secondary)
-            }
-            Section {
-                AppActionButton(title: "Verifica account iCloud", symbol: "person.crop.circle", disabled: !cloud.configured || cloud.busy, action: cloud.verify)
-                AppActionButton(title: "Sincronizza storici reali", symbol: "arrow.triangle.2.circlepath.icloud", disabled: !cloud.configured || cloud.busy || !accountAvailable, action: cloud.synchronize)
-                if cloud.busy {
-                    ProgressView("Operazione iCloud in corso")
-                    AppActionButton(title: "Annulla operazione iCloud", symbol: "xmark.circle", action: cloud.cancel)
-                }
-                Text("Coda di questo account: \(cloud.pending) in attesa · \(cloud.uploaded) confermati").font(.subheadline)
-            } footer: { Text("Le fixture restano sul telefono anche con iCloud attivo. L’ACK del gauge conferma il salvataggio locale, non la copia cloud. La sincronizzazione richiede un’azione esplicita.") }
-            Section {
-                AppActionButton(title: "Recupera o continua da iCloud", symbol: "icloud.and.arrow.down", disabled: !cloud.configured || cloud.busy || !accountAvailable || cloud.restoreFinished, action: { cloud.restore() })
-                AppActionButton(title: "Avvia nuova scansione iCloud", symbol: "arrow.clockwise.icloud", disabled: !cloud.configured || cloud.busy || !accountAvailable, action: { cloud.restore(restart: true) })
-                NavigationLink(value: AccountRoute.restoredHistory) { Label("Storici recuperati da iCloud", systemImage: "clock.arrow.circlepath") }
-                Text(cloud.restoreFinished ? "Scansione terminata · completezza non garantita" : (cloud.restoreHasCheckpoint ? "Checkpoint locale disponibile" : "Nessuna scansione terminata"))
-                    .font(.subheadline).foregroundStyle(.secondary)
-            } header: { Text("Recupero degli storici iCloud") } footer: { Text("Recupero separato dagli esempi. Ogni pagina viene salvata prima di avanzare; una nuova scansione conserva i record già recuperati. Nessun ACK viene inviato al gauge.") }
-            Section("Collegamento al gauge") {
-                Label("Più telefoni · una connessione attiva", systemImage: "iphone.radiowaves.left.and.right")
-                Text("Più telefoni possono essere autorizzati e usati in momenti diversi. Cambiare o aggiungere telefono non richiede reset. L’autenticazione della sessione resta distinta dall’account iCloud.")
-            }
-            Section("Manutenzione fisica separata") {
-                Text("Il reset volontario richiede USB e conferma fisica qualificata. Cancellerà credenziali, configurazione e log locali del gauge; non eliminerà dati cloud o storici già sincronizzati. Non serve per cambiare telefono.")
-                Text("Questa app non esegue reset reali.").font(.footnote).foregroundStyle(.secondary)
-            }
-        }.navigationTitle("Account")
-            .navigationDestination(for: AccountRoute.self) { route in
-                Group {
-                switch route {
-                case .restoredHistory: CloudRestoredHistoryView()
-                case .timeline: HistoryTimelineView(source: .restoredCloud)
-                }
-                }.modifier(SimulationBannerModifier())
-            }
+    @State private var demoEnabled = false
+    @State private var changingMode = false
 
+    var body: some View {
+        @Bindable var model = model
+        Form {
+            Section("Il tuo stile") {
+                Picker("Aspetto", selection: $model.appearance) {
+                    ForEach(AppAppearance.allCases) { appearance in
+                        Text(appearance.titleIT).tag(appearance)
+                    }
+                }.accessibilityIdentifier("settings.appearance")
+            }
+            Section {
+                Toggle("Backup iCloud", isOn: $model.backupEnabled)
+                    .accessibilityIdentifier("settings.backup")
+                    .disabled(!model.isDemoMode && !model.cloud.configured)
+                Label(!model.isDemoMode && !model.cloud.configured ? "Il backup iCloud non è disponibile in questa versione. I viaggi restano sul telefono." : model.backupStatusText, systemImage: "icloud")
+                    .font(.subheadline).foregroundStyle(.secondary)
+                if let date = model.lastBackupDate {
+                    LabeledContent("Ultimo backup") {
+                        Text(date, format: .dateTime.day().month(.abbreviated).hour().minute())
+                    }.font(.subheadline)
+                }
+                Button { synchronize() } label: {
+                    Label("Sincronizza", systemImage: "arrow.triangle.2.circlepath.icloud")
+                        .frame(minHeight: AppTheme.minimumTouch)
+                }.disabled(!model.backupEnabled || model.backupBusy || (!model.isDemoMode && !model.cloud.configured))
+                    .accessibilityIdentifier("backup.sync")
+                Button { restore() } label: {
+                    Label("Recupera viaggi", systemImage: "icloud.and.arrow.down")
+                        .frame(minHeight: AppTheme.minimumTouch)
+                }.disabled(!model.backupEnabled || model.backupBusy || (!model.isDemoMode && !model.cloud.configured))
+                    .accessibilityIdentifier("backup.restore")
+                if model.backupBusy { ProgressView("Aggiornamento del backup") }
+            } header: { Text("I tuoi viaggi al sicuro") }
+            Section {
+                Toggle("Modalità demo", isOn: $demoEnabled)
+                    .accessibilityIdentifier("settings.demo")
+                    .disabled(changingMode)
+                    .onChange(of: demoEnabled) { _, enabled in changeMode(enabled) }
+                if changingMode { ProgressView("Cambio modalità") }
+            } footer: {
+                Text("Esplora tutte le funzioni senza collegare un dispositivo.")
+            }
+        }
+        .navigationTitle("Impostazioni")
+        .onAppear { demoEnabled = model.isDemoMode }
+        .onChange(of: model.isDemoMode) { _, enabled in demoEnabled = enabled }
     }
-    private var accountAvailable: Bool {
-        if case .available = cloud.account { return true }; return false
+
+    private func synchronize() { Task { await model.synchronizeBackup() } }
+    private func restore() { Task { await model.restoreBackup() } }
+    private func changeMode(_ enabled: Bool) {
+        guard enabled != model.isDemoMode, !changingMode else { return }
+        changingMode = true
+        Task {
+            await model.setDemoMode(enabled)
+            demoEnabled = model.isDemoMode
+            changingMode = false
+        }
     }
 }

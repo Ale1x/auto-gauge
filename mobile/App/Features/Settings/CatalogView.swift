@@ -3,30 +3,52 @@ import GaugeCore
 
 struct CatalogView: View {
     @Environment(AppModel.self) private var model
+    @State private var searchText = ""
+
+    private var availableMeasures: [PIDDescriptor] {
+        model.catalog.filter { $0.supported }
+    }
+    private var filteredMeasures: [PIDDescriptor] {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !query.isEmpty else { return availableMeasures }
+        return availableMeasures.filter { $0.nameIT.localizedStandardContains(query) }
+    }
+
     var body: some View {
-        List {
-            Section {
-                Text("Catalogo Service 01 dichiarato dal simulatore. Non rappresenta tutti i PID OBD né prova compatibilità con la tua auto; la discovery reale è ancora da integrare.").foregroundStyle(.secondary)
+        Group {
+            if !model.isDemoMode && !model.isNativeSession {
+                ContentUnavailableView("Collega il dispositivo", systemImage: "link",
+                                       description: Text("Collega Auto Gauge dalla scheda Dispositivo per vedere le misure disponibili per la tua auto."))
+            } else {
+                List {
+                    if availableMeasures.isEmpty {
+                        ContentUnavailableView("Nessuna misura disponibile", systemImage: "gauge.with.needle",
+                                               description: Text("Collega Auto Gauge per vedere le misure disponibili per la tua auto."))
+                    } else if filteredMeasures.isEmpty {
+                        ContentUnavailableView.search
+                    } else {
+                        Section {
+                            ForEach(filteredMeasures) { measure in
+                                LabeledContent {
+                                    if !measure.unit.isEmpty {
+                                        Text(measure.unit).foregroundStyle(AppTheme.accent)
+                                    }
+                                } label: {
+                                    Text(measure.nameIT)
+                                }
+                                .frame(minHeight: AppTheme.minimumTouch)
+                                .accessibilityElement(children: .combine)
+                            }
+                        } header: {
+                            Text("Misure disponibili")
+                        } footer: {
+                            Text("Puoi aggiungere queste misure alle schermate del display.")
+                        }
+                    }
+                }
+                .searchable(text: $searchText, prompt: "Cerca una misura")
             }
-            Section("Dichiarati dal gauge simulato") {
-            ForEach(model.catalog) { pid in
-                VStack(alignment: .leading, spacing: AppTheme.smallSpacing) {
-                    Text(pid.nameIT).font(.headline)
-                    Text("Service 01 · PID \(String(pid.pid, radix: 16).uppercased()) · \(pid.ecuSource)").font(.footnote).monospaced().foregroundStyle(.secondary)
-                    if !pid.unit.isEmpty { Text(pid.unit).foregroundStyle(AppTheme.accent) }
-                }.padding(.vertical, AppTheme.smallSpacing).accessibilityElement(children: .combine)
-            }
-            }
-            Section {
-                Text("53 formule scalari disponibili nell’app per analizzare gli storici. Questo elenco non dichiara che il gauge o la tua ECU supportino tutte queste misure. Le formule non aggiungono misure all’editor.").foregroundStyle(.secondary)
-            } header: { Text("Formule per gli storici") }
-            ForEach(HistoryPIDDefinition.qualified) { definition in
-                VStack(alignment: .leading, spacing: AppTheme.smallSpacing) {
-                    Text(definition.nameIT).font(.headline)
-                    Text("Service 01 · PID \(String(definition.id, radix: 16).uppercased()) · \(definition.unit)").font(.footnote).foregroundStyle(.secondary)
-                    Text("Dati raw: \(definition.byteCount) byte, escluso header").font(.footnote).foregroundStyle(.secondary)
-                }.padding(.vertical, AppTheme.smallSpacing).accessibilityElement(children: .combine)
-            }
-        }.navigationTitle("Catalogo misure")
+        }
+        .navigationTitle("Misure")
     }
 }

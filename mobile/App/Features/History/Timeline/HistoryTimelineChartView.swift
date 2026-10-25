@@ -5,36 +5,73 @@ import GaugeCore
 struct HistoryTimelineChartView: View {
     let projection: HistoryTimelineProjection
     let definition: HistoryPIDDefinition?
-    @ScaledMetric(relativeTo: .body) private var chartHeight = 240.0
+    @ScaledMetric(relativeTo: .body) private var chartHeight = 250.0
+    @State private var selectedSeconds: Double?
+
+    private var selectedPoint: HistoryChartPoint? {
+        guard let selectedSeconds else { return nil }
+        return projection.chart.min { abs($0.seconds - selectedSeconds) < abs($1.seconds - selectedSeconds) }
+    }
+    private var average: Double? {
+        let values = projection.rows.compactMap(\.value)
+        guard !values.isEmpty else { return nil }
+        return values.reduce(0, +) / Double(values.count)
+    }
+
     var body: some View {
-        Section("Andamento dei valori disponibili") {
+        let selected = selectedPoint
+        Section {
             if projection.chart.isEmpty {
-                ContentUnavailableView("Nessun valore da tracciare", systemImage: "chart.xyaxis.line", description: Text("La tabella conserva i raw e spiega stati, formule assenti o dati incoerenti. Nessun valore viene sostituito con zero."))
+                ContentUnavailableView("Dato non disponibile", systemImage: "chart.xyaxis.line",
+                    description: Text("Prova a scegliere un’altra misura."))
             } else {
+                VStack(alignment: .leading, spacing: AppTheme.smallSpacing) {
+                    Text(selected == nil ? "Valore medio" : "A \(HistoryPresentation.elapsed(selected?.seconds ?? 0))")
+                        .font(.subheadline).foregroundStyle(.secondary)
+                    if let value = selected?.value ?? average {
+                        Text("\(value, format: .number.precision(.fractionLength(0...1))) \(definition?.unit ?? "")")
+                            .font(.largeTitle).bold().monospacedDigit()
+                    }
+                }.accessibilityElement(children: .combine)
                 Chart(projection.chart) { point in
                     if projection.drawLines {
-                        LineMark(x: .value("Secondi relativi", point.seconds), y: .value("Valore", point.value), series: .value("Tratto continuo", point.segment))
-                            .foregroundStyle(AppTheme.accent)
+                        AreaMark(x: .value("Tempo di guida", point.seconds), y: .value("Valore", point.value),
+                            series: .value("Andamento", point.segment))
+                            .foregroundStyle(LinearGradient(colors: [AppTheme.accent.opacity(0.2), .clear], startPoint: .top, endPoint: .bottom))
+                            .accessibilityHidden(true)
+                        LineMark(x: .value("Tempo di guida", point.seconds), y: .value("Valore", point.value),
+                            series: .value("Andamento", point.segment))
+                            .foregroundStyle(AppTheme.accent).lineStyle(StrokeStyle(lineWidth: 2))
                             .accessibilityHidden(true)
                     }
-                    PointMark(x: .value("Secondi relativi", point.seconds), y: .value("Valore", point.value))
-                        .foregroundStyle(AppTheme.accent)
-                        .accessibilityLabel("Sequenza \(point.sequence.decimal), \(point.monotonicMS.decimal) millisecondi dall’avvio")
-                        .accessibilityValue("\(point.value.formatted(.number.precision(.fractionLength(0...2)))) \(definition?.unit ?? "")")
+                    PointMark(x: .value("Tempo di guida", point.seconds), y: .value("Valore", point.value))
+                            .foregroundStyle(AppTheme.accent)
+                            .symbolSize(projection.drawLines ? 8 : 25)
+                            .accessibilityLabel("A \(HistoryPresentation.elapsed(point.seconds))")
+                            .accessibilityValue("\(point.value.formatted(.number.precision(.fractionLength(0...1)))) \(definition?.unit ?? "")")
+                    if selected?.id == point.id {
+                        RuleMark(x: .value("Tempo selezionato", point.seconds))
+                            .foregroundStyle(.secondary).accessibilityHidden(true)
+                        PointMark(x: .value("Tempo di guida", point.seconds), y: .value("Valore", point.value))
+                            .foregroundStyle(AppTheme.accent).symbolSize(70).accessibilityHidden(true)
+                    }
                 }
+                .chartXSelection(value: $selectedSeconds)
                 .chartXScale(domain: 0...max(1, projection.chart.last?.seconds ?? 0))
+                .chartXAxis {
+                    AxisMarks(values: .automatic(desiredCount: 4)) { tick in
+                        AxisGridLine()
+                        AxisValueLabel { if let seconds = tick.as(Double.self) { Text(HistoryPresentation.elapsed(seconds)) } }
+                    }
+                }
                 .chartYAxisLabel(definition?.unit ?? "Valore")
-                .chartXAxisLabel("Secondi dal primo record della sessione")
+                .chartXAxisLabel("Tempo di guida")
                 .frame(height: chartHeight)
                 .id("timeline-chart")
-                .accessibilityLabel("Grafico storico di \(definition?.nameIT ?? "misura")")
-                .accessibilityHint("La tabella seguente consente di leggere tutti i record, anche quelli esclusi dal grafico.")
-                Text("\(projection.chart.count) punti mostrati su \(projection.numericCount) valori decodificabili.")
-                    .font(.subheadline).foregroundStyle(.secondary)
-                if projection.decimated { Text("Grafico ridotto per mantenere la schermata fluida. I raw e la tabella completa restano intatti.").font(.footnote) }
-                if !projection.drawLines { Text("Solo punti: le interruzioni sono troppe per conservare tutte le linee in un grafico ridotto.").foregroundStyle(.secondary) }
-                if projection.timePrecisionLimited { Label("Scala temporale approssimata per contatori molto grandi. I contatori esatti restano nella tabella.", systemImage: "exclamationmark.triangle").foregroundStyle(AppTheme.warning) }
+                .accessibilityLabel("Andamento di \(definition?.nameIT ?? "questa misura")")
+                .accessibilityHint("Tocca il grafico per esplorare i valori. Tutte le letture sono disponibili più avanti.")
+                Text("Tocca il grafico per vedere i valori.").font(.subheadline).foregroundStyle(.secondary)
             }
-        }
+        } header: { Text(definition?.nameIT ?? "Andamento") }
     }
 }

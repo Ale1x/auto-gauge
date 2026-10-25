@@ -1,0 +1,107 @@
+[
+  {
+    "test": "ConsumerExperienceTests/testBackupAndTripDetails()",
+    "image": "10-backup.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-banner-fix.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testBackupAndTripDetails()",
+    "image": "09-trip-chart.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-banner-fix.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testConfigurationSavePersists()",
+    "image": "12-screens-saved.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-banner-fix.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testLargeTextRemainsNavigable()",
+    "image": "14-settings-large-text.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-banner-fix.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testLargeTextRemainsNavigable()",
+    "image": "15-device-large-text-scrolled.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-banner-fix.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testLargeTextRemainsNavigable()",
+    "image": "13-device-large-text.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-banner-fix.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testAppearanceAndDeviceMode()",
+    "image": "07-device-mode.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-final-remaining.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testAppearanceAndDeviceMode()",
+    "image": "06-settings-light.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-final-remaining.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testAppearanceAndDeviceMode()",
+    "image": "05-settings-dark.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-final-remaining.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testAppearancePersistsAfterRelaunch()",
+    "image": "11-appearance-system.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-final-remaining.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testDemoNavigationAndSingleBanner()",
+    "image": "04-settings-light.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-final-remaining.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testDemoNavigationAndSingleBanner()",
+    "image": "03-trips-light.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-final-remaining.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testDemoNavigationAndSingleBanner()",
+    "image": "02-screens-light.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-final-remaining.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testDemoNavigationAndSingleBanner()",
+    "image": "01-device-light.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-final-remaining.xcresult"
+  },
+  {
+    "test": "ConsumerExperienceTests/testDemoUpdateCompletes()",
+    "image": "08-update-completed.png",
+    "device": "Auto Gauge • iPhone 13 Pro Max • iOS 27",
+    "runtime": "iOS 27.0 (24A434)",
+    "result_bundle": "/tmp/ag-ux27-final-remaining.xcresult"
+  }
+]
