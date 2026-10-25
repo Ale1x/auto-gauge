@@ -3,10 +3,12 @@ public enum GaugeRPCPersistencePolicy: Sendable {
     case volatileDevelopment
     /// Host C integration explicitly configured against a verified file store. Not radio/flash proof.
     case hostDurableStore
+    /// Device backend label, admitted only by a separately qualified local provider.
+    case qualifiedDeviceStore
     func accepts(_ label: String?) -> Bool {
         switch self {
         case .volatileDevelopment: return label == "volatile"
-        case .hostDurableStore: return label == "durable"
+        case .hostDurableStore, .qualifiedDeviceStore: return label == "durable"
         }
     }
 }

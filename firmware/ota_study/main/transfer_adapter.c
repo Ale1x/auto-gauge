@@ -25,7 +25,12 @@ static bool write_chunk(void *context,uint64_t lease,uint32_t offset,const uint8
     return ag_ota_installer_write(&((ag_ota_transfer_adapter_t *)context)->installer,lease,offset,bytes,length)==AG_OTA_OK;
 }
 static bool finish(void *context,uint64_t lease){return ag_ota_installer_finish(&((ag_ota_transfer_adapter_t *)context)->installer,lease)==AG_OTA_OK;}
-static bool select_boot(void *context,uint64_t lease){return ag_ota_installer_select(&((ag_ota_transfer_adapter_t *)context)->installer,lease)==AG_OTA_OK;}
+static bool select_boot(void *context,uint64_t lease){
+    ag_ota_transfer_adapter_t *s=context;
+    if(!s->manifest_verified||s->platform.prepare_selection==NULL
+        ||!s->platform.prepare_selection(s->platform.boot_context,&s->verified,s->installer.target))return false;
+    return ag_ota_installer_select(&s->installer,lease)==AG_OTA_OK;
+}
 static bool poll(void *context,uint64_t lease){return ag_ota_installer_poll(&((ag_ota_transfer_adapter_t *)context)->installer,lease)==AG_OTA_OK;}
 static bool cancel(void *context,uint64_t lease){
     ag_ota_transfer_adapter_t *s=context;
@@ -46,7 +51,7 @@ bool ag_ota_transfer_adapter_init(ag_ota_transfer_adapter_t *s,const ag_manifest
     ag_manifest_trust_t trust_copy=*trust;ag_ota_transfer_platform_t platform_copy=*platform;
     if(platform_copy.idle_timeout_ms==0||platform_copy.total_timeout_ms<platform_copy.idle_timeout_ms||platform_copy.total_timeout_ms>900000u)return false;
     memset(s,0,sizeof(*s));s->trust=trust_copy;s->platform=platform_copy;
-    ag_ota_hooks_t installer={s,verify,allowed,clock_ms,platform_copy.idle_timeout_ms,platform_copy.total_timeout_ms};
+    ag_ota_hooks_t installer={s,verify,allowed,clock_ms,platform_copy.idle_timeout_ms,platform_copy.total_timeout_ms,platform_copy.allow_factory_bootstrap};
     ag_ot_hooks_t transfer={s,allowed,clock_ms,begin,write_chunk,finish,select_boot,poll,cancel,platform_copy.idle_timeout_ms,platform_copy.total_timeout_ms};
     if(!ag_ota_installer_init(&s->installer,&installer)||!ag_ot_owner_init(&s->transfer,&transfer))return false;
     s->initialized=true;return true;

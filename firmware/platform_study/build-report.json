@@ -1,0 +1,114 @@
+{
+  "status": "COMPILE_LINK_ONLY_NOT_RUN",
+  "sdk_commit": "fff9895c82d744c7237be8847347bdd1b07c6643",
+  "sdk_status": "CLEAN_TRACKED_UNTRACKED_SUBMODULES_NOT_IGNORED_FILES",
+  "retained_symbols": [
+    "ag_partition_store_bind",
+    "ag_config_store_open",
+    "ag_config_store_restore",
+    "ag_config_store_commit",
+    "ag_config_store_get",
+    "ag_config_record_encode",
+    "ag_journal_open",
+    "ag_journal_bootstrap",
+    "ag_journal_begin_session",
+    "ag_journal_append",
+    "ag_journal_window",
+    "ag_journal_acknowledge",
+    "esp_partition_read",
+    "esp_partition_write",
+    "esp_partition_erase_range",
+    "esp_partition_find_err",
+    "esp_partition_verify",
+    "esp_flash_get_size",
+    "ag_twai_port_init",
+    "ag_twai_port_start",
+    "ag_twai_port_send_discovery",
+    "ag_twai_port_send_runtime",
+    "ag_twai_port_send_flow_control",
+    "ag_twai_port_poll",
+    "ag_twai_port_close",
+    "twai_new_node_onchip",
+    "twai_node_enable",
+    "twai_node_transmit",
+    "twai_node_disable",
+    "twai_node_delete"
+  ],
+  "main_instructions": [
+    "420169dc:\t004136        \tentry\ta1, 32",
+    "420169df:\tf01d      \tretw.n"
+  ],
+  "artifacts": {
+    "auto_gauge_platform_compile_study.elf": {
+      "bytes": 4274772,
+      "sha256": "fb64fef04fe814844febbd5091e84596ade083b370c4e21d5ccc9481f7233c9f"
+    },
+    "auto_gauge_platform_compile_study.bin": {
+      "bytes": 223312,
+      "sha256": "acc58c4e2f3e8e5ac8101778c7c69f08cb9ca7501c4457fdf0bf05ef6f9dc4f9"
+    },
+    "partition_table/partition-table.bin": {
+      "bytes": 3072,
+      "sha256": "6fc44e7d13b4bd453469e3decc615409957bfaec9e2e3b58cbc772126e40fd4b"
+    }
+  },
+  "source_sha256": {
+    "firmware/platform_study/main/twai_port.c": "0a78330079d299e40bf7f116226cf58896a4ef34c8072bd58a729ed54f33bfe3",
+    "firmware/platform_study/main/twai_port.h": "81fbe8d930b8a411b1f74be78ec709cfc4a2e5fa51add2d950f7c96cce33d245",
+    "firmware/platform_study/main/partition_io.c": "339bdac15c21670e8332c493c1c443f2ebe6c8a1dc209a055d31798ae7a9a2bb",
+    "firmware/platform_study/main/partition_io.h": "fb2be7015c30cae06221b8ea16172db659de67e6ba4ab3c82cd087903d9b8485",
+    "firmware/platform_study/main/main.c": "a272637268a9baf83788ec73ff76c4ae8b5293ace4af81a0754f7cb7817825a9",
+    "firmware/platform_study/main/CMakeLists.txt": "b3da5e21097246f70b98f72184fcbb9772c126fee89cd5e6f65145e8002846f8",
+    "firmware/platform_study/sdkconfig.defaults": "52fe8ea10cf6474fbd9e121fd3e1b21652b0be554e7cb6bbf85843b2a1018b92",
+    "firmware/platform_study/partitions.csv": "f183a7025833f86063d62c9085d991b500479ba3c615f3870db7dbc2a293f3f3",
+    "firmware/src/config.c": "d6b85899d939bc2bd5967f932d57e8e4c5c8d6993e1e2d91481e9fdd73df89c7",
+    "firmware/src/config_store.c": "57c424f5c74c6bbf9866d1d229fe9540fa0022a09383489ad41147b630aa77a1",
+    "firmware/src/history.c": "3b73d636e5840569885fffa2b67fd0c8d03580a1bfdae694c443dc249c5ff99a",
+    "firmware/src/journal_history.c": "42086302b1a162de7f47b67393c104de3bfb918d13c6da6e6874ebb65b1356f2",
+    "firmware/include/ag_config_store.h": "137eb66127117cb8c9939364f0085d5c8659929a503cc93c672b05b9ebb8d929",
+    "firmware/include/ag_journal_history.h": "f8d5492da655ccd98c75a5d171316604705603ed8e5365de104e6e010707db25",
+    "firmware/src/runtime.c": "b37d56110456db3862a024cb20f826bb5f140dfcea70695c9e4e1e126f358b35",
+    "firmware/src/discovery.c": "d00f60e5f2391750a01cb2c81f6b8a60669055fa2975b8bbce5802fe8db3c594",
+    "firmware/src/can_policy.c": "40120c3de2fe0a5ec85753f6cdf4850ae96117ced32aa75c218b07728028c069",
+    "firmware/src/obd_decode.c": "cf15b52a06e727d9d0dd24711c80c17573487020dac54c847054dae3d1343550",
+    "firmware/src/scheduler.c": "33edb9a54bde4f5bed365c922f3b327e1064dca003190c80a500f925016276ab",
+    "firmware/src/isotp_rx.c": "295b8f11de1e8162d7dc51dca0e3ff6e40f4f4f0af5b8bd042e141f00eea77b4",
+    "firmware/include/ag_runtime.h": "54e54e43fe5b1957275b0dfe074ddc63f7465a4961634f9c95e9d24924113140",
+    "firmware/include/ag_discovery.h": "b88f1230d4ecf1b1f6a1a95a21f875d5ea8ef9e8672575c531cb12f4f7bf7b7c",
+    "firmware/include/ag_diagnostics.h": "d953fd5a629b5caeb06beb52689021482d6e4a87d8ed2f8b43b524840c5e0278"
+  },
+  "sdk_partition_source_sha256": {
+    "components/esp_partition/partition.c": "6dfe4a91aeacade3f02a98446e690ea77c91071afd3784351637a961b2cee050",
+    "components/esp_partition/partition_target.c": "7c010014779d6bcb660c07609f61045ce9b382ff9ffa80979113e7bf5dba098b",
+    "components/esp_partition/include/esp_partition.h": "82f63dd1316ca246c2aeefbe51d716a32b46429617ab529c8ffe0e6cbc136a17"
+  },
+  "development_layout": {
+    "flash_bytes": 4194304,
+    "config_label": "ag_cfg_dev",
+    "config_bytes": 8192,
+    "history_label": "ag_logs_dev",
+    "history_bytes": 262144,
+    "ota_slot_bytes": 1048576
+  },
+  "actions": {
+    "build": "EXECUTED",
+    "device_execution": "NOT_EXECUTED",
+    "flash_read": "NOT_EXECUTED",
+    "flash_write": "NOT_EXECUTED",
+    "flash_erase": "NOT_EXECUTED",
+    "format": "NOT_EXECUTED",
+    "provisioning": "NOT_EXECUTED",
+    "radio": "NOT_EXECUTED"
+  },
+  "limitations": [
+    "Empty main; real SDK flash APIs linked but never called on target",
+    "Development4MiB map has256KiB log, not2MiB V1 retention or final OTA sizing",
+    "No default configuration/history formatting; binding only validates trusted registered partitions",
+    "Unencrypted default-chip raw data only; encrypted/read-only/overlapping/ambiguous mappings rejected",
+    "Program/erase success requires synchronous SDK success and readback; physical brownout/wear/durability not qualified",
+    "One serialized owner, no concurrent partition writers; IO ambiguity latches writes off until explicit maintenance/reconciliation",
+    "SDK clean check excludes ignored files; hashes identify read partition implementation sources, not a full reproducible SDK archive",
+    "Modern TWAI driver linked but never started; no pin/physical bus/IGN qualification or actual TX/RX",
+    "Core task stack/heap and flash latency under load remain unmeasured"
+  ]
+}

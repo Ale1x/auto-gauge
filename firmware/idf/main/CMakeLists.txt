@@ -8,7 +8,7 @@ idf_component_register(
     "../../src/device_endpoint.c"
     "../../src/journal_history.c"
     "../../src/journal_endpoint.c"
-    "../../src/runtime.c"
+    "../../src/runtime.c" "../../src/discovery.c" "../../src/boot_health.c" "../../src/gauge_ui.c"
     "../../../shared/c/ag_config_json.c"
     "../../../shared/c/ag_frame.c" "../../../shared/c/ag_stream.c"
     "../../../shared/c/ag_rpc.c"

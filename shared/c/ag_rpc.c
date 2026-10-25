@@ -134,8 +134,8 @@ static bool counter(const char *value,uint64_t *out) {
     *out=result;return true;
 }
 const char *ag_rpc_operation_name(ag_rpc_operation_t operation) {
-    static const char *const names[]={"hello","config.get","config.validate","config.apply","logs.read","logs.ack"};
-    return (unsigned)operation<6?names[operation]:NULL;
+    static const char *const names[]={"hello","config.get","config.validate","config.apply","logs.read","logs.ack","logs.sessions"};
+    return (unsigned)operation<7?names[operation]:NULL;
 }
 ag_rpc_result_t ag_rpc_request_parse(const uint8_t *input,size_t length,const ag_pid_mask_t *supported,
                                      ag_rpc_request_t *output,ag_rpc_error_t *error) {
@@ -144,22 +144,22 @@ ag_rpc_result_t ag_rpc_request_parse(const uint8_t *input,size_t length,const ag
     if(length>AG_RPC_MAX_PAYLOAD)return AG_RPC_SIZE;
     reader_t p={.data=input,.length=length,.result=AG_RPC_OK};
     ag_rpc_request_t candidate;memset(&candidate,0,sizeof(candidate));
-    const char *const keys[]={"op","configuration","expected_revision","session_id","after_sequence","limit","acknowledged_through"};
+    const char *const keys[]={"op","configuration","expected_revision","session_id","after_sequence","limit","acknowledged_through","after_session_id"};
     unsigned seen=0;bool first=true;int state=0;
     size_t config_start=0,config_length=0;
     if(!begin(&p,'{'))goto done;
     while((state=next(&p,&first,'}'))==1) {
         char value[AG_RPC_MAX_STRING+1];
         if(!text(&p,value))goto done;
-        unsigned k=0;while(k<7&&strcmp(value,keys[k])!=0)++k;
-        if(k==7){bad(&p,AG_RPC_UNKNOWN_KEY);goto done;}
+        unsigned k=0;while(k<8&&strcmp(value,keys[k])!=0)++k;
+        if(k==8){bad(&p,AG_RPC_UNKNOWN_KEY);goto done;}
         if(seen&(1u<<k)){bad(&p,AG_RPC_DUPLICATE_KEY);goto done;}
         seen|=1u<<k;
         if(!punctuation(&p,':'))goto done;
         if(k==0) {
             if(!text(&p,value))goto done;
-            unsigned op=0;while(op<6&&strcmp(value,ag_rpc_operation_name((ag_rpc_operation_t)op))!=0)++op;
-            if(op==6){bad(&p,AG_RPC_UNSUPPORTED);goto done;}
+            unsigned op=0;while(op<7&&strcmp(value,ag_rpc_operation_name((ag_rpc_operation_t)op))!=0)++op;
+            if(op==7){bad(&p,AG_RPC_UNSUPPORTED);goto done;}
             candidate.operation=(ag_rpc_operation_t)op;
         } else if(k==1) {
             ws(&p);config_start=p.position;
@@ -172,14 +172,17 @@ ag_rpc_result_t ag_rpc_request_parse(const uint8_t *input,size_t length,const ag
         } else {
             if(!text(&p,value))goto done;
             if(k==3) {if(!session(value,candidate.session_id)){bad(&p,AG_RPC_TYPE);goto done;}}
+            else if(k==7){if(!session(value,candidate.after_session_id)){bad(&p,AG_RPC_TYPE);goto done;}candidate.has_after_session_id=true;}
             else if(!counter(value,&candidate.sequence)){bad(&p,AG_RPC_NUMBER);goto done;}
         }
     }
     if(state<0)goto done;
     ws(&p);if(p.position!=length){bad(&p,AG_RPC_SYNTAX);goto done;}
     {
-        static const unsigned required[]={1,1,3,7,57,73};
-        if(!(seen&1)||seen!=required[candidate.operation]){bad(&p,AG_RPC_FIELDS);goto done;}
+        static const unsigned required[]={1,1,3,7,57,73,33};
+        unsigned fields=seen;
+        if(candidate.operation==AG_RPC_LOGS_SESSIONS)fields&=~128u;
+        if(!(seen&1)||fields!=required[candidate.operation]){bad(&p,AG_RPC_FIELDS);goto done;}
     }
     if(config_length!=0) {
         ag_config_json_error_t detail;
@@ -265,7 +268,9 @@ static ag_rpc_result_t history_page(writer_t *w,const ag_rpc_reply_t *reply) {
 ag_rpc_result_t ag_rpc_reply_encode(const ag_rpc_reply_t *reply,uint8_t *output,size_t capacity,size_t *written) {
     if(written!=NULL)*written=0;
     if(reply==NULL||output==NULL||written==NULL)return AG_RPC_ARGUMENT;
-    writer_t w={.used=0,.valid=true};append(&w,"{\"simulation\":%s,",reply->simulation?"true":"false");
+    writer_t w={.used=0,.valid=true};
+    if(reply->kind==AG_RPC_REPLY_LOGS_SESSIONS)append(&w,"{");
+    else append(&w,"{\"simulation\":%s,",reply->simulation?"true":"false");
     switch(reply->kind) {
     case AG_RPC_REPLY_HELLO:
         if(reply->supported==NULL)return AG_RPC_ARGUMENT;
@@ -292,6 +297,22 @@ ag_rpc_result_t ag_rpc_reply_encode(const ag_rpc_reply_t *reply,uint8_t *output,
         append(&w,"\"op\":\"logs.read\",\"page\":");
         const ag_rpc_result_t result=history_page(&w,reply);
         if(result!=AG_RPC_OK)return result;
+        break;}
+    case AG_RPC_REPLY_LOGS_SESSIONS: {
+        const ag_history_sessions_page_t *page=reply->sessions;
+        if(page==NULL||reply->limit<1||reply->limit>AG_HISTORY_SESSIONS_MAX||page->count>reply->limit
+            ||(reply->has_after_session_id&&!nonzero_session(reply->after_session_id)))return AG_RPC_ARGUMENT;
+        const uint8_t *previous=reply->has_after_session_id?reply->after_session_id:NULL;
+        for(unsigned i=0;i<page->count;++i){
+            if(!nonzero_session(page->session_ids[i])||(previous&&memcmp(page->session_ids[i],previous,16)<=0))return AG_RPC_HISTORY_INVALID;
+            previous=page->session_ids[i];
+        }
+        if(page->has_more){if(page->count==0||memcmp(page->next_after_session_id,page->session_ids[page->count-1],16))return AG_RPC_HISTORY_INVALID;}
+        else if(nonzero_session(page->next_after_session_id))return AG_RPC_HISTORY_INVALID;
+        append(&w,"\"op\":\"logs.sessions\",\"phase\":\"sessions\",\"sessions\":[");
+        for(unsigned i=0;i<page->count;++i){if(i)append(&w,",");encoded_session(&w,page->session_ids[i]);}
+        append(&w,"],\"has_more\":%s,\"next_after_session_id\":",page->has_more?"true":"false");
+        if(page->has_more)encoded_session(&w,page->next_after_session_id);else append(&w,"null");
         break;}
     case AG_RPC_REPLY_LOGS_ACK:
         if(!nonzero_session(reply->session_id))return AG_RPC_ARGUMENT;

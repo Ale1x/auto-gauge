@@ -32,6 +32,26 @@ final class NativeBluetoothController: NSObject, @preconcurrency CBCentralManage
     private var incomingDecoder = GaugeStreamReassembler()
     private var frameTimer: Task<Void, Never>?
     private var rpc: GaugeRPCClient?
+    private var qualifiedClaim = false
+    var onSessionInvalidated: (@MainActor (UInt64) -> Void)?
+    func isCurrentConnection(_ lease: UInt64) -> Bool { isReady && generation == lease }
+    func qualifiedPacketPipe() async throws -> any GaugePacketPipe {
+        guard rpc == nil, !rpcBusy, !qualifiedClaim else { throw GaugeLinkError.busy }
+        let ready = try await readyConnection()
+        return NativeQualifiedPacketPipe(controller: self, generation: ready.generation)
+    }
+    func beginQualifiedRequest(generation lease: UInt64) throws {
+        guard isReady, lease == generation, rpc == nil, !rpcBusy,
+              incomingChunks.isEmpty, incomingDecoder.bufferedBytes == 0 else { throw GaugeLinkError.notReady }
+        qualifiedClaim = true; rpcBusy = true
+    }
+    func endQualifiedRequest(generation lease: UInt64) throws {
+        guard isReady, lease == generation, qualifiedClaim, rpcBusy,
+              incomingChunks.isEmpty, incomingDecoder.bufferedBytes == 0, readWaiter == nil, writeWaiter == nil else {
+            throw GaugeLinkError.invalidReply
+        }
+        rpcBusy = false
+    }
     func beginScan() {
         guard developmentEnabled, profile != nil else { notice = "Abilita prima la modalità sviluppo Bluetooth."; return }
         uiEpoch &+= 1
@@ -65,7 +85,7 @@ final class NativeBluetoothController: NSObject, @preconcurrency CBCentralManage
     }
     func stop() { uiEpoch &+= 1; close(message: "Bluetooth di sviluppo arrestato.") }
     func probeHello() async {
-        guard isReady, !rpcBusy else { return }
+        guard isReady, !rpcBusy, !qualifiedClaim else { return }
         rpcBusy = true; let epoch = uiEpoch
         do {
             let client: GaugeRPCClient
@@ -141,6 +161,9 @@ final class NativeBluetoothController: NSObject, @preconcurrency CBCentralManage
         guard central === self.central, active === peripheral else { return }; close(message: "Dispositivo disconnesso. Richieste e frammenti invalidati.")
     }
     private func close(message: String) {
+        let invalidatedQualifiedSession = qualifiedClaim
+        let invalidatedGeneration = generation
+        qualifiedClaim = false
         generation &+= 1; timer?.cancel(); timer = nil
         frameTimer?.cancel(); frameTimer = nil; incomingDecoder.reset()
         central?.stopScan(); central?.delegate = nil
@@ -152,6 +175,7 @@ final class NativeBluetoothController: NSObject, @preconcurrency CBCentralManage
         let write = writeWaiter; writeWaiter = nil; write?.resume(throwing: GaugeLinkError.disconnected)
         let read = readWaiter; readWaiter = nil; read?.resume(throwing: GaugeLinkError.disconnected)
         notice = message
+        if invalidatedQualifiedSession { onSessionInvalidated?(invalidatedGeneration) }
     }
     private func valid(_ peripheral: CBPeripheral, lease: UInt64) -> Bool { lease == generation && active === peripheral }
     func services(_ peripheral: CBPeripheral, error: (any Error)?, generation lease: UInt64) {

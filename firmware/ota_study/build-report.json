@@ -59,20 +59,33 @@
     "ag_ot_endpoint_close",
     "ag_frame_encode",
     "ag_frame_decode",
-    "ag_stream_feed"
+    "ag_stream_feed",
+    "ag_boot_health_open",
+    "ag_boot_health_provision",
+    "ag_boot_health_floor",
+    "ag_boot_health_stage",
+    "ag_boot_health_reconcile",
+    "ag_boot_health_confirm",
+    "ag_ota_boot_storage_bind",
+    "ag_ota_boot_prepare_selection",
+    "ag_ota_boot_storage_provision_namespace",
+    "nvs_get_blob",
+    "nvs_set_blob",
+    "nvs_commit",
+    "esp_ota_mark_app_valid_cancel_rollback"
   ],
   "main_instructions": [
-    "4201e860:\t004136        \tentry\ta1, 32",
-    "4201e863:\tf01d      \tretw.n"
+    "4201f7c0:\t004136        \tentry\ta1, 32",
+    "4201f7c3:\tf01d      \tretw.n"
   ],
   "artifacts": {
     "auto_gauge_ota_compile_study.elf": {
-      "bytes": 5432864,
-      "sha256": "fde631b53311246276d81279621fd3ae227105022d6e2e9ce90eb92f98774c09"
+      "bytes": 5474724,
+      "sha256": "9c823a1a47c08e8a5e1d03b2da8f69d2c1950f350b6ee29142a910d7cdc50890"
     },
     "auto_gauge_ota_compile_study.bin": {
-      "bytes": 260608,
-      "sha256": "cd3e2458a486e80f5034bbd0138881bc465f486debdf2f9743f75c802c7ae385"
+      "bytes": 265088,
+      "sha256": "a300f9880f444c7a0f88317d4ee65658236ccf7b954aff0b26a309c0d77c27ce"
     },
     "partition_table/partition-table.bin": {
       "bytes": 3072,
@@ -80,24 +93,28 @@
     }
   },
   "source_sha256": {
-    "firmware/ota_study/main/ota_installer.c": "01a390939290ad9906b5259fbdf621e76166ae0fbd1475d4f07dc2f37e4a4576",
-    "firmware/ota_study/main/ota_installer.h": "360f48eb0d77b7c2b4e8ad722ada26e3a02d3b8a02cea53457d179285de2bcb8",
+    "firmware/ota_study/main/ota_installer.c": "938511a51908038b9e9ea84bfca31a32a6cd7f1ff5d57c86763acefee7a793b0",
+    "firmware/ota_study/main/ota_installer.h": "0a950a11428b9f3e4167330a58adcff641f5b7c064f0c0d3f8f91280074ff7d0",
     "firmware/ota_study/main/main.c": "155b18b25e8d023342ab6eeb3a340ab0f785bd4692185245386f881400e55b09",
     "firmware/ota_study/main/manifest_verify.c": "5603ea076f7d4fa5547b0246af2287fa77ea876093e2be0fbf14c8fcca9e82f8",
     "firmware/ota_study/main/manifest_verify.h": "f0b8f6cbb4ec5d3f1ec9ad42e4082c54f691612429c7e0d5c389d4b2b135ec04",
-    "firmware/ota_study/main/transfer_adapter.c": "1c66d536a4ff1ed76257e576be43fd65a244f32ed3267e7374e70f07705d1743",
-    "firmware/ota_study/main/transfer_adapter.h": "7279742eea1f0cdb0c517141ac8a8f01fd42e7f388d98289222a85def7fc9856",
+    "firmware/ota_study/main/transfer_adapter.c": "4166852b62f6235bb080b6b2234414a2b87117a522430302abb00157390e4542",
+    "firmware/ota_study/main/transfer_adapter.h": "bc13eb05f8102d13a128e72172f9aaf6bfa2dd38ae1369d37357376f4baee05c",
     "firmware/src/ota_transfer.c": "769d36b64915bad0ebfec00babe5a37efbfd42361e1e185875066027e4e9a25e",
     "firmware/include/ota_transfer.h": "76abb1b713f441c3ea3735368a90f2e9bc6d9131fb438644a66c41f10c3d832b",
     "firmware/ota_study/main/framed_adapter.c": "940259bd6024c204589945e420713ea01abaecc234d246e0f46704e61ccbb19c",
     "firmware/ota_study/main/framed_adapter.h": "44f3837480bc0fb3fe726baab030da7899460df26921893c105fc27e87fc1b9c",
+    "firmware/ota_study/main/boot_storage.c": "d716cb5c0a60759467b6f654f0e73ea344575ce434f1f7274ad83a6938c2fb27",
+    "firmware/ota_study/main/boot_storage.h": "3740ef0022558436242a97dd3c47839dfcd24b131c064b1157af16095d71f29a",
+    "firmware/src/boot_health.c": "e2103ff361ca2513a190e32d43d26fb022805199d0856a0e9884e854c4e25e4e",
+    "firmware/include/ag_boot_health.h": "efd1366c9b6047248d64824a1ea51af536f54568ae85a55d2bd21ebc8ed469bc",
     "firmware/src/ota_framed_endpoint.c": "9bc557b523f7e83abb381ac824479562adc1d22280bf7bc4544125fecb1a34ed",
     "firmware/include/ota_framed_endpoint.h": "4fef039013a4373c4fc225b2bc4d76457a3d437c0d6989be49e8405e846f452c",
     "shared/c/ag_frame.c": "e2d0e2786c0f36914e15e63307e9b4f1f8218f61a7a4d572965837d5c03e1299",
     "shared/c/ag_frame.h": "4f1280fd380cbb20e0a4525074450075021955c7c42a1c255c8bbf5a0ef60c04",
     "shared/c/ag_stream.c": "d4afa5f352faccd2580a02eef69d6845a0f1189a3d7d093878eeeadd9b218cbc",
     "shared/c/ag_stream.h": "a5f19dbd0174de031e532b2677bbcb2ad4cbf455dbd95ae18ab75d91c837a91e",
-    "firmware/ota_study/main/CMakeLists.txt": "89d62cd522ae456555b4b1bd0198131651583dfa79bdf8bc380b87b130526487",
+    "firmware/ota_study/main/CMakeLists.txt": "813b0dd9bad5b52fd0025fb32061b5435810fe705068dc09af2f1e504949b20c",
     "firmware/ota_study/sdkconfig.defaults": "4be1a237207480fbb5f1180418f0839ff12f3977bf08b17905e6d098a4e76c8d"
   },
   "actions": {
@@ -113,7 +130,7 @@
     "4MB factory+two-OTA development table is not the product memory map or 2MiB log sizing",
     "Target manifest verifier and transfer adapter linked; trusted hardware/floor/key lookup and platform policy remain caller supplied",
     "Framed endpoint and payload controller linked to installer but no main or BLE/RPC route; no production key installed",
-    "No health confirmation, reboot, durable release-counter transaction or recovery after ambiguous selection",
+    "Boot health/floor/NVS lifecycle linked but requires explicit baseline provision/local health evidence and platform orchestration; no reboot/recovery is executed",
     "No Secure Boot/encryption provisioning, physical flash/brownout/wear/rollback qualification",
     "SDK Wi-Fi capability flag may be enabled; initialization symbols absent and main never invokes them",
     "SDK compile/link only: PSA hardware provider not executed; native portable crypto has separate evidence",

@@ -36,7 +36,11 @@ required=['ag_ota_installer_'+n for n in entries]+['esp_ota_begin','esp_ota_writ
     'ag_ota_framed_adapter_init','ag_ota_framed_adapter_feed','ag_ota_framed_adapter_step',
     'ag_ota_framed_adapter_take_output','ag_ota_framed_adapter_poll','ag_ota_framed_adapter_close',
     'ag_ot_endpoint_init','ag_ot_endpoint_feed','ag_ot_endpoint_step','ag_ot_endpoint_take_output',
-    'ag_ot_endpoint_poll','ag_ot_endpoint_close','ag_frame_encode','ag_frame_decode','ag_stream_feed']
+    'ag_ot_endpoint_poll','ag_ot_endpoint_close','ag_frame_encode','ag_frame_decode','ag_stream_feed',
+    'ag_boot_health_open','ag_boot_health_provision','ag_boot_health_floor','ag_boot_health_stage',
+    'ag_boot_health_reconcile','ag_boot_health_confirm','ag_ota_boot_storage_bind',
+    'ag_ota_boot_prepare_selection','ag_ota_boot_storage_provision_namespace',
+    'nvs_get_blob','nvs_set_blob','nvs_commit','esp_ota_mark_app_valid_cancel_rollback']
 for name in required:assert re.search(r'^[0-9a-fA-F]+ [Tt] '+name+r'$',nm,re.M),name
 radio_names=['esp_wifi_init','esp_bt_controller_init','nimble_port_init']
 radio_symbols={name:bool(re.search(r'^[0-9a-fA-F]+ [Tt] '+name+r'$',nm,re.M)) for name in radio_names}
@@ -51,6 +55,8 @@ sources=[HERE/'main/ota_installer.c',HERE/'main/ota_installer.h',HERE/'main/main
          HERE/'main/transfer_adapter.c',HERE/'main/transfer_adapter.h',
          ROOT/'firmware/src/ota_transfer.c',ROOT/'firmware/include/ota_transfer.h',
          HERE/'main/framed_adapter.c',HERE/'main/framed_adapter.h',
+         HERE/'main/boot_storage.c',HERE/'main/boot_storage.h',
+         ROOT/'firmware/src/boot_health.c',ROOT/'firmware/include/ag_boot_health.h',
          ROOT/'firmware/src/ota_framed_endpoint.c',ROOT/'firmware/include/ota_framed_endpoint.h',
          ROOT/'shared/c/ag_frame.c',ROOT/'shared/c/ag_frame.h',ROOT/'shared/c/ag_stream.c',ROOT/'shared/c/ag_stream.h',
          HERE/'main/CMakeLists.txt',HERE/'sdkconfig.defaults']
@@ -65,11 +71,11 @@ report=dict(status='COMPILE_LINK_ONLY_NOT_RUN',sdk_commit=actual,configuration=s
         '4MB factory+two-OTA development table is not the product memory map or 2MiB log sizing',
         'Target manifest verifier and transfer adapter linked; trusted hardware/floor/key lookup and platform policy remain caller supplied',
         'Framed endpoint and payload controller linked to installer but no main or BLE/RPC route; no production key installed',
-        'No health confirmation, reboot, durable release-counter transaction or recovery after ambiguous selection',
+        'Boot health/floor/NVS lifecycle linked but requires explicit baseline provision/local health evidence and platform orchestration; no reboot/recovery is executed',
         'No Secure Boot/encryption provisioning, physical flash/brownout/wear/rollback qualification',
         'SDK Wi-Fi capability flag may be enabled; initialization symbols absent and main never invokes them',
         'SDK compile/link only: PSA hardware provider not executed; native portable crypto has separate evidence',
         'Behavioral fault-injection harness remains separate from real native RSA/SHA test'])
 (HERE/'build-report.json').write_text(json.dumps(report,indent=2)+'\n')
-print('PASS:7 installer +2 manifest +3 payload adapter +6 framed adapter entry points and real SDK dependencies linked; app_main calls none')
+print('PASS:27 retained public installer/manifest/adapter/boot entry points and real SDK dependencies linked; app_main calls none')
 print('Image bytes:',report['artifacts']['auto_gauge_ota_compile_study.bin']['bytes'])

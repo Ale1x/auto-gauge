@@ -9,7 +9,7 @@
 
 typedef enum {
     AG_RPC_HELLO = 0, AG_RPC_CONFIG_GET, AG_RPC_CONFIG_VALIDATE,
-    AG_RPC_CONFIG_APPLY, AG_RPC_LOGS_READ, AG_RPC_LOGS_ACK
+    AG_RPC_CONFIG_APPLY, AG_RPC_LOGS_READ, AG_RPC_LOGS_ACK, AG_RPC_LOGS_SESSIONS
 } ag_rpc_operation_t;
 typedef struct {
     ag_rpc_operation_t operation;
@@ -18,6 +18,8 @@ typedef struct {
     uint8_t session_id[AG_SESSION_ID_BYTES];
     uint64_t sequence; /* after_sequence or acknowledged_through, never double. */
     uint8_t limit;
+    bool has_after_session_id;
+    uint8_t after_session_id[AG_SESSION_ID_BYTES];
 } ag_rpc_request_t;
 typedef enum {
     AG_RPC_OK = 0, AG_RPC_ARGUMENT, AG_RPC_SIZE, AG_RPC_SYNTAX, AG_RPC_TYPE,
@@ -42,7 +44,7 @@ const char *ag_rpc_operation_name(ag_rpc_operation_t);
 typedef enum {
     AG_RPC_REPLY_HELLO = 0, AG_RPC_REPLY_CURRENT, AG_RPC_REPLY_VALIDATED,
     AG_RPC_REPLY_RECEIVED, AG_RPC_REPLY_APPLIED, AG_RPC_REPLY_REJECTED,
-    AG_RPC_REPLY_LOGS_ACK, AG_RPC_REPLY_LOGS_READ
+    AG_RPC_REPLY_LOGS_ACK, AG_RPC_REPLY_LOGS_READ, AG_RPC_REPLY_LOGS_SESSIONS
 } ag_rpc_reply_kind_t;
 typedef enum { AG_RPC_PERSISTENCE_UNSPECIFIED=0, AG_RPC_VOLATILE, AG_RPC_DURABLE } ag_rpc_persistence_t;
 typedef enum {
@@ -52,6 +54,15 @@ typedef enum {
     AG_RPC_ERROR_NOT_IMPLEMENTED, AG_RPC_ERROR_UNAUTHORIZED, AG_RPC_ERROR_INVALID_REQUEST,
     AG_RPC_ERROR_INVALID_MESSAGE, AG_RPC_ERROR_UNSUPPORTED_PID
 } ag_rpc_wire_error_t;
+#define AG_HISTORY_SESSIONS_MAX 16u
+/* Typed read-only cursor page; next_after_session_id is allzero iff !has_more.
+ * SIDs are nonzero, unique, lexicographically sorted and greater than request cursor. */
+typedef struct {
+    uint8_t session_ids[AG_HISTORY_SESSIONS_MAX][AG_SESSION_ID_BYTES];
+    uint8_t count;
+    bool has_more;
+    uint8_t next_after_session_id[AG_SESSION_ID_BYTES];
+} ag_history_sessions_page_t;
 typedef struct {
     ag_rpc_reply_kind_t kind;
     bool simulation, authenticated;
@@ -65,7 +76,10 @@ typedef struct {
     uint64_t acknowledged_through;
     const ag_history_snapshot_t *history; /* LOGS_READ: immutable typed copy owned by caller. */
     uint64_t after_sequence;
-    uint8_t limit; /* LOGS_READ1..16; envelope budget may reduce returned record count. */
+    uint8_t limit; /* LOGS_READ/LOGS_SESSIONS1..16. */
+    const ag_history_sessions_page_t *sessions;
+    bool has_after_session_id;
+    uint8_t after_session_id[AG_SESSION_ID_BYTES];
 } ag_rpc_reply_t;
 /* Serialization only; caller chooses truthful phase/auth/persistence after the
  * corresponding verified action. No storage, state transition or inference.

@@ -21,10 +21,22 @@ final class AppModel {
     var gaugeCommitState: GaugeCommitState = .idle
     var gaugeNotice = "Nessun collegamento simulato attivo."
     private var started = false
-    private let logArchive: LocalLogArchive
-    private let storage: AtomicFileConfigurationStorage
-    private let transport: DevelopmentGaugeTransport
-    private let historySession: LogSessionID
+    private var logArchive: LocalLogArchive
+    private var storage: AtomicFileConfigurationStorage
+    private var binding: GaugeSessionBinding
+    private let simulatorBinding: GaugeSessionBinding
+    private let directory: URL
+    private let nativeQualificationProvider: any GaugeNativeQualificationProvider
+    private var sessionEpoch = 0
+    private var nativePipeGeneration: UInt64?
+    private var changingSession = false
+    private var activeDraftKey = "simulation"
+    private var retainedDrafts: [String: ConfigurationDraft] = [:]
+    private var historySourceCursor = 0
+    var gaugeDeviceID: String?
+    var isNativeSession: Bool { binding.isNative }
+    var sourceTitle: String { isNativeSession ? "Gauge selezionato" : "Gauge simulato" }
+    private var transport: any GaugeSessionTransport { binding.transport }
     var configuration: GaugeConfiguration {
         get { editor.working }
         set { editor.working = newValue }
@@ -39,15 +51,17 @@ final class AppModel {
         get { message != nil }
         set { if !newValue { message = nil } }
     }
-    init() {
-        let directory = URL.applicationSupportDirectory.appending(path: "AutoGauge")
+    init(nativeQualificationProvider: any GaugeNativeQualificationProvider = UnqualifiedNativeGaugeProvider()) {
+        self.nativeQualificationProvider = nativeQualificationProvider
+        directory = URL.applicationSupportDirectory.appending(path: "AutoGauge")
         storage = .init(fileURL: directory.appending(path: "simulated-configuration-v1.json"))
         logArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "simulated-histories-v1.json")))
         do {
             editor = try ConfigurationDraft(configuration: DemoData.configuration, catalog: DemoData.catalog)
             let fixture = try DemoGaugeFixture.load()
-            transport = DevelopmentGaugeTransport(pipe: InMemoryGaugePacketPipe(channel: try InMemoryGaugeEndpoint(configuration: fixture.configuration, historySource: fixture.historySource), clientID: "IPHONE-SIM-A"))
-            historySession = fixture.historySource.sessionID
+            let transport = DevelopmentGaugeTransport(pipe: InMemoryGaugePacketPipe(channel: try InMemoryGaugeEndpoint(configuration: fixture.configuration, historySource: fixture.historySource), clientID: "IPHONE-SIM-A"))
+            simulatorBinding = .simulator(transport, sessions: [fixture.historySource.sessionID])
+            binding = simulatorBinding
         } catch { fatalError("Fixture dimostrative incorporate non valide: \(error)") }
         do {
             if let data = try storage.read() {
@@ -57,6 +71,7 @@ final class AppModel {
                 try storage.write(legacy); editor = migrated
             }
         } catch { message = "Bozza locale non leggibile: è stato caricato l’esempio senza sovrascrivere il salvataggio. \(error.localizedDescription)" }
+        nativeBluetooth.onSessionInvalidated = { [weak self] generation in Task { await self?.nativeSessionEnded(generation: generation) } }
     }
     subscript(geometryUnitFor dashboardID: Int, widget widgetID: Int, field field: GeometryField) -> Int {
         get {
@@ -79,102 +94,195 @@ final class AppModel {
     }
     func connectGauge() async {
         guard !gaugeBusy else { return }
-        gaugeBusy = true
-        defer { gaugeBusy = false }
+        if isNativeSession { gaugeNotice = "Seleziona e qualifica una nuova connessione nella sezione Bluetooth."; return }
+        let token = sessionEpoch; let transport = self.transport
+        gaugeBusy = true; defer { if token == sessionEpoch { gaugeBusy = false } }
         do {
             try await transport.connect()
-            catalog = try await transport.supportedPIDs()
-            gaugeSnapshot = try await transport.configuration()
+            let nextCatalog = try await transport.supportedPIDs()
+            let snapshot = try await transport.configuration()
+            let id = try await transport.deviceIdentifier()
+            guard token == sessionEpoch else { return }
+            catalog = nextCatalog; gaugeSnapshot = snapshot; gaugeDeviceID = id
             gaugeConnected = true; gaugeNeedsRead = false
             gaugeCommitState = await transport.commitState()
-            gaugeNotice = "Collegato al simulatore locale. Lo stato letto non modifica la bozza del telefono."
-        } catch { await refreshLinkAfterError(error) }
+            guard token == sessionEpoch else { return }
+            gaugeNotice = "Collegato al simulatore locale. La bozza del telefono è conservata."
+        } catch { await refreshLinkAfterError(error, transport: transport, token: token) }
+    }
+    func activateNativeGauge() async {
+        guard !gaugeBusy, !logBusy, !changingSession else { return }
+        let token = sessionEpoch; gaugeBusy = true
+        defer { if token == sessionEpoch { gaugeBusy = false } }
+        var candidate: QualifiedGaugeTransport?
+        do {
+            let pipe = try await nativeBluetooth.qualifiedPacketPipe()
+            let pipeGeneration = try await pipe.readyConnection().generation
+            let native = QualifiedGaugeTransport(pipe: pipe, qualificationProvider: nativeQualificationProvider)
+            candidate = native
+            try await native.connect()
+            let nextCatalog = try await native.supportedPIDs()
+            let snapshot = try await native.configuration()
+            let id = try await native.deviceIdentifier()
+            guard token == sessionEpoch else { await native.disconnect(); return }
+            let key = "native-" + CloudHistoryItem.digest(Data(id.utf8))
+            let nextStorage = AtomicFileConfigurationStorage(fileURL: directory.appending(path: key + "/configuration-v1.json"))
+            let nextEditor: ConfigurationDraft
+            if let retained = retainedDrafts[key] { nextEditor = retained }
+            else if let bytes = try nextStorage.read() {
+                nextEditor = try ConfigurationDraft(configuration: JSONDecoder().decode(GaugeConfiguration.self, from: bytes), catalog: nextCatalog)
+            } else { nextEditor = try ConfigurationDraft(configuration: snapshot, catalog: nextCatalog) }
+            changingSession = true
+            retainedDrafts[activeDraftKey] = editor
+            await transport.disconnect()
+            guard token == sessionEpoch, nativeBluetooth.isCurrentConnection(pipeGeneration) else { changingSession = false; await native.disconnect(); return }
+            sessionEpoch += 1; let installed = sessionEpoch
+            binding = .qualifiedNative(native); nativePipeGeneration = pipeGeneration; storage = nextStorage; activeDraftKey = key; editor = nextEditor
+            catalog = nextCatalog; gaugeSnapshot = snapshot; gaugeDeviceID = id
+            gaugeConnected = true; gaugeNeedsRead = false; gaugeCommitState = .idle
+            logArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "native-histories-v1.json")))
+            logSessions = []; logReady = false; lastLogAcknowledgement = nil; historySourceCursor = 0
+            changingSession = false; gaugeBusy = false
+            gaugeNotice = "Sessione locale qualificata per il gauge selezionato. Bozze e storici dimostrativi restano separati."
+            await reloadLogs()
+            guard installed == sessionEpoch else { return }
+        } catch {
+            changingSession = false
+            await candidate?.disconnect()
+            guard token == sessionEpoch else { return }
+            gaugeNotice = error.localizedDescription; message = error.localizedDescription
+        }
+    }
+    func useSimulator() async {
+        guard !gaugeBusy, !logBusy, !changingSession else { return }
+        changingSession = true; sessionEpoch += 1
+        retainedDrafts[activeDraftKey] = editor
+        await transport.disconnect()
+        binding = simulatorBinding; nativePipeGeneration = nil; activeDraftKey = "simulation"
+        storage = .init(fileURL: directory.appending(path: "simulated-configuration-v1.json"))
+        if let retained = retainedDrafts[activeDraftKey] { editor = retained }
+        catalog = DemoData.catalog; gaugeSnapshot = nil; gaugeDeviceID = nil
+        gaugeConnected = false; gaugeNeedsRead = true; gaugeCommitState = .idle
+        logArchive = LocalLogArchive(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "simulated-histories-v1.json")))
+        logSessions = []; logReady = false; lastLogAcknowledgement = nil; historySourceCursor = 0
+        changingSession = false
+        await reloadLogs(); await connectGauge()
+    }
+    private func nativeSessionEnded(generation: UInt64) async {
+        guard isNativeSession, nativePipeGeneration == generation, !changingSession else { return }
+        nativePipeGeneration = nil; sessionEpoch += 1; let token = sessionEpoch
+        gaugeConnected = false; gaugeNeedsRead = true
+        gaugeBusy = false; logBusy = false
+        let transport = self.transport
+        await transport.disconnect()
+        let state = await transport.commitState()
+        guard token == sessionEpoch else { return }
+        gaugeCommitState = state
+        gaugeNotice = "Gauge disconnesso. Bozza e archivio locale conservati; riconnetti e rileggi prima di applicare."
     }
     func disconnectGauge() async {
+        sessionEpoch += 1; let token = sessionEpoch; let transport = self.transport
+        gaugeConnected = false; gaugeNeedsRead = true; gaugeBusy = false
         await transport.disconnect()
-        gaugeConnected = false; gaugeNeedsRead = true
-        gaugeNotice = "Simulatore scollegato. Un altro client può collegarsi senza reset."
+        guard token == sessionEpoch else { return }
+        gaugeNotice = "Sessione scollegata. Un altro telefono può essere usato senza reset."
     }
     func readGauge() async {
         guard gaugeConnected, !gaugeBusy else { return }
-        gaugeBusy = true
-        defer { gaugeBusy = false }
+        let token = sessionEpoch; let transport = self.transport
+        gaugeBusy = true; defer { if token == sessionEpoch { gaugeBusy = false } }
         do {
-            catalog = try await transport.supportedPIDs()
-            gaugeSnapshot = try await transport.configuration()
-            gaugeNeedsRead = false
+            let nextCatalog = try await transport.supportedPIDs()
+            let snapshot = try await transport.configuration()
+            guard token == sessionEpoch else { return }
+            catalog = nextCatalog; gaugeSnapshot = snapshot; gaugeNeedsRead = false
             gaugeCommitState = await transport.commitState()
-            gaugeNotice = "Snapshot aggiornato dal simulatore; bozza locale conservata."
-        } catch { await refreshLinkAfterError(error) }
+            guard token == sessionEpoch else { return }
+            gaugeNotice = "Snapshot aggiornato dal dispositivo selezionato; bozza locale conservata."
+        } catch { await refreshLinkAfterError(error, transport: transport, token: token) }
     }
     func useGaugeSnapshot() {
         guard let gaugeSnapshot, !gaugeNeedsRead else { return }
         edit { try $0.restore(gaugeSnapshot, catalog: catalog) }
-        gaugeNotice = "Contenuto dello snapshot copiato nella bozza. Il salvataggio sul telefono resta un’azione separata."
+        gaugeNotice = "Snapshot copiato nella bozza. Il salvataggio sul telefono resta separato."
     }
     func validateOnGauge() async {
         guard gaugeConnected, !gaugeBusy else { return }
-        gaugeBusy = true
-        defer { gaugeBusy = false }
+        let token = sessionEpoch; let transport = self.transport
+        gaugeBusy = true; defer { if token == sessionEpoch { gaugeBusy = false } }
         do {
             try await transport.validateDraft(editor.working)
-            gaugeNotice = "Bozza validata dal simulatore; nessuna applicazione e nessun salvataggio eseguiti."
-        } catch { await refreshLinkAfterError(error) }
+            guard token == sessionEpoch else { return }
+            gaugeNotice = "Bozza validata; nessuna applicazione e nessun salvataggio eseguiti."
+        } catch { await refreshLinkAfterError(error, transport: transport, token: token) }
     }
     func applyToGauge() async {
         guard canApplyToGauge else { return }
-        gaugeBusy = true
-        defer { gaugeBusy = false }
+        let token = sessionEpoch; let transport = self.transport
+        gaugeBusy = true; defer { if token == sessionEpoch { gaugeBusy = false } }
         do {
-            gaugeSnapshot = try await transport.applyDraft(editor.working, onPhase: { [weak self] phase in
-                await self?.receiveGaugePhase(phase)
+            let snapshot = try await transport.applyDraft(editor.working, onPhase: { [weak self] phase in
+                await self?.receiveGaugePhase(phase, token: token)
             })
-            gaugeNeedsRead = false
-            gaugeNotice = "Ricezione e applicazione confermate in RAM simulata. La bozza sul telefono non è stata salvata automaticamente."
-        } catch { await refreshLinkAfterError(error) }
+            guard token == sessionEpoch else { return }
+            gaugeSnapshot = snapshot; gaugeNeedsRead = false
+            gaugeNotice = isNativeSession ? "Applicazione confermata dal gauge. La bozza del telefono non è stata salvata automaticamente." : "Applicazione confermata in RAM simulata. La bozza del telefono non è stata salvata automaticamente."
+        } catch { await refreshLinkAfterError(error, transport: transport, token: token) }
     }
-    private func receiveGaugePhase(_ phase: GaugeCommitState) { gaugeCommitState = phase }
-    private func refreshLinkAfterError(_ error: Error) async {
-        gaugeConnected = await transport.isConnected()
-        gaugeNeedsRead = await transport.requiresRead()
-        gaugeCommitState = await transport.commitState()
-        gaugeNotice = error.localizedDescription
-        message = error.localizedDescription
+    private func receiveGaugePhase(_ phase: GaugeCommitState, token: Int) { if token == sessionEpoch { gaugeCommitState = phase } }
+    private func refreshLinkAfterError(_ error: Error, transport: any GaugeSessionTransport, token: Int) async {
+        let connected = await transport.isConnected(); let needsRead = await transport.requiresRead(); let state = await transport.commitState()
+        guard token == sessionEpoch else { return }
+        gaugeConnected = connected; gaugeNeedsRead = needsRead; gaugeCommitState = state
+        gaugeNotice = error.localizedDescription; message = error.localizedDescription
     }
     func reloadLogs() async {
         guard !logBusy else { return }
-        logBusy = true
-        defer { logBusy = false }
+        let token = sessionEpoch; let archive = logArchive
+        logBusy = true; defer { if token == sessionEpoch { logBusy = false } }
         do {
-            try await logArchive.reload()
-            logSessions = await logArchive.sessions(); logReady = true
+            try await archive.reload(); let sessions = await archive.sessions()
+            guard token == sessionEpoch else { return }
+            logSessions = sessions; logReady = true
         } catch {
-            logReady = false
-            message = "Ricarica storico non riuscita. Nessun dato sovrascritto e nessun nuovo ACK. \(error.localizedDescription)"
+            guard token == sessionEpoch else { return }
+            logReady = false; message = "Ricarica storico non riuscita. Nessun dato sovrascritto e nessun nuovo ACK. \(error.localizedDescription)"
         }
     }
-    func syncSimulatedHistory() async {
+    func syncSimulatedHistory() async { await syncGaugeHistory() }
+    func syncGaugeHistory() async {
         guard logReady, !logBusy, gaugeConnected, !gaugeBusy else { return }
+        let token = sessionEpoch; let binding = self.binding; let transport = binding.transport; let archive = logArchive
         logBusy = true; gaugeBusy = true
-        defer { logBusy = false; gaugeBusy = false }
+        defer { if token == sessionEpoch { logBusy = false; gaugeBusy = false } }
         do {
-            // Bounded work per interaction; a subsequent tap can resume after the local cursor.
+            let sources = try await binding.historySessionIDs()
+            guard token == sessionEpoch else { return }
+            guard !sources.isEmpty else { lastLogAcknowledgement = "Nessuna sessione dichiarata dal gauge."; return }
             for _ in 0..<4 {
-                let id = try await transport.deviceIdentifier()
-                let before = await logArchive.cursor(deviceID: id, sessionID: historySession.value)
-                let imported = try await transport.importHistoryPage(sessionID: historySession, archive: logArchive, limit: 2)
-                logSessions = await logArchive.sessions()
-                lastLogAcknowledgement = "Cursore locale \(imported.acknowledgement.acknowledgedThrough.decimal) · \(imported.peerAcknowledged ? "conferma ricevuta dal simulatore" : "conferma non recapitata")"
+                let source = sources[historySourceCursor % sources.count]; historySourceCursor = (historySourceCursor + 1) % sources.count
+                let imported = try await transport.importHistoryPage(sessionID: source, archive: archive, limit: 16)
+                // A committed receipt belongs to its captured device even if
+                // that connection ended while the archive write was pending.
+                if let receipt = imported.qualifiedImport {
+                    do { try await cloud.queueQualifiedImport(receipt) }
+                    catch { if token == sessionEpoch { message = "Storico locale conservato; coda iCloud non aggiornata: \(error.localizedDescription)" } }
+                }
+                guard token == sessionEpoch else { return }
+                logSessions = await archive.sessions()
+                guard token == sessionEpoch else { return }
+                lastLogAcknowledgement = "Cursore locale \(imported.acknowledgement.acknowledgedThrough.decimal) · \(imported.peerAcknowledged ? "conferma ricevuta" : "conferma non recapitata")"
                 if let warning = imported.warning { message = warning; break }
-                if imported.acknowledgement.acknowledgedThrough.value == before { break }
             }
         } catch {
-            logSessions = await logArchive.sessions()
-            await refreshLinkAfterError(error)
+            let sessions = await archive.sessions()
+            guard token == sessionEpoch else { return }
+            logSessions = sessions
+            await refreshLinkAfterError(error, transport: transport, token: token)
         }
     }
     func importDemoLogs() async {
-        guard logReady, !logBusy else { return }
+        guard !isNativeSession, logReady, !logBusy else { return }
         logBusy = true
         defer { logBusy = false }
         do {
@@ -203,5 +311,8 @@ final class AppModel {
         catch { message = "Ricarica non riuscita: bozza corrente conservata. \(error.localizedDescription)" }
     }
     func restoreExample() { edit { try $0.restore(DemoData.configuration, catalog: catalog) } }
-    func addDashboard() { edit { _ = try $0.addDashboard(pid: catalog[0]) } }
+    func addDashboard() {
+        guard let pid = catalog.first else { message = "Nessuna misura disponibile per una nuova dashboard."; return }
+        edit { _ = try $0.addDashboard(pid: pid) }
+    }
 }

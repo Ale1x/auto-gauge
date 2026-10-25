@@ -3,8 +3,8 @@
   "sdk_tag": "v6.1",
   "sdk_commit": "fff9895c82d744c7237be8847347bdd1b07c6643",
   "main_instructions": [
-    "42041a1c:\t004136        \tentry\ta1, 32",
-    "42041a1f:\tf01d      \tretw.n"
+    "42041cbc:\t004136        \tentry\ta1, 32",
+    "42041cbf:\tf01d      \tretw.n"
   ],
   "retained_symbols": [
     "ag_nimble_transport_start",
@@ -34,12 +34,12 @@
   },
   "artifacts": {
     "auto_gauge_ble_compile_study.elf": {
-      "bytes": 6226868,
-      "sha256": "786975e031448d3473c07b6c3f055cbaa4f6b2d94d6fbd58d5d48dfb5eec5210"
+      "bytes": 6230932,
+      "sha256": "87bd4e64e1cc49caf47455d0f8aae7e4995c70e6fd76b74192bc849a6a25ce66"
     },
     "auto_gauge_ble_compile_study.bin": {
-      "bytes": 449088,
-      "sha256": "c5cde85bf998b2e393e3fa7e3d96190368cf1cf7aaea6942e592b94e4a0184a5"
+      "bytes": 449920,
+      "sha256": "571eb446f3108ffcf3519f06d5faf3ad593883cf7911031237c9a82486a9abb7"
     }
   },
   "source_sha256": {
@@ -50,8 +50,11 @@
     "firmware/ble_study/main/endpoint_bridge.h": "557a8efab2016e73663cd60358ec1eed6466b76c33be4652a51223a8156f6c04",
     "firmware/ble_study/main/gatt_profile.h": "a55b7471fd033226532dbc8992d192cef096ac076304bf1b057bb2decb1d7e7d",
     "shared/gatt.profile.json": "66e3051471f8470d67464e51bd2f479050860f6dc9387c968f66d42e3cca048f",
-    "firmware/src/device_endpoint.c": "11121c0411705dea28ca7c8a76aa8b2c038139662a9f0640534b127505418eeb",
-    "firmware/src/config_store.c": "57c424f5c74c6bbf9866d1d229fe9540fa0022a09383489ad41147b630aa77a1"
+    "firmware/src/device_endpoint.c": "9d6a5f4110bfb3f49e255f77a0d3339edea9716089f9e0d84273db0eea623fba",
+    "firmware/src/config_store.c": "57c424f5c74c6bbf9866d1d229fe9540fa0022a09383489ad41147b630aa77a1",
+    "firmware/include/ag_device_endpoint.h": "e95c2d50c59363cd2fd142fb0daee36372102d7e2732f269c82937a93666ca40",
+    "shared/c/ag_rpc.c": "f4c3fa9895939c17bbc80a58e4a460f7206d01c44d8c64b0dab19116f92ceb61",
+    "shared/c/ag_rpc.h": "ed2e918ab4d6c059aacf04ea614726ed16f4c36cd691b81650e94c43df4cda35"
   },
   "runtime_actions": {
     "radio": "NOT_EXECUTED",

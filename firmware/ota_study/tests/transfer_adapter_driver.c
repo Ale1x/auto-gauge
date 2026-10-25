@@ -7,6 +7,10 @@
 
 static ag_ota_transfer_adapter_t adapter;
 static bool captured_trust;
+/* Explicit behavioral durable-policy double, never production persistence. */
+static bool selection_policy(void *context,const ag_manifest_verified_t *verified,const esp_partition_t *target){
+    assert(context==&mock&&verified->release_counter==10&&target==&mock.b);return true;
+}
 static size_t lookup(void *context,const char *key,uint8_t *out,size_t capacity){
     (void)context;(void)key;(void)out;(void)capacity;return 0;
 }
@@ -21,7 +25,7 @@ static void adapter_boot(void){
     boot();memset(&adapter,0,sizeof(adapter));captured_trust=false;
     ag_manifest_trust_t trust={0};memcpy(trust.hardware_id,"test",5);
     trust.inactive_capacity=0x100000;trust.accepted_release_floor=9;trust.lookup_key=lookup;
-    ag_ota_transfer_platform_t platform={&mock,authorized,clock_ms,100,1000};
+    ag_ota_transfer_platform_t platform={&mock,authorized,clock_ms,100,1000,&mock,selection_policy,false};
     assert(ag_ota_transfer_adapter_init(&adapter,&trust,&platform));
     assert(!ag_ota_transfer_adapter_init(&adapter,&trust,&platform));
     assert(mock.begin_calls==0&&mock.verify_calls==0);
@@ -57,6 +61,8 @@ int main(void){
     r=request(AG_OT_CANCEL,0,NULL,0);assert(r.phase==AG_OT_FAULT&&mock.abort_calls==1&&!adapter.transfer.cleanup_unknown);
     adapter_boot();adapter_manifest();assert(request(AG_OT_BEGIN,0,NULL,0).status==AG_OT_OK);
     mock.abort_rc=-1;r=request(AG_OT_CANCEL,0,NULL,0);assert(r.phase==AG_OT_FAULT&&adapter.transfer.cleanup_unknown);
+    adapter_ready();adapter.platform.prepare_selection=NULL;r=request(AG_OT_SELECT,0,NULL,0);
+    assert(r.status==AG_OT_BACKEND_FAILURE&&mock.select_calls==0&&r.selection_may_have_changed);
     adapter_ready();mock.select_rc=-1;mock.commit_failed_select=true;r=request(AG_OT_SELECT,0,NULL,0);
     assert(r.status==AG_OT_BACKEND_FAILURE&&r.phase==AG_OT_FAULT&&r.selection_may_have_changed&&mock.boot==&mock.b);
     assert(request(AG_OT_SELECT,0,NULL,0).status!=AG_OT_OK&&mock.select_calls==1);

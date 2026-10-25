@@ -5,6 +5,10 @@
 #include "framed_adapter.h"
 static ag_ota_framed_adapter_t framed;
 static uint32_t next_id;
+/* Explicit behavioral durable-policy double, never production persistence. */
+static bool selection_policy(void *context,const ag_manifest_verified_t *verified,const esp_partition_t *target){
+    assert(context==&mock&&verified->release_counter==10&&target==&mock.b);return true;
+}
 static size_t lookup(void *context,const char *key,uint8_t *out,size_t capacity){(void)context;(void)key;(void)out;(void)capacity;return 0;}
 ag_manifest_result_t ag_manifest_verify(const ag_manifest_trust_t *trust,const uint8_t *bytes,size_t length,ag_manifest_verified_t *out){
     assert(trust==&framed.payload.trust&&trust->accepted_release_floor==9&&length==1&&bytes[0]==1);
@@ -14,7 +18,7 @@ ag_manifest_result_t ag_manifest_verify(const ag_manifest_trust_t *trust,const u
 static void framed_boot(void){
     boot();memset(&framed,0,sizeof(framed));next_id=1;
     ag_manifest_trust_t trust={0};memcpy(trust.hardware_id,"test",5);trust.inactive_capacity=0x100000;trust.accepted_release_floor=9;trust.lookup_key=lookup;
-    ag_ota_transfer_platform_t platform={&mock,authorized,clock_ms,100,1000};
+    ag_ota_transfer_platform_t platform={&mock,authorized,clock_ms,100,1000,&mock,selection_policy,false};
     assert(ag_ota_framed_adapter_init(&framed,&trust,&platform,LEASE,50,80));
     assert(!ag_ota_framed_adapter_init(&framed,&trust,&platform,LEASE,50,80));
     assert(mock.begin_calls==0&&mock.verify_calls==0);

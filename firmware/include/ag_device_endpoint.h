@@ -13,6 +13,10 @@ typedef enum { AG_DEVICE_HISTORY_OK=0, AG_DEVICE_HISTORY_SESSION_MISMATCH,
  * may return a <=64-record window. No retained mutable/input pointers. */
 typedef ag_device_history_result_t (*ag_device_history_read_t)(void *,const uint8_t sid[16],
     uint64_t after,ag_history_snapshot_t *);
+/* Enumerate actual retained sessions, strictly greater than optional cursor.
+ * No record payloads, client state or erase. Empty valid catalog is allowed. */
+typedef ag_device_history_result_t (*ag_device_history_sessions_t)(void *,const uint8_t after_sid_or_null[16],
+    uint8_t limit,ag_history_sessions_page_t *);
 typedef struct {
     void *history_context;
     ag_device_history_read_t history_read;
@@ -21,6 +25,7 @@ typedef struct {
     ag_rpc_persistence_t config_persistence; /* Trustworthy adapter assertion: RAM=VOLATILE. */
     uint32_t frame_timeout_ms,request_timeout_ms;
     bool simulation;
+    ag_device_history_sessions_t history_sessions; /* Optional; NULL => not_implemented. */
 } ag_device_endpoint_options_t;
 typedef enum { AG_DEVICE_OK=0,AG_DEVICE_INVALID,AG_DEVICE_AUTH_REQUIRED,AG_DEVICE_STALE,
     AG_DEVICE_REPLAY,AG_DEVICE_BUSY,AG_DEVICE_PROTOCOL_ERROR,AG_DEVICE_OUTPUT_SHORT,

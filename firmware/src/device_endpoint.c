@@ -147,6 +147,18 @@ static ag_device_result_t perform(ag_device_endpoint_t *e){
         reply.kind=AG_RPC_REPLY_CURRENT;reply.configuration=&store->active;reply.persistence=e->options.config_persistence;break;}
     case AG_RPC_CONFIG_VALIDATE:reply.kind=AG_RPC_REPLY_VALIDATED;break;
     case AG_RPC_CONFIG_APPLY:reply.kind=AG_RPC_REPLY_RECEIVED;e->phase=AG_DEVICE_APPLY_COMMIT;return queue_reply(e,&reply);
+    case AG_RPC_LOGS_SESSIONS:{
+        if(e->options.history_sessions==NULL)return reject(e,AG_RPC_ERROR_NOT_IMPLEMENTED);
+        ag_history_sessions_page_t page;memset(&page,0,sizeof(page));
+        ag_device_history_result_t result=e->options.history_sessions(e->options.history_context,
+            e->pending.has_after_session_id?e->pending.after_session_id:NULL,e->pending.limit,&page);
+        if(!authorized(e,e->now_ms))return AG_DEVICE_AUTH_REQUIRED;
+        if(result==AG_DEVICE_HISTORY_READ_ONLY)return special(e,"diagnostic","history_not_operational","read_only");
+        if(result!=AG_DEVICE_HISTORY_OK)return reject(e,AG_RPC_ERROR_HISTORY_UNAVAILABLE);
+        reply.kind=AG_RPC_REPLY_LOGS_SESSIONS;reply.sessions=&page;reply.limit=e->pending.limit;
+        reply.has_after_session_id=e->pending.has_after_session_id;
+        memcpy(reply.after_session_id,e->pending.after_session_id,16);
+        e->phase=AG_DEVICE_FINAL;return queue_reply(e,&reply);}
     case AG_RPC_LOGS_READ:case AG_RPC_LOGS_ACK:{
         ag_history_snapshot_t snapshot;
         ag_device_history_result_t result=e->options.history_read(e->options.history_context,e->pending.session_id,e->pending.sequence,&snapshot);

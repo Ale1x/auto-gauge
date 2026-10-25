@@ -25,3 +25,6 @@ firmware/ble_study/sdkconfig.old
 firmware/ota_study/build/
 firmware/ota_study/sdkconfig
 firmware/ota_study/sdkconfig.old
+firmware/platform_study/build/
+firmware/platform_study/sdkconfig
+firmware/platform_study/sdkconfig.old

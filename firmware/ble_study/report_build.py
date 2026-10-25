@@ -41,7 +41,8 @@ assert main and not any(re.search(r'\bcall\w*\b',line) for line in main)
 def digest(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 sources=[HERE/'main/nimble_transport.c',HERE/'main/endpoint_bridge.c',HERE/'main/main.c',
          HERE/'main/nimble_transport.h',HERE/'main/endpoint_bridge.h',HERE/'main/gatt_profile.h',
-         ROOT/'shared/gatt.profile.json',ROOT/'firmware/src/device_endpoint.c',ROOT/'firmware/src/config_store.c']
+         ROOT/'shared/gatt.profile.json',ROOT/'firmware/src/device_endpoint.c',ROOT/'firmware/src/config_store.c',
+         ROOT/'firmware/include/ag_device_endpoint.h',ROOT/'shared/c/ag_rpc.c',ROOT/'shared/c/ag_rpc.h']
 report=dict(status='COMPILE_LINK_ONLY_NOT_RUN',sdk_tag='v6.1',sdk_commit=actual,
     main_instructions=main,retained_symbols=required,configuration=settings,
     artifacts={p.name:dict(bytes=p.stat().st_size,sha256=digest(p)) for p in (ELF,ARTIFACT)},

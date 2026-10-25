@@ -15,11 +15,13 @@ final class CloudAccountModel {
     var restoreHasCheckpoint = false
     private let database: (any CloudHistoryPullDatabase)?
     private let outbox: CloudHistoryOutbox
+    private let qualifiedInbox: QualifiedHistoryInbox
     private let restoreStore: CloudHistoryRestoreStore
     private var operation: Task<Void, Never>?
     private var epoch = 0
     init() {
         let directory = URL.applicationSupportDirectory.appending(path: "AutoGauge")
+        qualifiedInbox = QualifiedHistoryInbox(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "qualified-native-cloud-inbox-v1.json")))
         outbox = CloudHistoryOutbox(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "cloud-outbox-v1.json")))
         restoreStore = CloudHistoryRestoreStore(storage: AtomicLogFileStorage(fileURL: directory.appending(path: "cloud-restored-v1.json")))
         database = CloudDevelopmentConfiguration.enabled ? NativeCloudHistoryDatabase(containerIdentifier: CloudDevelopmentConfiguration.container) : nil
@@ -43,6 +45,7 @@ final class CloudAccountModel {
                 try Task.checkCancellation()
                 guard token == epoch else { return }
                 try await outbox.reload()
+                try await qualifiedInbox.reload()
                 try Task.checkCancellation()
                 guard token == epoch else { return }
                 try await restoreStore.reload()
@@ -72,12 +75,17 @@ final class CloudAccountModel {
             busy = false
         }
     }
-    /// This app has only simulated histories: never enqueue its logSessions here.
+    /// Import only sealed qualified-device receipts; no arbitrary app logSessions.
+    func queueQualifiedImport(_ receipt: QualifiedHistoryImport) async throws {
+        try await qualifiedInbox.enqueue(receipt)
+    }
+    /// Explicit account action. Simulator histories have no inbox enqueue path.
     func synchronize() {
         guard let database, !busy, case .available = account else { return }
         busy = true; epoch += 1; let token = epoch
         operation = Task {
             do {
+                try await qualifiedInbox.move(to: outbox)
                 let status = try await outbox.synchronize(database: database)
                 guard token == epoch else { return }
                 pending = status.pending; uploaded = status.uploaded

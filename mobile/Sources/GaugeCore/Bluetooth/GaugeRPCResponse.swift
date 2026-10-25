@@ -15,10 +15,14 @@ public struct GaugeRPCResponse: Codable, Sendable {
     public internal(set) var configuration: GaugeConfiguration?
     public let page: HistoricalLogPage?
     public let sessionID: String?
+    public let sessions: [LogSessionID]?
+    public let hasMore: Bool?
+    public let nextAfterSessionID: String?
     public let acknowledgedThrough: LogUInt64?
     public let sourceRecordsDeleted: Bool?
     enum CodingKeys: String, CodingKey {
         case op, phase, error, persistence, simulation, authenticated, configuration, page
+        case sessions, hasMore = "has_more", nextAfterSessionID = "next_after_session_id"
         case storeState = "store_state", deviceID = "device_id", supportedService01PIDs = "supported_service01_pids", protocolVersion = "protocol_version", appliedRevision = "applied_revision", sessionID = "session_id", acknowledgedThrough = "acknowledged_through", sourceRecordsDeleted = "source_records_deleted"
     }
 }

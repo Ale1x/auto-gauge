@@ -2,25 +2,21 @@
 
 Nucleo C11 compilabile su host e skeleton ESP-IDF per il candidato ESP32-S3. Si può sviluppare e verificare la logica prima che pinout pannello, alimentazioni e rilevamento quadro siano risolti. Questa base non è un firmware funzionante sul gauge: nessun driver CAN, BLE, display, flash log o OTA è attivato.
 
-## Contenuto e requisiti coperti
+## Stato sintetico corrente — V0.12
 
-| Modulo | Implementato su host | Limite attuale |
+| Modulo | Implementazione disponibile | Limite attuale |
 |---|---|---|
-| Configurazione | Schema 1, revisione 1–INT32_MAX, 1–3 dashboard, 1–5 widget, ID unici, rettangoli interi normalizzati 0–10000, luminosità manuale/auto, verifica capability PID | Parser JSON C compilato, ma non integrato nel dispatcher; nessuna migrazione o conferma remota di applicazione |
-| Persistenza configurazione | Due slot simulati, formato binario esplicito, CRC e commit marker ultimo, expected revision, recovery da power loss | Nessun backend flash reale, partizione definitiva o provisioning iniziale |
-| Applicazione configurazione | Valida prima di sostituire la configurazione RAM; errore conserva la precedente | Singolo task proprietario; non è commit atomico flash né autorizzazione BLE |
-| Guardia CAN | TX bloccato al boot, USB sola, alimentazione ignota, IGN ignoto/OFF, standby richiesto, bus-off, rail non validi o hardware non qualificato | Il produttore reale dell'ingresso `AG_IGN_QUALIFIED_ON` non esiste ancora; traffico CAN e tensione non lo impostano |
-| Richieste diagnostiche | Service 01 fisso, allowlist, decoder iniziali e bitmap capability per ECU; profili 11/29 bit e 250/500 kbit/s come dati | Nessun driver TWAI, auto-detection, discovery su veicolo o catalogo completo |
-| Trasporto diagnostico | Reassembly ISO-TP RX bounded su frame simulati SF/FF/CF, timeout e sequenza | Solo CAN classico/normal addressing, FC host CTS/overflow; nessun TX fisico o stack ISO-TP completo |
-| Scheduler | Round-robin host con una transazione attiva, timeout, stato iniziale unavailable/stale distinti, guardia rivalutata al dispatch | Nessuna trasmissione fisica, rilevazione IGN o garanzia 5 Hz |
-| Log | Coda RAM fissa, massimo 1 Hz per coppia sorgente ECU/PID, overflow con sequenze perse, stop immediato di nuove append | Nessuna scrittura flash, chunk BLE, deduplica import, resume o power-loss recovery |
-| Persistenza storico simulata | Due banchi COW, CRC/marker, recovery, sessioni trattenute e serial globale | Modello O(capacità) per append, non backend flash V1 o partizione2MiB |
-| Sorgente storico | Ring C separato dalla coda, snapshot copiati, pagine JSON bounded, cursori indipendenti e ACK senza consumo | Backend persistente/flash e trasporto reale non implementati |
-| Tempo | Session ID di boot fornito dal chiamante, tempo monotono relativo, regressioni bloccate | Nessun RTC o data assoluta inventata |
-| HAL | Interfacce per power/display/log/BLE/OTA | Restituiscono `NOT_IMPLEMENTED` o `BLOCKED`, mai un falso successo |
-| Connessione | Uno slot attivo, client utilizzabili in sequenza, lease di sessione e verifica esterna separata | Nessuno stack BLE/bonding o autenticazione reale, nessun owner unico |
-| Ammissione telefoni | Finestra locale, passkey casuale da hook, riconosciuti sequenziali, verifica security fidata a ogni accesso privato | Nessuna radio, autenticazione crittografica o cache bond reale |
-| Factory reset locale | Macchina a stati e journal simulato prima delle cancellazioni, recupero bloccato per stato incompleto | Nessuna cancellazione flash o credenziale reale; atomicità hardware non dimostrata |
+| Configurazione/RPC | Parser strict, endpoint autorizzato, commit/readback e ricevuto/applicato distinti; catalogo `logs.sessions` | Main applicativo e provisioning iniziale ancora da comporre |
+| Storage | Config2slot, journal append-only e adapter ESP-IDF partition read/write/erase con bounds/readback/fault latch | Studio SDK inerte; recovery READ_ONLY/format/reset espliciti, nessuna qualifica flash fisica |
+| Diagnostica | 53decoder scalari, discovery bounded perECU/page,4variantiCAN e default proposti solo da PID usabili | Non copre tutti i PID Service01; niente auto-bitrate o ECU/veicolo qualificati |
+| TWAI | Adapter moderno ESP-IDF con guardie fresche, callback di completamento TX, ISRqueue bounded e failclosed | Pin/profilo locale obbligatori, nessuna trasmissione fisica; main non lo avvia |
+| Runtime | Polling/qualità/log autonomi,1Hz globale/PID, queue16; opt-in live senza logging dopo fault storage | Proprietario applicativo unico da integrare; contatori non-recorded solo diagnostici RAM |
+| UI gauge | Scene bounded, raw→valore con53decoder, tap/ciclo dashboard, power/ALS espliciti | Nessun pannello/touch/ALS/IGN fisico o font/render driver qualificato |
+| BLE/ammissione | Nclient sequenziali/1link, passkey locale e bridge NimBLE→RPC compilati | Main inerte, entropy/display/bond/reset/route OTA da integrare e qualificare |
+| OTA | Verifier reale Swift/PSA, sender/frame/installer, stato NVS/floor/health e bootstrap factory esplicito | Nessuna chiave prodotto o azione fisica; salute/maintenance/main/BLE ancora da comporre |
+| Reset/energia | Controller reset e guardie CAN failclosed | HAL fisiche/reset durabile di bond/config/log e strategie IGN/power ancora aperte |
+
+Le sezioni FW-02… sotto conservano la cronologia e i limiti di ciascun incremento. I vecchi conteggi di7decoder o5test non descrivono lo stato corrente: verifica finale [V0.12](../shared/VERIFICATION_V0.12.md), backlog [SOFTWARE_COMPLETION](../docs/SOFTWARE_COMPLETION.md).
 
 Le scelte di strutture e capacità sono ipotesi di sviluppo, non nuovi requisiti approvati. Restano normative SPEC_V0.2.md e DECISIONS.md, inclusa DEC-011. Il contratto comune è [shared/PROTOCOL_V0.1.md](../shared/PROTOCOL_V0.1.md).
 
@@ -42,7 +38,7 @@ python3 firmware/tools/check_history_interop.py --executable firmware/build-host
 
 Da una directory già interna a `firmware/`, usare `-S . -B build-host`.
 
-La suite CTest contiene cinque test. `gauge_core_tests` copre otto gruppi: fixture condivise, configurazione/rollback RAM, guardia CAN, Service 01, rate/stati indisponibili, overflow/limiti coda, clock/sessione e HAL bloccato. `gauge_diagnostics_tests` copre dieci gruppi: 13 vettori decoder, risposte malformate, bitmap/sorgenti ECU, profili e SF, FF/CF e wrap sequenza, errori e timeout, 10000 ingressi casuali bounded, scheduling/timeout, round-robin/clock e revoca di ogni guardia tra prepare e dispatch. `gauge_connection_tests` copre otto gruppi: A→busy B→B→A senza cancellazione, auth mancante, lease/boot/counter, qualificazione fisica, 18 punti di interruzione prima/dopo I/O, restore corrotto/mancante/ripetuto, USB persa/intent non confermato e journal/counter estremi. `gauge_history_tests` copre cinque gruppi e 12 pagine golden; `gauge_history_interop` confronta quelle pagine con Python e due archivi SQLite distinti.
+La suite corrente contiene23CTest. I conteggi e gruppi descritti di seguito sono quelli storici del primo nucleo: `gauge_core_tests` copre otto gruppi: fixture condivise, configurazione/rollback RAM, guardia CAN, Service 01, rate/stati indisponibili, overflow/limiti coda, clock/sessione e HAL bloccato. `gauge_diagnostics_tests` copre dieci gruppi: 13 vettori decoder, risposte malformate, bitmap/sorgenti ECU, profili e SF, FF/CF e wrap sequenza, errori e timeout, 10000 ingressi casuali bounded, scheduling/timeout, round-robin/clock e revoca di ogni guardia tra prepare e dispatch. `gauge_connection_tests` copre otto gruppi: A→busy B→B→A senza cancellazione, auth mancante, lease/boot/counter, qualificazione fisica, 18 punti di interruzione prima/dopo I/O, restore corrotto/mancante/ripetuto, USB persa/intent non confermato e journal/counter estremi. `gauge_history_tests` copre cinque gruppi e 12 pagine golden; `gauge_history_interop` confronta quelle pagine con Python e due archivi SQLite distinti.
 
 Il generatore `tools/generate_fixture.py` legge direttamente i JSON in `../shared/fixtures/` e genera un header solo nella directory di build. Al momento 19 dei 22 casi comuni sono rappresentabili in strutture C tipizzate; i 3 casi con booleani/frazioni richiedono il futuro parser JSON e **non sono dichiarati testati sul device**. I test effettuano anche controllo capability, limite 3×5, rifiuto di coordinate estreme, conservazione configurazione invalida e verifica delle richieste per tutti i 256 valori PID.
 
@@ -266,3 +262,7 @@ Documentazione primaria consultata il 24/10/2026: [ESP Timer release 5.3](https:
 ## Endpoint OTA AG FW-14
 
 `ota_framed_endpoint` aggiunge reassembly bounded, staging/step separati, ID sequenziali, ACK correnti e chiusura terminale con cleanup singolo dell’owner. Lo studio `ota_study/main/framed_adapter` collega l’intera catena al verificatore/installer esistenti; il CLI framed richiede ammissione fixture esplicita e non usa flash o crypto reali. Main/bridge NimBLE restano senza route OTA attiva. [Contratto](../shared/OTA_FRAMED_V0.1.md), [verifica](../shared/VERIFICATION_V0.11.md).
+
+## Nuovi meccanismi V0.12
+
+[Boot health/floor durabile](../shared/OTA_BOOT_HEALTH_V0.1.md), [discovery/default](../docs/DISCOVERY.md), [gauge UI](../docs/GAUGE_UI.md), [TWAI](../docs/TWAI_PORT.md) e [catalogo sessioni](../shared/HISTORY_SESSIONS_V0.1.md). Gli studi platform/OTA/BLE compilano API SDK reali con main inerti; non sono un firmware completo pronto al veicolo. Il prossimo lavoro è la composizione in un solo owner/main, non riscrivere questi moduli.

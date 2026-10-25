@@ -47,11 +47,19 @@ static bool partitions(ag_ota_installer_t *s,bool initial) {
     const esp_partition_t *data=esp_partition_find_first(ESP_PARTITION_TYPE_DATA,ESP_PARTITION_SUBTYPE_DATA_OTA,NULL);
     if(!extent(run,true)||!same(run,boot)||!extent(a,true)||!extent(b,true)||!extent(data,false)
         ||data->size!=8192 || overlap(a,b)||overlap(a,data)||overlap(b,data))return false;
-    if(run->type!=ESP_PARTITION_TYPE_APP || (!same(run,a)&&!same(run,b)))return false;
-    esp_ota_img_states_t state;
-    if(esp_ota_get_state_partition(run,&state)!=ESP_OK || state!=ESP_OTA_IMG_VALID)return false;
+    if(run->type!=ESP_PARTITION_TYPE_APP)return false;
+    bool factory=run->subtype==ESP_PARTITION_SUBTYPE_APP_FACTORY;
+    if(factory){
+        if(!s->hooks.allow_factory_bootstrap)return false;
+        const esp_partition_t *registered=esp_partition_find_first(ESP_PARTITION_TYPE_APP,ESP_PARTITION_SUBTYPE_APP_FACTORY,NULL);
+        if(!same(run,registered)||overlap(run,a)||overlap(run,b)||overlap(run,data))return false;
+    }else{
+        if(!same(run,a)&&!same(run,b))return false;
+        esp_ota_img_states_t state;
+        if(esp_ota_get_state_partition(run,&state)!=ESP_OK||state!=ESP_OTA_IMG_VALID)return false;
+    }
     const esp_partition_t *target=esp_ota_get_next_update_partition(run);
-    if(target==NULL || (same(run,a)?!same(target,b):!same(target,a))
+    if(target==NULL||(factory?!same(target,a):(same(run,a)?!same(target,b):!same(target,a)))
         ||s->plan.image_bytes>target->size)return false;
     if(initial){s->running=run;s->target=target;}
     else if(!same(run,s->running)||!same(target,s->target))return false;

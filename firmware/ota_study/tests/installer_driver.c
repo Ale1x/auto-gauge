@@ -107,7 +107,7 @@ static bool authorized(void *context,uint64_t lease){
 static bool verify_manifest(void *context,const uint8_t *bytes,size_t length,ag_ota_plan_t *plan){
     assert(context==&mock&&bytes!=NULL&&length>0&&length<=4096);++mock.verify_calls;*plan=mock.plan;post(MANIFEST);return mock.manifest_ok;
 }
-static ag_ota_hooks_t hooks(void){return (ag_ota_hooks_t){&mock,verify_manifest,authorized,clock_ms,100,1000};}
+static ag_ota_hooks_t hooks(void){return (ag_ota_hooks_t){&mock,verify_manifest,authorized,clock_ms,100,1000,false};}
 static void boot(void){
     memset(&installer,0,sizeof(installer));memset(&mock,0,sizeof(mock));
     mock.a=(esp_partition_t){0x10000,0x100000,ESP_PARTITION_TYPE_APP,ESP_PARTITION_SUBTYPE_APP_OTA_0};

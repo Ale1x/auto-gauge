@@ -53,4 +53,9 @@ ag_journal_result_t ag_journal_make_page(ag_journal_history_t *,const uint8_t si
     char *,size_t,ag_history_page_info_t *);
 /* Stateless: never erases records or stores a map of client cursors. */
 ag_journal_result_t ag_journal_acknowledge(ag_journal_history_t *,const uint8_t sid[16],uint64_t through);
+/* Bounded lexicographic catalog of retained sample/control/empty sessions.
+ * Non-snapshot across pages. O(retained entries) reads/page, no writes/ACK/map.
+ * Outputs untouched on failure. after==NULL starts; SID cursors are nonzero. */
+ag_journal_result_t ag_journal_sessions(ag_journal_history_t *,const uint8_t after[16],size_t limit,
+    uint8_t output[16][16],size_t *count,bool *has_more);
 #endif

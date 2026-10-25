@@ -35,10 +35,12 @@ struct BluetoothDevelopmentView: View {
             Section("Verifica del solo protocollo") {
                 AppActionButton(title: "Invia hello di sviluppo", symbol: "waveform.path", disabled: !bluetooth.isReady || bluetooth.rpcBusy, action: { Task { await bluetooth.probeHello() } })
                 Text("Hello e conferme ATT non provano autenticazione, cifratura LESC/MITM, chiave a 128 bit o ammissione locale. iOS può chiedere un codice mostrato dal gauge; l’app non fornisce codici fissi.")
-                Label("Configurazione, log e mutazioni reali bloccati", systemImage: "lock.shield").foregroundStyle(AppTheme.warning)
+                AppActionButton(title: "Usa per configurazione e storici", symbol: "checkmark.shield", disabled: !bluetooth.isReady || bluetooth.rpcBusy || model.gaugeBusy || model.logBusy, action: activate)
+                Label("Accesso completo richiede qualifica locale", systemImage: "lock.shield").foregroundStyle(AppTheme.warning)
                 Text("Il server radio e i suoi controlli di sicurezza devono essere qualificati prima di attivare quelle funzioni. Un solo collegamento attivo; altri telefoni potranno essere usati in sequenza senza reset.").foregroundStyle(.secondary)
             }
         }.navigationTitle("Bluetooth sviluppo")
-            .onDisappear { bluetooth.stop() }
+            .onDisappear { if !model.isNativeSession { bluetooth.stop() } }
     }
+    private func activate() { Task { await model.activateNativeGauge() } }
 }

@@ -68,6 +68,7 @@ def main():
         configuration={key: config.get(key, 'UNSET') for key in keys},
         artifacts=artifacts, memory=size,
         compiled_core_sources=compiled, compiled_shared_sources=compiled_shared, linked_ag_symbols=ag_symbols,
+        compiled_source_sha256={p:digest(ROOT/p) for p in compiled+compiled_shared},
         radio_init_symbols_present={name: any(line.split()[-1] == name for line in symbols.splitlines())
                                     for name in radio_names},
         main_sha256=digest(ROOT / 'firmware/idf/main/app_main.c'),

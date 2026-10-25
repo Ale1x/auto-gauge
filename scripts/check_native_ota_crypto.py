@@ -112,6 +112,7 @@ target_link_libraries(native_manifest PRIVATE tfpsacrypto)
         print(result.stdout.strip())
         if f'{count} native PSA vectors' not in result.stdout:raise RuntimeError('Missing native verification result')
     files=['firmware/ota_study/main/manifest_verify.c','firmware/ota_study/main/manifest_verify.h',
+           'firmware/ota_study/main/ota_installer.h',
            'firmware/ota_study/tests/manifest_native_driver.c','scripts/generate_ota_vectors.py',
            'scripts/check_native_ota_crypto.py','tests/test_ota_manifest_target.py']
     report=dict(status='NATIVE_PORTABLE_PSA_CRYPTO_PASS_NOT_TARGET_EXECUTION',sdk_commit=SDK_COMMIT,

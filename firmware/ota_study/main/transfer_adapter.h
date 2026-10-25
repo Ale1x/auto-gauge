@@ -9,6 +9,11 @@ typedef struct {
     bool (*maintenance_allowed)(void *,uint64_t lease);
     uint64_t (*clock_ms)(void *);
     uint32_t idle_timeout_ms,total_timeout_ms;
+    void *boot_context;
+    /* Mandatory for select: persist+readback trusted release/target intent.
+     * NULL permits preparation/upload but ALWAYS refuses boot selection. */
+    bool (*prepare_selection)(void *,const ag_manifest_verified_t *,const esp_partition_t *);
+    bool allow_factory_bootstrap;
 } ag_ota_transfer_platform_t;
 typedef struct {
     ag_ot_owner_t transfer;

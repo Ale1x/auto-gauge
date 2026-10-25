@@ -22,6 +22,7 @@ typedef struct {
     bool (*maintenance_allowed)(void *,uint64_t lease);
     uint64_t (*clock_ms)(void *);
     uint32_t idle_timeout_ms,total_timeout_ms;
+    bool allow_factory_bootstrap; /* Local explicit first-install maintenance. */
 } ag_ota_hooks_t;
 typedef enum { AG_OTA_IDLE=0,AG_OTA_WRITING,AG_OTA_READY,AG_OTA_SELECTED,AG_OTA_FAULT } ag_ota_phase_t;
 typedef enum { AG_OTA_OK=0,AG_OTA_INVALID,AG_OTA_DENIED,AG_OTA_EXPIRED,

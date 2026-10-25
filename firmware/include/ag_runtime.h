@@ -21,15 +21,20 @@ typedef struct {
     bool has_logged[AG_POLL_JOB_CAPACITY];
     ag_history_record_t queue[AG_RUNTIME_QUEUE];
     uint8_t session_id[16];
-    uint64_t last_ms,producer_dropped,rate_limited,persisted;
+    uint64_t last_ms,producer_dropped,rate_limited,persisted,not_recorded;
     size_t head,count;
     bool initialized,started,has_time,fault,storage_ambiguous;
+    bool allow_live_without_logging,logging_disabled;
 } ag_runtime_t;
 /* Init validates configuration against usable discovered capabilities, and each
  * job against the configuration. Never grants hardware qualification or IGN. */
 bool ag_runtime_init(ag_runtime_t *,const ag_config_t *,const ag_runtime_job_t *,size_t,
                      const uint8_t fresh_sid[16],const ag_runtime_sink_t *);
 /* Explicit session establishment; BUSY is terminal here, no blind begin retry. */
+/* Explicit local policy before start only. A store fault then disables logging
+ * permanently for this runtime while live polling/quality continue. No retry or
+ * invented persistence/sequence: not_recorded is volatile diagnostics only. */
+bool ag_runtime_allow_degraded_logging(ag_runtime_t *);
 bool ag_runtime_start(ag_runtime_t *);
 bool ag_runtime_tick(ag_runtime_t *,const ag_can_policy_t *,uint64_t);
 bool ag_runtime_prepare(ag_runtime_t *,const ag_can_policy_t *,uint64_t);

@@ -10,4 +10,6 @@
  */
 ag_device_history_result_t ag_journal_endpoint_read(void *,const uint8_t sid[16],
                                                   uint64_t after,ag_history_snapshot_t *);
+ag_device_history_result_t ag_journal_endpoint_sessions(void *,const uint8_t after_sid_or_null[16],
+    uint8_t limit,ag_history_sessions_page_t *);
 #endif

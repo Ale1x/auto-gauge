@@ -9,6 +9,7 @@ struct RootView: View {
     @State private var dashboardPath: [DashboardRoute] = []
     @State private var historyPath: [HistoryRoute] = []
     @State private var debugHistoryRouteApplied = false
+    @State private var debugFirmwareRouteApplied = false
     var body: some View {
         @Bindable var model = model
         Group {
@@ -42,6 +43,10 @@ struct RootView: View {
             if ProcessInfo.processInfo.arguments.contains(where: { ["--history-timeline", "--history-timeline-chart", "--history-timeline-table"].contains($0) }), !debugHistoryRouteApplied {
                 debugHistoryRouteApplied = true
                 selection = .histories; historyPath = [.timeline(nil)]
+            }
+            if ProcessInfo.processInfo.arguments.contains("--firmware-preparation"), !debugFirmwareRouteApplied {
+                debugFirmwareRouteApplied = true
+                selection = .device; devicePath = [.firmware]
             }
             if ProcessInfo.processInfo.arguments.contains("--design-snapshots") {
                 do { try DesignSnapshotRenderer.render(model: model) }

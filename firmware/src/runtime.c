@@ -18,6 +18,7 @@ static void collect(ag_runtime_t *r,uint64_t now){
         const ag_measurement_t *m=&r->scheduler.jobs[i].sample;
         if(!changed(&r->observed[i],m))continue;
         r->observed[i]=*m;
+        if(r->logging_disabled){increment(r,&r->not_recorded);continue;}
         size_t budget=i;for(size_t j=0;j<i;++j)if(r->scheduler.jobs[j].config.pid==m->pid){budget=j;break;}
         if(r->has_logged[budget]&&now-r->last_logged[budget]<1000){increment(r,&r->rate_limited);continue;}
         r->last_logged[budget]=now;r->has_logged[budget]=true;
@@ -47,10 +48,18 @@ bool ag_runtime_init(ag_runtime_t *r,const ag_config_t *config,const ag_runtime_
         r->observed[i]=r->scheduler.jobs[i].sample;}
     r->sink=*sink;memcpy(r->session_id,sid,16);r->initialized=true;return true;
 }
+bool ag_runtime_allow_degraded_logging(ag_runtime_t *r){
+    if(r==NULL||!r->initialized||r->started||r->fault)return false;
+    r->allow_live_without_logging=true;return true;
+}
 bool ag_runtime_start(ag_runtime_t *r){
     if(r==NULL||!r->initialized||r->started||r->fault)return false;
     ag_runtime_store_result_t result=r->sink.begin(r->sink.context,r->session_id);
-    if(result!=AG_RUNTIME_STORE_OK){r->storage_ambiguous=result==AG_RUNTIME_STORE_AMBIGUOUS;return fail(r);}
+    if(result!=AG_RUNTIME_STORE_OK){
+        r->storage_ambiguous=result==AG_RUNTIME_STORE_AMBIGUOUS;
+        if(!r->allow_live_without_logging)return fail(r);
+        r->logging_disabled=true;
+    }
     r->started=true;return true;
 }
 bool ag_runtime_tick(ag_runtime_t *r,const ag_can_policy_t *p,uint64_t now){
@@ -81,11 +90,17 @@ bool ag_runtime_fc_dispatch(ag_runtime_t *r,const ag_can_policy_t *p,uint64_t no
     bool ok=ag_scheduler_fc_dispatch(&r->scheduler,p,now,out);collect(r,now);if(r->fault)memset(out,0,sizeof(*out));return ok&&!r->fault;
 }
 bool ag_runtime_drain(ag_runtime_t *r){
-    if(r==NULL||!r->started||r->fault||r->count==0)return false;
+    if(r==NULL||!r->started||r->fault||r->logging_disabled||r->count==0)return false;
     if(r->persisted==UINT64_MAX)return fail(r);
     ag_runtime_store_result_t result=r->sink.append(r->sink.context,&r->queue[r->head]);
     if(result==AG_RUNTIME_STORE_BUSY)return false;
-    if(result!=AG_RUNTIME_STORE_OK){r->storage_ambiguous=result==AG_RUNTIME_STORE_AMBIGUOUS;return fail(r);}
+    if(result!=AG_RUNTIME_STORE_OK){
+        r->storage_ambiguous=result==AG_RUNTIME_STORE_AMBIGUOUS;
+        if(!r->allow_live_without_logging)return fail(r);
+        r->logging_disabled=true;
+        if(UINT64_MAX-r->not_recorded<r->count)return fail(r);
+        r->not_recorded+=r->count;r->count=0;r->head=0;return false;
+    }
     r->head=(r->head+1)%AG_RUNTIME_QUEUE;--r->count;return increment(r,&r->persisted);
 }
 ag_runtime_store_result_t ag_runtime_journal_begin(void *context,const uint8_t sid[16]){

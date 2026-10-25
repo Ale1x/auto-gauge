@@ -167,3 +167,9 @@ APP-13 implementa `OTAPacketTransport` su GaugePacketPipe: sessione esclusiva e 
 FW-14 aggiunge endpoint AG con feed che stage soltanto, step separato, leaseobsolete senza callback, replay/trailing/concat/headeroversize respinti prima di dispatch e timer pending assoluto. Close cancella il proprio owner attivo una volta e non lo resetta; select già tentata conserva l’incertezza. Aggregate adapterSDK collega frame→owner→verificatore→installer.6gruppiC+3review indipendenti, harness SDK comportamentale e review senza rilievi aperti.
 
 **100testPython e18/18CTest** passati. CrossbuildSDK con18entry point forzate,260608byte, maininerte e nessuna radio/flash. Sessione OTA non instradata nel bridgeBLE/RPC né abilitata nella UI. Provisioning/health/floor atomico/rollback/recovery e qualifica fisica restano aperti. [VERIFICATION_V0.11.md](shared/VERIFICATION_V0.11.md).
+
+## Dodicesimo incremento — chiusura dei filoni avviati
+
+Boot/floor/health con NVS e witness locale, factorybootstrap esplicito off perdefault, adapterpartizioni reale, discovery53PID/default, gaugeUI portabile e TWAI moderno con completion; runtime opt-in live-only dopo faultstorage senza retry. Catalogo sessions RPC+scannerjournal ordinato/read-only e source-aware sessioni app. APP14 importa/verifica/salva/riapre pacchetti OTA con trustlocale; APP15 inietta sessioni native soltanto con providerlocale, di defaultdenied, e predispone receipt/inboxcloud distinti dalle fixture.
+
+Chiusura:107Python,175Swift,23/23CTest passati; sim/deviceunsigned e4SDKcrossbuild riusciti. Cryptoportable reale ripetuta55vettori/13accettati. Corrette witnessmask, bindnamespaceimplicito, restore stale/cancelordering, connessioneA che poteva toccareB e timeoutTWAI a partire dall’enqueue. I nuovi percorsi non sono una qualifica fisica o un’applicazione main completa. [VERIFICATION_V0.12](shared/VERIFICATION_V0.12.md), [backlog aggiornato](docs/SOFTWARE_COMPLETION.md).

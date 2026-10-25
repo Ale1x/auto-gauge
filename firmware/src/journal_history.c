@@ -307,3 +307,35 @@ ag_journal_result_t ag_journal_make_page(ag_journal_history_t *s,const uint8_t s
     return encoded==AG_HISTORY_OK?AG_JOURNAL_OK:(encoded==AG_HISTORY_OUTPUT_SHORT?AG_JOURNAL_OUTPUT_SHORT:AG_JOURNAL_INVALID);
 }
 ag_journal_result_t ag_journal_acknowledge(ag_journal_history_t *s,const uint8_t sid[16],uint64_t through){return query(s,sid,through,NULL);}
+
+static void catalog_insert(uint8_t sorted[17][16],size_t *count,size_t capacity,const uint8_t after[16],const uint8_t sid[16]){
+    if(after!=NULL&&memcmp(sid,after,16)<=0)return;
+    size_t at=0;while(at<*count&&memcmp(sorted[at],sid,16)<0)++at;
+    if(at<*count&&memcmp(sorted[at],sid,16)==0)return;
+    if(at>=capacity)return;
+    size_t next=*count<capacity?*count+1:*count;
+    for(size_t i=next-1;i>at;--i)memcpy(sorted[i],sorted[i-1],16);
+    memcpy(sorted[at],sid,16);*count=next;
+}
+ag_journal_result_t ag_journal_sessions(ag_journal_history_t *s,const uint8_t after[16],size_t limit,
+    uint8_t output[16][16],size_t *count,bool *has_more){
+    if(output==NULL||count==NULL||has_more==NULL||limit<1||limit>16||(after!=NULL&&!sid_ok(after)))return AG_JOURNAL_INVALID;
+    ag_journal_result_t checked=check_current(s);if(checked!=AG_JOURNAL_OK)return checked;
+    uint8_t sorted[17][16]={{0}};size_t found=0;
+    for(uint64_t gen=s->first_generation;;++gen){
+        unsigned index=index_of(s,gen);uint8_t bytes[128];ag_journal_info_t base;
+        if(!rd(s,index*4096u,bytes,128))return poison(s,AG_JOURNAL_IO_ERROR);
+        if(!header_decode(s,index,bytes,&base)||base.generation!=gen||bitmap_count(bytes+112)!=s->counts[index])return poison(s,AG_JOURNAL_READ_ONLY);
+        if(!base.has_samples)catalog_insert(sorted,&found,limit+1,after,base.session_id);
+        for(unsigned n=0;n<s->counts[index];++n){uint8_t sid[16],kind;ag_history_record_t record;uint64_t serial;
+            if(!rd(s,index*4096u+128u+n*128u,bytes,128))return poison(s,AG_JOURNAL_IO_ERROR);
+            if(!entry_decode(bytes,sid,&kind,&record,&serial)||!replay(&base,sid,kind,&record,serial))return poison(s,AG_JOURNAL_READ_ONLY);
+            catalog_insert(sorted,&found,limit+1,after,sid);
+        }
+        if(gen==s->info.generation)break;
+    }
+    catalog_insert(sorted,&found,limit+1,after,s->info.session_id);
+    size_t returned=found>limit?limit:found;
+    memset(output,0,16*16);for(size_t i=0;i<returned;++i)memcpy(output[i],sorted[i],16);
+    *count=returned;*has_more=found>limit;return AG_JOURNAL_OK;
+}
