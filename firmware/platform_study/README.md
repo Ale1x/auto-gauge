@@ -30,4 +30,4 @@ Primary contract inspected locally: pinned SDK `components/esp_partition/include
 
 ## Modern TWAI integration
 
-The same isolated project now links `twai_port`, real modernSDK TWAI calls, discovery and runtime, with main still empty. The final image is223312byte. Seven behavioral testgroups pass, including completion-based response deadlines; queued does not mean transmitted. GPIO/filter/bitrate/hardware/IGN are trusted local inputs, no defaults are assigned. [Adapter contract](../../docs/TWAI_PORT.md). No physical CAN or GPIO action was executed.
+The same isolated project now links `twai_port`, real modernSDK TWAI calls, discovery and runtime, with main still empty. The final image is223312byte. Seven behavioral testgroups pass, including completion-based response deadlines; queued does not mean transmitted. GPIO/filter/bitrate/hardware/IGN are trusted local inputs, no defaults are assigned. [Adapter contract](../../docs/software/TWAI_PORT.md). No physical CAN or GPIO action was executed.

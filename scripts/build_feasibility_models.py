@@ -79,5 +79,5 @@ lines += ['', 'Cinque PID a5 Hz richiedono in media meno di40 ms/transazione per
           'Candidato da verificare: coda bounded, priorità ai PID visibili, riduzione rate dei non visibili e backoff per ECU/PID in timeout. Registrare richieste, risposte complete, scadenze, errori e origine ECU; riportare frequenza effettiva. Nessun timeout numerico, soglia di bus load o criterio O-09 viene approvato da questo modello. Standby inibisce comunque le richieste.', '',
           '## Condizioni per proseguire', '',
           'O-14 resta aperta sul sizing: build firmata, asset/font reali, formato raw e benchmark flash/BLE/UI. O-09 resta aperta: fixture1/5/15PID, latenza e perdita, con e senza log/erase/sync/OTA. K0 non superato. CSV riproducibili in evidence/models/. Fonti E34/E35 in evidence/SOURCES.md.', '']
-(ROOT / 'CAPACITY_K0.md').write_text('\n'.join(lines))
+(ROOT / 'docs/hardware/CAPACITY_K0.md').write_text('\n'.join(lines))
 print(f'Generated {len(flash)} flash, {len(logs)} log, {len(can)} CAN sensitivity cases; no hardware validation.')

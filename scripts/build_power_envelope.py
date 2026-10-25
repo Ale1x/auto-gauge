@@ -63,5 +63,5 @@ lines += ['', 'A6V alla presa, la tensione al gauge scende sotto6V con ogni cari
           'Prove di chiusura: cold start, wake CAN, USB sola, OBD+USB, interruzione mentre SLEEP cambia, batteria bassa, fault/OV, latch-off e recupero senza dover scollegare il gauge. Lo schema del dominio always-on deve mantenere protezione da inversione/transienti: nessun bypass diretto da B+ non protetto. Il wake CAN non risolve da solo IGN.', '',
           '## Esito K0', '',
           f'{len(rows)} casi parametrici in evidence/models/power_cable_sensitivity.csv. Nessuna riga è un PASS hardware. O-05/O-07/O-18 e scelta sezione/fusibile restano aperti; i risultati restringono le configurazioni che si possono dichiarare plausibili. Fonti E03/E04/E05, insieme alle ipotesi esplicite sopra.', '']
-(ROOT/'POWER_ENVELOPE_K0.md').write_text('\n'.join(lines))
+(ROOT/'docs/hardware/POWER_ENVELOPE_K0.md').write_text('\n'.join(lines))
 print(f'Generated {len(rows)} cable/power cases; no hardware validation.')

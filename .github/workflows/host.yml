@@ -18,5 +18,7 @@ jobs:
           python-version: '3.12'
       - name: Shared contracts, reference endpoints and sanitized C core
         run: python3 scripts/check_host.py
+      - name: Documentation links and layout
+        run: python3 scripts/check_docs.py
       - name: Traceability and saved evidence consistency
         run: python3 scripts/check_k0.py

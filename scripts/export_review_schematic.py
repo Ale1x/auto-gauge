@@ -32,7 +32,7 @@ if not args.bundle_only:
 python('check_review_schematic.py')
 files=sorted([*HW.glob('*.kicad_sch'),HW/'auto_gauge.kicad_pro',HW/'AutoGauge.kicad_sym',HW/'sym-lib-table',HW/'README.md',HW/'ERC_REVIEW.md',HW/'pin_matrix.csv',HW/'schematic_bom_review.csv',OUT/'auto_gauge_A0.pdf',OUT/'auto_gauge.net.xml',OUT/'erc.json',OUT/'connectivity_audit.json',*sorted((OUT/'svg').glob('*.svg')),*sorted((HW/'reviews').glob('*.md'))])
 manifest={str(p.relative_to(HW)):dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in files}
-support=[ROOT/'BUCK5_FEEDBACK_REVIEW.md',ROOT/'evidence/models/buck5_ripple_screen.csv',ROOT/'evidence/models/buck5_ripple_screen.json',ROOT/'scripts/build_buck5_screen.py']
+support=[ROOT/'docs/hardware/BUCK5_FEEDBACK_REVIEW.md',ROOT/'evidence/models/buck5_ripple_screen.csv',ROOT/'evidence/models/buck5_ripple_screen.json',ROOT/'scripts/build_buck5_screen.py']
 for p in support:
     manifest['analysis/'+p.name]=dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())
 manifest_path=OUT/'review_bundle_manifest.json'

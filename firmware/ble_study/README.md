@@ -27,7 +27,7 @@ Build e size soltanto; lo script rifiuta argomenti e non inoltra comandi flash/m
 
 Prima dell’inizializzazione del bridge: connessione con bootID fresco, journal reset ripristinato/clean, store inizializzato, backend storico bounded, entropia e display reali disponibili. Il chiamante inizializza NVS prima di avviare NimBLE. `CONFIG_BT_NIMBLE_NVS_PERSIST=y` è obbligatorio; il flusso SDK fissa i record di sicurezza prima dell’eventoENC_CHANGE. Questa integrazione non dimostra comunque durabilità fisica dei bond dopo power loss, né protezione delle chiavi a riposo: servono configurazione e prove dedicate.
 
-Context e oggetti hanno durata statica/programmalifetime, anche su startup fallito. Nessuna rientranza o accesso da task concorrenti; eventi locali vanno serializzati sul proprietario. La callback display deve completare la visualizzazione locale prima di restituire successo. Il callback RNG deve fallire se la sorgente non è qualificata: `esp_random` senza una fonte d’entropia attiva non basta per deduzione dal solo nome API. Valgono i vincoli in `shared/BLE_ADMISSION_PROPOSAL.md`.
+Context e oggetti hanno durata statica/programmalifetime, anche su startup fallito. Nessuna rientranza o accesso da task concorrenti; eventi locali vanno serializzati sul proprietario. La callback display deve completare la visualizzazione locale prima di restituire successo. Il callback RNG deve fallire se la sorgente non è qualificata: `esp_random` senza una fonte d’entropia attiva non basta per deduzione dal solo nome API. Valgono i vincoli in `docs/protocols/BLE_ADMISSION_PROPOSAL.md`.
 
 La creazione taskFreeRTOS viene controllata direttamente: il wrapper void della releaseSDK ignora il risultato dell’allocazione. OOM e startup parziale hanno cleanup e fault esplicito. La chiusura distingue richiesta di terminate riuscita da disconnessione effettiva: tre tentativi su errore, attesa bounded della conferma se richiesta accettata, slot pulito se il descriptor è realmente assente. Fallimento persistente, timer perso, hostreset/exit, indirizzo non disponibile o pressione store producono fault e bloccano operazioni private. **Nessun restart/repair automatico, cancellazione bond round-robin o eraseNVS.** Per questo studio i fault richiedono gestione esplicita del proprietario/reboot.
 
@@ -37,7 +37,7 @@ Otto bond e stack host32768byte sono limiti H di sviluppo, non Nmassimo di prodo
 
 ## Verifiche e limiti
 
-Build reale SDK con tutti9entrypoint pubblici e core collegati. Harness host: sorgenti del trasporto/bridge immutati con shim SDK test-only e core C reale; guasti task/terminate/timer, eventi obsoleti, status0/EDONE, limiti e revoca, ammissione locale→hello→received→commit/readback, A–B–A e IO lento. [Review](../../reviews/NIMBLE_STUDY_REVIEW.md), [confine dei mock](tests/README.md).
+Build reale SDK con tutti9entrypoint pubblici e core collegati. Harness host: sorgenti del trasporto/bridge immutati con shim SDK test-only e core C reale; guasti task/terminate/timer, eventi obsoleti, status0/EDONE, limiti e revoca, ammissione locale→hello→received→commit/readback, A–B–A e IO lento. [Review](../../docs/reviews/software/NIMBLE_STUDY_REVIEW.md), [confine dei mock](tests/README.md).
 
 Queste prove non eseguono ATT/SMP/FreeRTOS/controller reali, non dimostrano interoperabilità iPhone, latenza, sicurezza RF, consumo, durata della flash o disponibilità dell’interfaccia locale. App nativa restahello-only finché questo stack non viene qualificato. Il firmware principale conserva il proprio main inerte; questo progetto non lo sostituisce.
 
@@ -119,6 +119,6 @@ significare chiusura in corso; non autorizza a cancellare credenziali o prosegui
 reset. Il timer owner resta disponibile per la manutenzione. Non è deinit del
 controller, non abilita restart e non qualifica il consumo di standby.
 
-L'audit delle API SDK credenziali è in [BLE_CREDENTIAL_RESET_AUDIT](../../reviews/BLE_CREDENTIAL_RESET_AUDIT.md).
+L'audit delle API SDK credenziali è in [BLE_CREDENTIAL_RESET_AUDIT](../../docs/reviews/software/BLE_CREDENTIAL_RESET_AUDIT.md).
 Non viene fornito un eraser che dichiari successo dopo la sola cancellazione NVS:
 il profilo richiede un callback board qualificato e fallisce chiuso se assente.

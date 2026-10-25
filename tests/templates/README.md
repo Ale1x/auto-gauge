@@ -1,6 +1,6 @@
 # Acquisizioni HW-IGN
 
-Il CSV contiene solo intestazione: nessuna misura eseguita. Copiarlo in una cartella di run insieme ai raw trace e ai metadati descritti in HW_IGN_TEST_PROTOCOL.md. Corrente in ampere e tempo monotono in secondi; non confondere mA/µA. UNKNOWN è obbligatorio se il quadro non è annotato. Non modificare i template per simulare un PASS.
+Il CSV contiene solo intestazione: nessuna misura eseguita. Copiarlo in una cartella di run insieme ai raw trace e ai metadati descritti in docs/hardware/HW_IGN_TEST_PROTOCOL.md. Corrente in ampere e tempo monotono in secondi; non confondere mA/µA. UNKNOWN è obbligatorio se il quadro non è annotato. Non modificare i template per simulare un PASS.
 
 Analisi preliminare: `python3 scripts/analyze_hw_ign.py /percorso/run/hw_ign_samples.csv`. Lo strumento stampa JSON senza modificare l’acquisizione: conta campioni, mostra range e intervallo massimo fra campioni, segnala correnti campionate oltre100µA dopo300s da una transizione ON→OFF osservata e variazioni dei contatori di richieste negli intervalli OFF tardivi. Non attribuisce un orario OFF a una cattura che comincia già OFF o a una transizione UNKNOWN→OFF.
 

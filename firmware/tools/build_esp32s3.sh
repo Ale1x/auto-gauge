@@ -12,7 +12,7 @@ if [ "$#" -ne 0 ]; then
     exit 2
 fi
 if [ ! -x "$AG_IDF_PYTHON_ENV/bin/python" ] || [ ! -x "$AG_XTENSA_BIN/xtensa-esp32s3-elf-gcc" ]; then
-    echo "ESP-IDF Python environment or Xtensa compiler missing; see firmware/DEVICE_BUILD.md." >&2
+    echo "ESP-IDF Python environment or Xtensa compiler missing; see docs/firmware/DEVICE_BUILD.md." >&2
     exit 1
 fi
 if [ "$(git -C "$AG_IDF_ROOT" rev-parse HEAD)" != "fff9895c82d744c7237be8847347bdd1b07c6643" ]; then

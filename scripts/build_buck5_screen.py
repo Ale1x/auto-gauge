@@ -106,7 +106,7 @@ def main():
               '`python3 scripts/build_buck5_screen.py` rigenera questo documento, CSV eJSON. Una verifica numerica riproduce l’esempio pubblicatoTI48V→12V (300kHz, ~20mV, ~0,44A ripple) per intercettare errori di unità nelle equazioni.', '',
               'Prima di assegnare valori nello schema: fissare la finestra del nodo protetto insieme al wake/UVLO; verificare il budget5V reale; scegliereMPN e curve dei passivi; eseguire analisi di stabilità e bench. Nessun valoreTBD è stato sostituito con una falsa scelta finale.', '',
               'Fonti: [E04 datasheetTI](https://www.ti.com/lit/ds/symlink/lm5164-q1.pdf), [E52 notaTI SNVA874](https://www.ti.com/lit/an/snva874/snva874.pdf).', '']
-    (ROOT / 'BUCK5_FEEDBACK_REVIEW.md').write_text('\n'.join(lines))
+    (ROOT / 'docs/hardware/BUCK5_FEEDBACK_REVIEW.md').write_text('\n'.join(lines))
     print(json.dumps(summary, indent=2))
 
 

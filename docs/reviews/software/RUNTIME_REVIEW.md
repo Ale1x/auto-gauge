@@ -1,0 +1,50 @@
+# FW-11 runtime — independent review
+
+Date: 2026-10-24. Status: SOURCE_REVIEW_AND_HOST_ORACLES_COMPLETED; NOT_PHYSICAL_RUNTIME_QUALIFIED. Review ownership is this report and new independent `firmware/tests/test_runtime_review.c`. No production firmware/mobile edits, hardware, radio, physical flash, commits or remotes.
+
+## Baseline and oracle
+
+Read scheduler, ISO-TP dispatch/flow-control contract, measurement invalidation, RAM log queue and journal API/implementation. The current scheduler permits at most15jobs and one prepared/active transaction, keyed by ECU/PID. Every dispatch and FC handoff rechecks live CAN policy. Its output is a host handoff, not successful physical transmission; actual completion/failure remains an adapter responsibility. The logger is bounded to64records/15series,≤1Hz per ECU/PID, and distinct from shared retained history.
+
+The runtime review will check these concrete boundaries:
+
+1. **Sampling versus repeated observation.** At polling200ms and logging≤1Hz, valid samples retain the configured PID, actual qualified response ECU, raw and acquisition timestamp. Repeated ticks cannot create new acquisitions from one cached valid value. Repeated identical response payloads with distinct genuine acquisition events must still be distinguishable. Each new event may be logged at most once; rate-limited events do not invent journal sequences.
+2. **Nonvalid metadata.** Timeout/stale/unavailable/error/unsupported never carry old valid raw/value. `ag_measurement_unavailable()` preserves PID/ECU/old `updated_ms`; runtime must not treat that timestamp alone as a unique new-event token or label an old value as current. Status transitions and repeated independent timeout events require an explicit observable policy, documented rather than inferred.
+3. **Live policy at every TX boundary.** Revoke each guard after prepare but before dispatch and between FC prepare/dispatch: USB-only, IGN unknown/off, hardware or rails invalid, standby, bus-off and inactive diagnostic session. Output must remain empty, no transmitted-success claim, and transaction state must not resume when policy returns. RX from wrong ECU, wrong service/PID, RTR/FD/format mismatch cannot become a valid sample.
+4. **Bounded pipeline and persistence.** Fill the logger and exercise overflow, series limit and partial drain. One tick must do a bounded amount of work; flash callbacks are synchronous and cannot be presented as nonblocking physical IO. Queue admission sequence, journal sequence and shared history cursor are different concepts. A dropped RAM item is not an invented committed journal gap. A callback failure after a durable marker is ambiguous: do not blindly retry, claim a definite loss, consume another sequence or emit a false persistence success. Stop/fault behavior must be explicit.
+5. **Boot/session and clocks.** A reopened journal does not attach the new boot to the previous SID. Fresh trusted boot/SID is supplied by the caller; no timer-reset/phone-ID fallback. Test new-session startup with prior records preserved, unavailable/read-only/uninitialized journal, zero/reused SID, monotonic regression and uint64 arithmetic. Runtime timestamps remain relative to the correct boot, not wall clock.
+6. **Storage and UI independence.** Tests distinguish native scheduler/CAN handoff and acquisition truth from log queue admission or physical persistence. A live UI may update at5Hz while logs are decimated, but a slow/failing persistence path cannot relax CAN safety guards or manufacture fresh values. Throughput, task stack, actual CAN/TWAI and flash timing require physical integration; host composition does not close them.
+
+DEC-006 says≤1Hz/PID; the legacy protocol/logger explicitly keyed its bound by ECU/PID. The coordinator confirmed the runtime bound must be GLOBAL per PID. The final runtime shares one budget across all jobs for that PID; live values from multiple ECUs remain independent. This is tested below and does not inherit the legacy per-pair rate by accident.
+
+## Implementation state
+
+The firmware owner supplied frozen `ag_runtime.h`, `runtime.c`, `test_runtime.c` and `docs/firmware/RUNTIME.md`. This composition uses a separate16-entry raw64 queue with drop-newest counter, not the legacy64-entry logger, and decimates globally per PID. Begin and append use typed synchronous sink callbacks; only append BUSY guarantees no mutation and permits retry, while all other failures stop this runtime, with journal IO classified ambiguous. No physical CAN callback is supplied: prepare/dispatch and FC remain separately guarded host handoffs.
+
+Change detection compares status, acquisition time, validity/raw and NRC, so repeated observations cannot create new logs, but independent identical nonvalid outcomes can remain indistinguishable if the scheduler leaves all compared fields unchanged. The owner's documentation explicitly defines observable sample/quality delta logging, not a complete transaction audit; suppressed changes are not deferred to manufacture a later acquisition. Queued records have sequence zero, and are not valid committed history snapshots; the backend alone assigns persistent sequences. Runtime producer drops are separate from journal sample eviction/loss.
+
+## Findings and final result
+
+Review identified a configuration-coverage gap in the initial source: the supported mask unioned all advertised capabilities attached to jobs, so a configured PID could pass validation without an actual scheduled job for it. The owner corrected this before freeze: supported coverage includes only each implemented job PID that is usable under its corresponding ECU capabilities. The owner's regression deliberately advertises an extra configured PID while providing no job and now rejects init before session establishment. This source correction was reread and the regression independently executed as part of the full owner suite.
+
+No unresolved concrete P0/P1 defect was identified in the final runtime under its serialized-owner, trusted-policy, truthful-sink contract. Global rate arbitration is deterministic job order, not fairness or complete per-ECU historical coverage. Fresh SID and restored configuration remain caller assertions, not capabilities granted by init. Faults stop further runtime dispatch and storage attempts; they do not prove a physical controller has stopped.
+
+## Independently executed checks
+
+Built actual runtime/scheduler/decoder/ISO-TP/config/CAN policy/journal/history C with C11 warnings as errors, ASan and UBSan in a temporary directory. The owner's six-group `test_runtime.c` passes, including config/job capability coverage, start failure, global same-PID/two-ECU rate, no repeated-tick logs, quality/status, queue saturation and BUSY, counters/clock faults, ambiguous commit without retry, and actual RAM-journal composition across fresh sessions.
+
+Added reproducible independent `firmware/tests/test_runtime_review.c`, three groups; all pass under the same sanitizers:
+
+- **20 separate revocation paths:** ten policy variants each after request prepare and after FC prepare. USB-only/unknown/no supply, IGN unknown/off, unqualified hardware, invalid rails, standby, bus-off and inactive diagnostic session all leave fully zeroed output, cancel transaction state and do not resume a stale request/FC when policy returns. No physical-send evidence is claimed.
+- **Global PID/provenance/quality oracle:** two real scheduler jobs for the same PID and distinct ECU/profile identities both update live, but only one record enters the PID budget within1000ms. Repeated ticks do not add records. Eligible acquisitions at1/1001ms preserve raw/PID/ECU/time; invalid stale quality carries zero raw storage. Wrong ECU and wrong PID responses cannot become records, while the subsequent correct response does. The test also observes simultaneous same-PID stale transitions being globally arbitrated.
+- **Storage/queue oracle:** BUSY leaves a byte-identical head for one later successful append. A double that actually commits and returns AMBIGUOUS stops the runtime with the head retained diagnostically, persisted-success count unchanged and no retry/TX. Twenty-five eligible acquisitions fill the16-entry queue and count exactly9newest drops while preserving the first admitted head; draining is one record/call. Clock regression then faults instead of enabling more handoffs.
+
+The new independent test needs ordinary `gauge_core` linkage and no generated fixture header; the coordinator owns CMake registration. No production source was edited by this reviewer.
+
+## Runtime boundary still open
+
+Fresh trusted boot/SID uniqueness, ECU discovery authority, restored configuration, local hardware/IGN qualification and true physical CAN/TWAI send/completion remain platform integration responsibilities. CAN has no cryptographic per-request token: a delayed same-ECU response is not authenticated by this scheduler. A physical adapter must serialize policy check and actual send, reconfirm guards, reject stale boot callbacks and handle send failure; the host handoff does not supply those guarantees.
+
+The storage adapter must enforce BUSY=no mutation. Journal IO can commit before a readback/return failure, hence terminal ambiguity rather than blind retry. Recovery/reconciliation and queue-loss policy after a new boot are explicit external work. Producer drops/rate suppression are RAM counters, not persistent acquisition-gap proof or crash-surviving audit. Reinitialization clears RAM and is permitted only when quiesced, with explicit queue-loss policy and fresh SID; it is not a seamless reconfiguration path.
+
+All callbacks are synchronous under one owner task. The caller must read fresh monotonic time after IO before any further request/FC handoff. Bounded call count does not establish bounded hardware latency or nonblocking execution, and host structure size4216bytes does not qualify target stack/scheduling. Flash endurance, throughput, power loss, radio coexistence and≤100µA standby remain outside these tests. The inert app_main has not started this coordinator or any physical driver.

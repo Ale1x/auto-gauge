@@ -16,8 +16,8 @@ Nucleo C11 e applicazione ESP-IDF per il candidato ESP32-S3, sviluppabili prima 
 | Reset | Record NVS canonico, intent/fasi durabili e recovery locale dopo interruzione | Cancellazione credenziali persistenti/RAM/controller richiede hook qualificato; audit dedicato |
 | App | Recovery archivio→inbox e flusso import/verifica/upload/READY/select esplicito | Provider nativo/trust assenti di default; nessun cloud/radio live qualificato |
 
-[Applicazione](../docs/APPLICATION.md), [manutenzione](../docs/MAINTENANCE.md),
-[renderer](../docs/GAUGE_RENDERER.md), [consegna](../docs/SOFTWARE_DELIVERY.md).
+[Applicazione](../docs/software/APPLICATION.md), [manutenzione](../docs/software/MAINTENANCE.md),
+[renderer](../docs/software/GAUGE_RENDERER.md), [consegna](../docs/software/SOFTWARE_DELIVERY.md).
 Le sezioni FW-02… e V0.12 sotto conservano la cronologia; i vecchi conteggi o
 main inerti riferiti a quegli incrementi non descrivono il target unificato V0.13.
 
@@ -95,7 +95,7 @@ Un secondo subagente ha letto i quattro moduli C e l'header, senza modifiche: no
 
 ## Skeleton ESP-IDF
 
-Directory `idf/`, target di sviluppo ESP32-S3. Lo skeleton è ora cross-compilato con **ESP-IDF ufficiale v6.1/GCC15.2.0**, SDK/toolchain in cache esterna e nessun flash. App `.bin`170624byte, immagine170512byte prima del padding. Versioni, hash, memoria e confini sono in [DEVICE_BUILD.md](DEVICE_BUILD.md) e `device-build-report.json`. Questa build verifica compilazione/link del target; non esegue l'applicazione sul dispositivo né congela la release SDK di produzione.
+Directory `idf/`, target di sviluppo ESP32-S3. Lo skeleton è ora cross-compilato con **ESP-IDF ufficiale v6.1/GCC15.2.0**, SDK/toolchain in cache esterna e nessun flash. App `.bin`170624byte, immagine170512byte prima del padding. Versioni, hash, memoria e confini sono in [DEVICE_BUILD.md](../docs/firmware/DEVICE_BUILD.md) e `device-build-report.json`. Questa build verifica compilazione/link del target; non esegue l'applicazione sul dispositivo né congela la release SDK di produzione.
 
 Con la cache dedicata descritta nel report, il comando di sola build è:
 
@@ -113,7 +113,7 @@ BLE/autenticazione/antireplay e OTA rimangono bloccati; nessun GATT utilizzabile
 
 ## FW-03 — una connessione e reset fisico separato
 
-Il contratto aggiornato è [CONNECTION_POLICY_V0.1.md](../shared/CONNECTION_POLICY_V0.1.md), basato su DEC-011. `include/ag_connection.h` e `src/connection.c` non contengono un registro owner, un trasferimento di proprietà o una lista con N massimo di telefoni. Conservano solo il client della connessione corrente. La dimensione interna del suo identificatore opaco è 16 byte, ipotesi tecnica da mappare nel futuro adapter, non un limite al numero N di client utilizzabili nel tempo. L'effettiva capacità di bond del controller/SDK richiederà un bilancio di risorse e non viene presentata come nuova limitazione di prodotto.
+Il contratto aggiornato è [CONNECTION_POLICY_V0.1.md](../docs/protocols/CONNECTION_POLICY_V0.1.md), basato su DEC-011. `include/ag_connection.h` e `src/connection.c` non contengono un registro owner, un trasferimento di proprietà o una lista con N massimo di telefoni. Conservano solo il client della connessione corrente. La dimensione interna del suo identificatore opaco è 16 byte, ipotesi tecnica da mappare nel futuro adapter, non un limite al numero N di client utilizzabili nel tempo. L'effettiva capacità di bond del controller/SDK richiederà un bilancio di risorse e non viene presentata come nuova limitazione di prodotto.
 
 `ag_connection_open` accetta un client solo in `IDLE`; un altro tentativo risponde `BUSY` senza preemption. Ogni nuova connessione è `UNVERIFIED`, anche per un telefono usato in precedenza. Disconnettere A e collegare B o nuovamente A non invoca callback di persistenza o erase e conserva configurazione/log/bond. I cursori storico sono locali a ciascun telefono: l'ACK di A non autorizza la cancellazione di record ancora disponibili per B; il futuro ring rimane bounded con overwrite DEC-006. Questo incremento non implementa produttore flash o reclaim globale.
 
@@ -240,11 +240,11 @@ Fonti primarie: [SMP ESP-IDF v6.1](https://docs.espressif.com/projects/esp-idf/e
 
 ## Parser JSON C condiviso — verifica di compilazione
 
-Il parser bounded in `../shared/c/ag_config_json.c` è compilato nei target host e ESP32-S3, senza chiamate dal main inerte. Limiti, ABI e frame statici GCC sono documentati in [PARSER_BUILD.md](PARSER_BUILD.md): 512 token è un contatore, non un array, e lo stack runtime deve ancora essere misurato e dimensionato. La validazione JSON non concede autorizzazione o commit.
+Il parser bounded in `../shared/c/ag_config_json.c` è compilato nei target host e ESP32-S3, senza chiamate dal main inerte. Limiti, ABI e frame statici GCC sono documentati in [PARSER_BUILD.md](../docs/firmware/PARSER_BUILD.md): 512 token è un contatore, non un array, e lo stack runtime deve ancora essere misurato e dimensionato. La validazione JSON non concede autorizzazione o commit.
 
 ## FW-08 — persistenza storico simulata
 
-Implementazione e limiti in [FLASH_HISTORY_MODEL.md](FLASH_HISTORY_MODEL.md): due snapshot streaming, bootstrap esplicito, `begin_session` con SID nuovo conserva i record precedenti, gap per sessione e ACK senza consumo. Recovery degradata resta READ_ONLY; nessuna riparazione automatica. Il modello copia O(capacità) a ogni append e usa metà spazio come copia: non è il backend V1 né una qualifica di endurance, retention o autonomia dopo crank.
+Implementazione e limiti in [FLASH_HISTORY_MODEL.md](../docs/firmware/FLASH_HISTORY_MODEL.md): due snapshot streaming, bootstrap esplicito, `begin_session` con SID nuovo conserva i record precedenti, gap per sessione e ACK senza consumo. Recovery degradata resta READ_ONLY; nessuna riparazione automatica. Il modello copia O(capacità) a ogni append e usa metà spazio come copia: non è il backend V1 né una qualifica di endurance, retention o autonomia dopo crank.
 
 ## Prossimi incrementi
 
@@ -258,12 +258,12 @@ Documentazione primaria consultata il 24/10/2026: [ESP Timer release 5.3](https:
 
 ## Trasferimento OTA bounded FW-13
 
-`include/ota_transfer.h` / `src/ota_transfer.c` implementano codec payload e owner a memoria fissa con lease fidata, offset esatti, deadline/poll e select distinta. Lo studio `ota_study/main/transfer_adapter.c` collega le callback al vero verificatorePSA e installerSDK, senza avviarli dal main. Il CLI `tools/ota_transfer_cli.c` richiede `--trusted-fixture-maintenance` e usa backend comportamentali, senza RSA/flash. Nessuna route BLE/RPC nativa è abilitata. [Contratto](../shared/OTA_TRANSFER_V0.1.md), [verifica](../shared/VERIFICATION_V0.10.md).
+`include/ota_transfer.h` / `src/ota_transfer.c` implementano codec payload e owner a memoria fissa con lease fidata, offset esatti, deadline/poll e select distinta. Lo studio `ota_study/main/transfer_adapter.c` collega le callback al vero verificatorePSA e installerSDK, senza avviarli dal main. Il CLI `tools/ota_transfer_cli.c` richiede `--trusted-fixture-maintenance` e usa backend comportamentali, senza RSA/flash. Nessuna route BLE/RPC nativa è abilitata. [Contratto](../docs/protocols/OTA_TRANSFER_V0.1.md), [verifica](../docs/verification/VERIFICATION_V0.10.md).
 
 ## Endpoint OTA AG FW-14
 
-`ota_framed_endpoint` aggiunge reassembly bounded, staging/step separati, ID sequenziali, ACK correnti e chiusura terminale con cleanup singolo dell’owner. Lo studio `ota_study/main/framed_adapter` collega l’intera catena al verificatore/installer esistenti; il CLI framed richiede ammissione fixture esplicita e non usa flash o crypto reali. Main/bridge NimBLE restano senza route OTA attiva. [Contratto](../shared/OTA_FRAMED_V0.1.md), [verifica](../shared/VERIFICATION_V0.11.md).
+`ota_framed_endpoint` aggiunge reassembly bounded, staging/step separati, ID sequenziali, ACK correnti e chiusura terminale con cleanup singolo dell’owner. Lo studio `ota_study/main/framed_adapter` collega l’intera catena al verificatore/installer esistenti; il CLI framed richiede ammissione fixture esplicita e non usa flash o crypto reali. Main/bridge NimBLE restano senza route OTA attiva. [Contratto](../docs/protocols/OTA_FRAMED_V0.1.md), [verifica](../docs/verification/VERIFICATION_V0.11.md).
 
 ## Nuovi meccanismi V0.12
 
-[Boot health/floor durabile](../shared/OTA_BOOT_HEALTH_V0.1.md), [discovery/default](../docs/DISCOVERY.md), [gauge UI](../docs/GAUGE_UI.md), [TWAI](../docs/TWAI_PORT.md) e [catalogo sessioni](../shared/HISTORY_SESSIONS_V0.1.md). Gli studi platform/OTA/BLE compilano API SDK reali con main inerti; non sono un firmware completo pronto al veicolo. Il prossimo lavoro è la composizione in un solo owner/main, non riscrivere questi moduli.
+[Boot health/floor durabile](../docs/protocols/OTA_BOOT_HEALTH_V0.1.md), [discovery/default](../docs/software/DISCOVERY.md), [gauge UI](../docs/software/GAUGE_UI.md), [TWAI](../docs/software/TWAI_PORT.md) e [catalogo sessioni](../docs/protocols/HISTORY_SESSIONS_V0.1.md). Gli studi platform/OTA/BLE compilano API SDK reali con main inerti; non sono un firmware completo pronto al veicolo. Il prossimo lavoro è la composizione in un solo owner/main, non riscrivere questi moduli.
